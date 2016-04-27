@@ -1,0 +1,3 @@
+[submodule "/Users/Macnube/.emacs.d/site-lisp/clojure-semantic/"]
+	path = site-lisp/clojure-semantic
+	url = https://github.com/kototama/clojure-semantic.git

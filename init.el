@@ -71,8 +71,6 @@
   :config
   (semantic-default-elisp-setup))
 
-
-
 (use-package smartparens
   :config
   (require 'smartparens-config)
@@ -184,7 +182,8 @@
   (projectile-global-mode))
 
 (use-package magit
-  :bind (("C-x g" . magit-status)))
+  :bind (("C-x g" . magit-status)
+	 ("C-x C-g" . magit-status)))
 
 (use-package company
   :diminish company-mode
