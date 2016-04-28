@@ -17,7 +17,7 @@
  '(company-auto-complete-chars (quote (32 41 46)))
  '(company-backends
    (quote
-    (company-bbdb company-nxml company-css company-eclim company-clang company-xcode company-ropemacs company-elisp company-semantic company-cmake
+    (company-tern company-bbdb company-nxml company-css company-eclim company-clang company-xcode company-ropemacs company-elisp company-semantic company-cmake
 		  (company-dabbrev-code company-gtags company-etags company-keywords)
 		  company-oddmuse company-files company-dabbrev)))
  '(company-dabbrev-downcase nil)
@@ -26,17 +26,18 @@
  '(company-idle-delay 0.2)
  '(company-minimum-prefix-length 2)
  '(company-require-match nil)
+ '(compilation-message-face (quote default))
  '(cursor-type t)
  '(custom-buffer-done-kill t)
  '(custom-enabled-themes nil)
  '(custom-file "/Users/Macnube/.emacs.d/custom.el")
  '(custom-safe-themes
    (quote
-    ("afbb40954f67924d3153f27b6d3399df221b2050f2a72eb2cfa8d29ca783c5a8" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default)))
+    ("a25c42c5e2a6a7a3b0331cad124c83406a71bc7e099b60c31dc28a1ff84e8c04" "afbb40954f67924d3153f27b6d3399df221b2050f2a72eb2cfa8d29ca783c5a8" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default)))
  '(echo-keystrokes 0.2)
  '(exec-path
    (quote
-    ("/usr/local/bin/" "/usr/local/sbin/" "/usr/bin/" "/bin/" "/usr/sbin/" "/sbin/" "/opt/X11/bin/" "/usr/local/opt/nvm/sbin/" "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9/" "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9/" "/usr/local/share/npm/bin/" "/usr/local/otp/nvm/" "/usr/local/opt/coreutils/libexec/gnubin/" "/usr/local/share/npm/bin/" "/usr/local/otp/nvm/" "/usr/local/opt/coreutils/libexec/gnubin/" "/Applications/Emacs.app/Contents/MacOS/libexec/")))
+    ("/usr/local/bin/" "/usr/local/sbin/" "/usr/local/bin/" "/usr/local/sbin/" "/usr/bin/" "/bin/" "/usr/sbin/" "/sbin/" "/opt/X11/bin/" "/usr/local/opt/nvm/sbin/" "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9/" "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9/" "/usr/local/share/npm/bin/" "/usr/local/otp/nvm/" "/usr/local/opt/coreutils/libexec/gnubin/" "/Applications/Emacs.app/Contents/MacOS/libexec/")))
  '(fancy-splash-image nil)
  '(fci-rule-color "#eee8d5")
  '(fringe-mode (quote (4 . 4)) nil (fringe))
@@ -47,6 +48,7 @@
  '(global-semanticdb-minor-mode t)
  '(helm-M-x-fuzzy-match nil)
  '(helm-autoresize-max-height 30)
+ '(helm-dash-browser-func (quote eww))
  '(helm-locate-command "mdfind -name %s %s")
  '(helm-mini-default-sources
    (quote
@@ -56,6 +58,21 @@
  '(helm-swoop-speed-or-color t)
  '(helm-swoop-split-with-multiple-windows t)
  '(help-window-select t)
+ '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
+ '(highlight-tail-colors
+   (quote
+    (("#49483E" . 0)
+     ("#679A01" . 20)
+     ("#4BBEAE" . 30)
+     ("#1DB4D0" . 50)
+     ("#9A8F21" . 60)
+     ("#A75B00" . 70)
+     ("#F309DF" . 85)
+     ("#49483E" . 100))))
+ '(hl-paren-colors
+   (quote
+    ("#B9F" "#B8D" "#B7B" "#B69" "#B57" "#B45" "#B33" "#B11")))
+ '(hl-sexp-background-color "#efebe9")
  '(inhibit-startup-screen t)
  '(initial-major-mode (quote fundamental-mode))
  '(js-expr-indent-offset 0)
@@ -64,6 +81,7 @@
  '(lispy-completion-method (quote helm))
  '(lispy-eval-display-style (quote overlay))
  '(lispy-no-permanent-semantic t)
+ '(magit-diff-use-overlays nil)
  '(nrepl-message-colors
    (quote
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
@@ -71,7 +89,9 @@
  '(ns-command-modifier (quote meta))
  '(package-selected-packages
    (quote
-    (multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
+    (monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
+ '(pos-tip-background-color "#A6E22E")
+ '(pos-tip-foreground-color "#272822")
  '(projectile-cache-file "/Users/Macnube/.emacs.d/cache/projectile.cache")
  '(projectile-completion-system (quote helm))
  '(projectile-enable-caching t)
@@ -98,6 +118,7 @@
      ("*lispy-goto*" :align
       (quote below)
       :size 0.4))))
+ '(shell-file-name "/bin/zsh")
  '(show-paren-mode nil)
  '(show-smartparens-global-mode t)
  '(sp-show-pair-delay 0.1)
@@ -125,7 +146,9 @@
      (340 . "#dc322f")
      (360 . "#cb4b16"))))
  '(vc-annotate-very-old-color nil)
- '(visible-cursor nil))
+ '(visible-cursor nil)
+ '(weechat-color-list
+   (unspecified "#272822" "#49483E" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0")))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

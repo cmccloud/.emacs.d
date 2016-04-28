@@ -33,7 +33,6 @@
 
 ;; Packages
 (use-package exec-path-from-shell
-  :disabled t
   :if (memq window-system '(mac ns))
   :config
   (exec-path-from-shell-initialize))
@@ -188,6 +187,8 @@
 (use-package company
   :diminish company-mode
   :demand t
+  :init
+  (use-package company-tern)
   :config
   (global-company-mode 1)
   :bind
@@ -207,17 +208,16 @@
 (use-package js2-mode
   :mode "\\.js$")
 
+(use-package skewer-mode
+  :defer t
+  :init
+  (add-hook 'js2-mode-hook #'skewer-mode))
+
 (use-package tern
-  :disabled t
   :diminish tern-mode
+  :defer t
   :init
   (add-hook 'js2-mode-hook 'tern-mode))
-
-(use-package company-tern
-  :disabled t
-  :init
-  (progn
-    (add-to-list 'company-backends 'company-tern)))
 
 (use-package window-numbering
   :init

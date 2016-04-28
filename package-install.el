@@ -10,6 +10,7 @@
 (dolist (pkg '(use-package
                 bind-key
 		dash
+		helm-dash
 		seq
                 exec-path-from-shell
 		ggtags
@@ -34,13 +35,13 @@
                 elisp-slime-nav
 		js2-mode
                 tern
+		skewer-mode
+		js2-refactor
 		osx-trash
                 company-tern
                 window-numbering
                 shackle
-                zenburn-theme
-                color-theme-sanityinc-solarized
-                diminish))
+		diminish))
   (unless (package-installed-p pkg)
     (package-install pkg)))
 
@@ -51,6 +52,12 @@
 			 ("gnu" . "https://elpa.gnu.org/packages/")))
 (package-refresh-contents)
 (dolist (pkg '(racket-mode
-	       lispy))
+	       lispy
+	       js-doc
+	       paper-theme
+	       white-sand-theme
+	       zenburn-theme
+	       color-theme-sanityinc-solarized
+	       arjen-grey-theme))
   (unless (package-installed-p pkg)
     (package-install pkg)))
