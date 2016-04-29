@@ -212,6 +212,26 @@
         ("<tab>" . company-complete-selection)
         ("TAB" . company-complete-selection)))
 
+(use-package flycheck :defer t
+  :init
+  (define-fringe-bitmap 'my-flycheck-fringe-indicator
+    (vector 0 0 0 0 0 0 0 28 62 62 62 28 0 0 0 0 0))
+
+  (flycheck-define-error-level 'error
+    :overlay-category 'flycheck-error-overlay
+    :fringe-bitmap 'my-flycheck-fringe-indicator
+    :fringe-face 'flycheck-fringe-error)
+
+  (flycheck-define-error-level 'warning
+    :overlay-category 'flycheck-warning-overlay
+    :fringe-bitmap 'my-flycheck-fringe-indicator
+    :fringe-face 'flycheck-fringe-warning)
+
+  (flycheck-define-error-level 'info
+    :overlay-category 'flycheck-info-overlay
+    :fringe-bitmap 'my-flycheck-fringe-indicator
+    :fringe-face 'flycheck-fringe-info))
+
 (use-package which-key
   :diminish which-key-mode
   :config

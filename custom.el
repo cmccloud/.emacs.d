@@ -45,7 +45,8 @@
     ("/usr/local/bin/" "/usr/local/sbin/" "/usr/local/bin/" "/usr/local/sbin/" "/usr/bin/" "/bin/" "/usr/sbin/" "/sbin/" "/opt/X11/bin/" "/usr/local/opt/nvm/sbin/" "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9/" "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9/" "/usr/local/share/npm/bin/" "/usr/local/otp/nvm/" "/usr/local/opt/coreutils/libexec/gnubin/" "/Applications/Emacs.app/Contents/MacOS/libexec/")))
  '(fancy-splash-image nil)
  '(fci-rule-color "#eee8d5")
- '(fringe-mode (quote (4 . 4)) nil (fringe))
+ '(flycheck-highlighting-mode (quote sexps))
+ '(fringe-mode nil nil (fringe))
  '(global-auto-revert-mode t)
  '(global-company-mode t)
  '(global-hl-line-mode nil)
@@ -96,7 +97,7 @@
  '(ns-command-modifier (quote meta))
  '(package-selected-packages
    (quote
-    (slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
+    (flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
  '(projectile-cache-file "/Users/Macnube/.emacs.d/cache/projectile.cache")

@@ -28,6 +28,7 @@
                 helm-themes
                 magit
                 company
+                flycheck
                 clojure-mode
                 geiser
                 cider
