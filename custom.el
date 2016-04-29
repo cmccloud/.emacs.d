@@ -11,6 +11,7 @@
  '(auto-save-file-name-transforms
    (quote
     ((".*" "/var/folders/f4/0p9hr1155ngckx9pjfsct6th0000gn/T/\\2" t))))
+ '(avy-all-windows nil)
  '(avy-background t)
  '(avy-style (quote at-full))
  '(backup-directory-alist (quote (("." . "~/.emacs.d/cache/backups/"))))
@@ -48,7 +49,7 @@
  '(global-auto-revert-mode t)
  '(global-company-mode t)
  '(global-hl-line-mode nil)
- '(global-semantic-idle-scheduler-mode nil)
+ '(global-semantic-idle-scheduler-mode t)
  '(global-semanticdb-minor-mode t)
  '(helm-M-x-fuzzy-match nil)
  '(helm-autoresize-max-height 30)
@@ -111,13 +112,16 @@
  '(recentf-save-file "~/.emacs.d/cache/recentf")
  '(ring-bell-function (quote ignore))
  '(scroll-bar-mode nil)
+ '(semantic-edits-verbose-flag t)
+ '(semantic-idle-scheduler-idle-time 10)
  '(semantic-mode t)
  '(semantic-stickyfunc-indent-string " ")
  '(semanticdb-default-save-directory "~/.emacs.d/cache/semanticdb")
  '(shackle-mode t)
  '(shackle-rules
    (quote
-    (("*slime-description*" :select t :align t :size 0.4)
+    (("*Geiser documentation*" :select t :align t :size 0.4)
+     ("*slime-description*" :select t :align t :size 0.4)
      ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
      ("*Help*" :size 0.4 :align bottom)
      ("*Complie-Log*" :select t :align t :size 0.4)

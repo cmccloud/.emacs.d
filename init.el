@@ -44,6 +44,7 @@
   :defer t
   :config
   (bind-keys :map doc-view-mode-map
+             ("k" . nil)
              ("n" . doc-view-next-page)
              ("p" . doc-view-previous-page)
              ("w" . doc-view-fit-width-to-window)
