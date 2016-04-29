@@ -54,6 +54,9 @@
  '(global-semanticdb-minor-mode t)
  '(helm-M-x-fuzzy-match nil)
  '(helm-autoresize-max-height 30)
+ '(helm-boring-buffer-regexp-list
+   (quote
+    ("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*Minibuf" "\\*magit" "\\*Customize" "\\*lispy-goto*" "\\*Backtrace*")))
  '(helm-dash-browser-func (quote eww))
  '(helm-ff-tramp-not-fancy nil)
  '(helm-locate-command "mdfind -name %s %s")

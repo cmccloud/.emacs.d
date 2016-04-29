@@ -58,6 +58,8 @@
   (osx-trash-setup))
 
 (use-package recentf
+  :functions
+  (recentf-track-opened-file)
   :config
   (recentf-mode)
   (recentf-track-opened-file))
@@ -92,9 +94,6 @@
   (with-eval-after-load 'racket-mode
     (add-hook 'racket-mode-hook #'lispy-mode))
   :config
-  (load (expand-file-name
-         "site-lisp/clojure-semantic/clojure.el"
-         user-emacs-directory))
   (bind-keys :map lispy-mode-map
              ("C-j" . avy-goto-word-or-subword-1)
              ("C-z" . avy-goto-line)
@@ -102,10 +101,17 @@
   (bind-keys :map mnemonic-map
              ("M-m" . lispy-mark-symbol)))
 
-(use-package clojure-mode :defer t)
+(use-package clojure-mode
+  :defer t
+  :config
+  (with-eval-after-load 'lispy
+    (load (expand-file-name
+           "site-lisp/clojure-semantic/clojure.el"
+           user-emacs-directory))))
 
 (use-package racket-mode
-  :defer t
+  :functions (sp-local-pair)
+  :commands (racket-mode racket-repl run-racket)
   :config
   (with-eval-after-load 'smartparens
     (add-to-list 'sp--lisp-modes 'racket-mode)
@@ -113,13 +119,13 @@
     (sp-local-pair 'racket-mode "`" nil :actions nil)))
 
 (use-package geiser
-  :commands run-geiser)
+  :commands (run-geiser))
 
 (use-package slime
-  :commands slime-mode
+  :commands (slime-mode)
   :config
-  (slime-setup '(slime-fancy slime-company))
-  (setq inferior-lisp-program "sbcl"))
+  (setq inferior-lisp-program "sbcl")
+  (slime-setup '(slime-fancy slime-company)))
 
 (use-package cider
   :commands (cider--display-interactive-eval-result)
@@ -197,36 +203,33 @@
 
 (use-package company
   :diminish company-mode
-  :demand t
+  :commands (global-company-mode company-mode)
   :init
-  (use-package company-tern)
-  (use-package slime-company)
+  (use-package company-tern :commands (company-tern))
+  (use-package slime-company :defer t)
+  (add-hook 'after-init-hook #'global-company-mode)
   :config
-  (global-company-mode 1)
-  :bind
-  (:map company-active-map
-        ("C-n" . company-select-next)
-        ("C-p" . company-select-previous)
-        ("RET" . nil)
-        ("<return>" . nil)
-        ("<tab>" . company-complete-selection)
-        ("TAB" . company-complete-selection)))
+  (bind-keys :map company-active-map
+             ("C-n" . company-select-next)
+             ("C-p" . company-select-previous)
+             ("RET" . nil)
+             ("<return>" . nil)
+             ("<tab>" . company-complete-selection)
+             ("TAB" . company-complete-selection)))
 
-(use-package flycheck :defer t
+(use-package flycheck
+  :defer t
   :init
   (define-fringe-bitmap 'my-flycheck-fringe-indicator
     (vector 0 0 0 0 0 0 0 28 62 62 62 28 0 0 0 0 0))
-
   (flycheck-define-error-level 'error
     :overlay-category 'flycheck-error-overlay
     :fringe-bitmap 'my-flycheck-fringe-indicator
     :fringe-face 'flycheck-fringe-error)
-
   (flycheck-define-error-level 'warning
     :overlay-category 'flycheck-warning-overlay
     :fringe-bitmap 'my-flycheck-fringe-indicator
     :fringe-face 'flycheck-fringe-warning)
-
   (flycheck-define-error-level 'info
     :overlay-category 'flycheck-info-overlay
     :fringe-bitmap 'my-flycheck-fringe-indicator
