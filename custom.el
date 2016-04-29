@@ -8,6 +8,9 @@
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
    (vector "#657b83" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#fdf6e3"))
+ '(auto-save-file-name-transforms
+   (quote
+    ((".*" "/var/folders/f4/0p9hr1155ngckx9pjfsct6th0000gn/T/\\2" t))))
  '(avy-background t)
  '(avy-style (quote at-full))
  '(backup-directory-alist (quote (("." . "~/.emacs.d/cache/backups/"))))
@@ -18,8 +21,8 @@
  '(company-backends
    (quote
     (company-tern company-bbdb company-nxml company-css company-eclim company-clang company-xcode company-ropemacs company-elisp company-semantic company-cmake
-		  (company-dabbrev-code company-gtags company-etags company-keywords)
-		  company-oddmuse company-files company-dabbrev)))
+                  (company-dabbrev-code company-gtags company-etags company-keywords)
+                  company-oddmuse company-files company-dabbrev)))
  '(company-dabbrev-downcase nil)
  '(company-dabbrev-ignore-case nil)
  '(company-gtags-executable nil)
@@ -27,6 +30,7 @@
  '(company-minimum-prefix-length 2)
  '(company-require-match nil)
  '(compilation-message-face (quote default))
+ '(create-lockfiles nil)
  '(cursor-type t)
  '(custom-buffer-done-kill t)
  '(custom-enabled-themes nil)
@@ -49,6 +53,7 @@
  '(helm-M-x-fuzzy-match nil)
  '(helm-autoresize-max-height 30)
  '(helm-dash-browser-func (quote eww))
+ '(helm-ff-tramp-not-fancy nil)
  '(helm-locate-command "mdfind -name %s %s")
  '(helm-mini-default-sources
    (quote
@@ -73,6 +78,7 @@
    (quote
     ("#B9F" "#B8D" "#B7B" "#B69" "#B57" "#B45" "#B33" "#B11")))
  '(hl-sexp-background-color "#efebe9")
+ '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(initial-major-mode (quote fundamental-mode))
  '(js-expr-indent-offset 0)
@@ -89,7 +95,7 @@
  '(ns-command-modifier (quote meta))
  '(package-selected-packages
    (quote
-    (monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
+    (slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
  '(projectile-cache-file "/Users/Macnube/.emacs.d/cache/projectile.cache")
@@ -111,7 +117,8 @@
  '(shackle-mode t)
  '(shackle-rules
    (quote
-    (("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
+    (("*slime-description*" :select t :align t :size 0.4)
+     ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
      ("*Help*" :size 0.4 :align bottom)
      ("*Complie-Log*" :select t :align t :size 0.4)
      ("*Man.*" :regexp t :select t :align t :size 0.4)
@@ -121,9 +128,14 @@
  '(shell-file-name "/bin/zsh")
  '(show-paren-mode nil)
  '(show-smartparens-global-mode t)
+ '(slime-kill-without-query-p t)
  '(sp-show-pair-delay 0.1)
- '(sp-show-pair-from-inside t)
+ '(sp-show-pair-from-inside nil)
+ '(tab-width 2)
  '(tool-bar-mode nil)
+ '(tramp-auto-save-directory "~/.emacs.d/cache/auto-saves/")
+ '(tramp-backup-directory-alist (quote ((".*" . "~/.emacs.d/cache/backups/"))))
+ '(tramp-persistency-file-name "/Users/Macnube/.emacs.d/cache/tramp")
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote

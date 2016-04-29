@@ -9,55 +9,58 @@
 (package-refresh-contents)
 (dolist (pkg '(use-package
                 bind-key
-		dash
-		helm-dash
-		seq
+                dash
+                helm-dash
+                seq
                 exec-path-from-shell
-		ggtags
+                ggtags
                 smartparens
-		avy
+                avy
                 smooth-scrolling
                 projectile
-		helm
+                helm
                 helm-projectile
-		helm-gtags
-		multiple-cursors
-		helm-ag
+                helm-gtags
+                multiple-cursors
+                helm-ag
                 helm-descbinds
                 helm-swoop
                 helm-themes
                 magit
                 company
                 clojure-mode
-		geiser
-		cider
-		which-key
+                geiser
+                cider
+                slime
+                slime-company
+                which-key
                 elisp-slime-nav
-		js2-mode
+                js2-mode
                 tern
-		skewer-mode
-		js2-refactor
-		osx-trash
+                skewer-mode
+                js2-refactor
+                osx-trash
                 company-tern
                 window-numbering
                 shackle
-		diminish))
+                diminish))
   (unless (package-installed-p pkg)
     (package-install pkg)))
 
 ;; Melpa Packages
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			 ("melpa-stable" . "https://stable.melpa.org/packages/")
-			 ("org" . "http://orgmode.org/elpa/")
-			 ("gnu" . "https://elpa.gnu.org/packages/")))
+                         ("melpa-stable" . "https://stable.melpa.org/packages/")
+                         ("org" . "http://orgmode.org/elpa/")
+                         ("gnu" . "https://elpa.gnu.org/packages/")))
 (package-refresh-contents)
 (dolist (pkg '(racket-mode
-	       lispy
-	       js-doc
-	       paper-theme
-	       white-sand-theme
-	       zenburn-theme
-	       color-theme-sanityinc-solarized
-	       arjen-grey-theme))
+               lispy
+               js-doc
+               paper-theme
+               white-sand-theme
+               zenburn-theme
+               color-theme-sanityinc-solarized
+               arjen-grey-theme
+               color-theme-sanityinc-tomorrow))
   (unless (package-installed-p pkg)
     (package-install pkg)))
