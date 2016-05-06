@@ -12,11 +12,11 @@
 ;; Appearance and Package Initialization
 (package-initialize)
 
-(load-theme 'sanityinc-solarized-light)
-
 (require 'use-package)
 (require 'bind-key)
 (require 'diminish)
+
+(load-theme 'sanityinc-solarized-light)
 
 ;; Key Bindings
 (define-prefix-command 'mnemonic-map)
@@ -51,6 +51,27 @@
              ("h" . doc-view-fit-height-to-window)
              ("s" . doc-view-search)
              ("g" . doc-view-goto-page)))
+
+(use-package persp-mode
+  :commands (persp-mode)
+  :init
+  (defun persp-helm-mini ()
+    "As 'HELM-MINI' but with 'PERSP-MODE' buffer isolation."
+    (interactive)
+    (if (bound-and-true-p persp-mode)
+        (let ((*persp-restrict-buffers-to* 0)
+              (persp-restrict-buffers-to-if-foreign-buffer nil))
+          (cl-flet
+              ((buffer-list
+                (&optional frame)
+                (persp-buffer-list-restricted
+                 (selected-frame)
+                 0
+                 nil)))
+            (helm-mini)))
+      (helm-mini)))
+  :config
+  (bind-keys ("C-x C-b" . persp-helm-mini)))
 
 (use-package osx-trash
   :if (memq system-type '(osx darwin))
@@ -171,6 +192,7 @@
    ("C-h i" . helm-info)))
 
 (use-package projectile
+  :demand t
   :diminish projectile-mode
   :commands (projectile-ack
              projectile-ag
@@ -256,12 +278,11 @@
 
 (use-package window-numbering
   :init
-  (progn
-    (defun user--split-and-balance-window-right ()
-      "As 'SPLIT-WINDOW-RIGHT' followed by 'BALANCE-WINDOWS'"
-      (interactive)
-      (split-window-right)
-      (balance-windows)))
+  (defun user--split-and-balance-window-right ()
+    "As 'SPLIT-WINDOW-RIGHT' followed by 'BALANCE-WINDOWS'"
+    (interactive)
+    (split-window-right)
+    (balance-windows))
   :config
   (window-numbering-mode 1)
   (bind-keys :prefix-map window-management-map
@@ -273,6 +294,9 @@
              ("M-2" . select-window-2)
              ("M-3" . select-window-3)
              ("M-4" . select-window-4)))
+
+(use-package golden-ratio
+  :commands (golden-ratio-mode))
 
 (use-package shackle
   :config

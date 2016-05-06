@@ -13,7 +13,7 @@
     ((".*" "/var/folders/f4/0p9hr1155ngckx9pjfsct6th0000gn/T/\\2" t))))
  '(avy-all-windows nil)
  '(avy-background t)
- '(avy-style (quote at-full))
+ '(avy-style (quote at))
  '(backup-directory-alist (quote (("." . "~/.emacs.d/cache/backups/"))))
  '(blink-cursor-mode nil)
  '(column-number-mode t)
@@ -52,6 +52,11 @@
  '(global-hl-line-mode nil)
  '(global-semantic-idle-scheduler-mode t)
  '(global-semanticdb-minor-mode t)
+ '(golden-ratio-auto-scale t)
+ '(golden-ratio-extra-commands
+   (quote
+    (windmove-left windmove-right windmove-down windmove-up select-window-1 select-window-2 select-window-3 select-window-4 select-window-5)))
+ '(golden-ratio-mode nil)
  '(helm-M-x-fuzzy-match nil)
  '(helm-autoresize-max-height 30)
  '(helm-boring-buffer-regexp-list
@@ -100,7 +105,9 @@
  '(ns-command-modifier (quote meta))
  '(package-selected-packages
    (quote
-    (flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
+    (golden-ratio persp-mode flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
+ '(persp-nil-name "@Home")
+ '(persp-save-dir "/Users/Macnube/.emacs.d/cache/persp-confs/")
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
  '(projectile-cache-file "/Users/Macnube/.emacs.d/cache/projectile.cache")
@@ -128,7 +135,7 @@
      ("*slime-description*" :select t :align t :size 0.4)
      ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
      ("*Help*" :size 0.4 :align bottom)
-     ("*Complie-Log*" :select t :align t :size 0.4)
+     ("*Compile-Log*" :select t :align t :size 0.4)
      ("*Man.*" :regexp t :select t :align t :size 0.4)
      ("*lispy-goto*" :align
       (quote below)

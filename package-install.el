@@ -43,6 +43,7 @@
                 osx-trash
                 company-tern
                 window-numbering
+                golden-ratio
                 shackle
                 diminish))
   (unless (package-installed-p pkg)
@@ -57,6 +58,7 @@
 (dolist (pkg '(racket-mode
                lispy
                js-doc
+               persp-mode
                paper-theme
                white-sand-theme
                zenburn-theme
