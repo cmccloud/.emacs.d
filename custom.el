@@ -21,7 +21,7 @@
  '(company-auto-complete-chars (quote (32 41 46)))
  '(company-backends
    (quote
-    (company-tern company-bbdb company-nxml company-css company-eclim company-clang company-xcode company-ropemacs company-elisp company-semantic company-cmake
+    (company-tern company-bbdb company-nxml company-css company-eclim company-clang company-xcode company-ropemacs company-semantic company-elisp company-cmake
                   (company-dabbrev-code company-gtags company-etags company-keywords)
                   company-oddmuse company-files company-dabbrev)))
  '(company-dabbrev-downcase nil)
@@ -43,6 +43,7 @@
  '(exec-path
    (quote
     ("/usr/local/bin/" "/usr/local/sbin/" "/usr/local/bin/" "/usr/local/sbin/" "/usr/bin/" "/bin/" "/usr/sbin/" "/sbin/" "/opt/X11/bin/" "/usr/local/opt/nvm/sbin/" "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9/" "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9/" "/usr/local/share/npm/bin/" "/usr/local/otp/nvm/" "/usr/local/opt/coreutils/libexec/gnubin/" "/Applications/Emacs.app/Contents/MacOS/libexec/")))
+ '(explicit-shell-file-name "/bin/zsh")
  '(fancy-splash-image nil)
  '(fci-rule-color "#eee8d5")
  '(flycheck-highlighting-mode (quote sexps))
@@ -90,9 +91,17 @@
  '(hl-sexp-background-color "#efebe9")
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
+ '(initial-frame-alist
+   (quote
+    ((top . 30)
+     (left . 50)
+     (width . 111)
+     (height . 57))))
  '(initial-major-mode (quote fundamental-mode))
  '(js-expr-indent-offset 0)
  '(js-indent-level 2)
+ '(lispy-avy-style-char (quote at))
+ '(lispy-avy-style-symbol (quote at))
  '(lispy-compat (quote (edebug cider)))
  '(lispy-completion-method (quote helm))
  '(lispy-eval-display-style (quote overlay))
@@ -105,7 +114,8 @@
  '(ns-command-modifier (quote meta))
  '(package-selected-packages
    (quote
-    (golden-ratio persp-mode flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
+    (pdf-tools auctex eyebrowse golden-ratio persp-mode flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
+ '(persp-mode nil nil (persp-mode))
  '(persp-nil-name "@Home")
  '(persp-save-dir "/Users/Macnube/.emacs.d/cache/persp-confs/")
  '(pos-tip-background-color "#A6E22E")
@@ -125,16 +135,19 @@
  '(scroll-bar-mode nil)
  '(semantic-edits-verbose-flag t)
  '(semantic-idle-scheduler-idle-time 10)
- '(semantic-mode t)
+ '(semantic-mode nil)
  '(semantic-stickyfunc-indent-string " ")
  '(semanticdb-default-save-directory "~/.emacs.d/cache/semanticdb")
  '(shackle-mode t)
  '(shackle-rules
    (quote
-    (("*Geiser documentation*" :select t :align t :size 0.4)
+    (("Outline.*pdf" :regexp t :align
+      (quote left)
+      :size 0.3)
+     ("*Geiser documentation*" :select t :align t :size 0.4)
      ("*slime-description*" :select t :align t :size 0.4)
      ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
-     ("*Help*" :size 0.4 :align bottom)
+     ("*Help*" :select t :size 0.4 :align bottom)
      ("*Compile-Log*" :select t :align t :size 0.4)
      ("*Man.*" :regexp t :select t :align t :size 0.4)
      ("*lispy-goto*" :align

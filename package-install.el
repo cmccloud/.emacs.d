@@ -29,6 +29,8 @@
                 magit
                 company
                 flycheck
+                auctex
+                pdf-tools
                 clojure-mode
                 geiser
                 cider
@@ -43,6 +45,7 @@
                 osx-trash
                 company-tern
                 window-numbering
+                eyebrowse
                 golden-ratio
                 shackle
                 diminish))

@@ -40,6 +40,12 @@
   :config
   (exec-path-from-shell-initialize))
 
+(use-package term
+  :config
+  (with-eval-after-load 'helm
+    (bind-keys :map term-raw-map
+               ("M-x" . helm-M-x))))
+
 (use-package doc-view
   :defer t
   :config
@@ -52,26 +58,42 @@
              ("s" . doc-view-search)
              ("g" . doc-view-goto-page)))
 
+(use-package pdf-tools
+  :defer t
+  :mode (("\\.pdf\\'" . pdf-view-mode))
+  :config
+  (pdf-tools-install)
+  (bind-keys :map pdf-view-mode-map
+             ("C-s" . pdf-occur)
+             ("k" . nil))
+  (bind-keys :map pdf-occur-buffer-mode-map
+             ("v" . pdf-occur-view-occurrence)))
+
 (use-package persp-mode
+  :disabled t
   :commands (persp-mode)
   :init
   (defun persp-helm-mini ()
     "As 'HELM-MINI' but with 'PERSP-MODE' buffer isolation."
     (interactive)
+    (require 'cl)
     (if (bound-and-true-p persp-mode)
         (let ((*persp-restrict-buffers-to* 0)
               (persp-restrict-buffers-to-if-foreign-buffer nil))
-          (cl-flet
-              ((buffer-list
-                (&optional frame)
-                (persp-buffer-list-restricted
-                 (selected-frame)
-                 0
-                 nil)))
+          (cl-letf (((symbol-function 'buffer-list)
+                     (lambda (&optional frame)
+                       (persp-buffer-list-restricted
+                        (or frame (selected-frame))
+                        0
+                        nil))))
             (helm-mini)))
       (helm-mini)))
   :config
-  (bind-keys ("C-x C-b" . persp-helm-mini)))
+  (with-eval-after-load 'helm
+    (bind-keys ("C-x C-b" . persp-helm-mini))))
+
+(use-package eyebrowse
+  :commands (eyebrowse-mode))
 
 (use-package osx-trash
   :if (memq system-type '(osx darwin))
@@ -120,7 +142,10 @@
              ("C-z" . avy-goto-line)
              ("M-m" . mnemonic-map))
   (bind-keys :map mnemonic-map
-             ("M-m" . lispy-mark-symbol)))
+             ("M-m" . lispy-mark-symbol)
+             ("g" . lispy-goto))
+  :bind
+  (("C-a" . lispy-move-beginning-of-line)))
 
 (use-package clojure-mode
   :defer t
@@ -160,12 +185,17 @@
    ("C-z" . avy-goto-line)))
 
 (use-package helm
+  :commands (helm-M-x)
   :diminish helm-mode
   :init
   (use-package helm-ag :defer t)
-  (use-package helm-descbinds :defer t)
+  (use-package helm-descbinds
+    :bind
+    (("C-h b" . helm-descbinds)))
   (use-package helm-themes :defer t)
-  (use-package helm-swoop :bind (("C-s" . helm-swoop)))
+  (use-package helm-swoop
+    :bind
+    (("C-s" . helm-swoop)))
   (use-package helm-projectile
     :commands (helm-projectile-switch-to-buffer
                helm-projectile-find-dir
@@ -175,7 +205,7 @@
                helm-projectile-switch-project
                helm-projectile))
   :config
-  (require 'helm-config)
+  (use-package helm-config)
   (bind-keys :map helm-map
              ("C-z" . helm-select-action)
              ("<tab>" . helm-execute-persistent-action)
@@ -296,6 +326,7 @@
              ("M-4" . select-window-4)))
 
 (use-package golden-ratio
+  :defer t
   :commands (golden-ratio-mode))
 
 (use-package shackle
