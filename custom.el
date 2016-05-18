@@ -21,7 +21,7 @@
  '(company-auto-complete-chars (quote (32 41 46)))
  '(company-backends
    (quote
-    (company-tern company-bbdb company-nxml company-css company-eclim company-clang company-xcode company-ropemacs company-semantic company-elisp company-cmake
+    (company-tern company-bbdb company-nxml company-css company-eclim company-clang company-xcode company-capf company-ropemacs company-semantic company-elisp company-cmake
                   (company-dabbrev-code company-gtags company-etags company-keywords)
                   company-oddmuse company-files company-dabbrev)))
  '(company-dabbrev-downcase nil)
@@ -100,6 +100,7 @@
  '(initial-major-mode (quote fundamental-mode))
  '(js-expr-indent-offset 0)
  '(js-indent-level 2)
+ '(large-file-warning-threshold 200000000)
  '(lispy-avy-style-char (quote at))
  '(lispy-avy-style-symbol (quote at))
  '(lispy-compat (quote (edebug cider)))
@@ -114,7 +115,7 @@
  '(ns-command-modifier (quote meta))
  '(package-selected-packages
    (quote
-    (pdf-tools auctex eyebrowse golden-ratio persp-mode flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
+    (nodejs-repl pdf-tools auctex eyebrowse golden-ratio persp-mode flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
  '(persp-mode nil nil (persp-mode))
  '(persp-nil-name "@Home")
  '(persp-save-dir "/Users/Macnube/.emacs.d/cache/persp-confs/")
@@ -159,6 +160,7 @@
  '(slime-kill-without-query-p t)
  '(sp-show-pair-delay 0.1)
  '(sp-show-pair-from-inside nil)
+ '(standard-indent 2)
  '(tab-width 2)
  '(tool-bar-mode nil)
  '(tramp-auto-save-directory "~/.emacs.d/cache/auto-saves/")

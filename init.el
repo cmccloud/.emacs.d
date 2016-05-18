@@ -21,7 +21,8 @@
 ;; Key Bindings
 (define-prefix-command 'mnemonic-map)
 (bind-keys ("M-m" . mnemonic-map)
-           ("M-u" . undo))
+           ("M-u" . undo)
+           ("C-x C-c" . nil))
 (define-prefix-command 'buffer-map)
 (define-prefix-command 'toggle-map)
 (bind-keys :map mnemonic-map
@@ -46,6 +47,20 @@
     (bind-keys :map term-raw-map
                ("M-x" . helm-M-x))))
 
+(use-package pdf-tools
+  :defer t
+  :mode (("\\.pdf\\'" . pdf-view-mode))
+  :config
+  (pdf-tools-install)
+  (bind-keys :map pdf-view-mode-map
+             ("C-s" . pdf-occur)
+             ("k" . nil)
+             ("g" . pdf-view-goto-page)
+             ("j" . pdf-view-next-line-or-next-page)
+             ("k" . pdf-view-previous-line-or-previous-page))
+  (bind-keys :map pdf-occur-buffer-mode-map
+             ("v" . pdf-occur-view-occurrence)))
+
 (use-package doc-view
   :defer t
   :config
@@ -57,40 +72,6 @@
              ("h" . doc-view-fit-height-to-window)
              ("s" . doc-view-search)
              ("g" . doc-view-goto-page)))
-
-(use-package pdf-tools
-  :defer t
-  :mode (("\\.pdf\\'" . pdf-view-mode))
-  :config
-  (pdf-tools-install)
-  (bind-keys :map pdf-view-mode-map
-             ("C-s" . pdf-occur)
-             ("k" . nil))
-  (bind-keys :map pdf-occur-buffer-mode-map
-             ("v" . pdf-occur-view-occurrence)))
-
-(use-package persp-mode
-  :disabled t
-  :commands (persp-mode)
-  :init
-  (defun persp-helm-mini ()
-    "As 'HELM-MINI' but with 'PERSP-MODE' buffer isolation."
-    (interactive)
-    (require 'cl)
-    (if (bound-and-true-p persp-mode)
-        (let ((*persp-restrict-buffers-to* 0)
-              (persp-restrict-buffers-to-if-foreign-buffer nil))
-          (cl-letf (((symbol-function 'buffer-list)
-                     (lambda (&optional frame)
-                       (persp-buffer-list-restricted
-                        (or frame (selected-frame))
-                        0
-                        nil))))
-            (helm-mini)))
-      (helm-mini)))
-  :config
-  (with-eval-after-load 'helm
-    (bind-keys ("C-x C-b" . persp-helm-mini))))
 
 (use-package eyebrowse
   :commands (eyebrowse-mode))
@@ -297,8 +278,14 @@
 
 (use-package skewer-mode
   :defer t
-  :init
-  (add-hook 'js2-mode-hook #'skewer-mode))
+  :commands (skewer-mode))
+
+(use-package nodejs-repl
+  :defer t
+  :commands (nodejs-repl)
+  :config
+  (bind-keys :map js2-mode-map
+             ("C-x C-e" . nodejs-repl-send-last-sexp)))
 
 (use-package tern
   :diminish tern-mode
