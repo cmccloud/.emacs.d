@@ -37,6 +37,7 @@
 ;; Packages
 ;; TODO: Manually Set Path on OSX
 (use-package exec-path-from-shell
+  :defer t
   :if (memq window-system '(mac ns))
   :config
   (exec-path-from-shell-initialize))
@@ -74,7 +75,8 @@
              ("g" . doc-view-goto-page)))
 
 (use-package eyebrowse
-  :commands (eyebrowse-mode))
+  :config
+  (eyebrowse-mode))
 
 (use-package osx-trash
   :if (memq system-type '(osx darwin))
@@ -107,6 +109,10 @@
   (smartparens-global-strict-mode 1)
   (show-smartparens-global-mode 1))
 
+(use-package expand-region
+  :config
+  (bind-keys ("C-r" . er/expand-region)))
+
 (use-package lispy
   :defer 5
   :init
@@ -125,6 +131,12 @@
   (bind-keys :map mnemonic-map
              ("M-m" . lispy-mark-symbol)
              ("g" . lispy-goto))
+  ;; Prevent semantic mode errors when using
+  ;; lispy goto
+  (advice-add 'special-lispy-goto
+              :after
+              (defun lispy--supress-semantic ()
+                (semantic-mode -1)))
   :bind
   (("C-a" . lispy-move-beginning-of-line)))
 
@@ -135,6 +147,16 @@
     (load (expand-file-name
            "site-lisp/clojure-semantic/clojure.el"
            user-emacs-directory))))
+
+(use-package cider
+  :commands (cider-mode
+             cider--display-interactive-eval-result)
+  :init
+  (add-hook 'clojure-mode-hook #'cider-mode)
+  :config
+  ;; FIXME: Why doesn't this binding hold?
+  (bind-keys :map cider-mode-map
+             ("C-c C-w" . nil)))
 
 (use-package racket-mode
   :functions (sp-local-pair)
@@ -154,11 +176,13 @@
   (setq inferior-lisp-program "sbcl")
   (slime-setup '(slime-fancy slime-company)))
 
-(use-package cider
-  :commands (cider--display-interactive-eval-result)
-  :defer t
+(use-package oz
+  :load-path "/Applications/Mozart2.app/Contents/Resources/share/mozart/elisp"
+  :mode (("\\.oz\\'" . oz-mode)
+         ("\\.ozg\\'" . oz-gump-mode))
   :init
-  (add-hook 'clojure-mode-hook #'cider-mode))
+  (setq *OZHOME* "/Applications/Mozart2.app/Contents/Resources")
+  (setenv "OZHOME" "/Applications/Mozart2.app/Contents/Resources"))
 
 (use-package avy
   :bind
@@ -274,18 +298,28 @@
   (which-key-mode 1))
 
 (use-package js2-mode
-  :mode "\\.js$")
+  :mode "\\.js$"
+  :config
+  (use-package nodejs-repl
+    :config
+    (defun nodejs-repl-eval-dwim ()
+      (interactive)
+      (if mark-active
+          (nodejs-repl-send-region (region-beginning)
+                                   (region-end))
+        (nodejs-repl-send-last-sexp)))
+    (defun chrome-refresh-current-tab ()
+      (interactive)
+      (do-applescript
+       "tell application \"Google Chrome\" to reload active tab of window 1"))
+    (bind-keys :map js2-mode-map
+               ("C-x C-e" . nodejs-repl-eval-dwim))
+    (bind-keys :map mnemonic-map
+               ("<f5>" . chrome-refresh-current-tab))))
 
 (use-package skewer-mode
   :defer t
   :commands (skewer-mode))
-
-(use-package nodejs-repl
-  :defer t
-  :commands (nodejs-repl)
-  :config
-  (bind-keys :map js2-mode-map
-             ("C-x C-e" . nodejs-repl-send-last-sexp)))
 
 (use-package tern
   :diminish tern-mode
@@ -323,3 +357,4 @@
 ;; End Emacs Initialization
 ;; Re-enable Garbage Collection
 (setq gc-cons-threshold 800000)
+

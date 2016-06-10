@@ -26,6 +26,7 @@
                 helm-descbinds
                 helm-swoop
                 helm-themes
+                expand-region
                 magit
                 company
                 flycheck
@@ -61,8 +62,8 @@
 (dolist (pkg '(racket-mode
                lispy
                js-doc
-               persp-mode
                paper-theme
+               labburn-theme
                white-sand-theme
                zenburn-theme
                color-theme-sanityinc-solarized

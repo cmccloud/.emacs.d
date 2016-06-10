@@ -38,7 +38,7 @@
  '(custom-file "/Users/Macnube/.emacs.d/custom.el")
  '(custom-safe-themes
    (quote
-    ("a25c42c5e2a6a7a3b0331cad124c83406a71bc7e099b60c31dc28a1ff84e8c04" "afbb40954f67924d3153f27b6d3399df221b2050f2a72eb2cfa8d29ca783c5a8" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default)))
+    ("4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default)))
  '(echo-keystrokes 0.2)
  '(exec-path
    (quote
@@ -50,7 +50,7 @@
  '(fringe-mode nil nil (fringe))
  '(global-auto-revert-mode t)
  '(global-company-mode t)
- '(global-hl-line-mode nil)
+ '(global-hl-line-mode t)
  '(global-semantic-idle-scheduler-mode t)
  '(global-semanticdb-minor-mode t)
  '(golden-ratio-auto-scale t)
@@ -62,7 +62,7 @@
  '(helm-autoresize-max-height 30)
  '(helm-boring-buffer-regexp-list
    (quote
-    ("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*Minibuf" "\\*magit" "\\*Customize" "\\*lispy-goto*" "\\*Backtrace*")))
+    ("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*Minibuf" "\\*magit" "\\*lispy-goto*" "\\*Backtrace*")))
  '(helm-dash-browser-func (quote eww))
  '(helm-ff-tramp-not-fancy nil)
  '(helm-locate-command "mdfind -name %s %s")
@@ -115,10 +115,10 @@
  '(ns-command-modifier (quote meta))
  '(package-selected-packages
    (quote
-    (nodejs-repl pdf-tools auctex eyebrowse golden-ratio persp-mode flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
- '(persp-mode nil nil (persp-mode))
- '(persp-nil-name "@Home")
- '(persp-save-dir "/Users/Macnube/.emacs.d/cache/persp-confs/")
+    (labburn-theme expand-region nodejs-repl pdf-tools auctex eyebrowse golden-ratio flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
+ '(pdf-view-display-size (quote fit-height))
+ '(pdf-view-use-imagemagick t)
+ '(pdf-view-use-scaling t)
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
  '(projectile-cache-file "/Users/Macnube/.emacs.d/cache/projectile.cache")
@@ -149,6 +149,7 @@
      ("*slime-description*" :select t :align t :size 0.4)
      ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
      ("*Help*" :select t :size 0.4 :align bottom)
+     ("*Completions*" :select t :align t :size 0.4)
      ("*Compile-Log*" :select t :align t :size 0.4)
      ("*Man.*" :regexp t :select t :align t :size 0.4)
      ("*lispy-goto*" :align
