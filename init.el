@@ -35,29 +35,10 @@
            ("r" . rename-buffer))
 
 ;; Packages
+;; TODO: Manually Set Path on OSX
 (use-package exec-path-from-shell
   :defer t
   :if (memq window-system '(mac ns))
-  :init
-  (setenv "PATH"
-        (concat "/usr/local/bin:"
-                "/usr/local/sbin:"
-                "/usr/local/opt/nvm/versions/node/v6.2.0/bin:"
-                "/usr/local/bin:"
-                "/usr/local/sbin:"
-                "/usr/bin:"
-                "/bin:"
-                "/usr/sbin:"
-                "/sbin:"
-                "/opt/X11/bin:"
-                "/usr/local/opt/nvm/sbin:"
-                "/Library/TeX/texbin:"
-                "/usr/local/opt/nvm/bin:"
-                "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9:"
-                "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9:"
-                "/usr/local/share/npm/bin:"
-                "/usr/local/otp/nvm:"
-                "/usr/local/opt/coreutils/libexec/gnubin"))
   :config
   (exec-path-from-shell-initialize))
 
@@ -200,6 +181,7 @@
   :mode (("\\.oz\\'" . oz-mode)
          ("\\.ozg\\'" . oz-gump-mode))
   :init
+  (setq *OZHOME* "/Applications/Mozart2.app/Contents/Resources")
   (setenv "OZHOME" "/Applications/Mozart2.app/Contents/Resources"))
 
 (use-package avy
