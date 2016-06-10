@@ -42,7 +42,7 @@
  '(echo-keystrokes 0.2)
  '(exec-path
    (quote
-    ("/usr/local/bin/" "/usr/local/sbin/" "/usr/local/bin/" "/usr/local/sbin/" "/usr/bin/" "/bin/" "/usr/sbin/" "/sbin/" "/opt/X11/bin/" "/usr/local/opt/nvm/sbin/" "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9/" "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9/" "/usr/local/share/npm/bin/" "/usr/local/otp/nvm/" "/usr/local/opt/coreutils/libexec/gnubin/" "/Applications/Emacs.app/Contents/MacOS/libexec/")))
+    ("/usr/local/bin/" "/usr/local/sbin/" "/usr/local/bin/" "/usr/local/sbin/" "/usr/bin/" "/bin/" "/usr/sbin/" "/sbin/" "/opt/X11/bin/" "/usr/local/opt/nvm/version/node/v6.2..0/bin/" "/usr/local/opt/nvm/sbin/" "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9/" "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9/" "/usr/local/share/npm/bin/" "/usr/local/otp/nvm/" "/usr/local/opt/coreutils/libexec/gnubin/" "/Applications/Emacs.app/Contents/MacOS/libexec/")))
  '(explicit-shell-file-name "/bin/zsh")
  '(fancy-splash-image nil)
  '(fci-rule-color "#eee8d5")
@@ -113,6 +113,7 @@
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(ns-alternate-modifier (quote super))
  '(ns-command-modifier (quote meta))
+ '(oz-prefix "/Applications/Mozart2.app/Contents/Resources")
  '(package-selected-packages
    (quote
     (labburn-theme expand-region nodejs-repl pdf-tools auctex eyebrowse golden-ratio flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
