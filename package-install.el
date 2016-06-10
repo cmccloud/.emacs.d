@@ -40,6 +40,7 @@
                 which-key
                 elisp-slime-nav
                 js2-mode
+                markdown-mode
                 tern
                 skewer-mode
                 js2-refactor

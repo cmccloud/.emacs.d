@@ -207,6 +207,9 @@
   :init
   (setenv "OZHOME" "/Applications/Mozart2.app/Contents/Resources"))
 
+(use-package markdown-mode
+  :mode ("\\.m[k]d" . markdown-mode))
+
 (use-package avy
   :bind
   (("C-j" . avy-goto-word-or-subword-1)
