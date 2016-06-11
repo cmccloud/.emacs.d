@@ -101,6 +101,8 @@
  '(js-expr-indent-offset 0)
  '(js-indent-level 2)
  '(large-file-warning-threshold 200000000)
+ '(leader-mode nil)
+ '(leader/leader "M-m")
  '(lispy-avy-style-char (quote at))
  '(lispy-avy-style-symbol (quote at))
  '(lispy-compat (quote (edebug cider)))
@@ -108,7 +110,9 @@
  '(lispy-eval-display-style (quote overlay))
  '(lispy-no-permanent-semantic t)
  '(magit-diff-use-overlays nil)
- '(markdown-command "\"marked\"")
+ '(markdown-command "marked")
+ '(markdown-command-needs-filename t)
+ '(markdown-gfm-additional-languages (quote ("scheme" "javascript")))
  '(nrepl-message-colors
    (quote
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))

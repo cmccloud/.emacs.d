@@ -19,21 +19,33 @@
 (load-theme 'sanityinc-solarized-light)
 
 ;; Key Bindings
-(define-prefix-command 'mnemonic-map)
-(bind-keys ("M-m" . mnemonic-map)
-           ("M-u" . undo)
+(bind-keys ("M-u" . undo)
            ("C-x C-c" . nil))
-(define-prefix-command 'buffer-map)
-(define-prefix-command 'toggle-map)
-(bind-keys :map mnemonic-map
-           ("t" . toggle-map)
-           ("b" . buffer-map))
-(bind-keys :map toggle-map
-           ("F" . toggle-frame-fullscreen))
-(bind-keys :map buffer-map
-           ("d" . kill-this-buffer)
-           ("r" . rename-buffer))
 
+;; WIP
+(use-package leader
+  :load-path "/Users/Macnube/Repos/leader/"
+  :config
+  (leader/set-key
+    "tF" 'toggle-frame-fullscreen
+    "bd" 'kill-this-buffer
+    "br" 'rename-buffer)
+  (with-eval-after-load 'lispy
+    (leader/set-key
+      "M-m" 'lispy-mark-symbol
+      "g" 'lispy-goto))
+  (with-eval-after-load 'js2-mode
+    (leader/set-key
+      "<f5>" 'chrome-refresh-current-tab))
+  (with-eval-after-load 'skewer-mode
+    (leader/set-key-on-minor-mode-map 'skewer-mode skewer-mode-map
+      "ee" 'skewer-eval-last-expression))
+  (with-eval-after-load 'window-numbering
+    (leader/set-key
+      "ws" 'split-and-balance-window-right
+      "wd" 'delete-window-and-balance
+      "wm" 'delete-other-windows))
+  (global-leader-mode))
 
 ;; Libraries
 (use-package s)
@@ -70,7 +82,8 @@
   :config
   (with-eval-after-load 'helm
     (bind-keys :map term-raw-map
-               ("M-x" . helm-M-x))))
+               ("M-x" . helm-M-x)
+               ("M-m" . mnemonic-map))))
 
 (use-package pdf-tools
   :defer t
@@ -151,10 +164,7 @@
   (bind-keys :map lispy-mode-map
              ("C-j" . avy-goto-word-or-subword-1)
              ("C-z" . avy-goto-line)
-             ("M-m" . mnemonic-map))
-  (bind-keys :map mnemonic-map
-             ("M-m" . lispy-mark-symbol)
-             ("g" . lispy-goto))
+             ("M-m" . nil))
   ;; Prevent semantic mode errors when using
   ;; lispy goto
   (advice-add 'special-lispy-goto
@@ -208,7 +218,10 @@
   (setenv "OZHOME" "/Applications/Mozart2.app/Contents/Resources"))
 
 (use-package markdown-mode
-  :mode ("\\.m[k]d" . markdown-mode))
+  :mode ("\\.m[k]d" . markdown-mode)
+  :config
+  (with-eval-after-load 'smartparens
+    (sp-local-pair 'markdown-mode "`" nil :actions nil)))
 
 (use-package avy
   :bind
@@ -241,8 +254,6 @@
              ("C-z" . helm-select-action)
              ("<tab>" . helm-execute-persistent-action)
              ("TAB" . helm-execute-persistent-action))
-  (bind-keys :map buffer-map
-             ("f" . helm-buffers-list))
   (helm-mode 1)
   :bind
   (("M-x" . helm-M-x)
@@ -325,6 +336,11 @@
 
 (use-package js2-mode
   :mode "\\.js$"
+  :init
+  (defun chrome-refresh-current-tab ()
+    (interactive)
+    (do-applescript
+     "tell application \"Google Chrome\" to reload active tab of window 1"))
   :config
   (use-package nodejs-repl
     :config
@@ -334,14 +350,8 @@
           (nodejs-repl-send-region (region-beginning)
                                    (region-end))
         (nodejs-repl-send-last-sexp)))
-    (defun chrome-refresh-current-tab ()
-      (interactive)
-      (do-applescript
-       "tell application \"Google Chrome\" to reload active tab of window 1"))
     (bind-keys :map js2-mode-map
-               ("C-x C-e" . nodejs-repl-eval-dwim))
-    (bind-keys :map mnemonic-map
-               ("<f5>" . chrome-refresh-current-tab))))
+               ("C-x C-e" . nodejs-repl-eval-dwim))))
 
 (use-package skewer-mode
   :defer t
@@ -355,18 +365,18 @@
 
 (use-package window-numbering
   :init
-  (defun user--split-and-balance-window-right ()
+  (defun split-and-balance-window-right ()
     "As 'SPLIT-WINDOW-RIGHT' followed by 'BALANCE-WINDOWS'"
     (interactive)
     (split-window-right)
     (balance-windows))
+  (defun delete-window-and-balance ()
+    "As 'DELETE-WINDOW' followed by 'BANCE-WINDOWS'"
+    (interactive)
+    (delete-window)
+    (balance-windows))
   :config
   (window-numbering-mode 1)
-  (bind-keys :prefix-map window-management-map
-             :prefix "M-m w"
-             ("s" . user--split-and-balance-window-right)
-             ("d" . delete-window)
-             ("m" . delete-other-windows))
   (bind-keys ("M-1" . select-window-1)
              ("M-2" . select-window-2)
              ("M-3" . select-window-3)
@@ -383,4 +393,3 @@
 ;; End Emacs Initialization
 ;; Re-enable Garbage Collection
 (setq gc-cons-threshold 800000)
-
