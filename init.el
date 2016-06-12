@@ -42,6 +42,12 @@
   (with-eval-after-load 'magit
     (leader/set-key
       "gs" 'magit-status
+      "gc" 'magit-commit-popup
+      "gS" 'magit-stage-file
+      "gU" 'magit-unstage-file
+      "gP" 'magit-push-popup
+      "gd" 'magit-diff-popup
+      "gD" 'magit-diff-unstaged
       "gC" 'magit-commit))
   (with-eval-after-load 'skewer-mode
     (leader/set-key-on-minor-mode-map 'skewer-mode skewer-mode-map
