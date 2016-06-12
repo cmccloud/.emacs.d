@@ -38,7 +38,7 @@
     (leader/set-key
       "<f5>" 'chrome-refresh-current-tab))
   (with-eval-after-load 'skewer-mode
-    (leader/set-key-on-minor-mode-map 'skewer-mode 'skewer-mode-map
+    (leader/set-key-on-minor-mode-map 'skewer-mode skewer-mode-map
       "ee" 'skewer-eval-last-expression))
   (with-eval-after-load 'window-numbering
     (leader/set-key
@@ -306,7 +306,10 @@
 
 (use-package diff-hl
   :config
-  (global-diff-hl-mode))
+  (global-diff-hl-mode)
+  (with-eval-after-load 'magit
+    (add-hook 'magit-post-refresh-hook
+              'diff-hl-magit-post-refresh)))
 
 (use-package company
   :diminish company-mode
