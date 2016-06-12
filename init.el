@@ -18,11 +18,14 @@
 
 (load-theme 'sanityinc-solarized-light)
 
+;; Libraries
+(use-package s)
+(use-package dash)
+
 ;; Key Bindings
 (bind-keys ("M-u" . undo)
            ("C-x C-c" . nil))
 
-;; WIP
 (use-package leader
   :load-path "/Users/Macnube/.emacs.d/site-lisp/leader/"
   :config
@@ -32,11 +35,14 @@
     "br" 'rename-buffer)
   (with-eval-after-load 'lispy
     (leader/set-key
-      "M-m" 'lispy-mark-symbol
-      "g" 'lispy-goto))
+      "M-m" 'lispy-mark-symbol))
   (with-eval-after-load 'js2-mode
     (leader/set-key
       "<f5>" 'chrome-refresh-current-tab))
+  (with-eval-after-load 'magit
+    (leader/set-key
+      "gs" 'magit-status
+      "gC" 'magit-commit))
   (with-eval-after-load 'skewer-mode
     (leader/set-key-on-minor-mode-map 'skewer-mode skewer-mode-map
       "ee" 'skewer-eval-last-expression))
@@ -47,10 +53,6 @@
       "wm" 'delete-other-windows
       "wv" 'split-window-below))
   (global-leader-mode))
-
-;; Libraries
-(use-package s)
-(use-package dash)
 
 ;; Packages
 (use-package exec-path-from-shell
@@ -81,10 +83,12 @@
 
 (use-package term
   :config
+  (bind-keys :map term-raw-map
+             ("M-x" . 'execute-extended-command)
+             ("M-m" . nil))
   (with-eval-after-load 'helm
     (bind-keys :map term-raw-map
-               ("M-x" . helm-M-x)
-               ("M-m" . nil))))
+               ("M-x" . helm-M-x))))
 
 (use-package pdf-tools
   :defer t
