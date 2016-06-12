@@ -304,9 +304,7 @@
   :config
   (projectile-global-mode))
 
-(use-package magit
-  :bind (("C-x g" . magit-status)
-         ("C-x C-g" . magit-status)))
+(use-package magit)
 
 (use-package diff-hl
   :config
