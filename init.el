@@ -24,7 +24,7 @@
 
 ;; WIP
 (use-package leader
-  :load-path "/Users/Macnube/Repos/leader/"
+  :load-path "/Users/Macnube/.emacs.d/site-lisp/leader/"
   :config
   (leader/set-key
     "tF" 'toggle-frame-fullscreen
@@ -38,13 +38,14 @@
     (leader/set-key
       "<f5>" 'chrome-refresh-current-tab))
   (with-eval-after-load 'skewer-mode
-    (leader/set-key-on-minor-mode-map 'skewer-mode skewer-mode-map
+    (leader/set-key-on-minor-mode-map 'skewer-mode 'skewer-mode-map
       "ee" 'skewer-eval-last-expression))
   (with-eval-after-load 'window-numbering
     (leader/set-key
       "ws" 'split-and-balance-window-right
       "wd" 'delete-window-and-balance
-      "wm" 'delete-other-windows))
+      "wm" 'delete-other-windows
+      "wv" 'split-window-below))
   (global-leader-mode))
 
 ;; Libraries
@@ -83,7 +84,7 @@
   (with-eval-after-load 'helm
     (bind-keys :map term-raw-map
                ("M-x" . helm-M-x)
-               ("M-m" . mnemonic-map))))
+               ("M-m" . nil))))
 
 (use-package pdf-tools
   :defer t
@@ -181,6 +182,14 @@
     (load (expand-file-name
            "site-lisp/clojure-semantic/clojure.el"
            user-emacs-directory))))
+
+(use-package haskell-mode :defer t
+  :init
+  (use-package intero
+    :init
+    (add-hook 'haskell-mode-hook 'intero-mode))
+  :config
+  (add-hook 'haskell-mode-hook 'haskell-doc-mode))
 
 (use-package cider
   :commands (cider-mode
@@ -294,6 +303,10 @@
 (use-package magit
   :bind (("C-x g" . magit-status)
          ("C-x C-g" . magit-status)))
+
+(use-package diff-hl
+  :config
+  (global-diff-hl-mode))
 
 (use-package company
   :diminish company-mode

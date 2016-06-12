@@ -28,13 +28,16 @@
                 helm-themes
                 expand-region
                 magit
+                diff-hl
                 company
                 flycheck
                 auctex
                 pdf-tools
                 clojure-mode
+                haskell-mode
                 geiser
                 cider
+                intero
                 slime
                 slime-company
                 which-key
