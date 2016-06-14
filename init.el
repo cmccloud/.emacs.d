@@ -36,6 +36,10 @@
   (with-eval-after-load 'lispy
     (leader/set-key
       "M-m" 'lispy-mark-symbol))
+  (with-eval-after-load 'helm
+    (leader/set-key
+      "fl" 'helm-locate
+      "ff" 'helm-find-files))
   (with-eval-after-load 'js2-mode
     (leader/set-key
       "<f5>" 'chrome-refresh-current-tab))
