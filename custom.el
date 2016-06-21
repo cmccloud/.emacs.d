@@ -65,6 +65,7 @@
    (quote
     (windmove-left windmove-right windmove-down windmove-up select-window-1 select-window-2 select-window-3 select-window-4 select-window-5)))
  '(golden-ratio-mode nil)
+ '(haskell-tags-on-save t)
  '(helm-M-x-fuzzy-match nil)
  '(helm-autoresize-max-height 30)
  '(helm-boring-buffer-regexp-list
@@ -127,7 +128,7 @@
  '(ns-command-modifier (quote meta))
  '(package-selected-packages
    (quote
-    (diff-hl intero haskell-mode gh-md markdown-mode vmd-mode labburn-theme expand-region nodejs-repl pdf-tools auctex eyebrowse golden-ratio flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
+    (intero haskell-mode diff-hl gh-md markdown-mode vmd-mode labburn-theme expand-region nodejs-repl pdf-tools auctex eyebrowse golden-ratio flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key use-package smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
  '(pdf-view-display-size (quote fit-height))
  '(pdf-view-use-imagemagick t)
  '(pdf-view-use-scaling t)
