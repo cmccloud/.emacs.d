@@ -270,7 +270,11 @@
     (leader/set-key
       "fl" 'helm-locate
       "ff" 'helm-find-files
-      "bb" 'helm-mini))
+      "bb" 'helm-mini
+      "ss" 'helm-do-ag
+      "hdf" 'describe-function
+      "hdv" 'describe-variable
+      "hll" 'helm-locate-library))
   :config
   (use-package helm-config)
   (bind-keys :map helm-map
@@ -283,7 +287,8 @@
    ("C-x C-f" . helm-find-files)
    ("C-x C-b" . helm-mini)
    ("C-h a" . helm-apropos)
-   ("C-h i" . helm-info)))
+   ("C-h i" . helm-info)
+   ("C-h F" . find-function)))
 
 (use-package helm-projectile
   :defer t
