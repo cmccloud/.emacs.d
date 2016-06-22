@@ -183,6 +183,12 @@
   :bind
   (("C-a" . lispy-move-beginning-of-line)))
 
+(use-package elisp-slime-nav
+  :diminish elisp-slime-nav-mode
+  :commands (elisp-slime-nav-describe-elisp-thing-at-point)
+  :init
+  (bind-key "C-c C-d" 'elisp-slime-nav-describe-elisp-thing-at-point))
+
 (use-package clojure-mode
   :defer t
   :config
