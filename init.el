@@ -13,14 +13,15 @@
 (package-initialize)
 
 (require 'use-package)
-(require 'bind-key)
-(require 'diminish)
+(use-package bind-key)
+(use-package diminish)
 
 (load-theme 'sanityinc-solarized-light)
 
 ;; Libraries
 (use-package s)
 (use-package dash)
+(use-package seq)
 
 ;; Key Bindings
 (bind-keys ("M-u" . undo)
