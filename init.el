@@ -241,6 +241,16 @@
     (sp-local-pair 'markdown-mode "`" nil :actions nil)))
 
 (use-package avy
+  :defer t
+  :commands (avy-goto-word-or-subword-1
+             avy-goto-line
+             avy-goto-char
+             avy-goto-char-2)
+  :init
+  (with-eval-after-load 'leader
+    (leader/set-key
+      "j" 'avy-goto-word-or-subword-1
+      "z" 'avy-goto-line))
   :bind
   (("C-j" . avy-goto-word-or-subword-1)
    ("C-z" . avy-goto-line)))
