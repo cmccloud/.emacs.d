@@ -105,7 +105,7 @@
 
 (use-package eyebrowse
   :init
-  (with-eval-after-load
+  (with-eval-after-load 'leader
       (leader/set-key
         "l1" 'eyebrowse-switch-to-window-config-1
         "l2" 'eyebrowse-switch-to-window-config-2
@@ -490,7 +490,7 @@
     (split-window-right)
     (balance-windows))
   (defun delete-window-and-balance ()
-    "As 'DELETE-WINDOW' followed by 'BANCE-WINDOWS'"
+    "As 'DELETE-WINDOW' followed by 'BALNCE-WINDOWS'"
     (interactive)
     (delete-window)
     (balance-windows))
