@@ -1,3 +1,6 @@
 [submodule "/Users/Macnube/.emacs.d/site-lisp/clojure-semantic/"]
 	path = site-lisp/clojure-semantic
 	url = https://github.com/kototama/clojure-semantic.git
+[submodule "/Users/Macnube/.emacs.d/site-lisp/labburn-theme/"]
+	path = site-lisp/labburn-theme
+	url = https://github.com/ksjogo/labburn-theme.git
