@@ -35,6 +35,7 @@
                 pdf-tools
                 clojure-mode
                 haskell-mode
+                shm
                 geiser
                 cider
                 intero
