@@ -201,6 +201,10 @@
   :init
   (add-hook 'haskell-mode-hook 'intero-mode))
 
+(use-package shm
+  :defer t
+  :commands (structured-haskell-mode))
+
 (use-package cider
   :commands (cider-mode
              cider--display-interactive-eval-result)
