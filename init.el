@@ -384,10 +384,10 @@
               'diff-hl-magit-post-refresh)))
 
 (use-package company
+  :defer t
   :diminish company-mode
-  :commands (global-company-mode company-mode)
   :init
-  (add-hook 'after-init-hook #'global-company-mode)
+  (add-hook 'prog-mode-hook #'company-mode)
   :config
   (bind-keys :map company-active-map
              ("C-n" . company-select-next)

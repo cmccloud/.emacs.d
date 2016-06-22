@@ -54,11 +54,11 @@
  '(git-gutter:deleted-sign " ")
  '(git-gutter:modified-sign " ")
  '(global-auto-revert-mode t)
- '(global-company-mode t)
+ '(global-company-mode nil)
  '(global-diff-hl-mode nil)
  '(global-git-gutter-mode t)
  '(global-hl-line-mode t)
- '(global-semantic-idle-scheduler-mode t)
+ '(global-semantic-idle-scheduler-mode nil)
  '(global-semanticdb-minor-mode t)
  '(golden-ratio-auto-scale t)
  '(golden-ratio-extra-commands
