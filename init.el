@@ -52,6 +52,11 @@
     "wd" 'delete-window-and-balance
     "wm" 'delete-other-windows
     "wv" 'split-window-below)
+  (leader/set-key
+    "ps" 'helm-projectile-switch-project
+    "pf" 'helm-projectile-find-file
+    "pp" 'helm-projectile
+    "pb" 'helm-projectile-switch-to-buffer)
   (with-eval-after-load 'js2-mode
     (leader/set-key
       "<f5>" 'chrome-refresh-current-tab))
