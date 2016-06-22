@@ -156,7 +156,8 @@
  '(shackle-mode t)
  '(shackle-rules
    (quote
-    (("Outline.*pdf" :regexp t :align
+    (("*Apropos*" :select t :align t :size 0.4)
+     ("Outline.*pdf" :regexp t :align
       (quote left)
       :size 0.3)
      ("*Geiser documentation*" :select t :align t :size 0.4)
