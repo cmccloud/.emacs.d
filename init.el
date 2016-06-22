@@ -103,6 +103,18 @@
              ("g" . doc-view-goto-page)))
 
 (use-package eyebrowse
+  :init
+  (with-eval-after-load
+      (leader/set-key
+        "l1" 'eyebrowse-switch-to-window-config-1
+        "l2" 'eyebrowse-switch-to-window-config-2
+        "l3" 'eyebrowse-switch-to-window-config-3
+        "l4" 'eyebrowse-switch-to-window-config-4
+        "l5" 'eyebrowse-switch-to-window-config-5
+        "l6" 'eyebrowse-switch-to-window-config-6
+        "ls" 'eyebrowse-switch-to-window-config
+        "lr" 'eyebrowse-rename-window-config
+        "ld" 'eyebrowse-close-window-config))
   :config
   (eyebrowse-mode))
 
