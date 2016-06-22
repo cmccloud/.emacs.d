@@ -9,10 +9,6 @@
 (defvar leader--mode-maps nil
   "Alist of mode-local leader bindings, shadows mode-independent bindings.")
 
-(defvar leader--minor-mode-maps nil
-  "Alist of minor-mode leader bindings, shadows mode-independent bindings
-and major mode bindings.")
-
 ;;; customization
 (defgroup leader nil
   "<leader> support"
@@ -34,17 +30,9 @@ and major mode bindings.")
     (if leader-mode
         (progn
           (setq leader--current-map map)
-          (define-key global-map leader-key leader--current-map)
-          (mapcar (lambda (cell)
-                    (let ((minor-mode-map (cdr cell)))
-                      (set-keymap-parent minor-mode-map leader--current-map)))
-                  leader--minor-mode-maps))
-      (progn
-        (define-key global-map leader-key nil)
-        (mapcar (lambda (cell)
-                  (let ((minor-mode-map (cdr cell)))
-                    (define-key minor-mode-map leader-key nil)))
-                leader--minor-mode-maps)))))
+          (define-key global-map leader-key leader--current-map))
+      (define-key global-map leader-key nil))))
+
 ;;;###autoload
 (define-globalized-minor-mode global-leader-mode leader-mode
   (lambda () (leader-mode 1)))
@@ -65,18 +53,6 @@ and major mode bindings.")
       (push (cons mode mode-map) leader--mode-maps))
     (leader--def-keys mode-map key def bindings)))
 (put 'leader/set-key-for-mode 'lisp-indent-function 'defun)
-
-;;;###autoload
-(defun leader/set-key-on-minor-mode-map (mode map key def &rest bindings)
-  (interactive "Smode: \nkKEy: \noCommand: ")
-  (let ((mmode-map (cdr (assoc mode leader--minor-mode-maps))))
-    (unless mmode-map
-      (setq mmode-map (make-sparse-keymap))
-      (set-keymap-parent mmode-map leader--current-map)
-      (push (cons mode mmode-map) leader--minor-mode-maps)
-      (leader--def-keys mmode-map key def bindings)
-      (define-key map (read-kbd-macro leader/leader) mmode-map))))
-(put 'leader/set-key-on-minor-mode-map 'lisp-indent-function 'defun)
 
 (defun leader--def-keys (map key def bindings)
   (while key
