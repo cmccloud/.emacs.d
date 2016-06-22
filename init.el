@@ -218,7 +218,10 @@
   :commands (run-geiser))
 
 (use-package slime
+  :defer t
   :commands (slime-mode)
+  :init
+  (add-hook 'lisp-mode-hook #'slime-mode)
   :config
   (setq inferior-lisp-program "sbcl")
   (slime-setup '(slime-fancy slime-company)))
