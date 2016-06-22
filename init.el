@@ -157,10 +157,12 @@
 
 (use-package smartparens
   :config
-  (use-package smartparens-config)
   (smartparens-global-mode 1)
   (smartparens-global-strict-mode 1)
   (show-smartparens-global-mode 1))
+
+(use-package smartparens-config
+  :after (smartparens))
 
 (use-package expand-region
   :config
@@ -203,10 +205,12 @@
 (use-package haskell-mode
   :defer t
   :config
-  (use-package intero
-    :init
-    (add-hook 'haskell-mode-hook 'intero-mode))
   (add-hook 'haskell-mode-hook 'haskell-doc-mode))
+
+(use-package intero
+  :after (haskell-mode)
+  :init
+  (add-hook 'haskell-mode-hook 'intero-mode))
 
 (use-package cider
   :commands (cider-mode
@@ -255,6 +259,7 @@
    ("C-z" . avy-goto-line)))
 
 (use-package helm
+  :defer t
   :commands (helm-M-x
              helm-find-files
              helm-locate
@@ -263,25 +268,6 @@
              helm-apropos
              helm-info)
   :diminish helm-mode
-  :init
-  (use-package helm-ag :defer t)
-  (use-package helm-descbinds
-    :defer t
-    :bind
-    (("C-h b" . helm-descbinds)))
-  (use-package helm-themes :defer t)
-  (use-package helm-swoop
-    :defer t
-    :bind
-    (("C-s" . helm-swoop)))
-  (use-package helm-projectile
-    :commands (helm-projectile-switch-to-buffer
-               helm-projectile-find-dir
-               helm-projectile-dired-find-dir
-               helm-projectile-recentf
-               helm-projectile-find-file
-               helm-projectile-switch-project
-               helm-projectile))
   :config
   (use-package helm-config)
   (bind-keys :map helm-map
@@ -293,12 +279,43 @@
   (("M-x" . helm-M-x)
    ("C-x C-f" . helm-find-files)
    ("C-x C-b" . helm-mini)
-   ("C-x C-p" . helm-projectile)
    ("C-h a" . helm-apropos)
    ("C-h i" . helm-info)))
 
+(use-package helm-projectile
+  :defer t
+  :after (helm projectile)
+  :commands (helm-projectile-switch-to-buffer
+             helm-projectile-find-dir
+             helm-projectile-dired-find-dir
+             helm-projectile-recentf
+             helm-projectile-find-file
+             helm-projectile-switch-project
+             helm-projectile)
+  :bind (("C-x C-p" . helm-projectile)))
+
+(use-package helm-ag
+  :after (helm)
+  :defer t)
+
+(use-package helm-swoop
+  :after (helm)
+  :defer t
+  :bind
+  (("C-s" . helm-swoop)))
+
+(use-package helm-descbinds
+  :after (helm)
+  :defer t
+  :bind
+  (("C-h b" . helm-descbinds)))
+
+(use-package helm-themes
+  :after (helm)
+  :defer t)
+
 (use-package projectile
-  :demand t
+  :defer t
   :diminish projectile-mode
   :commands (projectile-mode
              projectile-ack
@@ -349,8 +366,6 @@
   :diminish company-mode
   :commands (global-company-mode company-mode)
   :init
-  (use-package company-tern :commands (company-tern))
-  (use-package slime-company :defer t)
   (add-hook 'after-init-hook #'global-company-mode)
   :config
   (bind-keys :map company-active-map
@@ -360,6 +375,14 @@
              ("<return>" . nil)
              ("<tab>" . company-complete-selection)
              ("TAB" . company-complete-selection)))
+
+(use-package company-tern
+  :after (company)
+  :commands (company-tern))
+
+(use-package slime-company
+  :after (company)
+  :defer t)
 
 (use-package flycheck
   :defer t
@@ -390,18 +413,19 @@
   (defun chrome-refresh-current-tab ()
     (interactive)
     (do-applescript
-     "tell application \"Google Chrome\" to reload active tab of window 1"))
+     "tell application \"Google Chrome\" to reload active tab of window 1")))
+
+(use-package nodejs-repl
+  :after (js2-mode)
   :config
-  (use-package nodejs-repl
-    :config
-    (defun nodejs-repl-eval-dwim ()
-      (interactive)
-      (if mark-active
-          (nodejs-repl-send-region (region-beginning)
-                                   (region-end))
-        (nodejs-repl-send-last-sexp)))
-    (bind-keys :map js2-mode-map
-               ("C-x C-e" . nodejs-repl-eval-dwim))))
+  (defun nodejs-repl-eval-dwim ()
+    (interactive)
+    (if mark-active
+        (nodejs-repl-send-region (region-beginning)
+                                 (region-end))
+      (nodejs-repl-send-last-sexp)))
+  (bind-keys :map js2-mode-map
+             ("C-x C-e" . nodejs-repl-eval-dwim)))
 
 (use-package skewer-mode
   :defer t
@@ -418,6 +442,7 @@
              select-window-2
              select-window-3
              select-window-4
+             select-window-5
              split-and-balance-window-right
              delete-window-and-balance)
   :init
@@ -433,10 +458,11 @@
     (balance-windows))
   :config
   (window-numbering-mode 1)
-  (bind-keys ("M-1" . select-window-1)
-             ("M-2" . select-window-2)
-             ("M-3" . select-window-3)
-             ("M-4" . select-window-4)))
+  :bind (("M-1" . select-window-1)
+         ("M-2" . select-window-2)
+         ("M-3" . select-window-3)
+         ("M-4" . select-window-4)
+         ("M-5" . select-window-5)))
 
 (use-package golden-ratio
   :defer t
