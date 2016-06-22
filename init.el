@@ -204,11 +204,7 @@
   :commands (cider-mode
              cider--display-interactive-eval-result)
   :init
-  (add-hook 'clojure-mode-hook #'cider-mode)
-  :config
-  ;; FIXME: Why doesn't this binding hold?
-  (bind-keys :map cider-mode-map
-             ("C-c C-w" . nil)))
+  (add-hook 'clojure-mode-hook #'cider-mode))
 
 (use-package racket-mode
   :functions (sp-local-pair)
