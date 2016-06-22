@@ -16,7 +16,7 @@
 (use-package bind-key)
 (use-package diminish)
 
-(load-theme 'sanityinc-solarized-light)
+(load-theme 'zenburn)
 
 ;; Libraries
 (use-package s)
@@ -27,6 +27,7 @@
 (bind-keys ("M-u" . undo)
            ("C-x C-c" . nil))
 
+;; Packages
 (use-package leader
   :load-path "/Users/Macnube/.emacs.d/site-lisp/leader/"
   :config
@@ -41,7 +42,6 @@
     "wv" 'split-window-below)
   (global-leader-mode))
 
-;; Packages
 (use-package exec-path-from-shell
   :defer t
   :if (memq window-system '(mac ns))
