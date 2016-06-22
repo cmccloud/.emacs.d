@@ -156,7 +156,7 @@
 
 (use-package smartparens
   :config
-  (require 'smartparens-config)
+  (use-package smartparens-config)
   (smartparens-global-mode 1)
   (smartparens-global-strict-mode 1)
   (show-smartparens-global-mode 1))
@@ -167,6 +167,8 @@
 
 (use-package lispy
   :defer 5
+  :commands (lispy-mode
+             lispy-mark-symbol)
   :init
   (add-hook 'lisp-mode-hook #'lispy-mode)
   (add-hook 'emacs-lisp-mode-hook #'lispy-mode)
@@ -197,12 +199,12 @@
            "site-lisp/clojure-semantic/clojure.el"
            user-emacs-directory))))
 
-(use-package haskell-mode :defer t
-  :init
+(use-package haskell-mode
+  :defer t
+  :config
   (use-package intero
     :init
     (add-hook 'haskell-mode-hook 'intero-mode))
-  :config
   (add-hook 'haskell-mode-hook 'haskell-doc-mode))
 
 (use-package cider
@@ -252,15 +254,23 @@
    ("C-z" . avy-goto-line)))
 
 (use-package helm
-  :commands (helm-M-x)
+  :commands (helm-M-x
+             helm-find-files
+             helm-locate
+             helm-mini
+             helm-projectile
+             helm-apropos
+             helm-info)
   :diminish helm-mode
   :init
   (use-package helm-ag :defer t)
   (use-package helm-descbinds
+    :defer t
     :bind
     (("C-h b" . helm-descbinds)))
   (use-package helm-themes :defer t)
   (use-package helm-swoop
+    :defer t
     :bind
     (("C-s" . helm-swoop)))
   (use-package helm-projectile
@@ -289,7 +299,8 @@
 (use-package projectile
   :demand t
   :diminish projectile-mode
-  :commands (projectile-ack
+  :commands (projectile-mode
+             projectile-ack
              projectile-ag
              projectile-compile-project
              projectile-dired
@@ -314,7 +325,17 @@
   :config
   (projectile-global-mode))
 
-(use-package magit)
+(use-package magit
+  :defer t
+  :commands (magit-mode
+             magit-status
+             magit-commit-popup
+             magit-stage-file
+             magit-unstage-file
+             magit-push-popup
+             magit-diff-popup
+             magit-diff-unstaged
+             magit-commit))
 
 (use-package diff-hl
   :config
@@ -392,6 +413,12 @@
   (add-hook 'js2-mode-hook 'tern-mode))
 
 (use-package window-numbering
+  :commands (select-window-1
+             select-window-2
+             select-window-3
+             select-window-4
+             split-and-balance-window-right
+             delete-window-and-balance)
   :init
   (defun split-and-balance-window-right ()
     "As 'SPLIT-WINDOW-RIGHT' followed by 'BALANCE-WINDOWS'"
