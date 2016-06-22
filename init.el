@@ -431,16 +431,21 @@
       "<f5>" 'chrome-refresh-current-tab)))
 
 (use-package nodejs-repl
+  :defer t
   :after (js2-mode)
-  :config
+  :commands (nodejs-repl-mode
+             nodejs-repl-send-last-sexp
+             nodejs-repl-send-region)
+  :init
   (defun nodejs-repl-eval-dwim ()
     (interactive)
     (if mark-active
         (nodejs-repl-send-region (region-beginning)
                                  (region-end))
       (nodejs-repl-send-last-sexp)))
-  (bind-keys :map js2-mode-map
-             ("C-x C-e" . nodejs-repl-eval-dwim)))
+  (with-eval-after-load 'js2-mode
+    (bind-keys :map js2-mode-map
+               ("C-x C-e" . nodejs-repl-eval-dwim))))
 
 (use-package skewer-mode
   :defer t
