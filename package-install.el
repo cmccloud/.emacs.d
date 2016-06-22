@@ -7,8 +7,7 @@
                          ("org" . "http://orgmode.org/elpa/")
                          ("gnu" . "https://elpa.gnu.org/packages/")))
 (package-refresh-contents)
-(dolist (pkg '(bind-key
-               dash
+(dolist (pkg '(dash
                helm-dash
                seq
                exec-path-from-shell
@@ -64,15 +63,16 @@
                          ("gnu" . "https://elpa.gnu.org/packages/")))
 (package-refresh-contents)
 (dolist (pkg '(use-package
-               racket-mode
-               lispy
-               js-doc
-               paper-theme
-               labburn-theme
-               white-sand-theme
-               zenburn-theme
-               color-theme-sanityinc-solarized
-               arjen-grey-theme
-               color-theme-sanityinc-tomorrow))
+                bind-key
+                racket-mode
+                lispy
+                js-doc
+                paper-theme
+                labburn-theme
+                white-sand-theme
+                zenburn-theme
+                color-theme-sanityinc-solarized
+                arjen-grey-theme
+                color-theme-sanityinc-tomorrow))
   (unless (package-installed-p pkg)
     (package-install pkg)))
