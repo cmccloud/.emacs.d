@@ -16,7 +16,7 @@
 (use-package bind-key)
 (use-package diminish)
 
-(load-theme 'zenburn)
+(load-theme 'labburn)
 
 ;; Libraries
 (use-package s)

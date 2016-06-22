@@ -38,7 +38,7 @@
  '(custom-file "/Users/Macnube/.emacs.d/custom.el")
  '(custom-safe-themes
    (quote
-    ("afbb40954f67924d3153f27b6d3399df221b2050f2a72eb2cfa8d29ca783c5a8" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default)))
+    ("c31b688a76507c3b0458ae9d3848e3196346aeeadde457df5f828c7dc3e59fe3" "b40f4579788b1e990c553c163a4d294ac9d5a2a4615b1d1a757812ea427f8d50" "2f5dd0ac7dffdc0acf0aa15c9b7a5b1f86c37b9e11800325160b89c1b8a6fefe" "afbb40954f67924d3153f27b6d3399df221b2050f2a72eb2cfa8d29ca783c5a8" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default)))
  '(diff-hl-margin-mode nil)
  '(diff-hl-side (quote right))
  '(echo-keystrokes 0.2)
@@ -141,6 +141,10 @@
  '(projectile-known-projects-file "/Users/Macnube/.emacs.d/cache/projectile-bookmarks.eld")
  '(projectile-sort-order (quote recentf))
  '(projectile-switch-project-action (quote helm-projectile))
+ '(rainbow-identifiers-choose-face-function (quote rainbow-identifiers-cie-l*a*b*-choose-face))
+ '(rainbow-identifiers-cie-l*a*b*-color-count 1024)
+ '(rainbow-identifiers-cie-l*a*b*-lightness 80)
+ '(rainbow-identifiers-cie-l*a*b*-saturation 25)
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude (quote ("~/.emacs.d/cache/.*")))
  '(recentf-max-menu-items 10)
