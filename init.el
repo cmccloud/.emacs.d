@@ -33,35 +33,31 @@
     "tF" 'toggle-frame-fullscreen
     "bd" 'kill-this-buffer
     "br" 'rename-buffer)
-  (with-eval-after-load 'lispy
-    (leader/set-key
-      "M-m" 'lispy-mark-symbol))
-  (with-eval-after-load 'helm
-    (leader/set-key
-      "fl" 'helm-locate
-      "ff" 'helm-find-files))
+  (leader/set-key
+    "M-m" 'lispy-mark-symbol)
+  (leader/set-key
+    "fl" 'helm-locate
+    "ff" 'helm-find-files)
+  (leader/set-key
+    "gs" 'magit-status
+    "gc" 'magit-commit-popup
+    "gS" 'magit-stage-file
+    "gU" 'magit-unstage-file
+    "gP" 'magit-push-popup
+    "gd" 'magit-diff-popup
+    "gD" 'magit-diff-unstaged
+    "gC" 'magit-commit)
+  (leader/set-key
+    "ws" 'split-and-balance-window-right
+    "wd" 'delete-window-and-balance
+    "wm" 'delete-other-windows
+    "wv" 'split-window-below)
   (with-eval-after-load 'js2-mode
     (leader/set-key
       "<f5>" 'chrome-refresh-current-tab))
-  (with-eval-after-load 'magit
-    (leader/set-key
-      "gs" 'magit-status
-      "gc" 'magit-commit-popup
-      "gS" 'magit-stage-file
-      "gU" 'magit-unstage-file
-      "gP" 'magit-push-popup
-      "gd" 'magit-diff-popup
-      "gD" 'magit-diff-unstaged
-      "gC" 'magit-commit))
   (with-eval-after-load 'skewer-mode
     (leader/set-key-on-minor-mode-map 'skewer-mode skewer-mode-map
       "ee" 'skewer-eval-last-expression))
-  (with-eval-after-load 'window-numbering
-    (leader/set-key
-      "ws" 'split-and-balance-window-right
-      "wd" 'delete-window-and-balance
-      "wm" 'delete-other-windows
-      "wv" 'split-window-below))
   (global-leader-mode))
 
 ;; Packages
