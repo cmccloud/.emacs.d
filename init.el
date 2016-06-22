@@ -207,7 +207,6 @@
   (add-hook 'clojure-mode-hook #'cider-mode))
 
 (use-package racket-mode
-  :functions (sp-local-pair)
   :commands (racket-mode racket-repl run-racket)
   :config
   (with-eval-after-load 'smartparens
