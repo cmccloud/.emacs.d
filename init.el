@@ -506,9 +506,29 @@
          ("M-4" . select-window-4)
          ("M-5" . select-window-5)))
 
+(use-package winner
+  :config
+  (with-eval-after-load 'leader
+    (leader/set-key
+      "wu" 'winner-undo
+      "wr" 'winner-redo))
+  (winner-mode))
+
 (use-package golden-ratio
   :defer t
-  :commands (golden-ratio-mode))
+  :commands (golden-ratio-mode)
+  :init
+  (defun toggle-golden-ratio ()
+    "Toggles `golden-ratio-mode' and balances windows."
+    (interactive)
+    (if golden-ratio-mode
+        (progn
+          (golden-ratio-mode -1)
+          (balance-windows))
+      (golden-ratio-mode 1)))
+  (with-eval-after-load 'leader
+    (leader/set-key
+      "tg" 'toggle-golden-ratio)))
 
 (use-package shackle
   :config
