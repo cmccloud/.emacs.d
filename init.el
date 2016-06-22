@@ -34,35 +34,10 @@
     "bd" 'kill-this-buffer
     "br" 'rename-buffer)
   (leader/set-key
-    "M-m" 'lispy-mark-symbol)
-  (leader/set-key
-    "fl" 'helm-locate
-    "ff" 'helm-find-files)
-  (leader/set-key
-    "gs" 'magit-status
-    "gc" 'magit-commit-popup
-    "gS" 'magit-stage-file
-    "gU" 'magit-unstage-file
-    "gP" 'magit-push-popup
-    "gd" 'magit-diff-popup
-    "gD" 'magit-diff-unstaged
-    "gC" 'magit-commit)
-  (leader/set-key
-    "ws" 'split-and-balance-window-right
-    "wd" 'delete-window-and-balance
+    "ws" 'split-window-right
+    "wd" 'delete-window
     "wm" 'delete-other-windows
     "wv" 'split-window-below)
-  (leader/set-key
-    "ps" 'helm-projectile-switch-project
-    "pf" 'helm-projectile-find-file
-    "pp" 'helm-projectile
-    "pb" 'helm-projectile-switch-to-buffer)
-  (with-eval-after-load 'js2-mode
-    (leader/set-key
-      "<f5>" 'chrome-refresh-current-tab))
-  (with-eval-after-load 'skewer-mode
-    (leader/set-key-on-minor-mode-map 'skewer-mode skewer-mode-map
-      "ee" 'skewer-eval-last-expression))
   (global-leader-mode))
 
 ;; Packages
@@ -157,12 +132,10 @@
 
 (use-package smartparens
   :config
+  (use-package smartparens-config)
   (smartparens-global-mode 1)
   (smartparens-global-strict-mode 1)
   (show-smartparens-global-mode 1))
-
-(use-package smartparens-config
-  :after (smartparens))
 
 (use-package expand-region
   :config
@@ -180,6 +153,9 @@
     (add-hook 'clojure-mode-hook #'lispy-mode))
   (with-eval-after-load 'racket-mode
     (add-hook 'racket-mode-hook #'lispy-mode))
+  (with-eval-after-load 'leader
+    (leader/set-key
+      "M-m" 'lispy-mark-symbol))
   :config
   (bind-keys :map lispy-mode-map
              ("C-j" . avy-goto-word-or-subword-1)
@@ -268,6 +244,12 @@
              helm-apropos
              helm-info)
   :diminish helm-mode
+  :init
+  (with-eval-after-load 'leader
+    (leader/set-key
+      "fl" 'helm-locate
+      "ff" 'helm-find-files
+      "bb" 'helm-mini))
   :config
   (use-package helm-config)
   (bind-keys :map helm-map
@@ -292,6 +274,13 @@
              helm-projectile-find-file
              helm-projectile-switch-project
              helm-projectile)
+  :init
+  (with-eval-after-load 'leader
+    (leader/set-key
+      "ps" 'helm-projectile-switch-project
+      "pf" 'helm-projectile-find-file
+      "pp" 'helm-projectile
+      "pb" 'helm-projectile-switch-to-buffer))
   :bind (("C-x C-p" . helm-projectile)))
 
 (use-package helm-ag
@@ -353,7 +342,18 @@
              magit-push-popup
              magit-diff-popup
              magit-diff-unstaged
-             magit-commit))
+             magit-commit)
+  :init
+  (with-eval-after-load 'leader
+    (leader/set-key
+      "gs" 'magit-status
+      "gc" 'magit-commit-popup
+      "gS" 'magit-stage-file
+      "gU" 'magit-unstage-file
+      "gP" 'magit-push-popup
+      "gd" 'magit-diff-popup
+      "gD" 'magit-diff-unstaged
+      "gC" 'magit-commit)))
 
 (use-package diff-hl
   :config
@@ -413,7 +413,10 @@
   (defun chrome-refresh-current-tab ()
     (interactive)
     (do-applescript
-     "tell application \"Google Chrome\" to reload active tab of window 1")))
+     "tell application \"Google Chrome\" to reload active tab of window 1"))
+  (with-eval-after-load 'leader
+    (leader/set-key
+      "<f5>" 'chrome-refresh-current-tab)))
 
 (use-package nodejs-repl
   :after (js2-mode)
@@ -456,6 +459,10 @@
     (interactive)
     (delete-window)
     (balance-windows))
+  (with-eval-after-load 'leader
+    (leader/set-key
+      "ws" 'split-and-balance-window-right
+      "wd" 'delete-window-and-balance))
   :config
   (window-numbering-mode 1)
   :bind (("M-1" . select-window-1)
