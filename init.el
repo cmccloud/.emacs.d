@@ -14,7 +14,6 @@
 
 (require 'use-package)
 (use-package bind-key)
-(use-package diminish)
 
 (load-theme 'labburn)
 
@@ -22,14 +21,20 @@
 (use-package s)
 (use-package dash)
 (use-package seq)
-(use-package request)
-(use-package deferred)
+(use-package map)
+(use-package request :defer t)
+(use-package deferred :defer t)
+(use-package f :defer t)
 
 ;; Key Bindings
 (bind-keys ("M-u" . undo)
            ("C-x C-c" . nil))
 
 ;; Packages
+(use-package diminish
+  :config
+  (diminish 'visual-line-mode))
+
 (use-package leader
   :load-path "/Users/Macnube/.emacs.d/site-lisp/leader/"
   :config
