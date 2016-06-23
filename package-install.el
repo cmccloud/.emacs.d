@@ -10,6 +10,7 @@
 (dolist (pkg '(dash
                helm-dash
                seq
+               f
                request
                deferred
                request-deferred
