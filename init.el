@@ -77,6 +77,14 @@
     (bind-keys :map term-raw-map
                ("M-x" . helm-M-x))))
 
+(use-package eshell
+  :defer t
+  :init
+  (setenv "NODE_NO_READLINE" "1")
+  (with-eval-after-load 'leader
+    (leader/set-key
+      "ae" 'eshell)))
+
 (use-package pdf-tools
   :defer t
   :mode (("\\.pdf\\'" . pdf-view-mode))
@@ -106,16 +114,16 @@
 (use-package eyebrowse
   :init
   (with-eval-after-load 'leader
-      (leader/set-key
-        "l1" 'eyebrowse-switch-to-window-config-1
-        "l2" 'eyebrowse-switch-to-window-config-2
-        "l3" 'eyebrowse-switch-to-window-config-3
-        "l4" 'eyebrowse-switch-to-window-config-4
-        "l5" 'eyebrowse-switch-to-window-config-5
-        "l6" 'eyebrowse-switch-to-window-config-6
-        "ls" 'eyebrowse-switch-to-window-config
-        "lr" 'eyebrowse-rename-window-config
-        "ld" 'eyebrowse-close-window-config))
+    (leader/set-key
+      "l1" 'eyebrowse-switch-to-window-config-1
+      "l2" 'eyebrowse-switch-to-window-config-2
+      "l3" 'eyebrowse-switch-to-window-config-3
+      "l4" 'eyebrowse-switch-to-window-config-4
+      "l5" 'eyebrowse-switch-to-window-config-5
+      "l6" 'eyebrowse-switch-to-window-config-6
+      "ls" 'eyebrowse-switch-to-window-config
+      "lr" 'eyebrowse-rename-window-config
+      "ld" 'eyebrowse-close-window-config))
   :config
   (eyebrowse-mode))
 
@@ -322,9 +330,10 @@
   :after (helm)
   :defer t
   :init
-  (leader/set-key
-    "ss" 'helm-do-ag
-    "sp" 'helm-do-ag-project-root))
+  (with-eval-after-load 'leader
+    (leader/set-key
+      "ss" 'helm-do-ag
+      "sp" 'helm-do-ag-project-root)))
 
 (use-package helm-swoop
   :after (helm)

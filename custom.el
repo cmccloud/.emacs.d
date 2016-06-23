@@ -170,7 +170,7 @@
      ("*Geiser documentation*" :select t :align t :size 0.4)
      ("*slime-description*" :select t :align t :size 0.4)
      ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
-     ("*Help*" :select t :size 0.4)
+     ("*Help*" :select t :align t :size 0.4)
      ("*Completions*" :select t :align t :size 0.4)
      ("*Compile-Log*" :select t :align t :size 0.4)
      ("*Man.*" :regexp t :select t :align t :size 0.4)
