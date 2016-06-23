@@ -281,7 +281,6 @@
       "fl" 'helm-locate
       "ff" 'helm-find-files
       "bb" 'helm-mini
-      "ss" 'helm-do-ag
       "hdf" 'describe-function
       "hdv" 'describe-variable
       "hll" 'helm-locate-library))
@@ -321,7 +320,11 @@
 
 (use-package helm-ag
   :after (helm)
-  :defer t)
+  :defer t
+  :init
+  (leader/set-key
+    "ss" 'helm-do-ag
+    "sp" 'helm-do-ag-project-root))
 
 (use-package helm-swoop
   :after (helm)

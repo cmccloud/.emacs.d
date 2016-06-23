@@ -45,7 +45,7 @@
  '(echo-keystrokes 0.2)
  '(exec-path
    (quote
-    ("/usr/local/bin/" "/usr/local/sbin/" "/usr/local/bin/" "/usr/local/sbin/" "/usr/bin/" "/bin/" "/usr/sbin/" "/sbin/" "/opt/X11/bin/" "/usr/local/opt/nvm/sbin/" "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9/" "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9/" "/usr/local/share/npm/bin/" "/usr/local/otp/nvm/" "/usr/local/opt/coreutils/libexec/gnubin/" "/Applications/Emacs.app/Contents/MacOS/libexec/")))
+    ("/usr/local/bin" "/usr/local/sbin" "/usr/local/opt/nvm/versions/node/v6.2.0/bin" "/usr/local/bin" "/usr/local/sbin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/opt/X11/bin" "/usr/local/opt/nvm/sbin" "/Library/TeX/texbin" "/usr/local/opt/coreutils/libexec/gnubin" "/usr/local/otp/nvm" "/usr/local/opt/nvm/bin" "/usr/local/share/npm/bin" "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9" "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9" "/usr/local/share/npm/bin" "/usr/local/otp/nvm" "/usr/local/opt/coreutils/libexec/gnubin" "/Applications/Emacs.app/Contents/MacOS/libexec")))
  '(explicit-shell-file-name "/bin/zsh")
  '(fancy-splash-image nil)
  '(fci-rule-color "#eee8d5")
@@ -69,6 +69,7 @@
  '(haskell-completing-read-function (quote helm--completing-read-default))
  '(haskell-tags-on-save t)
  '(helm-M-x-fuzzy-match nil)
+ '(helm-ag-always-set-extra-option t)
  '(helm-autoresize-max-height 30)
  '(helm-boring-buffer-regexp-list
    (quote
@@ -110,6 +111,7 @@
  '(initial-major-mode (quote fundamental-mode))
  '(js-expr-indent-offset 0)
  '(js-indent-level 2)
+ '(js2-include-node-externs t)
  '(large-file-warning-threshold 200000000)
  '(leader-mode nil)
  '(leader/leader "M-m")
@@ -168,7 +170,7 @@
      ("*Geiser documentation*" :select t :align t :size 0.4)
      ("*slime-description*" :select t :align t :size 0.4)
      ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
-     ("*Help*" :select t :size 0.4 :align bottom)
+     ("*Help*" :select t :size 0.4)
      ("*Completions*" :select t :align t :size 0.4)
      ("*Compile-Log*" :select t :align t :size 0.4)
      ("*Man.*" :regexp t :select t :align t :size 0.4)
