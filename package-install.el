@@ -10,6 +10,9 @@
 (dolist (pkg '(dash
                helm-dash
                seq
+               request
+               deferred
+               request-deferred
                exec-path-from-shell
                ggtags
                smartparens

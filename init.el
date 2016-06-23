@@ -22,6 +22,8 @@
 (use-package s)
 (use-package dash)
 (use-package seq)
+(use-package request)
+(use-package deferred)
 
 ;; Key Bindings
 (bind-keys ("M-u" . undo)
@@ -181,7 +183,8 @@
   (bind-keys :map lispy-mode-map
              ("C-j" . avy-goto-word-or-subword-1)
              ("C-z" . avy-goto-line)
-             ("M-m" . nil))
+             ("M-m" . nil)
+             (":" . self-insert-command))
   ;; Prevent semantic mode errors when using
   ;; lispy goto
   (advice-add 'special-lispy-goto
