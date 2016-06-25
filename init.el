@@ -411,6 +411,22 @@
       "gD" 'magit-diff-unstaged
       "gC" 'magit-commit)))
 
+(use-package gist
+  :defer t
+  :commands (gist-buffer
+             gist-buffer-private
+             gist-list
+             gist-region
+             gist-region-or-buffer
+             gist-region-or-buffer-private)
+  :init
+  (with-eval-after-load 'leader
+    (leader/set-key
+      "ggb" 'gist-buffer
+      "ggl" 'gist-list
+      "ggr" 'gist-region
+      "ggg" 'gist-region-or-buffer)))
+
 (use-package diff-hl
   :config
   (global-diff-hl-mode)

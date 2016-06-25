@@ -30,6 +30,7 @@
                helm-themes
                expand-region
                magit
+               gist
                diff-hl
                company
                flycheck
