@@ -475,10 +475,12 @@
   :config
   (which-key-mode 1))
 
+(use-package html-mode
+  :defer t)
+
 (use-package web-mode
   :defer t
-  :mode ("\\.html?\\'"
-         "\\.phtml\\'"
+  :mode ("\\.phtml\\'"
          "\\.tpl\\.php\\'"
          "\\.[agj]sp\\'"
          "\\.as[cp]x\\'"
@@ -493,8 +495,7 @@
              ("rw" . web-mode-element-wrap)
              ("rc" . web-mode-element-clone)
              ("rr" . web-mode-element-rename)
-             ("rk" . web-mode-element-kill))
-  (add-hook 'web-mode-hook #'yas-minor-mode))
+             ("rk" . web-mode-element-kill)))
 
 (use-package emmet-mode
   :defer t
@@ -502,6 +503,8 @@
   :init
   (with-eval-after-load 'web-mode
     (add-hook 'web-mode-hook #'emmet-mode))
+  (with-eval-after-load 'html-mode
+    (add-hook 'html-mode-hook #'emmet-mode))
   :config
   (bind-keys :map emmet-mode-keymap
              ("C-j" . nil)))
@@ -535,7 +538,15 @@
 
 (use-package skewer-mode
   :defer t
-  :commands (skewer-mode))
+  :commands (skewer-mode
+             skewer-html-mode
+             skewer-css-mode)
+  :init
+  (add-hook 'html-mode-hook #'skewer-html-mode)
+  (add-hook 'css-mode-hook #'skewer-css-mode)
+  (with-eval-after-load 'skewer-html
+    (bind-keys :map skewer-html-mode-map
+               ("C-x C-e" . skewer-html-eval-tag))))
 
 (use-package tern
   :diminish tern-mode
