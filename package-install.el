@@ -28,7 +28,6 @@
                helm-descbinds
                helm-swoop
                helm-themes
-               expand-region
                magit
                gist
                diff-hl
@@ -46,6 +45,7 @@
                slime-company
                which-key
                elisp-slime-nav
+               emmet-mode
                js2-mode
                markdown-mode
                tern
@@ -71,7 +71,9 @@
                 bind-key
                 racket-mode
                 lispy
+                expand-region
                 js-doc
+                web-mode
                 paper-theme
                 labburn-theme
                 white-sand-theme

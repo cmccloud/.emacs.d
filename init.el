@@ -479,6 +479,25 @@
   :config
   (which-key-mode 1))
 
+(use-package web-mode
+  :defer t
+  :mode ("\\.html?\\'"
+         "\\.phtml\\'"
+         "\\.tpl\\.php\\'"
+         "\\.[agj]sp\\'"
+         "\\.as[cp]x\\'"
+         "\\.ert\\'"
+         "\\.mustache\\'"
+         "\\.djthml\\'")
+  :init
+  (with-eval-after-load 'leader
+    (leader/set-key-for-mode 'web-mode
+      "rw" 'web-mode-element-wrap
+      "rc" 'web-mode-element-clone
+      "rr" 'web-mode-element-rename
+      "rk" 'web-mode-element-kill
+      "z" 'web-mode-fold-or-unfold)))
+
 (use-package js2-mode
   :mode "\\.js$"
   :init
