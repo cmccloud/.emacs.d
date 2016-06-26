@@ -93,6 +93,9 @@
   :commands (yas-reload-all
              yas-minor-mode
              yas-global-mode)
+  :init
+  (with-eval-after-load 'web-mode
+    (add-hook 'web-mode-hook #'yas-minor-mode))
   :config (yas-reload-all))
 
 (use-package pdf-tools
