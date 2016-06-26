@@ -21,9 +21,8 @@
 
 ;;;###autoload
 (define-minor-mode leader-mode
-  :init-value nil
-  :global t
-  :keymap nil
+  "leader mode"
+  nil nil nil
   (let* ((mode-map (cdr (assoc major-mode leader--mode-maps)))
          (map (or mode-map leader--default-map))
          (leader-key (read-kbd-macro leader/leader)))
@@ -34,8 +33,13 @@
       (define-key global-map leader-key nil))))
 
 ;;;###autoload
-(define-globalized-minor-mode global-leader-mode leader-mode
-  (lambda () (leader-mode 1)))
+(define-minor-mode global-leader-mode
+  "global leader mode"
+  nil nil nil
+  :global t
+  (if global-leader-mode
+      (add-hook 'after-change-major-mode-hook #'leader-mode)
+    (remove-hook 'after-change-major-mode-hook #'leader-mode)))
 
 ;;;###autoload
 (defun leader/set-key (key def &rest bindings)
@@ -45,7 +49,7 @@
 
 ;;;###autoload
 (defun leader/set-key-for-mode (mode key def &rest bindings)
-  (interactive "Smode: \nkKey: \noCommand: ")
+  (interactive "SMode: \nkKey: \noCommand: ")
   (let ((mode-map (cdr (assoc mode leader--mode-maps))))
     (unless mode-map
       (setq mode-map (make-sparse-keymap))

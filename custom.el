@@ -59,6 +59,7 @@
  '(global-diff-hl-mode nil)
  '(global-git-gutter-mode t)
  '(global-hl-line-mode t)
+ '(global-leader-mode t)
  '(global-semantic-idle-scheduler-mode nil)
  '(global-semanticdb-minor-mode t)
  '(global-visual-line-mode t)
@@ -114,7 +115,7 @@
  '(js-indent-level 2)
  '(js2-include-node-externs t)
  '(large-file-warning-threshold 200000000)
- '(leader-mode nil)
+ '(leader-mode t t)
  '(leader/leader "M-m")
  '(lispy-avy-style-char (quote at))
  '(lispy-avy-style-symbol (quote at))
@@ -133,7 +134,7 @@
  '(ns-command-modifier (quote meta))
  '(package-selected-packages
    (quote
-    (gist f request-deferred deferred request use-package shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode labburn-theme expand-region nodejs-repl pdf-tools auctex eyebrowse golden-ratio flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
+    (expand-region web-mode emmet-mode gist f request-deferred deferred request use-package shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode labburn-theme nodejs-repl pdf-tools auctex eyebrowse golden-ratio flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme js2-refactor skewer-mode js-doc helm-dash multiple-cursors racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
  '(pdf-view-display-size (quote fit-height))
  '(pdf-view-use-imagemagick t)
  '(pdf-view-use-scaling t)
