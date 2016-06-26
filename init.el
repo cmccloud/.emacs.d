@@ -503,8 +503,8 @@
   :init
   (with-eval-after-load 'web-mode
     (add-hook 'web-mode-hook #'emmet-mode))
-  (with-eval-after-load 'html-mode
-    (add-hook 'html-mode-hook #'emmet-mode))
+  (add-hook 'html-mode-hook #'emmet-mode)
+  (add-hook 'css-mode-hook #'emmet-mode)
   :config
   (bind-keys :map emmet-mode-keymap
              ("C-j" . nil)))
