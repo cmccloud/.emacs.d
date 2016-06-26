@@ -43,6 +43,7 @@
  '(diff-hl-margin-mode nil)
  '(diff-hl-side (quote right))
  '(echo-keystrokes 0.2)
+ '(emmet-indentation 2)
  '(exec-path
    (quote
     ("/usr/local/bin" "/usr/local/sbin" "/usr/local/opt/nvm/versions/node/v6.2.0/bin" "/usr/local/bin" "/usr/local/sbin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/opt/X11/bin" "/usr/local/opt/nvm/sbin" "/Library/TeX/texbin" "/usr/local/opt/coreutils/libexec/gnubin" "/usr/local/otp/nvm" "/usr/local/opt/nvm/bin" "/usr/local/share/npm/bin" "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9" "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9" "/usr/local/share/npm/bin" "/usr/local/otp/nvm" "/usr/local/opt/coreutils/libexec/gnubin" "/Applications/Emacs.app/Contents/MacOS/libexec")))
@@ -134,7 +135,7 @@
  '(ns-command-modifier (quote meta))
  '(package-selected-packages
    (quote
-    (multiple-cursors expand-region web-mode emmet-mode gist f request-deferred deferred request use-package shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode labburn-theme nodejs-repl pdf-tools auctex eyebrowse golden-ratio flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme skewer-mode js-doc helm-dash racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
+    (pdf-tools multiple-cursors expand-region web-mode emmet-mode gist f request-deferred deferred request use-package shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode labburn-theme nodejs-repl auctex eyebrowse golden-ratio flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme skewer-mode js-doc helm-dash racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
  '(pdf-view-display-size (quote fit-height))
  '(pdf-view-use-imagemagick t)
  '(pdf-view-use-scaling t)

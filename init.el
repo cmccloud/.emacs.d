@@ -164,11 +164,16 @@
   (semantic-default-elisp-setup))
 
 (use-package smartparens
+  :init
+  (defun sp-strict-mode-deactivate ()
+    (interactive)
+    (smartparens-strict-mode -1))
   :config
   (use-package smartparens-config)
   (smartparens-global-mode 1)
   (smartparens-global-strict-mode 1)
-  (show-smartparens-global-mode 1))
+  (show-smartparens-global-mode 1)
+  (add-hook 'html-mode-hook #'sp-strict-mode-deactivate))
 
 (use-package expand-region
   :config
