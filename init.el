@@ -92,6 +92,13 @@
     (leader/set-key
       "ae" 'eshell)))
 
+(use-package yasnippet
+  :defer t
+  :commands (yas-reload-all
+             yas-minor-mode
+             yas-global-mode)
+  :config (yas-reload-all))
+
 (use-package pdf-tools
   :defer t
   :mode (("\\.pdf\\'" . pdf-view-mode))
@@ -496,7 +503,9 @@
       "rc" 'web-mode-element-clone
       "rr" 'web-mode-element-rename
       "rk" 'web-mode-element-kill
-      "z" 'web-mode-fold-or-unfold)))
+      "z" 'web-mode-fold-or-unfold))
+  :config
+  (add-hook 'web-mode-hook #'yas-minor-mode))
 
 (use-package emmet-mode
   :defer t

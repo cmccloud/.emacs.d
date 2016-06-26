@@ -17,6 +17,7 @@
                exec-path-from-shell
                ggtags
                smartparens
+               yasnippet
                avy
                smooth-scrolling
                projectile
