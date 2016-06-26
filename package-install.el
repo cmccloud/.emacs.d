@@ -24,7 +24,6 @@
                helm
                helm-projectile
                helm-gtags
-               multiple-cursors
                helm-ag
                helm-descbinds
                helm-swoop
@@ -51,7 +50,6 @@
                markdown-mode
                tern
                skewer-mode
-               js2-refactor
                osx-trash
                company-tern
                window-numbering
@@ -72,6 +70,7 @@
                 bind-key
                 racket-mode
                 lispy
+                multiple-cursors
                 expand-region
                 js-doc
                 web-mode
