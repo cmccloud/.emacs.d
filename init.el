@@ -27,27 +27,23 @@
 (use-package f :defer t)
 
 ;; Key Bindings
+(define-prefix-command 'leader-map)
 (bind-keys ("M-u" . undo)
-           ("C-x C-c" . nil))
+           ("C-x C-c" . nil)
+           ("M-m" . leader-map))
+(bind-keys :map leader-map
+           ("tF" . toggle-frame-fullscreen)
+           ("bd" . kill-this-buffer)
+           ("br" . rename-buffer)
+           ("ws" . split-window-right)
+           ("wd" . delete-window)
+           ("wm" . delete-other-windows)
+           ("wv" . split-window-below))
 
 ;; Packages
 (use-package diminish
   :config
   (diminish 'visual-line-mode))
-
-(use-package leader
-  :load-path "/Users/Macnube/.emacs.d/site-lisp/leader/"
-  :config
-  (leader/set-key
-    "tF" 'toggle-frame-fullscreen
-    "bd" 'kill-this-buffer
-    "br" 'rename-buffer)
-  (leader/set-key
-    "ws" 'split-window-right
-    "wd" 'delete-window
-    "wm" 'delete-other-windows
-    "wv" 'split-window-below)
-  (global-leader-mode))
 
 (use-package exec-path-from-shell
   :defer t
@@ -88,9 +84,9 @@
   :defer t
   :init
   (setenv "NODE_NO_READLINE" "1")
-  (with-eval-after-load 'leader
-    (leader/set-key
-      "ae" 'eshell)))
+  (bind-keys :map leader-map
+             ("ae" . eshell)
+             ("at" . ansi-term)))
 
 (use-package yasnippet
   :defer t
@@ -127,17 +123,16 @@
 
 (use-package eyebrowse
   :init
-  (with-eval-after-load 'leader
-    (leader/set-key
-      "l1" 'eyebrowse-switch-to-window-config-1
-      "l2" 'eyebrowse-switch-to-window-config-2
-      "l3" 'eyebrowse-switch-to-window-config-3
-      "l4" 'eyebrowse-switch-to-window-config-4
-      "l5" 'eyebrowse-switch-to-window-config-5
-      "l6" 'eyebrowse-switch-to-window-config-6
-      "ls" 'eyebrowse-switch-to-window-config
-      "lr" 'eyebrowse-rename-window-config
-      "ld" 'eyebrowse-close-window-config))
+  (bind-keys :map leader-map
+             ("l1" . eyebrowse-switch-to-window-config-1)
+             ("l2" . eyebrowse-switch-to-window-config-2)
+             ("l3" . eyebrowse-switch-to-window-config-3)
+             ("l4" . eyebrowse-switch-to-window-config-4)
+             ("l5" . eyebrowse-switch-to-window-config-5)
+             ("l6" . eyebrowse-switch-to-window-config-6)
+             ("ls" . eyebrowse-witch-to-window-config)
+             ("lr" . eyebrowse-rename-window-config)
+             ("ld" . eyebrowse-close-window-config))
   :config
   (eyebrowse-mode))
 
@@ -188,9 +183,6 @@
     (add-hook 'clojure-mode-hook #'lispy-mode))
   (with-eval-after-load 'racket-mode
     (add-hook 'racket-mode-hook #'lispy-mode))
-  (with-eval-after-load 'leader
-    (leader/set-key
-      "M-m" 'lispy-mark-symbol))
   :config
   (bind-keys :map lispy-mode-map
              ("C-j" . avy-goto-word-or-subword-1)
@@ -280,10 +272,9 @@
              avy-goto-char
              avy-goto-char-2)
   :init
-  (with-eval-after-load 'leader
-    (leader/set-key
-      "j" 'avy-goto-word-or-subword-1
-      "z" 'avy-goto-line))
+  (bind-keys :map leader-map
+             ("j" . avy-goto-word-or-subword-1)
+             ("z" . avy-goto-line))
   :bind
   (("C-j" . avy-goto-word-or-subword-1)
    ("C-z" . avy-goto-line)))
@@ -299,14 +290,13 @@
              helm-info)
   :diminish helm-mode
   :init
-  (with-eval-after-load 'leader
-    (leader/set-key
-      "fl" 'helm-locate
-      "ff" 'helm-find-files
-      "bb" 'helm-mini
-      "hdf" 'describe-function
-      "hdv" 'describe-variable
-      "hll" 'helm-locate-library))
+  (bind-keys :map leader-map
+             ("fl" . helm-locate)
+             ("ff" . helm-find-files)
+             ("bb" . helm-mini)
+             ("hdf" . describe-function)
+             ("hdv" . describe-variable)
+             ("hll" . helm-locate-library))
   :config
   (use-package helm-config)
   (bind-keys :map helm-map
@@ -333,22 +323,20 @@
              helm-projectile-switch-project
              helm-projectile)
   :init
-  (with-eval-after-load 'leader
-    (leader/set-key
-      "ps" 'helm-projectile-switch-project
-      "pf" 'helm-projectile-find-file
-      "pp" 'helm-projectile
-      "pb" 'helm-projectile-switch-to-buffer))
+  (bind-keys :map leader-map
+            ("ps" . helm-projectile-switch-project)
+            ("pf" . helm-projectile-find-file)
+            ("pp" . helm-projectile)
+            ("pb" . helm-projectile-switch-to-buffer))
   :bind (("C-x C-p" . helm-projectile)))
 
 (use-package helm-ag
   :after (helm)
   :defer t
   :init
-  (with-eval-after-load 'leader
-    (leader/set-key
-      "ss" 'helm-do-ag
-      "sp" 'helm-do-ag-project-root)))
+  (bind-keys :map leader-map
+             ("ss" . helm-do-ag)
+             ("sp" . helm-do-ag-project-root)))
 
 (use-package helm-swoop
   :after (helm)
@@ -407,16 +395,15 @@
              magit-diff-unstaged
              magit-commit)
   :init
-  (with-eval-after-load 'leader
-    (leader/set-key
-      "gs" 'magit-status
-      "gc" 'magit-commit-popup
-      "gS" 'magit-stage-file
-      "gU" 'magit-unstage-file
-      "gP" 'magit-push-popup
-      "gd" 'magit-diff-popup
-      "gD" 'magit-diff-unstaged
-      "gC" 'magit-commit)))
+  (bind-keys :map leader-map
+             ("gs" . magit-status)
+             ("gc" . magit-commit-popup)
+             ("gS" . magit-stage-file)
+             ("gU" . magit-unstage-file)
+             ("gP" . magit-push-popup)
+             ("gd" . magit-diff-popup)
+             ("gD" . magit-diff-unstaged)
+             ("gC" . magit-commit)))
 
 (use-package gist
   :defer t
@@ -427,12 +414,11 @@
              gist-region-or-buffer
              gist-region-or-buffer-private)
   :init
-  (with-eval-after-load 'leader
-    (leader/set-key
-      "ggb" 'gist-buffer
-      "ggl" 'gist-list
-      "ggr" 'gist-region
-      "ggg" 'gist-region-or-buffer)))
+  (bind-keys :map leader-map
+             ("ggb" . gist-buffer)
+             ("ggl" . gist-list)
+             ("ggr" . gist-region)
+             ("ggg" . gist-region-or-buffer)))
 
 (use-package diff-hl
   :config
@@ -496,15 +482,15 @@
          "\\.ert\\'"
          "\\.mustache\\'"
          "\\.djthml\\'")
-  :init
-  (with-eval-after-load 'leader
-    (leader/set-key-for-mode 'web-mode
-      "rw" 'web-mode-element-wrap
-      "rc" 'web-mode-element-clone
-      "rr" 'web-mode-element-rename
-      "rk" 'web-mode-element-kill
-      "z" 'web-mode-fold-or-unfold))
   :config
+  (define-prefix-command 'web-mode-leader-map)
+  (set-keymap-parent web-mode-leader-map leader-map)
+  (bind-keys :map web-mode-map ("M-m" . web-mode-leader-map))
+  (bind-keys :map web-mode-leader-map
+             ("rw" . web-mode-element-wrap)
+             ("rc" . web-mode-element-clone)
+             ("rr" . web-mode-element-rename)
+             ("rk" . web-mode-element-kill))
   (add-hook 'web-mode-hook #'yas-minor-mode))
 
 (use-package emmet-mode
@@ -524,9 +510,8 @@
     (interactive)
     (do-applescript
      "tell application \"Google Chrome\" to reload active tab of window 1"))
-  (with-eval-after-load 'leader
-    (leader/set-key
-      "<f5>" 'chrome-refresh-current-tab)))
+  (bind-keys :map leader-map
+             ("<f5>" . chrome-refresh-current-tab)))
 
 (use-package nodejs-repl
   :defer t
@@ -574,10 +559,9 @@
     (interactive)
     (delete-window)
     (balance-windows))
-  (with-eval-after-load 'leader
-    (leader/set-key
-      "ws" 'split-and-balance-window-right
-      "wd" 'delete-window-and-balance))
+  (bind-keys :map leader-map
+             ("ws" . split-and-balance-window-right)
+             ("wd" . delete-window-and-balance))
   :config
   (window-numbering-mode 1)
   :bind (("M-1" . select-window-1)
@@ -588,10 +572,9 @@
 
 (use-package winner
   :config
-  (with-eval-after-load 'leader
-    (leader/set-key
-      "wu" 'winner-undo
-      "wr" 'winner-redo))
+  (bind-keys :map leader-map
+             ("wu" . winner-undo)
+             ("wr" . winner-redo))
   (winner-mode))
 
 (use-package golden-ratio
@@ -606,9 +589,8 @@
           (golden-ratio-mode -1)
           (balance-windows))
       (golden-ratio-mode 1)))
-  (with-eval-after-load 'leader
-    (leader/set-key
-      "tg" 'toggle-golden-ratio)))
+  (bind-keys :map leader-map
+             ("tg" . toggle-golden-ratio)))
 
 (use-package shackle
   :config
