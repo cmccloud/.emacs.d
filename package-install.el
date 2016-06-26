@@ -34,7 +34,6 @@
                company
                flycheck
                auctex
-               pdf-tools
                clojure-mode
                haskell-mode
                shm
@@ -72,6 +71,7 @@
                 lispy
                 multiple-cursors
                 expand-region
+                pdf-tools
                 js-doc
                 web-mode
                 paper-theme
