@@ -498,6 +498,16 @@
       "rk" 'web-mode-element-kill
       "z" 'web-mode-fold-or-unfold)))
 
+(use-package emmet-mode
+  :defer t
+  :commands (emmet-mode)
+  :init
+  (with-eval-after-load 'web-mode
+    (add-hook 'web-mode-hook #'emmet-mode))
+  :config
+  (bind-keys :map emmet-mode-keymap
+             ("C-j" . nil)))
+
 (use-package js2-mode
   :mode "\\.js$"
   :init
