@@ -38,7 +38,8 @@
            ("ws" . split-window-right)
            ("wd" . delete-window)
            ("wm" . delete-other-windows)
-           ("wv" . split-window-below))
+           ("wv" . split-window-below)
+           ("qq" . save-buffers-kill-emacs))
 
 ;; Packages
 (use-package diminish
