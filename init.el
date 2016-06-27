@@ -82,7 +82,6 @@
                ("M-x" . helm-M-x))))
 
 (use-package eshell
-  :defer t
   :init
   (setenv "NODE_NO_READLINE" "1")
   (bind-keys :map leader-map
