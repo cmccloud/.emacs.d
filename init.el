@@ -261,6 +261,7 @@
   :commands (structured-haskell-mode))
 
 (use-package cider
+  :defer t
   :commands (cider-mode
              cider--display-interactive-eval-result)
   :init
