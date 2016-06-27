@@ -203,9 +203,11 @@
   (bind-keys ("C-r" . er/expand-region)))
 
 (use-package lispy
-  :defer 5
+  :defer t
   :commands (lispy-mode
-             lispy-mark-symbol)
+             lispy-mark-symbol
+             lispy-move-beginning-of-line
+             lispy-move-end-of-line)
   :init
   (add-hook 'lisp-mode-hook #'lispy-mode)
   (add-hook 'emacs-lisp-mode-hook #'lispy-mode)
@@ -227,7 +229,8 @@
               (defun lispy--supress-semantic ()
                 (semantic-mode -1)))
   :bind
-  (("C-a" . lispy-move-beginning-of-line)))
+  (("C-a" . lispy-move-beginning-of-line)
+   ("C-e" . lispy-move-end-of-line)))
 
 (use-package elisp-slime-nav
   :diminish elisp-slime-nav-mode
