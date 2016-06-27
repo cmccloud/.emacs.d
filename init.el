@@ -252,6 +252,7 @@
   (add-hook 'haskell-mode-hook 'haskell-doc-mode))
 
 (use-package intero
+  :defer t
   :after (haskell-mode)
   :init
   (add-hook 'haskell-mode-hook 'intero-mode))
