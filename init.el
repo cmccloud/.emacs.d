@@ -547,6 +547,7 @@
   :commands (skewer-mode
              skewer-html-mode
              skewer-css-mode)
+  :defines (skewer-html-mode-map)
   :init
   (add-hook 'html-mode-hook #'skewer-html-mode)
   (add-hook 'css-mode-hook #'skewer-css-mode)
