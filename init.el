@@ -126,6 +126,17 @@
              ("g" . doc-view-goto-page)))
 
 (use-package eyebrowse
+  :defer t
+  :commands (eyebrowse-mode
+             eyebrowse-switch-to-window-config
+             eyebrowse-switch-to-window-config-1
+             eyebrowse-switch-to-window-config-2
+             eyebrowse-switch-to-window-config-3
+             eyebrowse-switch-to-window-config-4
+             eyebrowse-switch-to-window-config-5
+             eyebrowse-switch-to-window-config-6
+             eyebrowse-rename-window-config
+             eyebrowse-close-window-config)
   :init
   (bind-keys :map leader-map
              ("l1" . eyebrowse-switch-to-window-config-1)
@@ -134,7 +145,7 @@
              ("l4" . eyebrowse-switch-to-window-config-4)
              ("l5" . eyebrowse-switch-to-window-config-5)
              ("l6" . eyebrowse-switch-to-window-config-6)
-             ("ls" . eyebrowse-witch-to-window-config)
+             ("ls" . eyebrowse-switch-to-window-config)
              ("lr" . eyebrowse-rename-window-config)
              ("ld" . eyebrowse-close-window-config))
   :config
