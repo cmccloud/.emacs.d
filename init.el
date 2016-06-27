@@ -152,6 +152,7 @@
   (recentf-track-opened-file))
 
 (use-package smooth-scrolling
+  :disabled t
   :config
   (smooth-scrolling-mode))
 

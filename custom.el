@@ -128,6 +128,8 @@
  '(markdown-command "marked")
  '(markdown-command-needs-filename t)
  '(markdown-gfm-additional-languages (quote ("scheme" "javascript")))
+ '(mouse-wheel-progressive-speed t)
+ '(mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
  '(nrepl-message-colors
    (quote
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
@@ -158,6 +160,9 @@
  '(recentf-save-file "~/.emacs.d/cache/recentf")
  '(ring-bell-function (quote ignore))
  '(scroll-bar-mode nil)
+ '(scroll-conservatively 101)
+ '(scroll-margin 10)
+ '(scroll-preserve-screen-position t)
  '(semantic-edits-verbose-flag t)
  '(semantic-idle-scheduler-idle-time 10)
  '(semantic-mode nil)
