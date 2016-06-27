@@ -363,6 +363,14 @@
   :after (helm)
   :defer t)
 
+(use-package helm-dash
+  :defer t
+  :commands (helm-dash)
+  :after (helm)
+  :config
+  (bind-keys :map leader-map
+             ("hdd" . helm-dash)))
+
 (use-package projectile
   :defer t
   :diminish projectile-mode

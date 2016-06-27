@@ -8,7 +8,6 @@
                          ("gnu" . "https://elpa.gnu.org/packages/")))
 (package-refresh-contents)
 (dolist (pkg '(dash
-               helm-dash
                seq
                f
                request
@@ -69,6 +68,7 @@
                 bind-key
                 racket-mode
                 lispy
+                helm-dash
                 multiple-cursors
                 expand-region
                 pdf-tools
