@@ -2,8 +2,11 @@
 (require 'package)
 (package-initialize)
 
+(use-package paradox
+  :config (paradox-enable))
+
 ;; Stable Packages
-(setq package-archives '(("melpa-stable" . "https://stable.melpa.org/packages/")
+(setq package-archives '(("melpa-stable" . "http://stable.melpa.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")
                          ("gnu" . "https://elpa.gnu.org/packages/")))
 (package-refresh-contents)
@@ -68,6 +71,7 @@
                 bind-key
                 racket-mode
                 lispy
+                paradox
                 helm-dash
                 multiple-cursors
                 expand-region

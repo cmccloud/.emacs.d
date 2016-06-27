@@ -22,7 +22,7 @@
  '(company-auto-complete-chars (quote (32 41 46)))
  '(company-backends
    (quote
-    (company-tern company-bbdb company-nxml company-css company-eclim company-clang company-xcode company-capf company-ropemacs company-semantic company-elisp company-cmake
+    (company-tern company-bbdb company-nxml company-css company-eclim company-clang company-xcode company-capf company-semantic company-elisp company-cmake
                   (company-dabbrev-code company-gtags company-etags company-keywords)
                   company-oddmuse company-files company-dabbrev)))
  '(company-dabbrev-downcase nil)
@@ -138,7 +138,8 @@
  '(ns-command-modifier (quote meta))
  '(package-selected-packages
    (quote
-    (helm-dash pdf-tools multiple-cursors expand-region web-mode emmet-mode gist f request-deferred deferred request use-package shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode labburn-theme nodejs-repl auctex eyebrowse golden-ratio flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme skewer-mode js-doc racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell company-tern color-theme-sanityinc-solarized cider avy)))
+    (company-tern clojure-mode helm helm-core paradox helm-dash pdf-tools multiple-cursors expand-region web-mode emmet-mode gist f request-deferred deferred request use-package shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode labburn-theme nodejs-repl auctex eyebrowse golden-ratio flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme skewer-mode js-doc racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell color-theme-sanityinc-solarized cider avy)))
+ '(paradox-github-token t)
  '(pdf-view-display-size (quote fit-height))
  '(pdf-view-use-imagemagick t)
  '(pdf-view-use-scaling t)
