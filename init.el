@@ -2,7 +2,7 @@
 (setq gc-cons-threshold 100000000)
 ;; Begin Emacs Initialization
 ;; Load Customization Settings
-(load-file (expand-file-name "custom.el" user-emacs-directory))
+(load (expand-file-name "custom.el" user-emacs-directory) nil t)
 
 ;; Extend Load Path
 (eval-and-compile
@@ -45,6 +45,14 @@
 (use-package diminish
   :config
   (diminish 'visual-line-mode))
+
+(use-package autorevert
+  :config
+  (global-auto-revert-mode))
+
+(use-package hl-line
+  :config
+  (global-hl-line-mode))
 
 (use-package exec-path-from-shell
   :defer t
