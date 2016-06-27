@@ -59,10 +59,10 @@
     (package-install pkg)))
 
 ;; Melpa Packages
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("melpa-stable" . "https://stable.melpa.org/packages/")
+(setq package-archives '(("melpa" . "http://melpa.org/packages/")
+                         ("melpa-stable" . "http://stable.melpa.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")
-                         ("gnu" . "https://elpa.gnu.org/packages/")))
+                         ("gnu" . "http://elpa.gnu.org/packages/")))
 (package-refresh-contents)
 (dolist (pkg '(use-package
                 bind-key
