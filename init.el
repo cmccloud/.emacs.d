@@ -51,8 +51,9 @@
   (global-auto-revert-mode))
 
 (use-package hl-line
-  :config
-  (global-hl-line-mode))
+  :defer t
+  :commands (hl-line-mode
+             global-hl-line-mode))
 
 (use-package exec-path-from-shell
   :defer t
