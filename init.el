@@ -522,8 +522,11 @@
   :config
   (which-key-mode 1))
 
-(use-package html-mode
-  :defer t)
+(use-package rainbow-mode
+  :defer t
+  :commands (rainbow-mode)
+  :init
+  (add-hook 'css-mode-hook #'rainbow-mode))
 
 (use-package web-mode
   :defer t

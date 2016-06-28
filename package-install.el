@@ -36,6 +36,7 @@
                company
                flycheck
                auctex
+               rainbow-mode
                clojure-mode
                haskell-mode
                shm
