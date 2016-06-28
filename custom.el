@@ -187,6 +187,7 @@
  '(tramp-auto-save-directory "~/.emacs.d/cache/auto-saves/")
  '(tramp-backup-directory-alist (quote ((".*" . "~/.emacs.d/cache/backups/"))))
  '(tramp-persistency-file-name "/Users/Macnube/.emacs.d/cache/tramp")
+ '(use-package-minimum-reported-time 0.05)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote

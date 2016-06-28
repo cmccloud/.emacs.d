@@ -80,6 +80,12 @@
   (exec-path-from-shell-initialize))
 
 (use-package term
+  :defer t
+  :commands (term
+             ansi-term)
+  :init
+  (bind-keys :map leader-map
+             ("at" . ansi-term))
   :config
   (bind-keys :map term-raw-map
              ("M-x" . 'execute-extended-command)
@@ -89,11 +95,12 @@
                ("M-x" . helm-M-x))))
 
 (use-package eshell
+  :defer t
+  :commands (eshell)
   :init
   (setenv "NODE_NO_READLINE" "1")
   (bind-keys :map leader-map
-             ("ae" . eshell)
-             ("at" . ansi-term)))
+             ("ae" . eshell)))
 
 (use-package yasnippet
   :defer t
@@ -203,7 +210,9 @@
   (show-smartparens-global-mode))
 
 (use-package expand-region
-  :config
+  :defer t
+  :commands (er/expand-region)
+  :init
   (bind-keys ("C-r" . er/expand-region)))
 
 (use-package lispy
