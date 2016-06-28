@@ -620,9 +620,7 @@
              select-window-2
              select-window-3
              select-window-4
-             select-window-5
-             split-and-balance-window-right
-             delete-window-and-balance)
+             select-window-5)
   :init
   (defun split-and-balance-window-right ()
     "As 'SPLIT-WINDOW-RIGHT' followed by 'BALANCE-WINDOWS'"
