@@ -104,9 +104,11 @@
 
 (use-package yasnippet
   :defer t
+  :diminish yas-minor-mode
   :commands (yas-reload-all
              yas-minor-mode
-             yas-global-mode)
+             yas-global-mode
+             yas-expand)
   :init
   (with-eval-after-load 'web-mode
     (add-hook 'web-mode-hook #'yas-minor-mode))
