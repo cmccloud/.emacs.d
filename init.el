@@ -23,7 +23,6 @@
 (use-package deferred :defer t)
 (use-package f :defer t)
 
-
 ;; Packages
 (use-package bind-key
   :config
@@ -51,9 +50,8 @@
   (global-auto-revert-mode))
 
 (use-package hl-line
-  :defer t
-  :commands (hl-line-mode
-             global-hl-line-mode))
+  :config
+  (global-hl-line-mode))
 
 (use-package exec-path-from-shell
   :defer t
