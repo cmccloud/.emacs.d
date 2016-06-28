@@ -529,6 +529,20 @@
 (use-package which-key
   :diminish which-key-mode
   :config
+  (which-key-add-key-based-replacements
+    "M-m b" "buffers"
+    "M-m f" "files"
+    "M-m a" "applications"
+    "M-m g" "git"
+    "M-m h" "helm"
+    "M-m hd" "describe"
+    "M-m hl" "locate"
+    "M-m l" "layouts"
+    "M-m p" "projects"
+    "M-m q" "quit"
+    "M-m s" "search"
+    "M-m t" "toggle"
+    "M-m w" "window")
   (which-key-mode 1))
 
 (use-package rainbow-mode
