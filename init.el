@@ -11,10 +11,7 @@
 
 ;; Appearance and Package Initialization
 (package-initialize)
-
 (require 'use-package)
-(use-package bind-key)
-
 (load-theme 'labburn)
 
 ;; Libraries
@@ -26,22 +23,24 @@
 (use-package deferred :defer t)
 (use-package f :defer t)
 
-;; Key Bindings
-(define-prefix-command 'leader-map)
-(bind-keys ("M-u" . undo)
-           ("C-x C-c" . nil)
-           ("M-m" . leader-map))
-(bind-keys :map leader-map
-           ("tF" . toggle-frame-fullscreen)
-           ("bd" . kill-this-buffer)
-           ("br" . rename-buffer)
-           ("ws" . split-window-right)
-           ("wd" . delete-window)
-           ("wm" . delete-other-windows)
-           ("wv" . split-window-below)
-           ("qq" . save-buffers-kill-emacs))
 
 ;; Packages
+(use-package bind-key
+  :config
+  (define-prefix-command 'leader-map)
+  (bind-keys ("M-u" . undo)
+             ("C-x C-c" . nil)
+             ("M-m" . leader-map))
+  (bind-keys :map leader-map
+             ("tF" . toggle-frame-fullscreen)
+             ("bd" . kill-this-buffer)
+             ("br" . rename-buffer)
+             ("ws" . split-window-right)
+             ("wd" . delete-window)
+             ("wm" . delete-other-windows)
+             ("wv" . split-window-below)
+             ("qq" . save-buffers-kill-emacs)))
+
 (use-package diminish
   :config
   (diminish 'visual-line-mode))
