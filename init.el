@@ -193,21 +193,15 @@
              show-smartparens-global-mode)
   :defines (sp-activate)
   :init
-  (defun sp-activate ()
-    (interactive)
-    (smartparens-mode 1)
-    (smartparens-strict-mode 1)
-    (show-smartparens-mode 1))
-  (defun sp-strict-mode-deactivate ()
-    (interactive)
-    (smartparens-strict-mode -1))
-  (add-hook 'prog-mode-hook #'sp-activate)
+  (add-hook 'prog-mode-hook #'smartparens-strict-mode)
   (add-hook 'html-mode-hook #'smartparens-mode)
   (with-eval-after-load 'web-mode
     (add-hook 'web-mode-hook #'smartparens-mode))
+  (with-eval-after-load 'markdown-mode
+    (add-hook 'markdown-mode-hook #'smartparens-mode))
   :config
   (use-package smartparens-config)
-  (add-hook 'html-mode-hook #'sp-strict-mode-deactivate))
+  (show-smartparens-global-mode))
 
 (use-package expand-region
   :config
