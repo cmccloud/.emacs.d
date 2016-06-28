@@ -530,7 +530,8 @@
 
 (use-package web-mode
   :defer t
-  :mode ("\\.phtml\\'"
+  :mode ("\\.html\\'"
+         "\\.phtml\\'"
          "\\.tpl\\.php\\'"
          "\\.[agj]sp\\'"
          "\\.as[cp]x\\'"
