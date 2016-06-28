@@ -512,6 +512,11 @@
 (use-package flycheck
   :defer t
   :init
+  (defun toggle-flycheck-mode ()
+    (interactive)
+    (if flycheck-mode
+        (flycheck-mode -1)
+      (flycheck-mode 1)))
   (define-fringe-bitmap 'my-flycheck-fringe-indicator
     (vector 0 0 0 0 0 0 0 28 62 62 62 28 0 0 0 0 0))
   (flycheck-define-error-level 'error
