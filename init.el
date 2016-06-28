@@ -530,7 +530,9 @@
   (flycheck-define-error-level 'info
     :overlay-category 'flycheck-info-overlay
     :fringe-bitmap 'my-flycheck-fringe-indicator
-    :fringe-face 'flycheck-fringe-info))
+    :fringe-face 'flycheck-fringe-info)
+  (bind-keys :map leader-map
+             ("tc" . toggle-flycheck-mode)))
 
 (use-package which-key
   :diminish which-key-mode
@@ -540,6 +542,7 @@
     "M-m f" "files"
     "M-m a" "applications"
     "M-m g" "git"
+    "M-m gg" "gist"
     "M-m h" "helm"
     "M-m hd" "describe"
     "M-m hl" "locate"
