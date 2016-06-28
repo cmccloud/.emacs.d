@@ -17,6 +17,7 @@
 ;; Libraries
 (use-package s)
 (use-package dash)
+(use-package dash-functional)
 (use-package seq)
 (use-package map)
 (use-package request :defer t)
