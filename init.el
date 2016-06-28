@@ -573,7 +573,8 @@
   :after (js2-mode)
   :commands (nodejs-repl-mode
              nodejs-repl-send-last-sexp
-             nodejs-repl-send-region)
+             nodejs-repl-send-region
+             nodejs-repl-send-buffer)
   :init
   (defun nodejs-repl-eval-dwim ()
     (interactive)
@@ -583,7 +584,8 @@
       (nodejs-repl-send-last-sexp)))
   (with-eval-after-load 'js2-mode
     (bind-keys :map js2-mode-map
-               ("C-x C-e" . nodejs-repl-eval-dwim))))
+               ("C-x C-e" . nodejs-repl-eval-dwim)
+               ("C-c C-k" . nodejs-repl-send-buffer))))
 
 (use-package skewer-mode
   :defer t
