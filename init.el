@@ -203,6 +203,9 @@
     (interactive)
     (smartparens-strict-mode -1))
   (add-hook 'prog-mode-hook #'sp-activate)
+  (add-hook 'html-mode-hook #'smartparens-mode)
+  (with-eval-after-load 'web-mode
+    (add-hook 'web-mode-hook #'smartparens-mode))
   :config
   (use-package smartparens-config)
   (add-hook 'html-mode-hook #'sp-strict-mode-deactivate))
