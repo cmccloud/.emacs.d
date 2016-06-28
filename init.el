@@ -47,6 +47,7 @@
   (diminish 'visual-line-mode))
 
 (use-package autorevert
+  :diminish auto-revert-mode
   :config
   (global-auto-revert-mode))
 
