@@ -15,11 +15,11 @@
 (load-theme 'labburn)
 
 ;; Libraries
-(use-package s)
 (use-package dash)
-(use-package dash-functional)
 (use-package seq)
-(use-package map)
+(use-package s)
+(use-package map :defer t)
+(use-package dash-functional :defer t)
 (use-package request :defer t)
 (use-package deferred :defer t)
 (use-package f :defer t)
@@ -42,17 +42,24 @@
              ("qq" . save-buffers-kill-emacs)))
 
 (use-package diminish
+  :defer t
   :config
   (diminish 'visual-line-mode))
 
 (use-package autorevert
+  :disabled t
   :diminish auto-revert-mode
   :config
   (global-auto-revert-mode))
 
 (use-package hl-line
+  :demand t
   :config
-  (global-hl-line-mode))
+  (global-hl-line-mode)
+  :bind
+  (:map leader-map
+        ("th" . hl-line-mode)
+        ("tH" . global-hl-line-mode)))
 
 (use-package exec-path-from-shell
   :defer t
@@ -168,11 +175,13 @@
   (eyebrowse-mode))
 
 (use-package osx-trash
+  :defer 10
   :if (memq system-type '(osx darwin))
   :init
   (osx-trash-setup))
 
 (use-package recentf
+  :disabled t
   :functions
   (recentf-track-opened-file)
   :config
@@ -250,9 +259,8 @@
 
 (use-package elisp-slime-nav
   :diminish elisp-slime-nav-mode
-  :commands (elisp-slime-nav-describe-elisp-thing-at-point)
-  :init
-  (bind-key "C-c C-d" 'elisp-slime-nav-describe-elisp-thing-at-point))
+  :bind
+  (("C-c C-d" . elisp-slime-nav-describe-elisp-thing-at-point)))
 
 (use-package clojure-mode
   :defer t
@@ -510,13 +518,7 @@
   :defer t)
 
 (use-package flycheck
-  :defer t
-  :init
-  (defun toggle-flycheck-mode ()
-    (interactive)
-    (if flycheck-mode
-        (flycheck-mode -1)
-      (flycheck-mode 1)))
+  :config
   (define-fringe-bitmap 'my-flycheck-fringe-indicator
     (vector 0 0 0 0 0 0 0 28 62 62 62 28 0 0 0 0 0))
   (flycheck-define-error-level 'error
@@ -531,10 +533,12 @@
     :overlay-category 'flycheck-info-overlay
     :fringe-bitmap 'my-flycheck-fringe-indicator
     :fringe-face 'flycheck-fringe-info)
-  (bind-keys :map leader-map
-             ("tc" . toggle-flycheck-mode)))
+  :bind
+  (:map leader-map
+        ("tc" . flycheck-mode)))
 
 (use-package which-key
+  :defer t
   :diminish which-key-mode
   :config
   (which-key-add-key-based-replacements
@@ -662,21 +666,27 @@
              ("wd" . delete-window-and-balance))
   :config
   (window-numbering-mode 1)
-  :bind (("M-1" . select-window-1)
-         ("M-2" . select-window-2)
-         ("M-3" . select-window-3)
-         ("M-4" . select-window-4)
-         ("M-5" . select-window-5)))
+  :bind
+  (("M-1" . select-window-1)
+   ("M-2" . select-window-2)
+   ("M-3" . select-window-3)
+   ("M-4" . select-window-4)
+   ("M-5" . select-window-5)))
 
 (use-package winner
-  :config
+  :defer t
+  :commands (winner-undo
+             winner-redo)
+  :init
   (bind-keys :map leader-map
              ("wu" . winner-undo)
              ("wr" . winner-redo))
+  :config
   (winner-mode))
 
 (use-package golden-ratio
   :defer t
+  :diminish golden-ratio-mode
   :commands (golden-ratio-mode)
   :init
   (defun toggle-golden-ratio ()
