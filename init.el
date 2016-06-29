@@ -47,15 +47,14 @@
   (diminish 'visual-line-mode))
 
 (use-package autorevert
-  :disabled t
   :diminish auto-revert-mode
   :config
   (global-auto-revert-mode))
 
 (use-package hl-line
-  :demand t
-  :config
-  (global-hl-line-mode)
+  :defer t
+  :init
+  (add-hook 'emacs-lisp-mode-hook #'hl-line-mode)
   :bind
   (:map leader-map
         ("th" . hl-line-mode)
@@ -566,8 +565,7 @@
 
 (use-package web-mode
   :defer t
-  :mode ("\\.html\\'"
-         "\\.phtml\\'"
+  :mode ("\\.phtml\\'"
          "\\.tpl\\.php\\'"
          "\\.[agj]sp\\'"
          "\\.as[cp]x\\'"
