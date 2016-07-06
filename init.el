@@ -200,6 +200,21 @@
   :config
   (semantic-default-elisp-setup))
 
+(use-package elisp-mode
+  :init
+  (when (package-installed-p 'company)
+    (defvar emacs-lisp-mode-company-backends
+      '(company-elisp company-capf company-semantic)
+      "`emacs-lisp-mode' company-backends for use with `company-mode'.")
+
+    (defun emacs-lisp-company-mode ()
+      (interactive)
+      (set (make-local-variable 'company-backends)
+           emacs-lisp-mode-company-backends))
+
+    (add-hook 'emacs-lisp-mode-hook #'emacs-lisp-company-mode)
+    (add-hook 'emacs-lisp-mode-hook #'company-mode t)))
+
 (use-package smartparens
   :defer t
   :commands (smartparens-mode
@@ -497,8 +512,6 @@
 (use-package company
   :defer t
   :diminish company-mode
-  :init
-  (add-hook 'prog-mode-hook #'company-mode)
   :config
   (bind-keys :map company-active-map
              ("C-n" . company-select-next)
@@ -507,6 +520,9 @@
              ("<return>" . nil)
              ("<tab>" . company-complete-selection)
              ("TAB" . company-complete-selection)))
+
+(use-package company-web
+  :after (company))
 
 (use-package company-tern
   :after (company)
@@ -597,6 +613,19 @@
 (use-package js2-mode
   :mode "\\.js$"
   :init
+  (when (package-installed-p 'company)
+    (defvar js2-mode-company-backends
+      '(company-tern company-capf)
+      "`js2-mode' company-backends for use with `company-mode'.")
+
+    (defun js2-company-mode ()
+      (interactive)
+      (set (make-local-variable 'company-backends)
+           js2-mode-company-backends))
+
+    (add-hook 'js2-mode-hook #'js2-company-mode)
+    (add-hook 'js2-mode-hook #'company-mode t))
+
   (defun chrome-refresh-current-tab ()
     (interactive)
     (do-applescript

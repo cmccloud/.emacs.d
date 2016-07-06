@@ -34,6 +34,7 @@
                gist
                diff-hl
                company
+               company-web
                flycheck
                auctex
                rainbow-mode
