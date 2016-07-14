@@ -6,7 +6,7 @@
   :config (paradox-enable))
 
 ;; Stable Packages
-(setq package-archives '(("melpa-stable" . "http://stable.melpa.org/packages/")
+(setq package-archives '(("melpa-stable" . "https://stable.melpa.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")
                          ("gnu" . "https://elpa.gnu.org/packages/")))
 (package-refresh-contents)
@@ -53,6 +53,7 @@
                markdown-mode
                tern
                skewer-mode
+               impatient-mode
                osx-trash
                company-tern
                window-numbering
@@ -75,6 +76,7 @@
                 lispy
                 paradox
                 helm-dash
+                magit-gh-pulls
                 multiple-cursors
                 expand-region
                 pdf-tools

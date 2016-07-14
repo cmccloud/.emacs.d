@@ -487,6 +487,13 @@
              ("gD" . magit-diff-unstaged)
              ("gC" . magit-commit)))
 
+(use-package magit-gh-pulls
+  :defer t
+  :after (magit)
+  :commands (turn-on-magit-gh-pulls)
+  :init
+  (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
+
 (use-package gist
   :defer t
   :commands (gist-buffer
@@ -659,11 +666,16 @@
              skewer-css-mode)
   :defines (skewer-html-mode-map)
   :init
-  (add-hook 'html-mode-hook #'skewer-html-mode)
-  (add-hook 'css-mode-hook #'skewer-css-mode)
   (with-eval-after-load 'skewer-html
     (bind-keys :map skewer-html-mode-map
                ("C-x C-e" . skewer-html-eval-tag))))
+
+(use-package impatient-mode
+  :defer t
+  :init
+  (add-hook 'html-mode-hook #'impatient-mode)
+  (add-hook 'web-mode-hook #'impatient-mode)
+  (add-hook 'css-mode-hook #'impatient-mode))
 
 (use-package tern
   :diminish tern-mode
