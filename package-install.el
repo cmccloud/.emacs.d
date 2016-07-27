@@ -86,6 +86,7 @@
                 labburn-theme
                 white-sand-theme
                 zenburn-theme
+                darktooth-theme
                 color-theme-sanityinc-solarized
                 arjen-grey-theme
                 color-theme-sanityinc-tomorrow))
