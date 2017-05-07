@@ -481,14 +481,7 @@
              magit-commit)
   :init
   (bind-keys :map leader-map
-             ("gs" . magit-status)
-             ("gc" . magit-commit-popup)
-             ("gS" . magit-stage-file)
-             ("gU" . magit-unstage-file)
-             ("gP" . magit-push-popup)
-             ("gd" . magit-diff-popup)
-             ("gD" . magit-diff-unstaged)
-             ("gC" . magit-commit)))
+             ("gs" . magit-status)))
 
 (use-package magit-gh-pulls
   :defer t
@@ -740,7 +733,6 @@
       (golden-ratio-mode 1)))
   (bind-keys :map leader-map
              ("tg" . toggle-golden-ratio)))
-
 
 (use-package writeroom
   :init
