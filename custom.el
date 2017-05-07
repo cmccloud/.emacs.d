@@ -125,7 +125,7 @@
  '(ns-command-modifier (quote meta))
  '(package-selected-packages
    (quote
-    (darkroom darktooth-theme magit-gh-pulls impatient-mode company-web rainbow-mode company-tern clojure-mode helm helm-core paradox helm-dash pdf-tools multiple-cursors expand-region web-mode emmet-mode gist f request-deferred deferred request use-package shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode labburn-theme nodejs-repl auctex eyebrowse golden-ratio flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme skewer-mode js-doc racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell color-theme-sanityinc-solarized cider avy)))
+    (writeroom-mode visual-fill-column darkroom darktooth-theme magit-gh-pulls impatient-mode company-web rainbow-mode company-tern clojure-mode helm helm-core paradox helm-dash pdf-tools multiple-cursors expand-region web-mode emmet-mode gist f request-deferred deferred request use-package shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode labburn-theme nodejs-repl auctex eyebrowse golden-ratio flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme skewer-mode js-doc racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell color-theme-sanityinc-solarized cider avy)))
  '(paradox-github-token t)
  '(pdf-view-display-size (quote fit-height))
  '(pdf-view-use-imagemagick t)
@@ -209,7 +209,10 @@
  '(vc-annotate-very-old-color nil)
  '(visible-cursor nil)
  '(weechat-color-list
-   (unspecified "#272822" "#49483E" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0")))
+   (unspecified "#272822" "#49483E" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0"))
+ '(writeroom-global-effects
+   (quote
+    (writeroom-set-alpha writeroom-set-menu-bar-lines writeroom-set-tool-bar-lines writeroom-set-vertical-scroll-bars writeroom-set-bottom-divider-width))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

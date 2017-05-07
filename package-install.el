@@ -6,7 +6,7 @@
   :config (paradox-enable))
 
 ;; Stable Packages
-(setq package-archives '(("melpa-stable" . "https://stable.melpa.org/packages/")
+(setq package-archives '(("melpa-stable" . "http://stable.melpa.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")
                          ("gnu" . "https://elpa.gnu.org/packages/")))
 (package-refresh-contents)
@@ -57,7 +57,6 @@
                osx-trash
                company-tern
                window-numbering
-               darkroom
                eyebrowse
                golden-ratio
                shackle
@@ -90,6 +89,7 @@
                 darktooth-theme
                 color-theme-sanityinc-solarized
                 arjen-grey-theme
+                writeroom
                 color-theme-sanityinc-tomorrow))
   (unless (package-installed-p pkg)
     (package-install pkg)))

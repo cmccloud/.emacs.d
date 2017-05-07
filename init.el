@@ -261,6 +261,8 @@
              ("C-z" . avy-goto-line)
              ("M-m" . nil)
              (":" . self-insert-command))
+  (bind-keys :map leader-map
+             ("M-m" . lispy-mark-symbol))
   ;; Prevent semantic mode errors when using
   ;; lispy goto
   (advice-add 'special-lispy-goto
@@ -739,12 +741,15 @@
   (bind-keys :map leader-map
              ("tg" . toggle-golden-ratio)))
 
-(use-package darkroom
-  :defer t
-  :commands (darkroom-mode darkroom-tentative-mode)
+
+(use-package writeroom
   :init
+  (advice-add 'writeroom--enable :after
+              (lambda () (text-scale-set 2)))
+  (advice-add 'writeroom--disable :after
+              (lambda () (text-scale-mode -1)))
   (bind-keys :map leader-map
-             ("td" . darkroom-mode)))
+             ("td" . global-writeroom-mode)))
 
 (use-package shackle
   :config
