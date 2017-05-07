@@ -97,12 +97,7 @@
  '(hl-sexp-background-color "#efebe9")
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
- '(initial-frame-alist
-   (quote
-    ((top . 30)
-     (left . 50)
-     (width . 111)
-     (height . 57))))
+ '(initial-frame-alist (quote ((top . 30) (left . 50) (width . 81) (height . 57))))
  '(initial-major-mode (quote fundamental-mode))
  '(js-expr-indent-offset 0)
  '(js-indent-level 2)
