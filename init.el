@@ -739,6 +739,13 @@
   (bind-keys :map leader-map
              ("tg" . toggle-golden-ratio)))
 
+(use-package darkroom
+  :defer t
+  :commands (darkroom-mode darkroom-tentative-mode)
+  :init
+  (bind-keys :map leader-map
+             ("td" . darkroom-mode)))
+
 (use-package shackle
   :config
   (shackle-mode 1))
