@@ -55,6 +55,7 @@
  '(git-gutter:added-sign " ")
  '(git-gutter:deleted-sign " ")
  '(git-gutter:modified-sign " ")
+ '(global-visual-line-mode t)
  '(golden-ratio-auto-scale t)
  '(golden-ratio-extra-commands
    (quote
@@ -124,7 +125,7 @@
  '(ns-command-modifier (quote meta))
  '(package-selected-packages
    (quote
-    (darktooth-theme magit-gh-pulls impatient-mode company-web rainbow-mode company-tern clojure-mode helm helm-core paradox helm-dash pdf-tools multiple-cursors expand-region web-mode emmet-mode gist f request-deferred deferred request use-package shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode labburn-theme nodejs-repl auctex eyebrowse golden-ratio flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme skewer-mode js-doc racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell color-theme-sanityinc-solarized cider avy)))
+    (darkroom darktooth-theme magit-gh-pulls impatient-mode company-web rainbow-mode company-tern clojure-mode helm helm-core paradox helm-dash pdf-tools multiple-cursors expand-region web-mode emmet-mode gist f request-deferred deferred request use-package shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode labburn-theme nodejs-repl auctex eyebrowse golden-ratio flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme skewer-mode js-doc racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell color-theme-sanityinc-solarized cider avy)))
  '(paradox-github-token t)
  '(pdf-view-display-size (quote fit-height))
  '(pdf-view-use-imagemagick t)

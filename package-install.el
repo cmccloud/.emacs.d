@@ -57,6 +57,7 @@
                osx-trash
                company-tern
                window-numbering
+               darkroom
                eyebrowse
                golden-ratio
                shackle
