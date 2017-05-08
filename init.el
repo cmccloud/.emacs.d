@@ -424,27 +424,47 @@
              helm-info)
   :diminish helm-mode
   :init
+  (bind-keys ("M-x" . helm-M-x)
+             ("C-x C-f" . helm-find-files)
+             ("C-x C-b" . helm-mini)
+             ("C-h a" . helm-apropos)
+             ("C-h i" . helm-info)
+             ("C-h F" . find-function))
   (bind-keys :map leader-map
              ("fl" . helm-locate)
              ("ff" . helm-find-files)
              ("bb" . helm-mini)
              ("hdf" . describe-function)
              ("hdv" . describe-variable)
+             ("hk" . helm-show-kill-ring)
              ("hll" . helm-locate-library))
   :config
-  (use-package helm-config)
   (bind-keys :map helm-map
              ("C-z" . helm-select-action)
              ("<tab>" . helm-execute-persistent-action)
              ("TAB" . helm-execute-persistent-action))
-  (helm-mode 1)
-  :bind
-  (("M-x" . helm-M-x)
-   ("C-x C-f" . helm-find-files)
-   ("C-x C-b" . helm-mini)
-   ("C-h a" . helm-apropos)
-   ("C-h i" . helm-info)
-   ("C-h F" . find-function)))
+  
+  (setq helm-M-x-fuzzy-match nil
+        helm-autoresize-max-height 30
+        helm-boring-buffer-regexp-list '("\\` "
+                                         "\\*helm"
+                                         "\\*helm-mode"
+                                         "\\*Echo Area"
+                                         "\\*Minibuf"
+                                         "\\*magit"
+                                         "\\*lispy-goto*"
+                                         "\\*Backtrace*")
+        helm-ff-tramp-not-fancy nil
+        helm-locate-command "mdfind -name %s %s"
+        helm-mini-default-sources '(helm-source-buffers-list
+                                    helm-source-recentf
+                                    helm-source-buffer-not-found)
+        helm-split-window-in-side-p t
+        helm-swoop-speed-or-color nil
+        helm-swoop-split-with-multiple-windows t)
+  
+  (use-package helm-config)
+  (helm-mode 1))
 
 (use-package helm-projectile
   :defer t
@@ -457,12 +477,12 @@
              helm-projectile-switch-project
              helm-projectile)
   :init
+  (bind-keys ("C-x C-p" . helm-projectile))
   (bind-keys :map leader-map
-            ("ps" . helm-projectile-switch-project)
-            ("pf" . helm-projectile-find-file)
-            ("pp" . helm-projectile)
-            ("pb" . helm-projectile-switch-to-buffer))
-  :bind (("C-x C-p" . helm-projectile)))
+             ("ps" . helm-projectile-switch-project)
+             ("pf" . helm-projectile-find-file)
+             ("pp" . helm-projectile)
+             ("pb" . helm-projectile-switch-to-buffer)))
 
 (use-package helm-ag
   :after (helm)
