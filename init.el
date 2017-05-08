@@ -25,7 +25,7 @@
 
 ;; Appearance and UI
 (setq doom-one-brighter-comments t)
-(load-theme 'arjen-grey)
+(load-theme 'spacemacs-dark)
 (setq frame-title-format nil)
 
 (use-package page-break-lines
