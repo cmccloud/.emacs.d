@@ -554,8 +554,6 @@
     :ensure t)
   (use-package fringe-helper
     :ensure t)
-  (require 'fringe-helper)
-  (require 'git-gutter-fringe)
   (global-git-gutter-mode)
 
   (fringe-mode 8)
