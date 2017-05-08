@@ -9,20 +9,49 @@
   (let ((default-directory (expand-file-name "site-lisp" user-emacs-directory)))
     (normal-top-level-add-subdirs-to-load-path)))
 
-;; Appearance and Package Initialization
+;; Package Initialization
 (package-initialize)
 (require 'use-package)
-(load-theme 'labburn)
 
 ;; Libraries
 (use-package dash)
-(use-package seq)
 (use-package s)
+(use-package seq)
 (use-package map :defer t)
 (use-package dash-functional :defer t)
 (use-package request :defer t)
 (use-package deferred :defer t)
 (use-package f :defer t)
+
+;; Appearance and UI
+(setq doom-one-brighter-comments t)
+(load-theme 'arjen-grey)
+(setq frame-title-format nil)
+
+(use-package page-break-lines
+  :diminish 'page-break-lines-mode
+  :config
+  (global-page-break-lines-mode))
+
+(use-package all-the-icons)
+
+(use-package spaceline-config
+  :disabled t
+  :config
+  (spaceline-helm-mode 1)
+  (spaceline-info-mode 1))
+
+(use-package spaceline-all-the-icons
+  ;; Serious performance issues
+  :after spaceline
+  :config
+  (setq spaceline-all-the-icons-icon-set-flycheck-slim 'dots
+        spaceline-all-the-icons-icon-set-git-ahead 'commit
+        spaceline-all-the-icons-icon-set-window-numbering 'square
+        spaceline-all-the-icons-flycheck-alternate t
+        spaceline-all-the-icons-highlight-file-name t
+        spaceline-all-the-icons-separator-type 'none)
+  (spaceline-all-the-icons-theme))
 
 ;; Packages
 (use-package bind-key
