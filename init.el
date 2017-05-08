@@ -329,18 +329,7 @@
   (("C-a" . lispy-move-beginning-of-line)
    ("C-e" . lispy-move-end-of-line)))
 
-(use-package hydra
-  :config
-  (defhydra hydra-git-gutter (:columns 3 :exit nil :foreign-keys warn)
-    "Git Gutter"
-    ("s" git-gutter:stage-hunk "Stage Hunk")
-    ("n" git-gutter:next-hunk "Next Hunk")
-    ("p" git-gutter:previous-hunk "Previous Hunk")
-    ("r" git-gutter:revert-hunk "Revert Hunk")
-    ("c" magit-commit-popup "Commit" :color blue )
-    ("q" nil "Cancel" :color blue))
-  (bind-keys :map leader-map
-             ("gg" . hydra-git-gutter/body)))
+(use-package hydra)
 
 (use-package elisp-slime-nav
   :diminish elisp-slime-nav-mode
@@ -565,6 +554,17 @@
   (use-package git-gutter-fringe)
   (use-package fringe-helper)
   (global-git-gutter-mode)
+  (with-eval-after-load 'hydra
+    (defhydra hydra-git-gutter (:columns 3 :exit nil :foreign-keys warn)
+      "Git Gutter"
+      ("s" git-gutter:stage-hunk "Stage Hunk")
+      ("n" git-gutter:next-hunk "Next Hunk")
+      ("p" git-gutter:previous-hunk "Previous Hunk")
+      ("r" git-gutter:revert-hunk "Revert Hunk")
+      ("c" magit-commit-popup "Commit" :color blue )
+      ("q" nil "Cancel" :color blue))
+    (bind-keys :map leader-map
+               ("gg" . hydra-git-gutter/body)))
   
   ;; colored fringe "bars"
   (define-fringe-bitmap 'git-gutter-fr:added
