@@ -596,6 +596,7 @@
              ("ggg" . gist-region-or-buffer)))
 
 (use-package diff-hl
+  :disabled t
   :config
   (with-eval-after-load 'magit
     (add-hook 'magit-post-refresh-hook
