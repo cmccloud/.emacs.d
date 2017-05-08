@@ -231,6 +231,11 @@
 
 (use-package elisp-mode
   :init
+  (define-prefix-command 'emacs-lisp-mode-leader-map)
+  (bind-keys :map emacs-lisp-mode-map
+             ("M-m m" . emacs-lisp-mode-leader-map))
+  (which-key-add-major-mode-key-based-replacements 'emacs-lisp-mode
+    "M-m m" "Emacs Lisp Mode")
   (when (package-installed-p 'company)
     (defvar emacs-lisp-mode-company-backends
       '(company-elisp company-capf company-semantic)
