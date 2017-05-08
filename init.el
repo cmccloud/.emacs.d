@@ -460,7 +460,7 @@
                                     helm-source-recentf
                                     helm-source-buffer-not-found)
         helm-split-window-in-side-p t
-        helm-swoop-speed-or-color nil
+        helm-swoop-speed-or-color t
         helm-swoop-split-with-multiple-windows t)
   
   (use-package helm-config)
