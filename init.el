@@ -550,8 +550,7 @@
              magit-commit)
   :init
   (bind-keys :map leader-map
-             ("gs" . magit-status)
-             ("gc" . magit-commit-popup)))
+             ("gs" . magit-status)))
 
 (use-package magit-gh-pulls
   :defer t
