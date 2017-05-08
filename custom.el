@@ -8,12 +8,16 @@
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
    (vector "#657b83" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#fdf6e3"))
+ '(ansi-term-color-vector
+   [unspecified "#1B2229" "#ff6c6b" "#98be65" "#ECBE7B" "#51afef" "#c678dd" "#46D9FF" "#DFDFDF"])
  '(auto-save-file-name-transforms
    (quote
     ((".*" "/var/folders/f4/0p9hr1155ngckx9pjfsct6th0000gn/T/\\2" t))))
  '(avy-all-windows nil)
  '(avy-background t)
  '(avy-style (quote at))
+ '(background-color "#202020")
+ '(background-mode dark)
  '(backup-directory-alist (quote (("." . "~/.emacs.d/cache/backups/"))))
  '(blink-cursor-mode nil)
  '(clojure-align-forms-automatically t)
@@ -33,17 +37,37 @@
  '(company-require-match nil)
  '(compilation-message-face (quote default))
  '(create-lockfiles nil)
+ '(cursor-color "#cccccc")
  '(cursor-type t)
  '(custom-buffer-done-kill t)
  '(custom-enabled-themes nil)
  '(custom-file "/Users/Macnube/.emacs.d/custom.el")
  '(custom-safe-themes
    (quote
-    ("e1e94aaecf0d3ed7bc6cdcebb02aafbf2a0236e711f4a78783337f8b0d32c842" "413a1712dfb0929cca961863482094057217bcb13475b4b813b35ea81da8e2e6" "5fea012429d3e720b7adc598295157befc00af4f3d433255087b407bf3a9ab71" "c31b688a76507c3b0458ae9d3848e3196346aeeadde457df5f828c7dc3e59fe3" "b40f4579788b1e990c553c163a4d294ac9d5a2a4615b1d1a757812ea427f8d50" "2f5dd0ac7dffdc0acf0aa15c9b7a5b1f86c37b9e11800325160b89c1b8a6fefe" "afbb40954f67924d3153f27b6d3399df221b2050f2a72eb2cfa8d29ca783c5a8" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default)))
+    ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "f03e2076bb6ba9f1178ef83f54b395c48c70dd160a34e37c80c876c925701b5a" "db2ecce0600e3a5453532a89fc19b139664b4a3e7cbefce3aaf42b6d9b1d6214" "e1e94aaecf0d3ed7bc6cdcebb02aafbf2a0236e711f4a78783337f8b0d32c842" "413a1712dfb0929cca961863482094057217bcb13475b4b813b35ea81da8e2e6" "5fea012429d3e720b7adc598295157befc00af4f3d433255087b407bf3a9ab71" "c31b688a76507c3b0458ae9d3848e3196346aeeadde457df5f828c7dc3e59fe3" "b40f4579788b1e990c553c163a4d294ac9d5a2a4615b1d1a757812ea427f8d50" "2f5dd0ac7dffdc0acf0aa15c9b7a5b1f86c37b9e11800325160b89c1b8a6fefe" "afbb40954f67924d3153f27b6d3399df221b2050f2a72eb2cfa8d29ca783c5a8" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default)))
  '(diff-hl-margin-mode nil)
  '(diff-hl-side (quote right))
  '(echo-keystrokes 0.2)
  '(emmet-indentation 2)
+ '(ensime-sem-high-faces
+   (quote
+    ((var :foreground "#9876aa" :underline
+          (:style wave :color "yellow"))
+     (val :foreground "#9876aa")
+     (varField :slant italic)
+     (valField :foreground "#9876aa" :slant italic)
+     (functionCall :foreground "#a9b7c6")
+     (implicitConversion :underline
+                         (:color "#808080"))
+     (implicitParams :underline
+                     (:color "#808080"))
+     (operator :foreground "#cc7832")
+     (param :foreground "#a9b7c6")
+     (class :foreground "#4e807d")
+     (trait :foreground "#4e807d" :slant italic)
+     (object :foreground "#6897bb" :slant italic)
+     (package :foreground "#cc7832")
+     (deprecated :strike-through "#a9b7c6"))))
  '(exec-path
    (quote
     ("/usr/local/bin" "/usr/local/sbin" "/usr/local/opt/nvm/versions/node/v6.2.0/bin" "/usr/local/bin" "/usr/local/sbin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/opt/X11/bin" "/usr/local/opt/nvm/sbin" "/Library/TeX/texbin" "/usr/local/opt/coreutils/libexec/gnubin" "/usr/local/otp/nvm" "/usr/local/opt/nvm/bin" "/usr/local/share/npm/bin" "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9" "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9" "/usr/local/share/npm/bin" "/usr/local/otp/nvm" "/usr/local/opt/coreutils/libexec/gnubin" "/Applications/Emacs.app/Contents/MacOS/libexec")))
@@ -51,8 +75,10 @@
  '(fancy-splash-image nil)
  '(fci-rule-color "#eee8d5")
  '(flycheck-highlighting-mode (quote sexps))
+ '(foreground-color "#cccccc")
  '(fringe-mode nil nil (fringe))
  '(git-gutter:added-sign " ")
+ '(git-gutter:ask-p nil)
  '(git-gutter:deleted-sign " ")
  '(git-gutter:modified-sign " ")
  '(global-visual-line-mode t)
@@ -92,20 +118,25 @@
      ("#A75B00" . 70)
      ("#F309DF" . 85)
      ("#49483E" . 100))))
+ '(hl-paren-background-colors (quote ("#2492db" "#95a5a6" nil)))
  '(hl-paren-colors
    (quote
     ("#B9F" "#B8D" "#B7B" "#B69" "#B57" "#B45" "#B33" "#B11")))
  '(hl-sexp-background-color "#efebe9")
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
- '(initial-frame-alist (quote ((top . 30) (left . 50) (width . 81) (height . 57))))
+ '(initial-frame-alist (quote ((top . 30) (left . 50) (width . 81) (height . 51))))
  '(initial-major-mode (quote fundamental-mode))
+ '(jdee-db-active-breakpoint-face-colors ("#1B2229" . "#51afef"))
+ '(jdee-db-requested-breakpoint-face-colors ("#1B2229" . "#98be65"))
+ '(jdee-db-spec-breakpoint-face-colors ("#1B2229" . "#3B3F46"))
  '(js-expr-indent-offset 0)
  '(js-indent-level 2)
  '(js2-include-node-externs t)
  '(large-file-warning-threshold 200000000)
  '(leader-mode t t)
  '(leader/leader "M-m")
+ '(linum-format (quote dynamic))
  '(lispy-avy-style-char (quote at))
  '(lispy-avy-style-symbol (quote at))
  '(lispy-compat (quote (edebug cider)))
@@ -123,11 +154,13 @@
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(ns-alternate-modifier (quote super))
  '(ns-command-modifier (quote meta))
+ '(org-ellipsis "  ")
  '(package-selected-packages
    (quote
-    (writeroom-mode visual-fill-column darkroom darktooth-theme magit-gh-pulls impatient-mode company-web rainbow-mode company-tern clojure-mode helm helm-core paradox helm-dash pdf-tools multiple-cursors expand-region web-mode emmet-mode gist f request-deferred deferred request use-package shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode labburn-theme nodejs-repl auctex eyebrowse golden-ratio flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme skewer-mode js-doc racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell color-theme-sanityinc-solarized cider avy)))
+    (git-gutter-fringe git-gutter ample-zen-theme anti-zenburn-theme cherry-blossom-theme cyberpunk-theme darcula-theme eink-theme firebelly-theme flatland-black-theme flatland-theme flatui-dark-theme flatui-theme github-theme hc-zenburn-theme metalheart-theme noctilux-theme pastelmac-theme tronesque-theme zerodark-theme darkokai-theme spacegray-theme spacemacs-theme atom-dark-theme color-theme-solarized atom-one-dark-theme page-break-lines challenger-deep-theme spaceline-all-the-icons spaceline doom-themes powerline all-the-icons general writeroom-mode visual-fill-column darkroom darktooth-theme magit-gh-pulls impatient-mode company-web rainbow-mode company-tern clojure-mode helm helm-core paradox helm-dash pdf-tools multiple-cursors expand-region web-mode emmet-mode gist f request-deferred deferred request use-package shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode labburn-theme nodejs-repl auctex eyebrowse golden-ratio flycheck slime-company slime color-theme-sanityinc-tomorrow monokai-theme material-theme arjen-grey-theme idea-darkula-theme white-sand-theme paper-theme skewer-mode js-doc racket-mode geiser osx-trash helm-gtags helm-projectile projectile ggtags smooth-scrolling elisp-slime-nav lispy zenburn-theme window-numbering which-key smartparens shackle magit js2-mode helm-themes helm-swoop helm-descbinds helm-ag exec-path-from-shell color-theme-sanityinc-solarized cider avy)))
  '(paradox-github-token t)
  '(pdf-view-display-size (quote fit-height))
+ '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(pdf-view-use-imagemagick t)
  '(pdf-view-use-scaling t)
  '(pos-tip-background-color "#A6E22E")
@@ -176,13 +209,17 @@
       :size 0.4))))
  '(shell-file-name "/bin/zsh")
  '(slime-kill-without-query-p t)
+ '(sml/active-background-color "#34495e")
+ '(sml/active-foreground-color "#ecf0f1")
+ '(sml/inactive-background-color "#dfe4ea")
+ '(sml/inactive-foreground-color "#34495e")
  '(sp-show-pair-delay 0.1)
  '(sp-show-pair-from-inside nil)
  '(standard-indent 2)
  '(tab-width 2)
  '(tool-bar-mode nil)
- '(tramp-auto-save-directory "~/.emacs.d/cache/auto-saves/")
- '(tramp-backup-directory-alist (quote ((".*" . "~/.emacs.d/cache/backups/"))))
+ '(tramp-auto-save-directory "~/.emacs.d/cache/auto-saves/" nil (tramp))
+ '(tramp-backup-directory-alist (quote ((".*" . "~/.emacs.d/cache/backups/"))) nil (tramp))
  '(tramp-persistency-file-name "/Users/Macnube/.emacs.d/cache/tramp")
  '(use-package-minimum-reported-time 0.05)
  '(vc-annotate-background nil)
@@ -210,6 +247,8 @@
  '(visible-cursor nil)
  '(weechat-color-list
    (unspecified "#272822" "#49483E" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0"))
+ '(which-key-mode t)
+ '(which-key-sort-order (quote which-key-key-order))
  '(writeroom-global-effects
    (quote
     (writeroom-set-alpha writeroom-set-menu-bar-lines writeroom-set-tool-bar-lines writeroom-set-vertical-scroll-bars writeroom-set-bottom-divider-width))))
@@ -218,7 +257,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:height 140 :width ultra-condensed :foundry "nil" :family "Input"))))
+ '(default ((t (:height 130 :width ultra-condensed :foundry "nil" :family "Input"))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :underline nil :weight bold))))
  '(cursor ((t (:background "SkyBlue3" :foreground "gray99"))))
  '(diff-hl-change ((t (:background "SteelBlue3"))))
@@ -227,4 +266,7 @@
  '(git-gutter:added ((t (:background "PaleGreen2" :foreground "#859900" :weight bold))))
  '(git-gutter:deleted ((t (:background "IndianRed2" :weight bold))))
  '(git-gutter:modified ((t (:background "RoyalBlue2" :weight bold))))
+ '(helm-candidate-number ((t nil)))
+ '(hl-line ((t (:inherit helm-selection))))
+ '(region ((t (:background "slate grey"))))
  '(show-paren-match ((t nil))))
