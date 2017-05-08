@@ -487,6 +487,8 @@
 (use-package helm-ag
   :after (helm)
   :defer t
+  :commands (helm-do-ag
+             helm-do-ag-project-root)
   :init
   (bind-keys :map leader-map
              ("ss" . helm-do-ag)
