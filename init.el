@@ -547,6 +547,7 @@
   (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
 
 (use-package git-gutter
+  :diminish 'git-gutter-mode
   :ensure t
   :config
   (use-package git-gutter-fringe
