@@ -71,6 +71,8 @@
                          ("gnu" . "http://elpa.gnu.org/packages/")))
 (package-refresh-contents)
 (dolist (pkg '(use-package
+                page-break-lines
+                all-the-icons
                 bind-key
                 racket-mode
                 lispy
@@ -82,6 +84,7 @@
                 pdf-tools
                 js-doc
                 web-mode
+                doom-theme
                 paper-theme
                 labburn-theme
                 white-sand-theme
