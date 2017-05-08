@@ -33,13 +33,14 @@
   :config
   (global-page-break-lines-mode))
 
-(use-package all-the-icons)
-
 (use-package spaceline-config
   :disabled t
   :config
   (spaceline-helm-mode 1)
   (spaceline-info-mode 1))
+
+(use-package all-the-icons
+  :after spaceline)
 
 (use-package spaceline-all-the-icons
   ;; Serious performance issues
