@@ -591,10 +591,10 @@
              gist-region-or-buffer-private)
   :init
   (bind-keys :map leader-map
-             ("ggb" . gist-buffer)
-             ("ggl" . gist-list)
-             ("ggr" . gist-region)
-             ("ggg" . gist-region-or-buffer)))
+             ("gGb" . gist-buffer)
+             ("gGl" . gist-list)
+             ("gGr" . gist-region)
+             ("gGg" . gist-region-or-buffer)))
 
 (use-package diff-hl
   :disabled t
