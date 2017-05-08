@@ -551,8 +551,6 @@
 (use-package git-gutter
   :diminish 'git-gutter-mode 
   :config
-  (use-package git-gutter-fringe)
-  (use-package fringe-helper)
   (global-git-gutter-mode)
   (with-eval-after-load 'hydra
     (defhydra hydra-git-gutter (:columns 3 :exit nil :foreign-keys warn)
@@ -565,7 +563,11 @@
       ("q" nil "Cancel" :color blue))
     (bind-keys :map leader-map
                ("gg" . hydra-git-gutter/body)))
-  
+  (add-hook 'focus-in-hook 'git-gutter:update-all-windows))
+
+(use-package git-gutter-fringe
+  :after git-gutter
+  :config
   ;; colored fringe "bars"
   (define-fringe-bitmap 'git-gutter-fr:added
     [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224
@@ -577,9 +579,10 @@
     nil nil 'center)
   (define-fringe-bitmap 'git-gutter-fr:deleted
     [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
-    nil nil 'center)
-  
-  (add-hook 'focus-in-hook 'git-gutter:update-all-windows))
+    nil nil 'center))
+
+(use-package fringe-helper
+  :disabled t)
 
 (use-package gist
   :defer t
