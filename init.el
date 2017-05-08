@@ -583,26 +583,6 @@
   (:map leader-map
         ("tc" . flycheck-mode)))
 
-(use-package which-key
-  :diminish which-key-mode
-  :config
-  (which-key-add-key-based-replacements
-    "M-m b" "Buffers" 
-    "M-m f" "Files"
-    "M-m a" "Applications"
-    "M-m g" "Git"
-    "M-m gg" "Gist"
-    "M-m h" "Helm"
-    "M-m hd" "Describe"
-    "M-m hl" "Locate"
-    "M-m l" "Layouts"
-    "M-m p" "Projects"
-    "M-m q" "Quit"
-    "M-m s" "Search"
-    "M-m t" "Toggle"
-    "M-m w" "Window")
-  (which-key-mode 1))
-
 (use-package rainbow-mode
   :defer t
   :commands (rainbow-mode)
