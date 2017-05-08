@@ -288,6 +288,7 @@
   (bind-keys :map lispy-mode-map
              ("C-j" . avy-goto-word-or-subword-1)
              ("C-z" . avy-goto-line)
+             ("C-0" . lispy-describe-inline)
              ("M-m" . nil)
              (":" . self-insert-command))
   (bind-keys :map leader-map
