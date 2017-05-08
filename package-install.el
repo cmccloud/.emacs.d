@@ -71,11 +71,15 @@
                          ("gnu" . "http://elpa.gnu.org/packages/")))
 (package-refresh-contents)
 (dolist (pkg '(use-package
+                git-gutter
+                git-gutter-fringe
+                fringe-helper
                 page-break-lines
                 all-the-icons
                 bind-key
                 racket-mode
                 lispy
+                hydra
                 paradox
                 helm-dash
                 magit-gh-pulls
