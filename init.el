@@ -749,7 +749,8 @@
   (advice-add 'writeroom--disable :after
               (lambda () (text-scale-mode -1)))
   (bind-keys :map leader-map
-             ("td" . global-writeroom-mode)))
+             ("td" . writeroom-mode)
+             ("tD" . global-writeroom-mode)))
 
 (use-package shackle
   :config
