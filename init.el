@@ -536,7 +536,6 @@
 
 (use-package diff-hl
   :config
-  (global-diff-hl-mode)
   (with-eval-after-load 'magit
     (add-hook 'magit-post-refresh-hook
               'diff-hl-magit-post-refresh)))
@@ -775,6 +774,41 @@
 (use-package shackle
   :config
   (shackle-mode 1))
+
+(use-package git-gutter
+  :ensure t
+  :config
+  (use-package git-gutter-fringe
+    :ensure t)
+  (use-package fringe-helper
+    :ensure t)
+  (require 'fringe-helper)
+  (require 'git-gutter-fringe)
+  (global-git-gutter-mode)
+
+  (fringe-mode 8)
+  ;; (push `(left-fringe  . 3) default-frame-alist)
+  ;; (push `(right-fringe . 3) default-frame-alist)
+  ;; ;; slightly larger default frame size on startup
+  ;; (push '(width . 120) default-frame-alist)
+  ;; (push '(height . 40) default-frame-alist)
+  ;; (define-fringe-bitmap 'tilde [64 168 16] nil nil 'center)
+  ;; (set-fringe-bitmap-face 'tilde 'fringe)
+
+  ;; colored fringe "bars"
+  (define-fringe-bitmap 'git-gutter-fr:added
+    [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224
+         224 224 224 224 224 224 224 224 224]
+    nil nil 'center)
+  (define-fringe-bitmap 'git-gutter-fr:modified
+    [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224
+         224 224 224 224 224 224 224 224 224]
+    nil nil 'center)
+  (define-fringe-bitmap 'git-gutter-fr:deleted
+    [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
+    nil nil 'center)
+  
+  (add-hook 'focus-in-hook 'git-gutter:update-all-windows))
 
 ;; End Emacs Initialization
 ;; Re-enable Garbage Collection
