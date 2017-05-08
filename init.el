@@ -552,16 +552,7 @@
   (use-package git-gutter-fringe)
   (use-package fringe-helper)
   (global-git-gutter-mode)
-
-  (fringe-mode 8)
-  ;; (push `(left-fringe  . 3) default-frame-alist)
-  ;; (push `(right-fringe . 3) default-frame-alist)
-  ;; ;; slightly larger default frame size on startup
-  ;; (push '(width . 120) default-frame-alist)
-  ;; (push '(height . 40) default-frame-alist)
-  ;; (define-fringe-bitmap 'tilde [64 168 16] nil nil 'center)
-  ;; (set-fringe-bitmap-face 'tilde 'fringe)
-
+  
   ;; colored fringe "bars"
   (define-fringe-bitmap 'git-gutter-fr:added
     [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224
