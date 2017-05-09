@@ -225,7 +225,7 @@
              ("l4" . eyebrowse-switch-to-window-config-4)
              ("l5" . eyebrowse-switch-to-window-config-5)
              ("l6" . eyebrowse-switch-to-window-config-6)
-             ("ls" . eyebrowse-switch-to-window-config)
+             ("lS" . eyebrowse-switch-to-window-config)
              ("lr" . eyebrowse-rename-window-config)
              ("ld" . eyebrowse-close-window-config))
   :config
