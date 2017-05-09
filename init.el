@@ -903,14 +903,17 @@ Only for use with `advice-add'."
              ("tg" . toggle-golden-ratio)))
 
 (use-package writeroom
+  :commands (writeroom-mode
+             global-writeroom-mode)
   :init
+  (bind-keys :map leader-map
+             ("td" . writeroom-mode)
+             ("tD" . global-writeroom-mode))
+  :config
   (advice-add 'writeroom--enable :after
               (lambda () (text-scale-set 2)))
   (advice-add 'writeroom--disable :after
-              (lambda () (text-scale-mode -1)))
-  (bind-keys :map leader-map
-             ("td" . writeroom-mode)
-             ("tD" . global-writeroom-mode)))
+              (lambda () (text-scale-mode -1))))
 
 (use-package shackle
   :config
