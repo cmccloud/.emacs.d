@@ -488,7 +488,11 @@ Only for use with `advice-add'."
              helm-mini
              helm-projectile
              helm-apropos
-             helm-info)
+             helm-info
+             helm-show-kill-ring
+             helm-locate-library
+             helm-describe-function
+             helm-describe-variable)
   :diminish helm-mode
   :init
   (bind-keys ("M-x" . helm-M-x)
