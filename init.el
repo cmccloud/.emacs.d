@@ -22,6 +22,7 @@
 (use-package request :defer t)
 (use-package deferred :defer t)
 (use-package f :defer t)
+(use-package hydra)
 
 ;; Appearance and UI
 (setq doom-one-brighter-comments t)
@@ -395,8 +396,6 @@ Only for use with `advice-add'."
   :bind
   (("C-a" . lispy-move-beginning-of-line)
    ("C-e" . lispy-move-end-of-line)))
-
-(use-package hydra)
 
 (use-package elisp-slime-nav
   :diminish elisp-slime-nav-mode
