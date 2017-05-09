@@ -231,6 +231,64 @@
   :config
   (eyebrowse-mode))
 
+(use-package persp-mode
+  :init
+  (defvar persp-timed-auto-save-enable nil
+    "If t, persp-mode will save perspectives to file every
+`persp-mode-timed-auto-save-interval seconds. Nil to disable.")
+  (defvar persp-timed-auto-save-interval 600
+    "Interval, in seconds, between persp-mode auto-saves if
+`persp-timed-auto-save-enable is t.")
+  (defvar persp--timed-auto-save-handler nil
+    "Reference to handler for `persp-timed-auto-save")
+  :config
+  (defun persp-timed-auto-save ()
+    "Timed auto-save for `persp-mode.
+Saves persp-mode layouts every `persp-timed-auto-save-interval seconds.
+Cancels autosave on exiting persp-mode."
+    (if (and persp-mode persp-timed-auto-save-enable)
+        (progn
+          (message "Persp-mode timed auto-save enabled.")
+          (setq persp--timed-auto-save-handler
+                (run-with-timer
+                 persp-timed-auto-save-interval
+                 persp-timed-auto-save-interval
+                 (lambda ()
+                   (if persp-timed-auto-save-enable
+                       (progn (message "Saving perspectives to file.")
+                              (persp-save-state-to-file))
+                     (cancel-timer persp--timed-auto-save-handler)
+                     (setq persp--timed-auto-save-handler nil))))))
+      (when persp--timed-auto-save-handler
+        (cancel-timer persp--timed-auto-save-handler)
+        (setq persp--timed-auto-save-handler nil))))
+  
+  (setq persp-nil-name "@Nil"
+        persp-add-buffer-on-find-file t
+        persp-reset-windows-on-nil-window-conf t
+        persp-restrict-buffers-to-if-foreign-buffer nil
+        persp-save-dir (expand-file-name "cache/persp-confs/"
+                                         user-emacs-directory)
+        persp-set-last-persp-for-new-frames t
+        persp-switch-to-added-buffer nil
+        persp-switch-wrap t
+        persp-auto-save-opt 2
+        persp-autokill-buffer-on-remove nil)
+
+  ;; Helm integration
+  (with-eval-after-load 'helm
+    (defun persp--helm-mini (helm-mini)
+      "Wrapper for helm-mini for use with `persp-mode'.
+Only for use with `advice-add'."
+      (with-persp-buffer-list () (funcall helm-mini)))
+    (advice-add 'helm-mini :around
+                #'persp--helm-mini))
+
+  (bind-keys :map leader-map
+             ("tp" . persp-mode)
+             ("ls" . persp-switch)
+             ("la" . persp-add-buffer)))
+
 (use-package osx-trash
   :defer 10
   :if (memq system-type '(osx darwin))
