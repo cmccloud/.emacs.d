@@ -60,7 +60,9 @@
   (define-prefix-command 'leader-map)
   (bind-keys ("M-u" . undo)
              ("C-x C-c" . nil)
-             ("M-m" . leader-map))
+             ("M-m" . leader-map)
+             ("M-n" . next-buffer)
+             ("M-p" . previous-buffer))
   (bind-keys :map leader-map
              ("tF" . toggle-frame-fullscreen)
              ("bd" . kill-this-buffer)
