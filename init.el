@@ -159,7 +159,13 @@
   :init
   (setenv "NODE_NO_READLINE" "1")
   (bind-keys :map leader-map
-             ("ae" . eshell)))
+             ("ae" . eshell))
+  :config
+  (add-hook 'eshell-mode-hook
+            (lambda ()
+              (bind-keys :map eshell-mode-map
+                         ("M-n" . nil)
+                         ("M-p" . nil)))))
 
 (use-package yasnippet
   :defer t
@@ -318,6 +324,7 @@
              ("C-z" . avy-goto-line)
              ("C-0" . lispy-describe-inline)
              ("M-m" . nil)
+             ("M-n" . nil)
              (":" . self-insert-command))
   (bind-keys :map leader-map
              ("M-m" . lispy-mark-symbol))
