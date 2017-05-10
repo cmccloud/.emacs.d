@@ -278,19 +278,88 @@ Cancels autosave on exiting persp-mode."
         persp-autokill-buffer-on-remove nil)
   (add-hook 'persp-mode-hook #'persp-timed-auto-save)
 
-  ;; Helm integration
-  (with-eval-after-load 'helm
+  ;; Integrations with other buffer management tools
+  (advice-add 'next-buffer :around
+              (lambda (next-buffer)
+                (with-persp-buffer-list () (funcall next-buffer))))
+  (advice-add 'previous-buffer :around
+              (lambda (previous-buffer)
+                (with-persp-buffer-list () (funcall previous-buffer))))
+  
+  (with-eval-after-load 'helm-buffers
+    (defvar helm-persp-current-buffers-cache nil)
+    (defvar helm-persp-filtered-buffers-cache nil)
+
+    (defclass helm-persp-current-buffers-source (helm-source-buffers)
+      ((candidates
+        :initform #'(lambda ()
+                      (if helm-persp-current-buffers-cache
+                          helm-persp-current-buffers-cache
+                        (setq helm-persp-current-buffers-cache
+                              (mapcar #'buffer-name
+                                      (persp-buffer-list-restricted nil 0))))))
+       (cleanup
+        :initform #'(lambda () (setq helm-persp-current-buffers-cache nil)))))
+    (defclass helm-persp-filtered-buffers-source (helm-source-buffers)
+      ((candidates
+        :initform #'(lambda ()
+                      (if helm-persp-filtered-buffers-cache
+                          helm-persp-filtered-buffers-cache
+                        (setq helm-persp-filtered-buffers-cache
+                              (mapcar #'buffer-name
+                                      (persp-buffer-list-restricted nil 1))))))
+       (cleanup
+        :initform #'(lambda () (setq helm-persp-filtered-buffers-cache nil)))))
+
+    (defvar helm-source-persp-current-buffers
+      (helm-make-source "Current buffers"
+          'helm-persp-current-buffers-source
+        :fuzzy-match t))
+    (defvar helm-source-persp-filtered-buffers
+      (helm-make-source "Other buffers"
+          'helm-persp-filtered-buffers-source
+        :fuzzy-match t))
+
+    (helm-add-action-to-source "Remove buffer(s) from current perspective."
+                               (lambda (candidate)
+                                 (mapcar 'persp-remove-buffer
+                                         (helm-marked-candidates)))
+                               helm-source-persp-current-buffers 0) 
+    (helm-add-action-to-source "Add buffer(s) to current perspective."
+                               (lambda (candidate)
+                                 (mapcar 'persp-add-buffer
+                                         (helm-marked-candidates)))
+                               helm-source-persp-filtered-buffers 0)
+
+    (defun helm-persp-add-buffers-to-perspective ()
+      (interactive)
+      (helm
+       :buffer "*helm perspectives add buffer*"
+       :sources '(helm-source-persp-filtered-buffers)))
+
+    (defun helm-persp-remove-buffers-from-perspective ()
+      (interactive)
+      (helm
+       :buffer "*helm perspectives remove buffer*"
+       :sources '(helm-source-persp-current-buffers)))
+
     (defun persp--helm-mini (helm-mini)
       "Wrapper for helm-mini for use with `persp-mode'.
 Only for use with `advice-add'."
       (with-persp-buffer-list () (funcall helm-mini)))
+
     (advice-add 'helm-mini :around
-                #'persp--helm-mini))
+                #'persp--helm-mini)
+    
+    (bind-keys :map leader-map
+               ("la" . helm-persp-add-buffers-to-perspective)
+               ("lr" . helm-persp-remove-buffers-from-perspective)))
 
   (bind-keys :map leader-map
              ("tp" . persp-mode)
              ("ls" . persp-switch)
-             ("la" . persp-add-buffer)))
+             ("la" . persp-add-buffer)
+             ("lr" . persp-remove-buffer)))
 
 (use-package osx-trash
   :defer 10
