@@ -234,7 +234,7 @@
 
 (use-package persp-mode
   :init
-  (defvar persp-timed-auto-save-enable nil
+  (defvar persp-timed-auto-save-enable t
     "If t, persp-mode will save perspectives to file every
 `persp-mode-timed-auto-save-interval seconds. Nil to disable.")
   (defvar persp-timed-auto-save-interval 600
@@ -275,6 +275,7 @@ Cancels autosave on exiting persp-mode."
         persp-switch-wrap t
         persp-auto-save-opt 2
         persp-autokill-buffer-on-remove nil)
+  (add-hook 'persp-mode-hook #'persp-timed-auto-save)
 
   ;; Helm integration
   (with-eval-after-load 'helm
