@@ -577,6 +577,8 @@ Only for use with `advice-add'."
 (use-package helm-descbinds
   :after (helm)
   :defer t
+  :config
+  (setq helm-descbinds-window-style 'split-window)
   :bind
   (("C-h b" . helm-descbinds)))
 
