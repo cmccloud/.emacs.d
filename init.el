@@ -633,7 +633,17 @@ Only for use with `advice-add'."
              magit-commit)
   :init
   (bind-keys :map leader-map
-             ("gs" . magit-status)))
+             ("gs" . magit-status))
+  :config
+  (bind-keys :map magit-process-mode-map
+             ("M-n" . nil)
+             ("M-p" . nil))
+  (bind-keys :map magit-diff-mode-map
+             ("M-n" . nil)
+             ("M-p" . nil))
+  (bind-keys :map magit-status-mode-map
+             ("M-n" . nil)
+             ("M-p" . nil)))
 
 (use-package magit-gh-pulls
   :defer t
