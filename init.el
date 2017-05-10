@@ -386,7 +386,9 @@ Only for use with `advice-add'."
              ("C-0" . lispy-describe-inline)
              ("M-m" . nil)
              ("M-n" . nil)
-             (":" . self-insert-command))
+             (":" . self-insert-command)
+             ("[" . self-insert-command)
+             ("]" . self-insert-command))
   (bind-keys :map leader-map
              ("M-m" . lispy-mark-symbol))
   ;; Prevent semantic mode errors when using
