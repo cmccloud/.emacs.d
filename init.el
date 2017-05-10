@@ -920,11 +920,12 @@ Only for use with `advice-add'."
   (bind-keys :map leader-map
              ("td" . writeroom-mode)
              ("tD" . global-writeroom-mode))
-  :config
-  (advice-add 'writeroom--enable :after
-              (lambda () (text-scale-set 2)))
-  (advice-add 'writeroom--disable :after
-              (lambda () (text-scale-mode -1))))
+  (defun writeroom-scale-text ()
+    (if (or writeroom-mode global-writeroom-mode)
+        (text-scale-set 2)
+      (text-scale-mode -1)))
+  (add-hook 'writeroom-mode-hook #'writeroom-scale-text)
+  (add-hook 'global-writeroom-mode-hook #'writeroom-scale-text))
 
 (use-package shackle
   :config
