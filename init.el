@@ -72,7 +72,8 @@
              ("wd" . delete-window)
              ("wm" . delete-other-windows)
              ("wv" . split-window-below)
-             ("qq" . save-buffers-kill-emacs)))
+             ("qq" . save-buffers-kill-emacs)
+             ("ad" . dired)))
 
 (use-package diminish
   :defer t
