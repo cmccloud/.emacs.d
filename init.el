@@ -564,7 +564,9 @@ Only for use with `advice-add'."
              helm-show-kill-ring
              helm-locate-library
              helm-describe-function
-             helm-describe-variable)
+             helm-describe-variable
+             helm-next-interesting-buffer
+             helm-previous-interesting-buffer)
   :diminish helm-mode
   :init
   (bind-keys ("M-x" . helm-M-x)
@@ -572,7 +574,9 @@ Only for use with `advice-add'."
              ("C-x C-b" . helm-mini)
              ("C-h a" . helm-apropos)
              ("C-h i" . helm-info)
-             ("C-h F" . find-function))
+             ("C-h F" . find-function)
+             ("M-n" . helm-next-interesting-buffer)
+             ("M-p" . helm-previous-interesting-buffer))
   (bind-keys :map leader-map
              ("fl" . helm-locate)
              ("ff" . helm-find-files)
@@ -582,10 +586,27 @@ Only for use with `advice-add'."
              ("hk" . helm-show-kill-ring)
              ("hll" . helm-locate-library))
   :config
-  (bind-keys :map helm-map
-             ("C-z" . helm-select-action)
-             ("<tab>" . helm-execute-persistent-action)
-             ("TAB" . helm-execute-persistent-action))
+  (defun helm--change-buffer (change-buffer)
+    "Call CHANGE-BUFFER until current buffer is not in `helm-boring-buffer-regexp-list'."
+    (let ((initial (current-buffer)))
+      (funcall change-buffer)
+      (let ((first-change (current-buffer)))
+        (catch 'loop
+          (while (--some (string-match it (buffer-name)) helm-boring-buffer-regexp-list)
+            (funcall change-buffer)
+            (when (eq (current-buffer) first-change)
+              (switch-to-buffer initial)
+              (throw 'loop t)))))))
+  
+  (defun helm-next-interesting-buffer ()
+    "As `next-buffer' but respects `helm-boring-buffer-regexp-list'."
+    (interactive)
+    (helm--change-buffer 'next-buffer))
+  
+  (defun helm-previous-interesting-buffer ()
+    "As `previous-buffer' but respects `helm-boring-buffer-regexp-list'."
+    (interactive)
+    (helm--change-buffer 'previous-buffer))
   
   (setq helm-M-x-fuzzy-match nil
         helm-autoresize-max-height 30
@@ -605,9 +626,13 @@ Only for use with `advice-add'."
         helm-split-window-in-side-p t
         helm-swoop-speed-or-color t
         helm-swoop-split-with-multiple-windows t)
-  
   (use-package helm-config)
-  (helm-mode 1))
+  (helm-mode 1)
+  
+  (bind-keys :map helm-map
+             ("C-z" . helm-select-action)
+             ("<tab>" . helm-execute-persistent-action)
+             ("TAB" . helm-execute-persistent-action)))
 
 (use-package helm-projectile
   :defer t
