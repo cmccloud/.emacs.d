@@ -632,7 +632,9 @@ Only for use with `advice-add'."
   (bind-keys :map helm-map
              ("C-z" . helm-select-action)
              ("<tab>" . helm-execute-persistent-action)
-             ("TAB" . helm-execute-persistent-action)))
+             ("TAB" . helm-execute-persistent-action)
+             ("C-M-n" . helm-scroll-other-window)
+             ("C-M-p" . helm-scroll-other-window-down)))
 
 (use-package helm-projectile
   :defer t
