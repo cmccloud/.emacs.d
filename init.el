@@ -754,6 +754,9 @@ Only for use with `advice-add'."
   :diminish 'git-gutter-mode 
   :config
   (global-git-gutter-mode)
+  (with-eval-after-load 'magit
+    (add-hook 'magit-post-refresh-hook
+              #'git-gutter:update-all-windows))
   (with-eval-after-load 'hydra
     (defhydra hydra-git-gutter (:columns 3 :exit nil :foreign-keys warn)
       "Git Gutter"
