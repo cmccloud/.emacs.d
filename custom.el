@@ -268,5 +268,6 @@
  '(git-gutter:modified ((t (:background "RoyalBlue2" :weight bold))))
  '(helm-candidate-number ((t nil)))
  '(hl-line ((t (:inherit helm-selection))))
+ '(persp-face-lighter-buffer-not-in-persp ((t nil)))
  '(region ((t (:background "slate grey"))))
  '(show-paren-match ((t nil))))
