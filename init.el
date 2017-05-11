@@ -1030,7 +1030,30 @@ Only for use with `advice-add'."
 
 (use-package shackle
   :config
-  (shackle-mode 1))
+  (defun shackle-release-help (func &rest args)
+    "Runs func in shackle context with *Help* buffers left free."
+    (let ((shackle-rules
+           (--remove-first (s-equals-p (car it) "*Help*")
+                           shackle-rules)))
+      (apply func args)))
+  (shackle-mode 1)
+  (setq shackle-rules
+        '(("*Process List*" :select t :align t :size 0.4)
+          ("*Apropos*" :select t :align t :size 0.4)
+          ("Outline.*pdf" :regexp t :select t :align (quote left) :size 0.3)
+          ("*Geiser documentation*" :select t :align t :size 0.4)
+          ("*slime-description*" :select t :align t :size 0.4)
+          ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
+          ("*Help*" :select t :align t :size 0.4)
+          ("*Completions*" :select t :align t :size 0.4)
+          ("*Compile-Log*" :select t :align t :size 0.4)
+          ("*Man.*" :regexp t :select t :align t :size 0.4)
+          ("*lispy-goto*" :align (quote below) :size 0.4)))
+
+  (with-eval-after-load 'helm
+    (advice-add 'helm-execute-persistent-action
+                :around
+                #'shackle-release-help)))
 
 ;; End Emacs Initialization
 ;; Re-enable Garbage Collection
