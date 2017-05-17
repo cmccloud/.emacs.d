@@ -100,6 +100,13 @@
     "M-m w" "Window")
   (which-key-mode 1))
 
+(use-package paradox
+  :defer t
+  :commands (paradox-list-packages)
+  :config
+  (paradox-enable)
+  (setq paradox-lines-per-entry 1))
+
 (use-package autorevert
   :diminish auto-revert-mode
   :config
