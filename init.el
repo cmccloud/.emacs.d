@@ -586,17 +586,30 @@ Only for use with `advice-add'."
              ("hk" . helm-show-kill-ring)
              ("hll" . helm-locate-library))
   :config
-  (defun helm--change-buffer (change-buffer)
-    "Call CHANGE-BUFFER until current buffer is not in `helm-boring-buffer-regexp-list'."
+  ;; TODO - Move this to more general location
+  ;; All these definitions should go into an integration package
+  ;; For the time being it only affects helm, later might also
+  ;; affect purpose
+  (defun filtered--change-buffer (pred change-buffer)
+    "Call CHANGE-BUFFER until pred returns nil on the current buffer.."
     (let ((initial (current-buffer)))
       (funcall change-buffer)
       (let ((first-change (current-buffer)))
         (catch 'loop
-          (while (--some (string-match it (buffer-name)) helm-boring-buffer-regexp-list)
+          (while (funcall pred (current-buffer))
             (funcall change-buffer)
             (when (eq (current-buffer) first-change)
               (switch-to-buffer initial)
               (throw 'loop t)))))))
+
+  (defun helm--change-buffer (change-buffer)
+    "Call change bufffer until current buffer does not match any pattern in
+`helm-boring-buffer-regexp-list'."
+    (funcall 'filtered--change-buffer
+             (lambda (buffer)
+               (--some (string-match it (buffer-name buffer))
+                       helm-boring-buffer-regexp-list))
+             change-buffer))
   
   (defun helm-next-interesting-buffer ()
     "As `next-buffer' but respects `helm-boring-buffer-regexp-list'."
