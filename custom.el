@@ -154,6 +154,7 @@
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(ns-alternate-modifier (quote super))
  '(ns-command-modifier (quote meta))
+ '(org-agenda-files (quote ("~/.emacs.d/emacs-todo.org")))
  '(org-ellipsis "  ")
  '(package-selected-packages
    (quote
