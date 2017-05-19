@@ -84,7 +84,7 @@
   :diminish which-key-mode
   :config
   (which-key-add-key-based-replacements
-    "M-m b" "Buffers" 
+    "M-m b" "Buffers"
     "M-m f" "Files"
     "M-m a" "Applications"
     "M-m g" "Git"
