@@ -559,6 +559,13 @@ Only for use with `advice-add'."
   (("C-j" . avy-goto-word-or-subword-1)
    ("C-z" . avy-goto-line)))
 
+(use-package dumb-jump
+  :disabled t
+  :commands (dumb-jump-mode
+             dumb-jump-go
+             dumb-jump-back
+             dumb-jump-quick-look))
+
 (use-package helm
   :defer t
   :commands (helm-M-x
