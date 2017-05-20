@@ -44,7 +44,7 @@
  '(custom-file "/Users/Macnube/.emacs.d/custom.el")
  '(custom-safe-themes
    (quote
-    ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "f03e2076bb6ba9f1178ef83f54b395c48c70dd160a34e37c80c876c925701b5a" "db2ecce0600e3a5453532a89fc19b139664b4a3e7cbefce3aaf42b6d9b1d6214" "e1e94aaecf0d3ed7bc6cdcebb02aafbf2a0236e711f4a78783337f8b0d32c842" "413a1712dfb0929cca961863482094057217bcb13475b4b813b35ea81da8e2e6" "5fea012429d3e720b7adc598295157befc00af4f3d433255087b407bf3a9ab71" "c31b688a76507c3b0458ae9d3848e3196346aeeadde457df5f828c7dc3e59fe3" "b40f4579788b1e990c553c163a4d294ac9d5a2a4615b1d1a757812ea427f8d50" "2f5dd0ac7dffdc0acf0aa15c9b7a5b1f86c37b9e11800325160b89c1b8a6fefe" "afbb40954f67924d3153f27b6d3399df221b2050f2a72eb2cfa8d29ca783c5a8" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default)))
+    ("e91ca866d6cbb79786e314e0466f4f1b8892b72e77ed702e53bf7565e0dfd469" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "f03e2076bb6ba9f1178ef83f54b395c48c70dd160a34e37c80c876c925701b5a" "db2ecce0600e3a5453532a89fc19b139664b4a3e7cbefce3aaf42b6d9b1d6214" "e1e94aaecf0d3ed7bc6cdcebb02aafbf2a0236e711f4a78783337f8b0d32c842" "413a1712dfb0929cca961863482094057217bcb13475b4b813b35ea81da8e2e6" "5fea012429d3e720b7adc598295157befc00af4f3d433255087b407bf3a9ab71" "c31b688a76507c3b0458ae9d3848e3196346aeeadde457df5f828c7dc3e59fe3" "b40f4579788b1e990c553c163a4d294ac9d5a2a4615b1d1a757812ea427f8d50" "2f5dd0ac7dffdc0acf0aa15c9b7a5b1f86c37b9e11800325160b89c1b8a6fefe" "afbb40954f67924d3153f27b6d3399df221b2050f2a72eb2cfa8d29ca783c5a8" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default)))
  '(diff-hl-margin-mode nil)
  '(diff-hl-side (quote right))
  '(echo-keystrokes 0.2)
@@ -158,7 +158,7 @@
  '(org-ellipsis "  ")
  '(package-selected-packages
    (quote
-    (company-quickhelp dumb-jump doom-themes git-commit lispy use-package zenburn-theme persp-mode swiper-helm helm helm-ag helm-core helm-descbinds helm-describe-modes helm-projectile helm-swoop helm-themes bind-key hydra git-gutter-fringe git-gutter hc-zenburn-theme zerodark-theme spacegray-theme spacemacs-theme page-break-lines challenger-deep-theme spaceline-all-the-icons spaceline powerline all-the-icons general writeroom-mode visual-fill-column darkroom magit-gh-pulls impatient-mode company-web rainbow-mode company-tern clojure-mode paradox pdf-tools multiple-cursors expand-region web-mode emmet-mode gist f request-deferred deferred request shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode nodejs-repl auctex eyebrowse golden-ratio flycheck slime-company slime arjen-grey-theme white-sand-theme paper-theme skewer-mode js-doc racket-mode geiser osx-trash projectile ggtags smooth-scrolling elisp-slime-nav window-numbering smartparens shackle magit js2-mode exec-path-from-shell cider avy)))
+    (hlinum nlinum eldoc-eval company-quickhelp dumb-jump doom-themes git-commit lispy use-package zenburn-theme persp-mode swiper-helm helm helm-ag helm-core helm-descbinds helm-describe-modes helm-projectile helm-swoop helm-themes bind-key hydra git-gutter-fringe git-gutter hc-zenburn-theme zerodark-theme spacegray-theme spacemacs-theme page-break-lines challenger-deep-theme spaceline-all-the-icons spaceline powerline all-the-icons general writeroom-mode visual-fill-column darkroom magit-gh-pulls impatient-mode company-web rainbow-mode company-tern clojure-mode paradox pdf-tools multiple-cursors expand-region web-mode emmet-mode gist f request-deferred deferred request shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode nodejs-repl auctex eyebrowse golden-ratio flycheck slime-company slime arjen-grey-theme white-sand-theme paper-theme skewer-mode js-doc racket-mode geiser osx-trash projectile ggtags smooth-scrolling elisp-slime-nav window-numbering smartparens shackle magit js2-mode exec-path-from-shell cider avy)))
  '(paradox-column-width-package 30)
  '(paradox-execute-asynchronously t)
  '(paradox-github-token t)
@@ -271,6 +271,5 @@
  '(git-gutter:modified ((t (:background "RoyalBlue2" :weight bold))))
  '(helm-candidate-number ((t nil)))
  '(hl-line ((t (:inherit helm-selection))))
- '(persp-face-lighter-buffer-not-in-persp ((t nil)))
  '(region ((t (:background "slate grey"))))
  '(show-paren-match ((t nil))))
