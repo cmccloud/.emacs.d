@@ -83,6 +83,7 @@
 (use-package which-key
   :diminish which-key-mode
   :config
+  (setq which-key-sort-order 'which-key-prefix-then-key-order-reverse)
   (which-key-add-key-based-replacements
     "M-m b" "Buffers"
     "M-m f" "Files"
