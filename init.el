@@ -695,7 +695,9 @@ Only for use with `advice-add'."
   :after (helm)
   :defer t
   :bind
-  (("C-s" . helm-swoop)))
+  (("C-s" . helm-swoop))
+  :config
+  (setq helm-swoop-candidate-number-limit 500))
 
 (use-package helm-descbinds
   :after (helm)
