@@ -12,17 +12,21 @@
 ;; Package Initialization
 (package-initialize)
 (require 'use-package)
+(setq use-package-always-defer t
+      use-package-verbose t)
+(add-hook 'after-init-hook
+          (lambda () (message (concat "Emacs started in: " (emacs-init-time)))))
 
 ;; Libraries
-(use-package dash)
-(use-package s)
+(use-package dash :demand t)
+(use-package s :demand t)
+(use-package hydra :demand t)
 (use-package seq)
-(use-package map :defer t)
-(use-package dash-functional :defer t)
-(use-package request :defer t)
-(use-package deferred :defer t)
-(use-package f :defer t)
-(use-package hydra)
+(use-package map)
+(use-package dash-functional)
+(use-package request)
+(use-package deferred)
+(use-package f)
 
 ;; Appearance and UI
 (use-package doom-themes
@@ -773,12 +777,13 @@ of `iedit' regions."
 
 
 (use-package page-break-lines
-  :diminish 'page-break-lines-mode
+  :demand t
   :config
   (global-page-break-lines-mode))
 
 ;; Packages
 (use-package bind-key
+  :demand t
   :config
   (define-prefix-command 'leader-map)
   (bind-keys ("M-u" . undo)
@@ -803,6 +808,7 @@ of `iedit' regions."
   (diminish 'visual-line-mode))
 
 (use-package which-key
+  :demand t
   :diminish which-key-mode
   :config
   (setq which-key-sort-order 'which-key-prefix-then-key-order-reverse)
@@ -811,7 +817,8 @@ of `iedit' regions."
     "M-m f" "Files"
     "M-m a" "Applications"
     "M-m g" "Git"
-    "M-m gg" "Gist"
+    "M-m gg" "Git Gutter"
+    "M-m gG" "Gist"
     "M-m h" "Helm"
     "M-m hd" "Describe"
     "M-m hl" "Locate"
@@ -824,21 +831,20 @@ of `iedit' regions."
   (which-key-mode 1))
 
 (use-package paradox
-  :defer t
   :commands (paradox-list-packages)
   :config
   (paradox-enable)
   (setq paradox-lines-per-entry 1))
 
 (use-package autorevert
-  :diminish auto-revert-mode
+  :demand t
   :config
   (global-auto-revert-mode))
 
 (use-package hl-line
   :defer t
   :init
-  (add-hook 'emacs-lisp-mode-hook #'hl-line-mode)
+  (add-hook 'prog-mode-hook #'hl-line-mode)
   :config
   (setq hl-line-sticky-flag nil
         global-hl-line-sticky-flag nil)
@@ -967,8 +973,10 @@ of `iedit' regions."
   (eyebrowse-mode))
 
 (use-package persp-mode
-  :demand t
-  :commands (persp-mode)
+  :commands (persp-mode
+             persp-switch
+             persp-add-buffer
+             persp-remove-buffer)
   :init
   (defvar persp-timed-auto-save-enable t
     "If t, persp-mode will save perspectives to file every
@@ -978,6 +986,11 @@ of `iedit' regions."
 `persp-timed-auto-save-enable is t.")
   (defvar persp--timed-auto-save-handler nil
     "Reference to handler for `persp-timed-auto-save")
+  (bind-keys :map leader-map
+             ("tp" . persp-mode)
+             ("ls" . persp-switch)
+             ("la" . persp-add-buffer)
+             ("lr" . persp-remove-buffer))
   :config
   (defun persp-timed-auto-save ()
     "Timed auto-save for `persp-mode.
@@ -1088,13 +1101,7 @@ Only for use with `advice-add'."
     
     (bind-keys :map leader-map
                ("la" . helm-persp-add-buffers-to-perspective)
-               ("lr" . helm-persp-remove-buffers-from-perspective)))
-
-  (bind-keys :map leader-map
-             ("tp" . persp-mode)
-             ("ls" . persp-switch)
-             ("la" . persp-add-buffer)
-             ("lr" . persp-remove-buffer)))
+               ("lr" . helm-persp-remove-buffers-from-perspective))))
 
 (use-package osx-trash
   :defer 10
@@ -1144,7 +1151,6 @@ Only for use with `advice-add'."
     (add-hook 'emacs-lisp-mode-hook #'company-mode t)))
 
 (use-package smartparens
-  :defer t
   :commands (smartparens-mode
              smartparens-strict-mode
              show-smartparens-mode
@@ -1160,7 +1166,7 @@ Only for use with `advice-add'."
   (with-eval-after-load 'markdown-mode
     (add-hook 'markdown-mode-hook #'smartparens-mode))
   :config
-  (use-package smartparens-config)
+  (use-package smartparens-config :demand t)
   (show-smartparens-global-mode))
 
 (use-package expand-region
@@ -1511,7 +1517,7 @@ Only for use with `advice-add'."
   (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
 
 (use-package git-gutter
-  :diminish 'git-gutter-mode 
+  :demand t
   :config
   (global-git-gutter-mode)
   (with-eval-after-load 'magit
@@ -1774,13 +1780,14 @@ Only for use with `advice-add'."
   (bind-keys :map leader-map
              ("tg" . toggle-golden-ratio)))
 
-(use-package writeroom
+(use-package writeroom-mode
   :commands (writeroom-mode
              global-writeroom-mode)
   :init
   (bind-keys :map leader-map
              ("td" . writeroom-mode)
              ("tD" . global-writeroom-mode))
+  :config
   (defun writeroom-scale-text ()
     (if (or writeroom-mode global-writeroom-mode)
         (text-scale-set 2)
@@ -1788,7 +1795,11 @@ Only for use with `advice-add'."
   (add-hook 'writeroom-mode-hook #'writeroom-scale-text)
   (add-hook 'global-writeroom-mode-hook #'writeroom-scale-text))
 
+(use-package face-remap
+  :after writeroom)
+
 (use-package shackle
+  :demand t
   :config
   (defun shackle-release-help (func &rest args)
     "Runs func in shackle context with *Help* buffers left free."

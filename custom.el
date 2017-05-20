@@ -251,7 +251,7 @@
  '(weechat-color-list
    (unspecified "#272822" "#49483E" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0"))
  '(which-key-mode t)
- '(which-key-sort-order (quote which-key-key-order))
+ '(which-key-sort-order (quote which-key-prefix-then-key-order-reverse))
  '(writeroom-global-effects
    (quote
     (writeroom-set-alpha writeroom-set-menu-bar-lines writeroom-set-tool-bar-lines writeroom-set-vertical-scroll-bars writeroom-set-bottom-divider-width))))
@@ -272,4 +272,5 @@
  '(helm-candidate-number ((t nil)))
  '(hl-line ((t (:inherit helm-selection))))
  '(region ((t (:background "slate grey"))))
- '(show-paren-match ((t nil))))
+ '(show-paren-match ((t nil)))
+ '(which-key-group-description-face ((t (:foreground "#a9a1e1" :weight semi-bold)))))
