@@ -86,7 +86,11 @@
               visible-cursor nil
               ring-bell-function #'ignore
               visible-bell nil
-              apropos-do-all t)
+              apropos-do-all t
+              auto-save-default nil
+              create-lockfiles nil
+              history-length 1000
+              make-backup-files nil)
 
 (fset #'yes-or-no-p #'y-or-n-p)
 
