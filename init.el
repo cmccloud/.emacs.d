@@ -1055,7 +1055,7 @@ Cancels autosave on exiting persp-mode."
         (cancel-timer persp--timed-auto-save-handler)
         (setq persp--timed-auto-save-handler nil))))
   
-  (setq persp-nil-name "@Nil"
+  (setq persp-nil-name "Home"
         persp-add-buffer-on-find-file t
         persp-reset-windows-on-nil-window-conf t
         persp-restrict-buffers-to-if-foreign-buffer nil
