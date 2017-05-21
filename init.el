@@ -76,7 +76,8 @@
               use-dialog-box nil
               visible-cursor nil
               ring-bell-function #'ignore
-              visible-bell nil)
+              visible-bell nil
+              apropos-do-all t)
 
 (fset #'yes-or-no-p #'y-or-n-p)
 
