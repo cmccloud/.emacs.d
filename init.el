@@ -1539,7 +1539,7 @@ Only for use with `advice-add'."
              projectile-switch-to-buffer
              projectile-vc)
   :config
-  (projectile-global-mode))
+  (projectile-mode))
 
 (use-package magit
   :defer t
