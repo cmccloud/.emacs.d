@@ -1352,7 +1352,8 @@ Only for use with `advice-add'."
              ("hdf" . describe-function)
              ("hdv" . describe-variable)
              ("hk" . helm-show-kill-ring)
-             ("hll" . helm-locate-library))
+             ("hll" . helm-locate-library)
+             ("hb" . helm-filtered-bookmarks))
   :config
   ;; TODO - Move this to more general location
   ;; All these definitions should go into an integration package
