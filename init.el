@@ -1314,11 +1314,13 @@ Only for use with `advice-add'."
    ("C-z" . avy-goto-line)))
 
 (use-package dumb-jump
-  :disabled t
   :commands (dumb-jump-mode
              dumb-jump-go
              dumb-jump-back
-             dumb-jump-quick-look))
+             dumb-jump-quick-look)
+  :config
+  (setq dumb-jump-force-searcher 'ag
+        dumb-jump-selector 'helm))
 
 (use-package helm
   :defer t
