@@ -79,6 +79,7 @@
               jit-lock-stealth-nice 0.1
               jit-lock-stealth-time 0.2
               jit-lock-stealth-verbose nil
+              compilation-scroll-output t 
               use-dialog-box nil
               visible-cursor nil
               ring-bell-function #'ignore
