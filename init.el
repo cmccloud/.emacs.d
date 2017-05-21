@@ -1211,7 +1211,7 @@ Only for use with `advice-add'."
              ("M-m" . nil)
              ("M-n" . nil)
              (":" . self-insert-command)
-             ("[" . self-insert-command)
+             ("[" . lispy-brackets)
              ("]" . self-insert-command))
 
   ;; Until we find a better alternative, use i-menu for tag navigation
