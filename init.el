@@ -78,6 +78,11 @@
   (use-package hlinum :demand t)
   (hlinum-activate))
 
+(use-package face-remap
+  :commands (text-scale-mode
+             text-scale-set
+             text-scale-mode-amount))
+
 ;;; ### FROM DOOM UI CORE  AND CORE###
 (when (fboundp 'set-charset-priority)
   (set-charset-priority 'unicode))     
@@ -1846,9 +1851,6 @@ Only for use with `advice-add'."
       (text-scale-mode -1)))
   (add-hook 'writeroom-mode-hook #'writeroom-scale-text)
   (add-hook 'global-writeroom-mode-hook #'writeroom-scale-text))
-
-(use-package face-remap
-  :after writeroom)
 
 (use-package shackle
   :demand t
