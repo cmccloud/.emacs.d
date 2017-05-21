@@ -48,14 +48,11 @@
     (doom-themes-nlinum-config)))
 
 (use-package linum
-  :disabled  t
   :commands linum-mode
   :preface (defvar linum-format "%4d ")
   :init
-  (defun linum-maybe-activate ()
-    (unless (eq major-mode 'org-mode) (linum-mode +1)))
-  (add-hook 'text-mode-hook #'linum-maybe-activate)
-  (add-hook 'prog-mode-hook #'linum-maybe-activate)
+  (bind-keys :map leader-map
+             ("tl" . linum-mode))
   :config
   (use-package hlinum :demand t)
   (hlinum-activate))
