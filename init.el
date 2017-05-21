@@ -1200,14 +1200,20 @@ Only for use with `advice-add'."
              (":" . self-insert-command)
              ("[" . self-insert-command)
              ("]" . self-insert-command))
+
+  ;; Until we find a better alternative, use i-menu for tag navigation
+  (lispy-define-key lispy-mode-map "g" 'helm-imenu-in-all-buffers)
+  (lispy-define-key lispy-mode-map "G" 'helm-imenu)
   (bind-keys :map leader-map
              ("M-m" . lispy-mark-symbol))
-  ;; Prevent semantic mode errors when using
-  ;; lispy goto
-  (advice-add 'special-lispy-goto
-              :after
-              (defun lispy--supress-semantic ()
-                (semantic-mode -1)))
+
+  ;; Do everything we can to prevent semantic from killing emacs
+  (dolist (command '(lispy-goto
+                     lispy-goto-recursive
+                     lispy-goto-local
+                     lispy-goto-elisp-commands
+                     lispy-goto-projectile))
+    (fset command #'ignore))
   :bind
   (("C-a" . lispy-move-beginning-of-line)
    ("C-e" . lispy-move-end-of-line)))
