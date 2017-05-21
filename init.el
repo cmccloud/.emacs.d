@@ -28,6 +28,27 @@
 (use-package deferred)
 (use-package f)
 
+;; Keybinds
+(use-package bind-key
+  :demand t
+  :config
+  (define-prefix-command 'leader-map)
+  (bind-keys ("M-u" . undo)
+             ("C-x C-c" . nil)
+             ("M-m" . leader-map)
+             ("M-n" . next-buffer)
+             ("M-p" . previous-buffer))
+  (bind-keys :map leader-map
+             ("tF" . toggle-frame-fullscreen)
+             ("bd" . kill-this-buffer)
+             ("br" . rename-buffer)
+             ("ws" . split-window-right)
+             ("wd" . delete-window)
+             ("wm" . delete-other-windows)
+             ("wv" . split-window-below)
+             ("qq" . save-buffers-kill-emacs)
+             ("ad" . dired)))
+
 ;; Appearance and UI
 (use-package doom-themes
   :demand t
@@ -794,26 +815,6 @@ of `iedit' regions."
   (global-page-break-lines-mode))
 
 ;; Packages
-(use-package bind-key
-  :demand t
-  :config
-  (define-prefix-command 'leader-map)
-  (bind-keys ("M-u" . undo)
-             ("C-x C-c" . nil)
-             ("M-m" . leader-map)
-             ("M-n" . next-buffer)
-             ("M-p" . previous-buffer))
-  (bind-keys :map leader-map
-             ("tF" . toggle-frame-fullscreen)
-             ("bd" . kill-this-buffer)
-             ("br" . rename-buffer)
-             ("ws" . split-window-right)
-             ("wd" . delete-window)
-             ("wm" . delete-other-windows)
-             ("wv" . split-window-below)
-             ("qq" . save-buffers-kill-emacs)
-             ("ad" . dired)))
-
 (use-package diminish
   :defer t
   :config
