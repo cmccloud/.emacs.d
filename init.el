@@ -553,6 +553,20 @@ directory, the file name, and its state (modified, read-only or non-existent)."
                   (propertize file-path 'face `(:inherit ,faces))
                 file-path)))))
 
+(def-modeline-segment! persp-name
+  "Displays the current perspective if `persp-mode' is active.
+Signals whether current-buffer is a part of the current perspective."
+  (when (bound-and-true-p persp-mode)
+    (let* ((current (get-current-persp))
+           (persp-name (if current (persp-name current) persp-nil-name))
+           (active-face (if (persp-contain-buffer-p)
+                            'doom-modeline-buffer-major-mode
+                          'doom-modeline-buffer-modified))
+           (segment (concat "#" persp-name)))
+      (if (active)
+          (propertize segment 'face `(:inherit ,active-face))
+        segment))))
+
 
 (def-modeline-segment! buffer-encoding
   "Displays the encoding and eol style of the buffer the same way Atom does."
@@ -573,6 +587,21 @@ directory, the file name, and its state (modified, read-only or non-existent)."
   "The major mode, including process, environment and text-scale info."
   (propertize
    (concat (format-mode-line mode-name)
+           (if (stringp mode-line-process) mode-line-process)
+           (if +doom-modeline-env-version (concat " " +doom-modeline-env-version))
+           (and (featurep 'face-remap)
+                (/= text-scale-mode-amount 0)
+                (format " (%+d)" text-scale-mode-amount)))
+   'face (if (active) 'doom-modeline-buffer-major-mode)))
+
+(def-modeline-segment! major-mode-with-icons
+  "The major mode, including process, environment and text-scale info."
+  (propertize
+   (concat (all-the-icons-icon-for-mode major-mode
+                                        :height 1.2
+                                        :v-adjust 0.07)
+           " "
+           (format-mode-line mode-name)
            (if (stringp mode-line-process) mode-line-process)
            (if +doom-modeline-env-version (concat " " +doom-modeline-env-version))
            (and (featurep 'face-remap)
@@ -758,28 +787,28 @@ of `iedit' regions."
 ;;
 
 (def-modeline! main
-  (bar matches " " buffer-info "  %l:%c %p  " selection-info)
-  (buffer-encoding vcs major-mode flycheck))
+  (bar matches " " buffer-info " " persp-name "  %l:%c %p  " selection-info)
+  (buffer-encoding vcs major-mode-with-icons flycheck))
 
 (def-modeline! eldoc
   (eldoc-bar " " eldoc)
-  (media-info major-mode))
+  (media-info major-mode-with-icons))
 
 (def-modeline! minimal
-  (bar matches " " buffer-info)
-  (media-info major-mode))
+  (bar matches " " buffer-info " " persp-name)
+  (media-info major-mode-with-icons))
 
 (def-modeline! special
   (bar matches " %b   %l:%c %p  " selection-info)
-  (buffer-encoding major-mode flycheck))
+  (buffer-encoding major-mode-with-icons flycheck))
 
 (def-modeline! project
-  (bar " " buffer-project)
-  (major-mode))
+  (bar " " buffer-project " " persp-name " ")
+  (major-mode-with-icons))
 
 (def-modeline! media
   (bar " %b  ")
-  (media-info major-mode))
+  (media-info major-mode-with-icons))
 
 ;;
 (doom-set-modeline 'main t)
