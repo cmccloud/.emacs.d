@@ -1355,7 +1355,8 @@ Only for use with `advice-add'."
              ("hdv" . describe-variable)
              ("hk" . helm-show-kill-ring)
              ("hll" . helm-locate-library)
-             ("hb" . helm-filtered-bookmarks))
+             ("hb" . helm-filtered-bookmarks)
+             ("hm" . helm-all-mark-rings))
   :config
   ;; TODO - Move this to more general location
   ;; All these definitions should go into an integration package
