@@ -567,10 +567,22 @@ Signals whether current-buffer is a part of the current perspective."
            (active-face (if (persp-contain-buffer-p)
                             'doom-modeline-buffer-major-mode
                           'doom-modeline-buffer-modified))
-           (segment (concat "#" persp-name)))
+           (segment persp-name))
       (if (active)
           (propertize segment 'face `(:inherit ,active-face))
         segment))))
+
+(def-modeline-segment! persp-icon
+  "Displays an icon for `persp-mode' on the modeline."
+  (when (bound-and-true-p persp-mode)
+    (let ((active-face (if (persp-contain-buffer-p)
+                           'doom-modeline-buffer-major-mode
+                         'doom-modeline-buffer-modified))
+          (icon (all-the-icons-faicon "clone"
+                                      :v-adjust 0.04)))
+      (if (active) (propertize icon 'face `(:inherit ,active-face
+                                                     :height 1.2))
+        (propertize icon 'face `(:height 1.2))))))
 
 
 (def-modeline-segment! buffer-encoding
@@ -792,7 +804,7 @@ of `iedit' regions."
 ;;
 
 (def-modeline! main
-  (bar matches " " buffer-info " " persp-name "  %l:%c %p  " selection-info)
+  (bar " " persp-icon " " persp-name "  " buffer-info matches "  %l:%c %p  " selection-info)
   (buffer-encoding vcs major-mode-with-icons flycheck))
 
 (def-modeline! eldoc
@@ -800,15 +812,15 @@ of `iedit' regions."
   (media-info major-mode-with-icons))
 
 (def-modeline! minimal
-  (bar matches " " buffer-info " " persp-name)
+  (bar " " persp-icon " " persp-name "  " buffer-info matches)
   (media-info major-mode-with-icons))
 
 (def-modeline! special
-  (bar matches " %b   %l:%c %p  " selection-info)
+  (bar " " persp-icon " " persp-name matches " %b   %l:%c %p  " selection-info)
   (buffer-encoding major-mode-with-icons flycheck))
 
 (def-modeline! project
-  (bar " " buffer-project " " persp-name " ")
+  (bar " " persp-icon " " persp-name "  " buffer-project)
   (major-mode-with-icons))
 
 (def-modeline! media
