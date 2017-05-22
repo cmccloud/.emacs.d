@@ -1978,7 +1978,8 @@ Only for use with `advice-add'."
   (defun writeroom-scale-text ()
     (if (or writeroom-mode global-writeroom-mode)
         (text-scale-set 2)
-      (text-scale-mode -1)))
+      (text-scale-mode -1)
+      (text-scale-set 0)))
   (add-hook 'writeroom-mode-hook #'writeroom-scale-text)
   (add-hook 'global-writeroom-mode-hook #'writeroom-scale-text))
 
