@@ -1198,6 +1198,14 @@ Cancels autosave on exiting persp-mode."
                                       (persp-buffer-list-restricted nil 0))))))
        (cleanup
         :initform #'(lambda () (setq helm-persp-current-buffers-cache nil)))))
+
+    (cl-defmethod helm-setup-user-source ((source helm-persp-current-buffers-source))
+      (setf (slot-value source 'action)
+            (append (helm-make-actions "Remove buffer(s) from current perspective."
+                               (lambda (candidate)
+                                 (mapcar 'persp-remove-buffer
+                                         (helm-marked-candidates))))
+                    helm-type-buffer-actions)))
     
     (defclass helm-persp-filtered-buffers-source (helm-source-buffers)
       ((candidates
@@ -1210,6 +1218,14 @@ Cancels autosave on exiting persp-mode."
        (cleanup
         :initform #'(lambda () (setq helm-persp-filtered-buffers-cache nil)))))
 
+    (cl-defmethod helm-setup-user-source ((source helm-persp-filtered-buffers-source))
+      (setf (slot-value source 'action)
+            (append (helm-make-actions "Add buffer(s) to current perspective."
+                               (lambda (candidate)
+                                 (mapcar 'persp-add-buffer
+                                         (helm-marked-candidates))))
+                    helm-type-buffer-actions)))
+
     (defvar helm-source-persp-current-buffers
       (helm-make-source "Current buffers"
           'helm-persp-current-buffers-source
@@ -1219,18 +1235,6 @@ Cancels autosave on exiting persp-mode."
       (helm-make-source "Other buffers"
           'helm-persp-filtered-buffers-source
         :fuzzy-match t))
-
-    (helm-add-action-to-source "Remove buffer(s) from current perspective."
-                               (lambda (candidate)
-                                 (mapcar 'persp-remove-buffer
-                                         (helm-marked-candidates)))
-                               helm-source-persp-current-buffers 0)
-    
-    (helm-add-action-to-source "Add buffer(s) to current perspective."
-                               (lambda (candidate)
-                                 (mapcar 'persp-add-buffer
-                                         (helm-marked-candidates)))
-                               helm-source-persp-filtered-buffers 0)
 
     (defun helm-persp-add-buffers-to-perspective ()
       (interactive)
