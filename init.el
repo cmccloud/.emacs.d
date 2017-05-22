@@ -597,15 +597,6 @@ Signals whether current-buffer is a part of the current perspective."
                                              :height 1.2))
            (propertize icon 'face `(:height 1.2)))))))
 
-(def-modeline-segment! helm-name
-  (propertize
-   (buffer-name (current-buffer))
-   'face `(:inherit doom-modeline-buffer-file)))
-
-(def-modeline-segment! helm-candidate-number-at-point
-  (format "L%-3d" (helm-candidate-number-at-point)))
-
-
 (def-modeline-segment! buffer-encoding
   "Displays the encoding and eol style of the buffer the same way Atom does."
   (concat (let ((eol-type (coding-system-eol-type buffer-file-coding-system)))
@@ -836,6 +827,19 @@ of `iedit' regions."
     (propertize "#Follow"
                 'face `(:inherit doom-modeline-buffer-file))))
 
+(def-modeline-segment! helm-marked
+  (when-let
+      (marked
+       (and helm-marked-candidates
+            (cl-loop with cur-name = (assoc-default 'name (helm-get-current-source))
+                     for c in helm-marked-candidates
+                     for name = (assoc-default 'name (car c))
+                     when (string= name cur-name)
+                     collect c)))
+    (propertize
+     (format "M%d" (length marked))
+     'face `(:inherit doom-modeline-panel))))
+
 ;;
 ;; Mode lines
 ;;
@@ -865,7 +869,7 @@ of `iedit' regions."
   (media-info major-mode))
 
 (def-modeline! helm
-  (bar " " helm-name " " helm-candidate-number-at-point helm-follow))
+  (bar " " helm-name " " helm-candidate-number-at-point helm-follow helm-marked))
 
 ;;
 (doom-set-modeline 'main t)
@@ -877,6 +881,8 @@ of `iedit' regions."
 
   (advice-add 'helm-display-mode-line :override
               'doom--helm-display-mode-line))
+
+(advice-remove 'helm-display-mode-line 'doom--helm-display-mode-line)
 
 ;; Window numbering screws up modeline on load
 (with-eval-after-load 'window-numbering
