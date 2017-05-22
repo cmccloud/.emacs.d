@@ -341,6 +341,17 @@ DEFAULT is non-nil, set the default mode-line for all buffers."
   "Face used for the major-mode segment in the mode-line."
   :group '+doom-modeline)
 
+(defface doom-modeline-persp-name
+  '((t (:inherit mode-line-emphasis :bold t)))
+  "Face used for the `persp-mode' perspective name and icon in the mode-line."
+  :group '+doom-modeline)
+
+(defface doom-modeline-persp-free-buffer
+  '((t (:inherit error :background nil :bold t)))
+  "Face used for the `persp-mode' name and icon when visiting a buffer not
+added to the current perspective."
+  :group '+doom-modeline)
+
 (defface doom-modeline-highlight
   '((t (:inherit mode-line-emphasis)))
   "Face for bright segments of the mode-line."
@@ -565,8 +576,8 @@ Signals whether current-buffer is a part of the current perspective."
     (let* ((current (get-current-persp))
            (persp-name (if current (persp-name current) persp-nil-name))
            (active-face (if (persp-contain-buffer-p)
-                            'doom-modeline-buffer-major-mode
-                          'doom-modeline-buffer-modified))
+                            'doom-modeline-persp-name
+                          'doom-modeline-persp-free-buffer))
            (segment persp-name))
       (concat (if (active)
                   (propertize segment 'face `(:inherit ,active-face))
@@ -577,8 +588,8 @@ Signals whether current-buffer is a part of the current perspective."
   "Displays an icon for `persp-mode' on the modeline."
   (when (bound-and-true-p persp-mode)
     (let ((active-face (if (persp-contain-buffer-p)
-                           'doom-modeline-buffer-major-mode
-                         'doom-modeline-buffer-modified))
+                           'doom-modeline-persp-name
+                         'doom-modeline-persp-free-buffer))
           (icon (all-the-icons-faicon "clone"
                                       :v-adjust 0.04)))
       (concat " " (if (active)
