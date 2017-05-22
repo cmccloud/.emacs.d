@@ -846,6 +846,8 @@ of `iedit' regions."
                          (car-safe helm-mode-line-string)))
                       'face '(:inherit doom-modeline-buffer-file))
           " "))
+(def-modeline-segment! helm-modeline-string-segment
+  helm--mode-line-string-real)
 
 ;;
 ;; Mode lines
@@ -883,7 +885,8 @@ of `iedit' regions."
    helm-candidate-number-at-point
    helm-follow
    helm-candidate-number
-   helm-marked))
+   helm-marked)
+  (helm-modeline-string-segment))
 
 ;;
 (doom-set-modeline 'main t)
@@ -891,7 +894,22 @@ of `iedit' regions."
 ;; helm modeline integration
 (with-eval-after-load 'helm
   (defun doom--helm-display-mode-line (source &optional force)
-    (doom-set-modeline 'helm))
+    (progn
+      (let ((force nil))
+        (cond (helm-echo-input-in-header-line
+               (setq force t)
+               (helm--set-header-line))
+              (helm-display-header-line
+               (let ((hlstr (helm-interpret-value
+                             (and (listp source)
+                                  (assoc-default 'header-line source))
+                             source))
+                     (endstr (make-string (window-width) ? )))
+                 (setq header-line-format
+                       (propertize (concat " " hlstr endstr)
+                                   'face 'helm-header))))))
+      (doom-set-modeline 'helm)
+      (when force (force-mode-line-update))))
 
   (advice-add 'helm-display-mode-line :override
               'doom--helm-display-mode-line))
