@@ -859,19 +859,19 @@ of `iedit' regions."
 ;;
 
 (def-modeline! main
-  (bar persp-icon " " persp-name buffer-info matches "  %l:%c %p  " selection-info)
-  (buffer-encoding vcs major-mode flycheck)) ;
+  (bar matches persp-icon " " persp-name buffer-info "  %l:%c %p  " selection-info)
+  (buffer-encoding vcs major-mode flycheck))
 
 (def-modeline! eldoc
   (eldoc-bar " " eldoc)
   (media-info major-mode))
 
 (def-modeline! minimal
-  (bar persp-icon " " persp-name buffer-info matches)
+  (bar matches persp-icon " " persp-name buffer-info)
   (media-info major-mode))
 
 (def-modeline! special
-  (bar persp-icon " " persp-name matches " %b   %l:%c %p  " selection-info)
+  (bar matches persp-icon " " persp-name  " %b   %l:%c %p  " selection-info)
   (buffer-encoding major-mode flycheck))
 
 (def-modeline! project
@@ -884,13 +884,13 @@ of `iedit' regions."
 
 (def-modeline! helm
   (bar
+   helm-marked
    " "
    helm-name
    " "
    helm-candidate-number-at-point
    helm-follow
    helm-candidate-number
-   helm-marked
    " ")
   (helm-modeline-string-segment))
 
