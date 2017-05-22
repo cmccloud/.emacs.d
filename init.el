@@ -602,6 +602,9 @@ Signals whether current-buffer is a part of the current perspective."
    (buffer-name (current-buffer))
    'face `(:inherit doom-modeline-buffer-file)))
 
+(def-modeline-segment! helm-candidate-number-at-point
+  (format "L%-3d" (helm-candidate-number-at-point)))
+
 
 (def-modeline-segment! buffer-encoding
   "Displays the encoding and eol style of the buffer the same way Atom does."
@@ -846,7 +849,7 @@ of `iedit' regions."
   (media-info major-mode))
 
 (def-modeline! helm
-  (bar " " helm-name))
+  (bar " " helm-name " " helm-candidate-number-at-point))
 
 ;;
 (doom-set-modeline 'main t)
