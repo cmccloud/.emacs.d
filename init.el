@@ -897,29 +897,27 @@ of `iedit' regions."
 (doom-set-modeline 'main t)
 
 ;; helm modeline integration
+;; TODO:: THIS IS HACKY
 (with-eval-after-load 'helm
   (defun doom--helm-display-mode-line (source &optional force)
-    (progn
-      (let ((force nil))
-        (cond (helm-echo-input-in-header-line
-               (setq force t)
-               (helm--set-header-line))
-              (helm-display-header-line
-               (let ((hlstr (helm-interpret-value
-                             (and (listp source)
-                                  (assoc-default 'header-line source))
-                             source))
-                     (endstr (make-string (window-width) ? )))
-                 (setq header-line-format
-                       (propertize (concat " " hlstr endstr)
-                                   'face 'helm-header))))))
-      (doom-set-modeline 'helm)
-      (when force (force-mode-line-update))))
+    (let ((force nil))
+      (cond (helm-echo-input-in-header-line
+             (setq force t)
+             (helm--set-header-line))
+            (helm-display-header-line
+             (let ((hlstr (helm-interpret-value
+                           (and (listp source)
+                                (assoc-default 'header-line source))
+                           source))
+                   (endstr (make-string (window-width) ? )))
+               (setq header-line-format
+                     (propertize (concat " " hlstr endstr)
+                                 'face 'helm-header))))))
+    (doom-set-modeline 'helm)
+    (when force (force-mode-line-update)))
 
-  (advice-add 'helm-display-mode-line :override
+  (advice-add 'helm-display-mode-line :after
               'doom--helm-display-mode-line))
-
-(advice-remove 'helm-display-mode-line 'doom--helm-display-mode-line)
 
 ;; Window numbering screws up modeline on load
 (with-eval-after-load 'window-numbering
