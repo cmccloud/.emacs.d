@@ -1669,6 +1669,8 @@ Only for use with `advice-add'."
   :config
   (projectile-mode))
 
+(use-package neotree)
+
 (use-package magit
   :defer t
   :commands (magit-mode
