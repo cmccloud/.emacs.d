@@ -842,7 +842,7 @@ of `iedit' regions."
                      when (string= name cur-name)
                      collect c)))
     (propertize
-     (format "M%d" (length marked))
+     (format "[M%d]" (length marked))
      'face `(:inherit doom-modeline-panel))))
 
 (def-modeline-segment! helm-candidate-number
@@ -890,7 +890,8 @@ of `iedit' regions."
    helm-candidate-number-at-point
    helm-follow
    helm-candidate-number
-   helm-marked)
+   helm-marked
+   " ")
   (helm-modeline-string-segment))
 
 ;;
