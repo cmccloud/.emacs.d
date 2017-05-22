@@ -820,6 +820,22 @@ of `iedit' regions."
    +doom-modeline-height
    +doom-modeline-bar-width))
 
+(def-modeline-segment! helm-name
+  (propertize
+   (buffer-name (current-buffer))
+   'face `(:inherit doom-modeline-buffer-file)))
+
+(def-modeline-segment! helm-candidate-number-at-point
+  (format "L%-3d" (helm-candidate-number-at-point)))
+
+(def-modeline-segment! helm-follow
+  (when (or (helm-follow-mode-p)
+            (and helm-follow-mode-persistent
+                 (member (assoc-default 'name (helm-get-current-source))
+                         helm-source-names-using-follow)))
+    (propertize "#Follow"
+                'face `(:inherit doom-modeline-buffer-file))))
+
 ;;
 ;; Mode lines
 ;;
@@ -849,7 +865,7 @@ of `iedit' regions."
   (media-info major-mode))
 
 (def-modeline! helm
-  (bar " " helm-name " " helm-candidate-number-at-point))
+  (bar " " helm-name " " helm-candidate-number-at-point helm-follow))
 
 ;;
 (doom-set-modeline 'main t)
