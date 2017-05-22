@@ -840,6 +840,13 @@ of `iedit' regions."
      (format "M%d" (length marked))
      'face `(:inherit doom-modeline-panel))))
 
+(def-modeline-segment! helm-candidate-number
+  (concat (propertize (with-helm-buffer
+                        (helm-show-candidate-number
+                         (car-safe helm-mode-line-string)))
+                      'face '(:inherit doom-modeline-buffer-file))
+          " "))
+
 ;;
 ;; Mode lines
 ;;
@@ -869,7 +876,14 @@ of `iedit' regions."
   (media-info major-mode))
 
 (def-modeline! helm
-  (bar " " helm-name " " helm-candidate-number-at-point helm-follow helm-marked))
+  (bar
+   " "
+   helm-name
+   " "
+   helm-candidate-number-at-point
+   helm-follow
+   helm-candidate-number
+   helm-marked))
 
 ;;
 (doom-set-modeline 'main t)
