@@ -568,9 +568,10 @@ Signals whether current-buffer is a part of the current perspective."
                             'doom-modeline-buffer-major-mode
                           'doom-modeline-buffer-modified))
            (segment persp-name))
-      (if (active)
-          (propertize segment 'face `(:inherit ,active-face))
-        segment))))
+      (concat (if (active)
+                  (propertize segment 'face `(:inherit ,active-face))
+                segment)
+              "  "))))
 
 (def-modeline-segment! persp-icon
   "Displays an icon for `persp-mode' on the modeline."
@@ -580,9 +581,10 @@ Signals whether current-buffer is a part of the current perspective."
                          'doom-modeline-buffer-modified))
           (icon (all-the-icons-faicon "clone"
                                       :v-adjust 0.04)))
-      (if (active) (propertize icon 'face `(:inherit ,active-face
-                                                     :height 1.2))
-        (propertize icon 'face `(:height 1.2))))))
+      (concat " " (if (active)
+           (propertize icon 'face `(:inherit ,active-face
+                                             :height 1.2))
+           (propertize icon 'face `(:height 1.2)))))))
 
 
 (def-modeline-segment! buffer-encoding
@@ -804,28 +806,28 @@ of `iedit' regions."
 ;;
 
 (def-modeline! main
-  (bar " " persp-icon " " persp-name "  " buffer-info matches "  %l:%c %p  " selection-info)
-  (buffer-encoding vcs major-mode-with-icons flycheck))
+  (bar persp-icon " " persp-name buffer-info matches "  %l:%c %p  " selection-info)
+  (buffer-encoding vcs major-mode flycheck)) ;
 
 (def-modeline! eldoc
   (eldoc-bar " " eldoc)
-  (media-info major-mode-with-icons))
+  (media-info major-mode))
 
 (def-modeline! minimal
-  (bar " " persp-icon " " persp-name "  " buffer-info matches)
-  (media-info major-mode-with-icons))
+  (bar persp-icon " " persp-name buffer-info matches)
+  (media-info major-mode))
 
 (def-modeline! special
-  (bar " " persp-icon " " persp-name matches " %b   %l:%c %p  " selection-info)
-  (buffer-encoding major-mode-with-icons flycheck))
+  (bar persp-icon " " persp-name matches " %b   %l:%c %p  " selection-info)
+  (buffer-encoding major-mode flycheck))
 
 (def-modeline! project
-  (bar " " persp-icon " " persp-name "  " buffer-project)
-  (major-mode-with-icons))
+  (bar persp-icon " " persp-name buffer-project)
+  (major-mode))
 
 (def-modeline! media
   (bar " %b  ")
-  (media-info major-mode-with-icons))
+  (media-info major-mode))
 
 ;;
 (doom-set-modeline 'main t)
