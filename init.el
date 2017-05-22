@@ -597,6 +597,11 @@ Signals whether current-buffer is a part of the current perspective."
                                              :height 1.2))
            (propertize icon 'face `(:height 1.2)))))))
 
+(def-modeline-segment! helm-name
+  (propertize
+   (buffer-name (current-buffer))
+   'face `(:inherit doom-modeline-buffer-file)))
+
 
 (def-modeline-segment! buffer-encoding
   "Displays the encoding and eol style of the buffer the same way Atom does."
@@ -840,8 +845,19 @@ of `iedit' regions."
   (bar " %b  ")
   (media-info major-mode))
 
+(def-modeline! helm
+  (bar " " helm-name))
+
 ;;
 (doom-set-modeline 'main t)
+
+;; helm modeline integration
+(with-eval-after-load 'helm
+  (defun doom--helm-display-mode-line (source &optional force)
+    (doom-set-modeline 'helm))
+
+  (advice-add 'helm-display-mode-line :override
+              'doom--helm-display-mode-line))
 
 ;; Window numbering screws up modeline on load
 (with-eval-after-load 'window-numbering
