@@ -1280,6 +1280,24 @@ Only for use with `advice-add'."
   :config
   (semantic-default-elisp-setup))
 
+(use-package imenu
+  :defines imenu-generic-expression
+  :init
+  ;; Let imenu recognize use-package declarations
+  (defun setup--imenu-for-use-package ()
+    "Recognize `use-package' in imenu when in emacs-lisp-mode."
+    (add-to-list
+     'imenu-generic-expression
+     '("Packages" "^\\s-*(\\(use-package\\)\\s-+\\(\\(\\sw\\|\\s_\\)+\\)" 2) t))
+  
+  (add-hook 'emacs-lisp-mode-hook #'setup--imenu-for-use-package)
+
+  ;; Style packages as requires and imports in helm-imenu
+  (with-eval-after-load 'helm-imenu
+    (push
+     (cons "^Packages$" 'font-lock-type-face)
+     helm-imenu-type-faces)))
+
 (use-package elisp-mode
   :init
   (define-prefix-command 'emacs-lisp-mode-leader-map)
