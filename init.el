@@ -116,6 +116,11 @@
               history-length 1000
               make-backup-files nil)
 
+(advice-add #'display-startup-echo-area-message :override #'ignore)
+(setq inhibit-startup-message t
+      initial-major-mode 'fundamental-mode
+      initial-scratch-message nil)
+
 (fset #'yes-or-no-p #'y-or-n-p)
 
 ;; A minor mode for toggling the mode-line
