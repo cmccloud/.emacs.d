@@ -1185,6 +1185,7 @@ Cancels autosave on exiting persp-mode."
   
   (with-eval-after-load 'helm-buffers
     (defvar helm-persp-current-buffers-cache nil)
+
     (defvar helm-persp-filtered-buffers-cache nil)
 
     (defclass helm-persp-current-buffers-source (helm-source-buffers)
@@ -1197,6 +1198,7 @@ Cancels autosave on exiting persp-mode."
                                       (persp-buffer-list-restricted nil 0))))))
        (cleanup
         :initform #'(lambda () (setq helm-persp-current-buffers-cache nil)))))
+    
     (defclass helm-persp-filtered-buffers-source (helm-source-buffers)
       ((candidates
         :initform #'(lambda ()
@@ -1212,6 +1214,7 @@ Cancels autosave on exiting persp-mode."
       (helm-make-source "Current buffers"
           'helm-persp-current-buffers-source
         :fuzzy-match t))
+    
     (defvar helm-source-persp-filtered-buffers
       (helm-make-source "Other buffers"
           'helm-persp-filtered-buffers-source
@@ -1221,7 +1224,8 @@ Cancels autosave on exiting persp-mode."
                                (lambda (candidate)
                                  (mapcar 'persp-remove-buffer
                                          (helm-marked-candidates)))
-                               helm-source-persp-current-buffers 0) 
+                               helm-source-persp-current-buffers 0)
+    
     (helm-add-action-to-source "Add buffer(s) to current perspective."
                                (lambda (candidate)
                                  (mapcar 'persp-add-buffer
