@@ -1671,6 +1671,10 @@ Only for use with `advice-add'."
 
 (use-package neotree)
 
+(use-package stripe-buffer
+  :commands stripe-buffer-mode
+  :init (add-hook 'dired-mode-hook #'stripe-buffer-mode))
+
 (use-package magit
   :defer t
   :commands (magit-mode

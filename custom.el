@@ -137,7 +137,7 @@
  '(large-file-warning-threshold 200000000)
  '(leader-mode t t)
  '(leader/leader "M-m")
- '(linum-format (quote dynamic))
+ '(linum-format (quote dynamic) t)
  '(lispy-avy-style-char (quote at))
  '(lispy-avy-style-symbol (quote at))
  '(lispy-compat (quote (edebug cider)))
@@ -159,7 +159,7 @@
  '(org-ellipsis "  ")
  '(package-selected-packages
    (quote
-    (magithub neotree swiper-helm hlinum nlinum eldoc-eval company-quickhelp dumb-jump doom-themes git-commit lispy use-package zenburn-theme persp-mode helm helm-ag helm-core helm-descbinds helm-describe-modes helm-projectile helm-swoop helm-themes bind-key hydra git-gutter-fringe git-gutter hc-zenburn-theme zerodark-theme spacegray-theme spacemacs-theme page-break-lines challenger-deep-theme spaceline-all-the-icons spaceline powerline all-the-icons general writeroom-mode visual-fill-column darkroom magit-gh-pulls impatient-mode company-web rainbow-mode company-tern clojure-mode paradox pdf-tools multiple-cursors expand-region web-mode emmet-mode gist f request-deferred deferred request shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode nodejs-repl auctex eyebrowse golden-ratio flycheck slime-company slime arjen-grey-theme white-sand-theme paper-theme skewer-mode js-doc racket-mode geiser osx-trash projectile ggtags smooth-scrolling elisp-slime-nav window-numbering smartparens shackle magit js2-mode exec-path-from-shell cider avy)))
+    (stripe-buffer magithub neotree swiper-helm hlinum nlinum eldoc-eval company-quickhelp dumb-jump doom-themes git-commit lispy use-package zenburn-theme persp-mode helm helm-ag helm-core helm-descbinds helm-describe-modes helm-projectile helm-swoop helm-themes bind-key hydra git-gutter-fringe git-gutter hc-zenburn-theme zerodark-theme spacegray-theme spacemacs-theme page-break-lines challenger-deep-theme spaceline-all-the-icons spaceline powerline all-the-icons general writeroom-mode visual-fill-column darkroom magit-gh-pulls impatient-mode company-web rainbow-mode company-tern clojure-mode paradox pdf-tools multiple-cursors expand-region web-mode emmet-mode gist f request-deferred deferred request shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode nodejs-repl auctex eyebrowse golden-ratio flycheck slime-company slime arjen-grey-theme white-sand-theme paper-theme skewer-mode js-doc racket-mode geiser osx-trash projectile ggtags smooth-scrolling elisp-slime-nav window-numbering smartparens shackle magit js2-mode exec-path-from-shell cider avy)))
  '(paradox-column-width-package 30)
  '(paradox-execute-asynchronously t)
  '(paradox-github-token t)
