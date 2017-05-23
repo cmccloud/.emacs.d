@@ -101,6 +101,7 @@
               image-animate-loop t
               indicate-buffer-boundaries nil
               indicate-empty-lines nil
+              save-interprogram-paste-before-kill t
               jit-lock-defer-time nil
               jit-lock-stealth-nice 0.1
               jit-lock-stealth-time 0.2
