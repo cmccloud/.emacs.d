@@ -1675,6 +1675,26 @@ Only for use with `advice-add'."
   :commands stripe-buffer-mode
   :init (add-hook 'dired-mode-hook #'stripe-buffer-mode))
 
+(use-package sublimity
+  :commands sublimity-mode
+  :load-path "/site-lisp/sublimity"
+  :init
+  (with-eval-after-load 'hydra
+
+    (defhydra hydra-minimap-scrolling
+      (:foreign-keys nil :exit nil :pre (sublimity-mode +1) :post (sublimity-mode -1))
+      "Page Scrolling: "
+      ("n" scroll-up-command "Scroll Forwards")
+      ("p" scroll-down-command "Scroll Backwards")
+      ("q" nil "Quit"))
+
+    (bind-keys ("C-v" . hydra-minimap-scrolling/scroll-up-command)
+               ("M-v" .  hydra-minimap-scrolling/scroll-down-command)))
+  :config
+  (use-package sublimity-map :demand t
+    :config
+    (sublimity-map-set-delay nil)))
+
 (use-package magit
   :defer t
   :commands (magit-mode
