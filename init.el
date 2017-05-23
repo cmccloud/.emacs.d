@@ -1374,7 +1374,8 @@ Only for use with `advice-add'."
              ("M-n" . nil)
              (":" . self-insert-command)
              ("[" . lispy-brackets)
-             ("]" . self-insert-command))
+             ("]" . self-insert-command)
+             ("C-z" . lispy-ace-paren))
 
   ;; Until we find a better alternative, use i-menu for tag navigation
   (lispy-define-key lispy-mode-map "g" 'helm-imenu-in-all-buffers)
