@@ -4,3 +4,6 @@
 [submodule "/Users/Macnube/.emacs.d/site-lisp/labburn-theme/"]
 	path = site-lisp/labburn-theme
 	url = https://github.com/ksjogo/labburn-theme.git
+[submodule "site-lisp/sublimity"]
+	path = site-lisp/sublimity
+	url = https://github.com/zk-phi/sublimity.git
