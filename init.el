@@ -1026,6 +1026,13 @@ of `iedit' regions."
              "/Library/TeX/texbin"
              "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9"
              "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9")))
+
+  ;; Mac Specific Config
+  (when (equal system-type 'darwin)
+    (when-let ((gls (executable-find "gls"))
+               (ls (executable-find "ls")))
+      (setq insert-directory-program gls
+            dired-listing-switches "-aBhlp --group-directories-first")))
   :config
   (exec-path-from-shell-initialize))
 
@@ -1566,14 +1573,22 @@ Only for use with `advice-add'."
                                          "\\*magit"
                                          "\\*lispy-goto*"
                                          "\\*Backtrace*")
-        helm-ff-tramp-not-fancy nil
-        helm-locate-command "mdfind -name %s %s"
         helm-mini-default-sources '(helm-source-buffers-list
                                     helm-source-recentf
                                     helm-source-buffer-not-found)
         helm-split-window-in-side-p t
         helm-swoop-speed-or-color t
-        helm-swoop-split-with-multiple-windows t)
+        helm-swoop-split-with-multiple-windows t
+        
+        ;; Avoid slow tramp performance when using helm
+        helm-buffer-skip-remote-checking t
+        helm-ff-tramp-not-fancy t)
+
+  ;; Mac specific config
+  (when (equal system-type 'darwin)
+    (setq helm-locate-fuzzy-match nil
+          helm-locate-command "mdfind -name %s %s"))
+  
   (use-package helm-config)
   (helm-mode 1)
   
@@ -2025,7 +2040,7 @@ Only for use with `advice-add'."
           ("Outline.*pdf" :regexp t :select t :align (quote left) :size 0.3)
           ("*Geiser documentation*" :select t :align t :size 0.4)
           ("*slime-description*" :select t :align t :size 0.4)
-          ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
+          ("\\`\\*\[h|H]elm.*?\\*\\'" :regexp t :align t :size 0.3)
           ("*Help*" :select t :align t :size 0.4)
           ("*Completions*" :select t :align t :size 0.4)
           ("*Compile-Log*" :select t :align t :size 0.4)
