@@ -94,6 +94,7 @@
 (setq-default buffer-file-coding-system 'utf-8)
 
 (setq-default frame-title-format nil
+              fringes-outside-margins t
               bidi-display-reordering nil
               blink-matching-paren nil
               cursor-in-non-selected-windows nil
