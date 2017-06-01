@@ -996,6 +996,7 @@ of `iedit' regions."
 (use-package autorevert
   :demand t
   :config
+  (setq auto-revert-verbose nil)
   (global-auto-revert-mode))
 
 (use-package hl-line
