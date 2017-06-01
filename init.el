@@ -969,6 +969,11 @@ of `iedit' regions."
   :diminish which-key-mode
   :config
   (setq which-key-sort-order 'which-key-prefix-then-key-order-reverse)
+  
+  ;; Clear bindings on maps that block which-key paging command (C-h)
+  (bind-keys :map help-map
+             ("C-h" . nil))            ;help-for-help, also bound to ?
+  
   (which-key-add-key-based-replacements
     "M-m b" "Buffers"
     "M-m f" "Files"
