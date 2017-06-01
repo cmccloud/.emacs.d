@@ -1686,6 +1686,16 @@ Only for use with `advice-add'."
   (bind-keys :map leader-map
              ("hdd" . helm-dash)))
 
+(use-package helm-unicode
+  :after helm
+  :commands helm-unicode
+  :init
+  (bind-keys :map leader-map
+             ("hu" . helm-unicode))
+  :config
+  (bind-keys :map helm-command-prefix
+             ("u" . helm-unicode)))
+
 (use-package projectile
   :defer t
   :diminish projectile-mode
