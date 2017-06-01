@@ -118,6 +118,12 @@
               history-length 1000
               make-backup-files nil)
 
+;; Window Divider
+(setq-default window-divider-default-places 'right-only
+              window-divider-default-bottom-width 1
+              window-divider-default-right-width 3)
+(window-divider-mode 1)
+
 (advice-add #'display-startup-echo-area-message :override #'ignore)
 (setq inhibit-startup-message t
       initial-major-mode 'fundamental-mode
