@@ -137,7 +137,6 @@
  '(large-file-warning-threshold 200000000)
  '(leader-mode t t)
  '(leader/leader "M-m")
- '(linum-format (quote dynamic) t)
  '(lispy-avy-style-char (quote at))
  '(lispy-avy-style-symbol (quote at))
  '(lispy-compat (quote (edebug cider)))
