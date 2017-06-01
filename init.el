@@ -1721,6 +1721,14 @@ Only for use with `advice-add'."
     :config
     (sublimity-map-set-delay nil)))
 
+(use-package ediff
+  :config
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain
+        ediff-split-window-function 'split-window-horizontally)
+
+  (with-eval-after-load 'winner
+    (add-hook 'ediff-quit-hook #'winner-undo)))
+
 (use-package magit
   :defer t
   :commands (magit-mode
