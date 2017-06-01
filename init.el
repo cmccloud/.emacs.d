@@ -1570,7 +1570,9 @@ Only for use with `advice-add'."
     (interactive)
     (helm--change-buffer 'previous-buffer))
   
-  (setq helm-M-x-fuzzy-match nil
+  (setq helm-grep-ag-command
+        "rg --color=always --smart-case --no-heading --line-number %s %s %s"
+        helm-M-x-fuzzy-match nil
         helm-autoresize-max-height 30
         helm-boring-buffer-regexp-list '("\\` "
                                          "\\*helm"
