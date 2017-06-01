@@ -975,6 +975,21 @@ of `iedit' regions."
              ("C-h" . nil))            ;help-for-help, also bound to ?
   
   (which-key-add-key-based-replacements
+    ;; C-x Map
+    "C-x RET" "Encoding"
+    "C-x 8" "Char Insertions"
+    "C-x @" "Events"
+    "C-x X" "Edebug"
+    "C-x a" "Abbrev"
+    "C-x C-a" "Edebug"
+    "C-x 4" "Other Window"
+    "C-x 5" "Frames"
+    "C-x C-k" "K-Macro"
+    "C-x h" "Helm"
+    "C-x n" "Narrowing"
+    "C-x r" "Registers"
+    "C-x v" "Version Control"
+    ;; Leader Map
     "M-m b" "Buffers"
     "M-m f" "Files"
     "M-m a" "Applications"
