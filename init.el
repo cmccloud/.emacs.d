@@ -582,6 +582,21 @@ directory, the file name, and its state (modified, read-only or non-existent)."
                   (propertize file-path 'face `(:inherit ,faces))
                 file-path)))))
 
+(def-modeline-segment! eyebrowse-workspace
+  (if (and (bound-and-true-p eyebrowse-mode)
+           (s-contains-p "eyebrowse-switch" (symbol-name last-command) t))
+      (let ((segment (concat (when (bound-and-true-p persp-mode) ":")
+                             (int-to-string (eyebrowse--get 'current-slot)) "  "))
+            (faces (if (and (bound-and-true-p persp-mode)
+                            (not (persp-contain-buffer-p)))
+                       'doom-modeline-persp-free-buffer
+                     'doom-modeline-persp-name)))
+        (if (active)
+            (propertize segment
+                        'face `(:inherit ,faces))
+          segment))
+    "  "))
+
 (def-modeline-segment! persp-name
   "Displays the current perspective if `persp-mode' is active.
 Signals whether current-buffer is a part of the current perspective."
@@ -594,8 +609,7 @@ Signals whether current-buffer is a part of the current perspective."
            (segment persp-name))
       (concat (if (active)
                   (propertize segment 'face `(:inherit ,active-face))
-                segment)
-              "  "))))
+                segment)))))
 
 (def-modeline-segment! persp-icon
   "Displays an icon for `persp-mode' on the modeline."
@@ -750,8 +764,6 @@ lines are selected, or the NxM dimensions of a block selection."
                 (format "%dC" (- (1+ reg-end) reg-beg)))))
        'face 'doom-modeline-highlight))))
 
-
-
 (defun +doom-modeline--macro-recording ()
   "Display current Emacs or evil macro being recorded."
   (when (and (active) (or defining-kbd-macro executing-kbd-macro))
@@ -867,7 +879,7 @@ of `iedit' regions."
 ;;
 
 (def-modeline! main
-  (bar matches persp-icon " " persp-name buffer-info "  %l:%c %p  " selection-info)
+  (bar matches persp-icon " " persp-name eyebrowse-workspace " " buffer-info "  %l:%c %p  " selection-info)
   (buffer-encoding vcs major-mode flycheck))
 
 (def-modeline! eldoc
@@ -875,15 +887,15 @@ of `iedit' regions."
   (media-info major-mode))
 
 (def-modeline! minimal
-  (bar matches persp-icon " " persp-name buffer-info)
+  (bar matches persp-icon " " persp-name eyebrowse-workspace " " buffer-info)
   (media-info major-mode))
 
 (def-modeline! special
-  (bar matches persp-icon " " persp-name  " %b   %l:%c %p  " selection-info)
+  (bar matches persp-icon " " persp-name eyebrowse-workspace " " " %b   %l:%c %p  " selection-info)
   (buffer-encoding major-mode flycheck))
 
 (def-modeline! project
-  (bar persp-icon " " persp-name buffer-project)
+  (bar persp-icon " " persp-name eyebrowse-workspace " " buffer-project)
   (major-mode))
 
 (def-modeline! media
