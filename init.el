@@ -1954,7 +1954,11 @@ Only for use with `advice-add'."
       ("q" nil "Cancel" :color blue))
     (bind-keys :map leader-map
                ("gg" . hydra-git-gutter/body)))
-  (add-hook 'focus-in-hook 'git-gutter:update-all-windows))
+  (add-hook 'focus-in-hook 'git-gutter:update-all-windows)
+  (defun +git-gutter:force-select-popup (&optional diffinfo)
+    (pop-to-buffer "*git-gutter:diff*"))
+  (advice-add 'git-gutter:popup-hunk :after
+              '+git-gutter:force-select-popup))
 
 (use-package git-gutter-fringe
   :after git-gutter
