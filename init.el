@@ -586,7 +586,8 @@ directory, the file name, and its state (modified, read-only or non-existent)."
   (if (and (bound-and-true-p eyebrowse-mode)
            (s-contains-p "eyebrowse-switch" (symbol-name last-command) t))
       (let ((segment (concat (when (bound-and-true-p persp-mode) ":")
-                             (int-to-string (eyebrowse--get 'current-slot)) "  "))
+                             (int-to-string (eyebrowse--get 'current-slot))
+                             ""))
             (faces (if (and (bound-and-true-p persp-mode)
                             (not (persp-contain-buffer-p)))
                        'doom-modeline-persp-free-buffer
@@ -1357,9 +1358,9 @@ Cancels autosave on exiting persp-mode."
     (cl-defmethod helm-setup-user-source ((source helm-persp-current-buffers-source))
       (setf (slot-value source 'action)
             (append (helm-make-actions "Remove buffer(s) from current perspective."
-                               (lambda (candidate)
-                                 (mapcar 'persp-remove-buffer
-                                         (helm-marked-candidates))))
+                                       (lambda (candidate)
+                                         (mapcar 'persp-remove-buffer
+                                                 (helm-marked-candidates))))
                     helm-type-buffer-actions)))
     
     (defclass helm-persp-filtered-buffers-source (helm-source-buffers)
@@ -1376,9 +1377,9 @@ Cancels autosave on exiting persp-mode."
     (cl-defmethod helm-setup-user-source ((source helm-persp-filtered-buffers-source))
       (setf (slot-value source 'action)
             (append (helm-make-actions "Add buffer(s) to current perspective."
-                               (lambda (candidate)
-                                 (mapcar 'persp-add-buffer
-                                         (helm-marked-candidates))))
+                                       (lambda (candidate)
+                                         (mapcar 'persp-add-buffer
+                                                 (helm-marked-candidates))))
                     helm-type-buffer-actions)))
 
     (defvar helm-source-persp-current-buffers
