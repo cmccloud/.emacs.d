@@ -596,7 +596,7 @@ directory, the file name, and its state (modified, read-only or non-existent)."
             (propertize segment
                         'face `(:inherit ,faces))
           segment))
-    "  "))
+    ""))
 
 (def-modeline-segment! persp-name
   "Displays the current perspective if `persp-mode' is active.
