@@ -1674,6 +1674,10 @@ Only for use with `advice-add'."
              helm-previous-interesting-buffer)
   :diminish helm-mode
   :init
+  (defun +helm-show-resume (arg)
+    (interactive "P")
+    (helm-resume (not arg)))
+  
   (bind-keys ("M-x" . helm-M-x)
              ("C-x C-f" . helm-find-files)
              ("C-x C-b" . helm-mini)
@@ -1689,6 +1693,7 @@ Only for use with `advice-add'."
              ("hdf" . describe-function)
              ("hdv" . describe-variable)
              ("hk" . helm-show-kill-ring)
+             ("hr" . +helm-show-resume)
              ("hll" . helm-locate-library)
              ("hb" . helm-filtered-bookmarks)
              ("hm" . helm-all-mark-rings))
@@ -1730,7 +1735,8 @@ Only for use with `advice-add'."
   
   (setq helm-grep-ag-command
         "rg --color=always --smart-case --no-heading --line-number %s %s %s"
-        helm-M-x-fuzzy-match nil
+        helm-buffer-max-length nil
+        helm-M-x-fuzzy-match t
         helm-autoresize-max-height 30
         helm-boring-buffer-regexp-list '("\\` "
                                          "\\*helm"
