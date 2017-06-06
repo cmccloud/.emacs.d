@@ -2229,11 +2229,12 @@ Only for use with `advice-add'."
            (--remove-first (s-equals-p (car it) "*Help*")
                            shackle-rules)))
       (apply func args)))
+  (setq shackle-select-reused-windows t)
   (shackle-mode 1)
   (setq shackle-rules
         '(("*Process List*" :select t :align t :size 0.4)
           ("*Apropos*" :select t :align t :size 0.4)
-          ("Outline.*pdf" :regexp t :select t :align (quote left) :size 0.3)
+          ("Outline.*pdf" :regexp t :select t :align left :size 0.3)
           ("*Geiser documentation*" :select t :align t :size 0.4)
           ("*slime-description*" :select t :align t :size 0.4)
           ("\\`\\*\[h|H]elm.*?\\*\\'" :regexp t :align t :size 0.3)
@@ -2241,7 +2242,7 @@ Only for use with `advice-add'."
           ("*Completions*" :select t :align t :size 0.4)
           ("*Compile-Log*" :select t :align t :size 0.4)
           ("*Man.*" :regexp t :select t :align t :size 0.4)
-          ("*lispy-goto*" :align (quote below) :size 0.4)))
+          ("*lispy-goto*" :align t :size 0.4)
           ("*git-gutter:diff*" :align bottom :size 0.3)))
 
   (with-eval-after-load 'helm
