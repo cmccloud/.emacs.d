@@ -1023,8 +1023,16 @@ of `iedit' regions."
 (use-package paradox
   :commands (paradox-list-packages)
   :config
-  (paradox-enable)
-  (setq paradox-lines-per-entry 1))
+  (setq package-archive-priorities '(("melpa-stable" . 10)
+                                     ("melpa" . 5)
+                                     ("gnu" . 0)
+                                     ("marmalade" . -5)))
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                           ("melpa-stable" . "https://stable.melpa.org/packages/")
+                           ("org" . "http://orgmode.org/elpa/")
+                           ("gnu" . "http://elpa.gnu.org/packages/")))
+  (setq paradox-lines-per-entry 1)
+  (paradox-enable))
 
 (use-package autorevert
   :demand t
