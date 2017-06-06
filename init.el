@@ -1918,6 +1918,13 @@ Only for use with `advice-add'."
   (bind-keys :map leader-map
              ("gs" . magit-status))
   :config
+  (defun +magit|refresh-visible-vc-state ()
+    (dolist (window (window-list))
+      (with-current-buffer (window-buffer window)
+        (message (buffer-name))
+        (vc-refresh-state))))
+  ;; TODO: Needs Testing
+  (add-hook 'magit-post-refresh-hook #'+magit|refresh-visible-vc-state)
   (bind-keys :map magit-process-mode-map
              ("M-n" . nil)
              ("M-p" . nil))
