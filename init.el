@@ -1413,6 +1413,14 @@ Cancels autosave on exiting persp-mode."
        :buffer "*helm perspectives remove buffer*"
        :sources '(helm-source-persp-current-buffers)))
 
+    ;; WIP
+    (defun +helm-layouts ()
+      (interactive)
+      (helm
+       :buffer "*helm layouts*"
+       :sources '(helm-source-persp-filtered-buffers
+                  helm-source-persp-current-buffers)))
+
     (defun persp--helm-mini (helm-mini)
       "Wrapper for helm-mini for use with `persp-mode'.
 Only for use with `advice-add'."
