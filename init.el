@@ -1946,6 +1946,7 @@ Only for use with `advice-add'."
     (defhydra hydra-git-gutter (:columns 3 :exit nil :foreign-keys warn)
       "Git Gutter"
       ("s" git-gutter:stage-hunk "Stage Hunk")
+      ("d" git-gutter:popup-hunk "Diff Hunk" :exit t)
       ("n" git-gutter:next-hunk "Next Hunk")
       ("p" git-gutter:previous-hunk "Previous Hunk")
       ("r" git-gutter:revert-hunk "Revert Hunk")
@@ -2237,6 +2238,7 @@ Only for use with `advice-add'."
           ("*Compile-Log*" :select t :align t :size 0.4)
           ("*Man.*" :regexp t :select t :align t :size 0.4)
           ("*lispy-goto*" :align (quote below) :size 0.4)))
+          ("*git-gutter:diff*" :align bottom :size 0.3)))
 
   (with-eval-after-load 'helm
     (advice-add 'helm-execute-persistent-action
