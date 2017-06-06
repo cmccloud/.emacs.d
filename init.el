@@ -1328,6 +1328,7 @@ Cancels autosave on exiting persp-mode."
   
   (setq persp-nil-name "Home"
         persp-add-buffer-on-find-file t
+        persp-add-buffer-on-after-change-major-mode 'free
         persp-reset-windows-on-nil-window-conf t
         persp-restrict-buffers-to-if-foreign-buffer nil
         persp-save-dir (expand-file-name "cache/persp-confs/"
