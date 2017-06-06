@@ -1154,6 +1154,7 @@ of `iedit' regions."
 
 (use-package eyebrowse
   :defer t
+  :after persp-mode
   :commands (eyebrowse-mode
              eyebrowse-switch-to-window-config
              eyebrowse-switch-to-window-config-1
