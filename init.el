@@ -2317,17 +2317,11 @@ Only for use with `advice-add'."
           ("*slime-description*" :select t :align t :size 0.4)
           ("\\`\\*\[h|H]elm.*?\\*\\'" :regexp t :align t :size 0.3)
           ("*Help*" :select t :align left :size 0.4 :popup t)
-          ("*Help*" :select t :align left :size 0.4 :popup t)
           ("*Completions*" :select t :align t :size 0.4)
           ("*Compile-Log*" :select t :align t :size 0.4)
           ("*Man.*" :regexp t :select t :align left :size .5)
           ("*lispy-goto*" :align t :size 0.4)
-          ("*git-gutter:diff*" :align left :size 0.4)))
-
-  (with-eval-after-load 'helm
-    (advice-add 'helm-execute-persistent-action
-                :around
-                #'shackle-release-help)))
+          ("*git-gutter:diff*" :align left :size 0.4))))
 
 ;; End Emacs Initialization
 ;; Re-enable Garbage Collection
