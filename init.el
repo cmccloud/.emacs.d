@@ -1,5 +1,6 @@
 ;; Supress Garbage Collection During Initialization
-(setq gc-cons-threshold 100000000)
+(setq gc-cons-threshold 402653184
+      gc-cons-percentage .6)
 ;; Begin Emacs Initialization
 ;; Load Customization Settings
 (load (expand-file-name "custom.el" user-emacs-directory) nil t)
@@ -50,23 +51,34 @@
              ("ad" . dired)))
 
 ;; Appearance and UI
+(use-package solaire-mode
+  :demand t
+  :config
+  (defvar solaire-mode--themes-to-swap
+    '(doom-one doom-spacegrey doom-solarized-light)
+    "List of themes for which background colors must be changed by Solaire.")
+  
+  (defun solaire-mode--doom-themes-hook ()
+    (when (-contains? 'solaire-mode--themes-to-swap
+                      (car custom-enabled-themes))
+      (solaire-mode-swap-bg)))
+  
+  (add-hook 'after-change-major-mode-hook #'turn-on-solaire-mode)
+  (add-hook 'ediff-prepare-buffer-hook #'solaire-mode)
+  (add-hook 'after-revert-hook #'turn-on-solaire-mode)
+  (add-hook 'minibuffer-setup-hook #'solaire-mode-in-minibuffer))
+
 (use-package doom-themes
   :demand t
   :config
   (setq doom-themes-enable-bold t
-        doom-themes-enable-italic t
-        doom-one-brighter-comments nil
-        doom-one-brighter-modeline nil)
+        doom-themes-enable-italic nil)
   
   (load-theme 'doom-one t)
-  (add-hook 'find-file-hook #'doom-buffer-mode-maybe)
-  (add-hook 'after-revert-hook #'doom-buffer-mode-maybe)
-  (add-hook 'ediff-prepare-buffer-hook #'doom-buffer-mode)
-  (add-hook 'minibuffer-setup-hook #'doom-brighten-minibuffer)
+  (with-eval-after-load 'solaire-mode
+    (solaire-mode-swap-bg))
   (with-eval-after-load 'neotree
-    (doom-themes-neotree-config))
-  (with-eval-after-load 'nlinum
-    (doom-themes-nlinum-config)))
+    (doom-themes-neotree-config)))
 
 (use-package linum
   :commands linum-mode
@@ -99,6 +111,7 @@
               blink-matching-paren nil
               cursor-in-non-selected-windows nil
               highlight-nonselected-windows nil
+              fit-window-to-buffer-horizontally t
               image-animate-loop t
               indicate-buffer-boundaries nil
               indicate-empty-lines nil
@@ -295,7 +308,8 @@ DEFAULT is non-nil, set the default mode-line for all buffers."
 (defun +doom-modeline|set-selected-window (&rest _)
   "Sets `+doom-modeline-current-window' appropriately"
   (let ((win (frame-selected-window)))
-    (unless (minibuffer-window-active-p win)
+    (unless (or (minibuffer-window-active-p win)
+                (bound-and-true-p helm-alive-p))
       (setq +doom-modeline-current-window win))))
 
 (add-hook 'window-configuration-change-hook #'+doom-modeline|set-selected-window)
@@ -394,6 +408,10 @@ added to the current perspective."
 ;; Bar
 (defface doom-modeline-bar '((t (:inherit highlight)))
   "The face used for the left-most bar on the mode-line of an active window."
+  :group '+doom-modeline)
+
+(defface doom-modeline-helm-bar '((t (:inherit highlight)))
+  "The face used for the left-most bar on the mode-line of an active helm window."
   :group '+doom-modeline)
 
 (defface doom-modeline-eldoc-bar '((t (:inherit shadow)))
@@ -639,7 +657,6 @@ Signals whether current-buffer is a part of the current perspective."
                   (t (upcase (symbol-name sys-name)))))
           "  "))
 
-
 (def-modeline-segment! major-mode
   "The major mode, including process, environment and text-scale info."
   (propertize
@@ -837,6 +854,12 @@ of `iedit' regions."
    +doom-modeline-height
    +doom-modeline-bar-width))
 
+(def-modeline-segment! helm-bar
+  (+doom-modeline--make-xpm
+   (face-background 'doom-modeline-helm-bar nil t)
+   +doom-modeline-height
+   +doom-modeline-bar-width))
+
 (def-modeline-segment! helm-name
   (propertize
    (buffer-name (current-buffer))
@@ -875,12 +898,29 @@ of `iedit' regions."
 (def-modeline-segment! helm-modeline-string-segment
   helm--mode-line-string-real)
 
+(def-modeline-segment! helm-header-line-segment
+  (when-let ((source (helm-get-current-source)))
+    (propertize (helm-interpret-value
+                 (and (listp source)
+                      (assoc-default 'header-line source))
+                 source)
+                'face 'helm-header)))
+
 ;;
 ;; Mode lines
 ;;
 
 (def-modeline! main
-  (bar matches persp-icon " " persp-name eyebrowse-workspace " " buffer-info "  %l:%c %p  " selection-info)
+  (bar
+   matches
+   persp-icon
+   " "
+   persp-name
+   eyebrowse-workspace
+   " "
+   buffer-info
+   "  %l:%c %p  "
+   selection-info)
   (buffer-encoding vcs major-mode flycheck))
 
 (def-modeline! eldoc
@@ -892,7 +932,15 @@ of `iedit' regions."
   (media-info major-mode))
 
 (def-modeline! special
-  (bar matches persp-icon " " persp-name eyebrowse-workspace " " " %b   %l:%c %p  " selection-info)
+  (bar
+   matches
+   persp-icon
+   " "
+   persp-name
+   eyebrowse-workspace
+   " "
+   " %b   %l:%c %p  "
+   selection-info)
   (buffer-encoding major-mode flycheck))
 
 (def-modeline! project
@@ -904,7 +952,7 @@ of `iedit' regions."
   (media-info major-mode))
 
 (def-modeline! helm
-  (bar
+  (helm-bar
    helm-marked
    " "
    helm-name
@@ -913,7 +961,7 @@ of `iedit' regions."
    helm-follow
    helm-candidate-number
    " ")
-  (helm-modeline-string-segment))
+  (helm-header-line-segment))
 
 ;;
 (doom-set-modeline 'main t)
@@ -1040,6 +1088,10 @@ of `iedit' regions."
   (setq auto-revert-verbose nil)
   (global-auto-revert-mode))
 
+(use-package re-builder
+  :config
+  (setq reb-auto-match-limit 500))
+
 (use-package hl-line
   :defer t
   :init
@@ -1056,34 +1108,26 @@ of `iedit' regions."
   :defer t
   :if (memq window-system '(mac ns))
   :init
-  (setenv "PATH"
-          (s-join
-           ":"
-           '("/usr/local/opt/coreutils/libexec/gnubin"
-             "/usr/local/bin"
-             "/usr/local/sbin"
-             "/usr/bin"
-             "/usr/sbin"
-             "/bin"
-             "/sbin"
-             "/opt/X11/bin"
-             "/usr/local/otp/nvm"
-             "/usr/local/opt/nvm/bin"
-             "/usr/local/opt/nvm/sbin"
-             "/usr/local/opt/nvm/versions/node/v6.2.0/bin"
-             "/usr/local/share/npm/bin"
-             "/Library/TeX/texbin"
-             "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9"
-             "/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9")))
+  (setq exec-path
+        (eval-when-compile
+          (exec-path-from-shell-initialize)
+          exec-path))
+  (defvar env-path-cache
+    (eval-when-compile
+      (exec-path-from-shell-initialize)
+      (getenv "PATH"))
+    "Cache the correctly generated $PATH environment variable at compile.
+This constant may then later be used at run-time without the expense of
+executing `exec-path-from-shell-initialize'.")
+  
+  (setenv "PATH" env-path-cache)
 
   ;; Mac Specific Config
   (when (equal system-type 'darwin)
     (when-let ((gls (executable-find "gls"))
                (ls (executable-find "ls")))
       (setq insert-directory-program gls
-            dired-listing-switches "-aBhlp --group-directories-first")))
-  :config
-  (exec-path-from-shell-initialize))
+            dired-listing-switches "-aBhlp --group-directories-first"))))
 
 (use-package term
   :defer t
@@ -1305,6 +1349,7 @@ FRAME defaults to the current frame."
              ("ls" . persp-switch)
              ("la" . persp-add-buffer)
              ("lr" . persp-remove-buffer))
+  (bind-keys ("C-x C-l" . persp-mode))
   :config
   (defun persp-timed-auto-save ()
     "Timed auto-save for `persp-mode.
@@ -1342,12 +1387,21 @@ Cancels autosave on exiting persp-mode."
   (add-hook 'persp-mode-hook #'persp-timed-auto-save)
 
   ;; Integrations with other buffer management tools
+  (defun persp--helm-wrapper (wrapped-buffer-command &rest r)
+    "Wrapper for helm-mini for use with `persp-mode'.
+Only for use with `advice-add'."
+    (with-persp-buffer-list () (apply wrapped-buffer-command r)))
+
   (advice-add 'next-buffer :around
-              (lambda (next-buffer)
-                (with-persp-buffer-list () (funcall next-buffer))))
+              #'persp--helm-wrapper)
   (advice-add 'previous-buffer :around
-              (lambda (previous-buffer)
-                (with-persp-buffer-list () (funcall previous-buffer))))
+              #'persp--helm-wrapper)
+  (with-eval-after-load 'helm-buffers
+    (advice-add 'helm-mini :around
+                #'persp--helm-wrapper))
+  (with-eval-after-load 'helm-imenu
+    (advice-add 'helm-imenu-in-all-buffers :around
+                #'persp--helm-wrapper))
   
   (with-eval-after-load 'helm-buffers
     (defvar helm-persp-current-buffers-cache nil)
@@ -1417,22 +1471,26 @@ Cancels autosave on exiting persp-mode."
     ;; WIP
     (defun +helm-layouts ()
       (interactive)
-      (helm
-       :buffer "*helm layouts*"
-       :sources '(helm-source-persp-filtered-buffers
-                  helm-source-persp-current-buffers)))
+      (let ((helm-actions
+             (helm-make-actions "Switch to Perspective"
+                                (lambda (c) (persp-switch c))
+                                "Remove Perspective"
+                                (lambda (c) (persp-kill c))
+                                "Create New Perspective"
+                                (lambda (c) (call-interactively 'persp-add-new)))))
+        (helm
+         :buffer "*helm layouts*"
+         :sources `(,(helm-build-sync-source "Perspectives"
+                       :candidates 'persp-names
+                       :action 'helm-actions
+                       :persistent-action 'persp-switch)
+                    helm-source-persp-current-buffers
+                    helm-source-persp-filtered-buffers))))
 
-    (defun persp--helm-mini (helm-mini)
-      "Wrapper for helm-mini for use with `persp-mode'.
-Only for use with `advice-add'."
-      (with-persp-buffer-list () (funcall helm-mini)))
-
-    (advice-add 'helm-mini :around
-                #'persp--helm-mini)
-    
     (bind-keys :map leader-map
                ("la" . helm-persp-add-buffers-to-perspective)
-               ("lr" . helm-persp-remove-buffers-from-perspective))))
+               ("lr" . helm-persp-remove-buffers-from-perspective))
+    (bind-keys ("C-x C-l" . +helm-layouts))))
 
 (use-package osx-trash
   :defer 10
@@ -1739,6 +1797,7 @@ Only for use with `advice-add'."
         helm-buffer-max-length nil
         helm-M-x-fuzzy-match t
         helm-autoresize-max-height 30
+        helm-display-header-line nil
         helm-boring-buffer-regexp-list '("\\` "
                                          "\\*helm"
                                          "\\*helm-mode"
@@ -1752,12 +1811,19 @@ Only for use with `advice-add'."
                                     helm-source-buffer-not-found)
         helm-split-window-in-side-p t
         helm-swoop-speed-or-color t
+        helm-swoop-candidate-number-limit 1000
         helm-swoop-split-with-multiple-windows t
         
         ;; Avoid slow tramp performance when using helm
         helm-buffer-skip-remote-checking t
         helm-ff-tramp-not-fancy t)
 
+  ;; Helm Candidate Number Limit
+  (setq helm-candidate-number-limit 100)
+  (with-eval-after-load 'helm-color
+    (helm-attrset 'candidate-number-limit 9999 helm-source-colors)
+    (helm-attrset 'candidate-number-limit 9999 helm-source-customize-face))
+  
   ;; Mac specific config
   (when (equal system-type 'darwin)
     (setq helm-locate-fuzzy-match nil
@@ -1789,7 +1855,9 @@ Only for use with `advice-add'."
              ("ps" . helm-projectile-switch-project)
              ("pf" . helm-projectile-find-file)
              ("pp" . helm-projectile)
-             ("pb" . helm-projectile-switch-to-buffer)))
+             ("pb" . helm-projectile-switch-to-buffer))
+  :config
+  (helm-projectile-on))
 
 (use-package helm-ag
   :after (helm)
@@ -1807,7 +1875,9 @@ Only for use with `advice-add'."
   :bind
   (("C-s" . helm-swoop))
   :config
-  (setq helm-swoop-candidate-number-limit 500))
+  (setq helm-swoop-candidate-number-limit 500
+        ;; Bring helm-swoop under shackle control
+        helm-swoop-split-window-function 'switch-to-buffer-other-window))
 
 (use-package helm-descbinds
   :after (helm)
@@ -1922,7 +1992,6 @@ Only for use with `advice-add'."
   (defun +magit|refresh-visible-vc-state ()
     (dolist (window (window-list))
       (with-current-buffer (window-buffer window)
-        (message (buffer-name))
         (vc-refresh-state))))
   ;; TODO: Needs Testing
   (add-hook 'magit-post-refresh-hook #'+magit|refresh-visible-vc-state)
@@ -2235,7 +2304,8 @@ Only for use with `advice-add'."
     "Runs func in shackle context with *Help* buffers left free."
     (let ((shackle-rules
            (--remove-first (s-equals-p (car it) "*Help*")
-                           shackle-rules)))
+                           shackle-rules)
+           (replace-match)))
       (apply func args)))
   (setq shackle-select-reused-windows t)
   (shackle-mode 1)
@@ -2246,12 +2316,13 @@ Only for use with `advice-add'."
           ("*Geiser documentation*" :select t :align t :size 0.4)
           ("*slime-description*" :select t :align t :size 0.4)
           ("\\`\\*\[h|H]elm.*?\\*\\'" :regexp t :align t :size 0.3)
-          ("*Help*" :select t :align t :size 0.4)
+          ("*Help*" :select t :align left :size 0.4 :popup t)
+          ("*Help*" :select t :align left :size 0.4 :popup t)
           ("*Completions*" :select t :align t :size 0.4)
           ("*Compile-Log*" :select t :align t :size 0.4)
-          ("*Man.*" :regexp t :select t :align t :size 0.4)
+          ("*Man.*" :regexp t :select t :align left :size .5)
           ("*lispy-goto*" :align t :size 0.4)
-          ("*git-gutter:diff*" :align bottom :size 0.3)))
+          ("*git-gutter:diff*" :align left :size 0.4)))
 
   (with-eval-after-load 'helm
     (advice-add 'helm-execute-persistent-action
@@ -2260,4 +2331,5 @@ Only for use with `advice-add'."
 
 ;; End Emacs Initialization
 ;; Re-enable Garbage Collection
-(setq gc-cons-threshold 800000)
+(setq gc-cons-threshold 16777216
+      gc-cons-percentage .1)
