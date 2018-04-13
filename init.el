@@ -6,6 +6,11 @@
 ;; Load Customization Settings
 (load (expand-file-name "custom.el" user-emacs-directory) nil t)
 
+;; Good Looking Window
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist '(ns-appearance . 'nil))
+(setq frame-resize-pixelwise t)
+
 ;; Extend Load Path
 (eval-and-compile
   (let ((default-directory (expand-file-name "site-lisp" user-emacs-directory)))
