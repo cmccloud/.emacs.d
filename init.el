@@ -1472,21 +1472,24 @@ Only for use with `advice-add'."
               (lambda (c) (call-interactively 'persp-add-new)))))
         (helm
          :buffer "*helm layouts*"
-         :sources `(,(helm-build-sync-source "Current Buffers"
-                      :candidates
-                      #'(lambda ()
-                          (helm-skip-boring-buffers
-                           (mapcar
-                            #'buffer-name
-                            (persp-buffer-list-restricted nil 0))
-                           helm-source-buffers-list))
-                      :action
-                      (helm-make-actions
-                       "Remove Buffer(s) from current Perspective"
-                       (lambda (c)
-                         (mapcar
-                          #'persp-remove-buffer
-                          (helm-marked-candidates)))))
+         :sources `(,(helm-build-sync-source "Perspectives"
+                       :candidates #'persp-names
+                       :action helm-actions)
+                    ,(helm-build-sync-source "Current Buffers"
+                       :candidates
+                       #'(lambda ()
+                           (helm-skip-boring-buffers
+                            (mapcar
+                             #'buffer-name
+                             (persp-buffer-list-restricted nil 0))
+                            helm-source-buffers-list))
+                       :action
+                       (helm-make-actions
+                        "Remove Buffer(s) from current Perspective"
+                        (lambda (c)
+                          (mapcar
+                           #'persp-remove-buffer
+                           (helm-marked-candidates)))))
                     ,(helm-build-sync-source "Other Buffers"
                        :candidates
                        #'(lambda ()
