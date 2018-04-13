@@ -1,3 +1,4 @@
+;;; init.el -*- lexical-binding: t -*- 
 ;; Supress Garbage Collection During Initialization
 (setq gc-cons-threshold 402653184
       gc-cons-percentage .6)
