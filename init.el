@@ -2325,21 +2325,27 @@ Only for use with `advice-add'."
                            shackle-rules)
            (replace-match)))
       (apply func args)))
+  (defun +shackle-maybe-split-left ()
+    "Splits window to the left given a large enough window.
+Splits below otherwise."
+    (if (>= (frame-width) 160)
+        'left
+      'below))
   (setq shackle-select-reused-windows t)
   (shackle-mode 1)
   (setq shackle-rules
-        '(("*Process List*" :select t :align t :size 0.4)
-          ("*Apropos*" :select t :align t :size 0.4)
-          ("Outline.*pdf" :regexp t :select t :align left :size 0.3)
+        '(("*Process List*" :select t :align +shackle-maybe-split-left :size 0.4)
+          ("*Apropos*" :select t :align +shackle-maybe-split-left :size 0.4)
+          ("Outline.*pdf" :regexp t :select t :align +shackle-maybe-split-left :size 0.3)
           ("*Geiser documentation*" :select t :align t :size 0.4)
           ("*slime-description*" :select t :align t :size 0.4)
           ("\\`\\*\[h|H]elm.*?\\*\\'" :regexp t :align t :size 0.3)
-          ("*Help*" :select t :align left :size 0.4 :popup t)
+          ("*Help*" :select t :align +shackle-maybe-split-left :size 0.4 :popup t)
           ("*Completions*" :select t :align t :size 0.4)
-          ("*Compile-Log*" :select t :align t :size 0.4)
-          ("*Man.*" :regexp t :select t :align left :size .5)
+          ("*Compile-Log*" :select t :align +shackle-maybe-split-left :size 0.4)
+          ("*Man.*" :regexp t :select t :align +shackle-maybe-split-left :size .5)
           ("*lispy-goto*" :align t :size 0.4)
-          ("*git-gutter:diff*" :align left :size 0.4))))
+          ("*git-gutter:diff*" :align +shackle-maybe-split-left :size 0.4))))
 
 ;; End Emacs Initialization
 ;; Re-enable Garbage Collection
