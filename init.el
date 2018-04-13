@@ -2328,21 +2328,29 @@ Splits below otherwise."
     (if (>= (frame-width) 160)
         'left
       'below))
+  (defun +shackle-maybe-split (consequent alternative)
+    "Determines window split alignment based on frame-width.
+Given a large enough frame, splits to consequent. Otherwise splits to alternative.
+Valid alignments are `above', `below', `left', and `right'."
+    (if (>= (frame-width) 160)
+        consequent
+      alternative))
   (setq shackle-select-reused-windows t)
   (shackle-mode 1)
-  (setq shackle-rules
-        '(("*Process List*" :select t :align +shackle-maybe-split-left :size 0.4)
-          ("*Apropos*" :select t :align +shackle-maybe-split-left :size 0.4)
-          ("Outline.*pdf" :regexp t :select t :align +shackle-maybe-split-left :size 0.3)
-          ("*Geiser documentation*" :select t :align t :size 0.4)
-          ("*slime-description*" :select t :align t :size 0.4)
-          ("\\`\\*\[h|H]elm.*?\\*\\'" :regexp t :align t :size 0.3)
-          ("*Help*" :select t :align +shackle-maybe-split-left :size 0.4 :popup t)
-          ("*Completions*" :select t :align t :size 0.4)
-          ("*Compile-Log*" :select t :align +shackle-maybe-split-left :size 0.4)
-          ("*Man.*" :regexp t :select t :align +shackle-maybe-split-left :size .5)
-          ("*lispy-goto*" :align t :size 0.4)
-          ("*git-gutter:diff*" :align +shackle-maybe-split-left :size 0.4))))
+  (let ((left-or-below (apply-partially #'+shackle-maybe-split 'left 'below)))
+    (setq shackle-rules
+          `(("*Process List*" :select t :align ,left-or-below :size 0.4)
+            ("*Apropos*" :select t :align ,left-or-below :size 0.4)
+            ("Outline.*pdf" :regexp t :select t :align ,left-or-below :size 0.3)
+            ("*Geiser documentation*" :select t :align t :size 0.4)
+            ("*slime-description*" :select t :align t :size 0.4)
+            ("\\`\\*\[h|H]elm.*?\\*\\'" :regexp t :align t :size 0.3)
+            ("*Help*" :select t :align ,left-or-below :size 0.4 :popup t)
+            ("*Completions*" :select t :align t :size 0.4)
+            ("*Compile-Log*" :select t :align ,left-or-below :size 0.4)
+            ("*Man.*" :regexp t :select t :align ,left-or-below :size .5)
+            ("*lispy-goto*" :align t :size 0.4)
+            ("*git-gutter:diff*" :align ,left-or-below :size 0.4)))))
 
 ;; End Emacs Initialization
 ;; Re-enable Garbage Collection
