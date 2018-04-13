@@ -1505,10 +1505,7 @@ Only for use with `advice-add'."
                     ;; helm-source-persp-current-buffers
                     ;; helm-source-persp-filtered-buffers
                     ))))
-
-    (bind-keys :map leader-map
-               ("la" . helm-persp-add-buffers-to-perspective)
-               ("lr" . helm-persp-remove-buffers-from-perspective))
+    
     (bind-keys ("C-x C-l" . +helm-layouts))))
 
 (use-package osx-trash
