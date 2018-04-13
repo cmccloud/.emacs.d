@@ -20,7 +20,7 @@
 (package-initialize)
 (require 'use-package)
 (setq use-package-always-defer t
-      use-package-verbose t)
+      use-package-verbose nil)
 (add-hook 'after-init-hook
           (lambda () (message (concat "Emacs started in: " (emacs-init-time)))))
 
