@@ -2322,12 +2322,6 @@ Only for use with `advice-add'."
                            shackle-rules)
            (replace-match)))
       (apply func args)))
-  (defun +shackle-maybe-split-left ()
-    "Splits window to the left given a large enough window.
-Splits below otherwise."
-    (if (>= (frame-width) 160)
-        'left
-      'below))
   (defun +shackle-maybe-split (consequent alternative)
     "Determines window split alignment based on frame-width.
 Given a large enough frame, splits to consequent. Otherwise splits to alternative.
