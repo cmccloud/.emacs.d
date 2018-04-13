@@ -80,7 +80,7 @@
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic nil)
   
-  (load-theme 'doom-one t)
+  (load-theme 'doom-spacegrey t)
   (with-eval-after-load 'solaire-mode
     (solaire-mode-swap-bg))
   (with-eval-after-load 'neotree
