@@ -1418,7 +1418,9 @@ Only for use with `advice-add'."
     (defvar helm-persp-filtered-buffers-cache nil)
 
     (defclass helm-persp-current-buffers-source (helm-source-buffers)
-      ((candidates
+      ((init
+        :initform nil)
+       (candidates
         :initform #'(lambda ()
                       (if helm-persp-current-buffers-cache
                           helm-persp-current-buffers-cache
@@ -1437,7 +1439,9 @@ Only for use with `advice-add'."
                     helm-type-buffer-actions)))
     
     (defclass helm-persp-filtered-buffers-source (helm-source-buffers)
-      ((candidates
+      ((init
+        :initform nil)
+       (candidates
         :initform #'(lambda ()
                       (if helm-persp-filtered-buffers-cache
                           helm-persp-filtered-buffers-cache
@@ -1455,46 +1459,52 @@ Only for use with `advice-add'."
                                                  (helm-marked-candidates))))
                     helm-type-buffer-actions)))
 
-    (defvar helm-source-persp-current-buffers
-      (helm-make-source "Current buffers"
-          'helm-persp-current-buffers-source
-        :fuzzy-match t))
-    
-    (defvar helm-source-persp-filtered-buffers
-      (helm-make-source "Other buffers"
-          'helm-persp-filtered-buffers-source
-        :fuzzy-match t))
-
-    (defun helm-persp-add-buffers-to-perspective ()
-      (interactive)
-      (helm
-       :buffer "*helm perspectives add buffer*"
-       :sources '(helm-source-persp-filtered-buffers)))
-
-    (defun helm-persp-remove-buffers-from-perspective ()
-      (interactive)
-      (helm
-       :buffer "*helm perspectives remove buffer*"
-       :sources '(helm-source-persp-current-buffers)))
-
     ;; WIP
     (defun +helm-layouts ()
       (interactive)
       (let ((helm-actions
-             (helm-make-actions "Switch to Perspective"
-                                (lambda (c) (persp-switch c))
-                                "Remove Perspective"
-                                (lambda (c) (persp-kill c))
-                                "Create New Perspective"
-                                (lambda (c) (call-interactively 'persp-add-new)))))
+             (helm-make-actions
+              "Switch to Perspective"
+              (lambda (c) (persp-switch c))
+              "Remove Perspective"
+              (lambda (c) (persp-kill c))
+              "Create New Perspective"
+              (lambda (c) (call-interactively 'persp-add-new)))))
         (helm
          :buffer "*helm layouts*"
-         :sources `(,(helm-build-sync-source "Perspectives"
-                       :candidates 'persp-names
-                       :action 'helm-actions
-                       :persistent-action 'persp-switch)
-                    helm-source-persp-current-buffers
-                    helm-source-persp-filtered-buffers))))
+         :sources `(,(helm-build-sync-source "Current Buffers"
+                      :candidates
+                      #'(lambda ()
+                          (helm-skip-boring-buffers
+                           (mapcar
+                            #'buffer-name
+                            (persp-buffer-list-restricted nil 0))
+                           helm-source-buffers-list))
+                      :action
+                      (helm-make-actions
+                       "Remove Buffer(s) from current Perspective"
+                       (lambda (c)
+                         (mapcar
+                          #'persp-remove-buffer
+                          (helm-marked-candidates)))))
+                    ,(helm-build-sync-source "Other Buffers"
+                       :candidates
+                       #'(lambda ()
+                           (helm-skip-boring-buffers
+                            (mapcar
+                             #'buffer-name
+                             (persp-buffer-list-restricted nil 1))
+                            helm-source-buffers-list))
+                       :action
+                       (helm-make-actions
+                        "Add Buffer(s) to current Perspective"
+                        (lambda (c)
+                          (mapcar
+                           #'persp-add-buffer
+                           (helm-marked-candidates)))))
+                    ;; helm-source-persp-current-buffers
+                    ;; helm-source-persp-filtered-buffers
+                    ))))
 
     (bind-keys :map leader-map
                ("la" . helm-persp-add-buffers-to-perspective)
