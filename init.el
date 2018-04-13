@@ -448,9 +448,11 @@ active."
 
 ;; Only support python and ruby for now
 (add-hook 'python-mode-hook
-          (lambda () (setq +doom-modeline-env-command "python --version 2>&1 | cut -d' ' -f2")))
+          (lambda () (setq +doom-modeline-env-command
+                           "python --version 2>&1 | cut -d' ' -f2")))
 (add-hook 'ruby-mode-hook
-          (lambda () (setq +doom-modeline-env-command "ruby   --version 2>&1 | cut -d' ' -f2")))
+          (lambda () (setq +doom-modeline-env-command
+                           "ruby   --version 2>&1 | cut -d' ' -f2")))
 
 
 ;;
@@ -1177,6 +1179,7 @@ executing `exec-path-from-shell-initialize'.")
   :config (yas-reload-all))
 
 (use-package pdf-tools
+  :disabled t
   :defer t
   :mode (("\\.pdf\\'" . pdf-view-mode))
   :config
