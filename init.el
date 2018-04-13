@@ -2057,7 +2057,7 @@ Only for use with `advice-add'."
               '+git-gutter:force-select-popup))
 
 (use-package git-gutter-fringe
-  :after git-gutter
+  :demand t
   :config
   ;; colored fringe "bars"
   (define-fringe-bitmap 'git-gutter-fr:added
@@ -2072,8 +2072,7 @@ Only for use with `advice-add'."
     [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
     nil nil 'center))
 
-(use-package fringe-helper
-  :disabled t)
+(use-package fringe-helper)
 
 (use-package gist
   :defer t
