@@ -2296,7 +2296,9 @@ Only for use with `advice-add'."
         (progn
           (golden-ratio-mode -1)
           (balance-windows))
-      (golden-ratio-mode 1)))
+      (progn
+        (golden-ratio-mode 1)
+        (golden-ratio))))
   (bind-keys :map leader-map
              ("tg" . toggle-golden-ratio)))
 

@@ -44,9 +44,7 @@
  '(custom-file "/Users/Macnube/.emacs.d/custom.el")
  '(custom-safe-themes
    (quote
-    ("e91ca866d6cbb79786e314e0466f4f1b8892b72e77ed702e53bf7565e0dfd469" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "f03e2076bb6ba9f1178ef83f54b395c48c70dd160a34e37c80c876c925701b5a" "db2ecce0600e3a5453532a89fc19b139664b4a3e7cbefce3aaf42b6d9b1d6214" "e1e94aaecf0d3ed7bc6cdcebb02aafbf2a0236e711f4a78783337f8b0d32c842" "413a1712dfb0929cca961863482094057217bcb13475b4b813b35ea81da8e2e6" "5fea012429d3e720b7adc598295157befc00af4f3d433255087b407bf3a9ab71" "c31b688a76507c3b0458ae9d3848e3196346aeeadde457df5f828c7dc3e59fe3" "b40f4579788b1e990c553c163a4d294ac9d5a2a4615b1d1a757812ea427f8d50" "2f5dd0ac7dffdc0acf0aa15c9b7a5b1f86c37b9e11800325160b89c1b8a6fefe" "afbb40954f67924d3153f27b6d3399df221b2050f2a72eb2cfa8d29ca783c5a8" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default)))
- '(diff-hl-margin-mode nil)
- '(diff-hl-side (quote right))
+    ("2a1b4531f353ec68f2afd51b396375ac2547c078d035f51242ba907ad8ca19da" "2af26301bded15f5f9111d3a161b6bfb3f4b93ec34ffa95e42815396da9cb560" "e91ca866d6cbb79786e314e0466f4f1b8892b72e77ed702e53bf7565e0dfd469" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "f03e2076bb6ba9f1178ef83f54b395c48c70dd160a34e37c80c876c925701b5a" "db2ecce0600e3a5453532a89fc19b139664b4a3e7cbefce3aaf42b6d9b1d6214" "e1e94aaecf0d3ed7bc6cdcebb02aafbf2a0236e711f4a78783337f8b0d32c842" "413a1712dfb0929cca961863482094057217bcb13475b4b813b35ea81da8e2e6" "5fea012429d3e720b7adc598295157befc00af4f3d433255087b407bf3a9ab71" "c31b688a76507c3b0458ae9d3848e3196346aeeadde457df5f828c7dc3e59fe3" "b40f4579788b1e990c553c163a4d294ac9d5a2a4615b1d1a757812ea427f8d50" "2f5dd0ac7dffdc0acf0aa15c9b7a5b1f86c37b9e11800325160b89c1b8a6fefe" "afbb40954f67924d3153f27b6d3399df221b2050f2a72eb2cfa8d29ca783c5a8" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default)))
  '(echo-keystrokes 0.2)
  '(emmet-indentation 2)
  '(ensime-sem-high-faces
@@ -158,7 +156,86 @@
  '(org-ellipsis "  ")
  '(package-selected-packages
    (quote
-    (helm-xref helm-unicode stripe-buffer magithub neotree swiper-helm hlinum nlinum eldoc-eval company-quickhelp dumb-jump doom-themes git-commit lispy use-package zenburn-theme persp-mode helm helm-ag helm-core helm-descbinds helm-describe-modes helm-projectile helm-swoop helm-themes bind-key hydra git-gutter-fringe git-gutter hc-zenburn-theme zerodark-theme spacegray-theme spacemacs-theme page-break-lines challenger-deep-theme powerline all-the-icons general writeroom-mode visual-fill-column darkroom magit-gh-pulls impatient-mode company-web rainbow-mode company-tern clojure-mode paradox pdf-tools multiple-cursors expand-region web-mode emmet-mode gist f request-deferred deferred request shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode nodejs-repl auctex eyebrowse golden-ratio flycheck slime-company slime arjen-grey-theme white-sand-theme paper-theme skewer-mode js-doc racket-mode geiser osx-trash projectile ggtags smooth-scrolling elisp-slime-nav window-numbering smartparens shackle magit js2-mode exec-path-from-shell cider avy)))
+    (doom-themes
+     company
+     solaire-mode
+     helm-xref
+     helm-unicode
+     stripe-buffer
+     hlinum
+     nlinum
+     eldoc-eval
+     company-quickhelp
+     dumb-jump
+     git-commit
+     lispy
+     use-package
+     persp-mode
+     helm
+     helm-ag
+     helm-core
+     helm-descbinds
+     helm-describe-modes
+     helm-projectile
+     helm-swoop
+     helm-themes
+     bind-key
+     hydra
+     git-gutter-fringe
+     git-gutter
+     spacemacs-theme
+     page-break-lines
+     all-the-icons
+     writeroom-mode
+     visual-fill-column
+     magit-gh-pulls
+     impatient-mode
+     company-web
+     rainbow-mode
+     company-tern
+     clojure-mode
+     paradox
+     pdf-tools
+     multiple-cursors
+     expand-region
+     web-mode
+     emmet-mode
+     gist
+     f
+     request-deferred
+     deferred
+     request
+     shm
+     intero
+     haskell-mode
+     diff-hl
+     gh-md
+     markdown-mode
+     vmd-mode
+     nodejs-repl
+     auctex
+     eyebrowse
+     golden-ratio
+     flycheck
+     slime-company
+     slime
+     skewer-mode
+     js-doc
+     racket-mode
+     geiser
+     osx-trash
+     projectile
+     ggtags
+     smooth-scrolling
+     elisp-slime-nav
+     window-numbering
+     smartparens
+     shackle
+     magit
+     js2-mode
+     exec-path-from-shell
+     cider
+     avy)))
  '(paradox-column-width-package 30)
  '(paradox-execute-asynchronously t)
  '(paradox-github-token t)
@@ -166,8 +243,8 @@
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(pdf-view-use-imagemagick t)
  '(pdf-view-use-scaling t)
- '(pos-tip-background-color "#A6E22E")
- '(pos-tip-foreground-color "#272822")
+ '(pos-tip-background-color "#A6E22E" t)
+ '(pos-tip-foreground-color "#272822" t)
  '(projectile-cache-file "/Users/Macnube/.emacs.d/cache/projectile.cache")
  '(projectile-completion-system (quote helm))
  '(projectile-enable-caching t)
@@ -194,30 +271,15 @@
  '(semantic-stickyfunc-indent-string " ")
  '(semanticdb-default-save-directory "~/.emacs.d/cache/semanticdb")
  '(shackle-mode t)
- '(shackle-rules
-   (quote
-    (("*Process List*" :select t :align t :size 0.4)
-     ("*Apropos*" :select t :align t :size 0.4)
-     ("Outline.*pdf" :regexp t :select t :align
-      (quote left)
-      :size 0.3)
-     ("*Geiser documentation*" :select t :align t :size 0.4)
-     ("*slime-description*" :select t :align t :size 0.4)
-     ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
-     ("*Help*" :select t :align t :size 0.4)
-     ("*Completions*" :select t :align t :size 0.4)
-     ("*Compile-Log*" :select t :align t :size 0.4)
-     ("*Man.*" :regexp t :select t :align t :size 0.4)
-     ("*lispy-goto*" :align
-      (quote below)
-      :size 0.4))))
  '(shell-file-name "/bin/zsh")
+ '(show-paren-delay 0.05)
+ '(show-paren-mode t)
  '(slime-kill-without-query-p t)
  '(sml/active-background-color "#34495e")
  '(sml/active-foreground-color "#ecf0f1")
  '(sml/inactive-background-color "#dfe4ea")
  '(sml/inactive-foreground-color "#34495e")
- '(sp-show-pair-delay 0.1)
+ '(sp-show-pair-delay 0.01)
  '(sp-show-pair-from-inside nil)
  '(standard-indent 2)
  '(tab-width 2)
@@ -261,7 +323,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:height 130 :width ultra-condensed :foundry "nil" :family "Input"))))
+ '(default ((t (:height 120 :width normal :foundry "nil" :family "Menlo"))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :underline nil :weight bold))))
  '(cursor ((t (:background "SkyBlue3" :foreground "gray99"))))
  '(diff-hl-change ((t (:background "SteelBlue3"))))
