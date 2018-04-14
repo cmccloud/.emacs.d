@@ -81,7 +81,7 @@
         doom-themes-enable-italic nil)
   
   (load-theme 'doom-spacegrey t)
-  (with-eval-after-load 'solaire-mode
+  (when (bound-and-true-p solaire-mode)
     (solaire-mode-swap-bg))
   (with-eval-after-load 'neotree
     (doom-themes-neotree-config)))
@@ -1508,6 +1508,7 @@ Only for use with `advice-add'."
                     ;; helm-source-persp-current-buffers
                     ;; helm-source-persp-filtered-buffers
                     ))))
+
     
     (bind-keys ("C-x C-l" . +helm-layouts))))
 
