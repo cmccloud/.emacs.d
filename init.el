@@ -58,17 +58,11 @@
 
 ;; Appearance and UI
 (use-package solaire-mode
-  :demand t
-  :config
+  :disabled t
+  :init
   (defvar solaire-mode--themes-to-swap
     '(doom-one doom-spacegrey doom-solarized-light)
     "List of themes for which background colors must be changed by Solaire.")
-  
-  (defun solaire-mode--doom-themes-hook ()
-    (when (-contains? 'solaire-mode--themes-to-swap
-                      (car custom-enabled-themes))
-      (solaire-mode-swap-bg)))
-  
   (add-hook 'after-change-major-mode-hook #'turn-on-solaire-mode)
   (add-hook 'ediff-prepare-buffer-hook #'solaire-mode)
   (add-hook 'after-revert-hook #'turn-on-solaire-mode)
@@ -78,13 +72,12 @@
   :demand t
   :config
   (setq doom-themes-enable-bold t
-        doom-themes-enable-italic nil)
-  
-  (load-theme 'doom-spacegrey t)
-  (when (bound-and-true-p solaire-mode)
-    (solaire-mode-swap-bg))
-  (with-eval-after-load 'neotree
-    (doom-themes-neotree-config)))
+        doom-themes-enable-italic nil))
+
+(use-package spacemacs-common
+  :ensure spacemacs-theme
+  :init 
+  (load-theme 'spacemacs-dark t))
 
 (use-package linum
   :commands linum-mode
