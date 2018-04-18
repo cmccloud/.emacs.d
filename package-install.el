@@ -10,7 +10,8 @@
       package-archive-priorities '(("melpa-stable" . 10)
                                    ("melpa" . 5)
                                    ("gnu" . 0)
-                                   ("marmalade" . -5)))
+                                   ("marmalade" . -5))
+      package-menu-hide-low-priority nil)
 
 (package-initialize)
 (package-refresh-contents)
