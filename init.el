@@ -1794,7 +1794,7 @@ Only for use with `advice-add'."
     (helm--change-buffer 'previous-buffer))
   
   (setq helm-grep-ag-command
-        "rg --color=always --smart-case --no-heading --line-number %s %s %s"
+        "rg -M 150 --color=always --smart-case --no-heading --line-number %s %s %s"
         helm-buffer-max-length nil
         helm-M-x-fuzzy-match t
         helm-autoresize-max-height 30
