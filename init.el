@@ -2302,13 +2302,6 @@ Only for use with `advice-add'."
 (use-package shackle
   :demand t
   :config
-  (defun shackle-release-help (func &rest args)
-    "Runs func in shackle context with *Help* buffers left free."
-    (let ((shackle-rules
-           (--remove-first (s-equals-p (car it) "*Help*")
-                           shackle-rules)
-           (replace-match)))
-      (apply func args)))
   (defun +shackle-maybe-split (consequent alternative)
     "Determines window split alignment based on frame-width.
 Given a large enough frame, splits to consequent. Otherwise splits to alternative.
