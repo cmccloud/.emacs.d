@@ -1410,18 +1410,33 @@ Only for use with `advice-add'."
 
     (defvar helm-persp-filtered-buffers-cache nil)
 
-    (defclass helm-persp-current-buffers-source (helm-source-buffers)
+    (defun +helm-persp-buffers--init ()
+      (setq helm-persp-current-buffers-cache
+            (mapcar #'buffer-name (persp-buffer-list-restricted nil 0))
+            helm-persp-filtered-buffers-cache
+            (mapcar #'buffer-name (persp-buffer-list-restricted nil 1)))
+      (let ((result (cl-loop for b in (append helm-persp-current-buffers-cache
+                                              helm-persp-filtered-buffers-cache)
+                             maximize (length b) into len-buf
+                             maximize (length (with-current-buffer b
+                                                (symbol-name major-mode)))
+                             into len-mode
+                             finally return (cons len-buf len-mode))))
+        (unless (default-value 'helm-buffer-max-length)
+          (helm-set-local-variable 'helm-buffer-max-length (car result)))
+        (unless (default-value  'helm-buffer-max-len-mode)
+          (helm-set-local-variable 'helm-buffer-max-len-mode (cdr result)))))
+
+    (defclass helm-persp-current-buffers-source (helm-source-sync helm-type-buffer)
       ((init
-        :initform nil)
+        :initform #'+helm-persp-buffers--init)
        (candidates
-        :initform #'(lambda ()
-                      (if helm-persp-current-buffers-cache
-                          helm-persp-current-buffers-cache
-                        (setq helm-persp-current-buffers-cache
-                              (mapcar #'buffer-name
-                                      (persp-buffer-list-restricted nil 0))))))
-       (cleanup
-        :initform #'(lambda () (setq helm-persp-current-buffers-cache nil)))))
+        :initform helm-persp-current-buffers-cache)
+       (matchplugin :initform nil)
+       (match :initform #'helm-buffers-match-function)
+       (persistent-action :initform #'helm-buffers-list-persistent-action)
+       (volatile :initform t)
+       (keymap :initform helm-buffer-map)))
 
     (cl-defmethod helm-setup-user-source ((source helm-persp-current-buffers-source))
       (setf (slot-value source 'action)
@@ -1431,29 +1446,33 @@ Only for use with `advice-add'."
                                                  (helm-marked-candidates))))
                     helm-type-buffer-actions)))
     
-    (defclass helm-persp-filtered-buffers-source (helm-source-buffers)
+    (defclass helm-persp-filtered-buffers-source (helm-source-sync helm-type-buffer)
       ((init
-        :initform nil)
+        :initform #'+helm-persp-buffers--init)
        (candidates
-        :initform #'(lambda ()
-                      (if helm-persp-filtered-buffers-cache
-                          helm-persp-filtered-buffers-cache
-                        (setq helm-persp-filtered-buffers-cache
-                              (mapcar #'buffer-name
-                                      (persp-buffer-list-restricted nil 1))))))
-       (cleanup
-        :initform #'(lambda () (setq helm-persp-filtered-buffers-cache nil)))))
+        :initform helm-persp-filtered-buffers-cache)
+       (matchplugin :initform nil)
+       (match :initform #'helm-buffers-match-function)
+       (persistent-action :initform #'helm-buffers-list-persistent-action)
+       (volatile :initform t)
+       (keymap :initform helm-buffer-map)))
 
-    (cl-defmethod helm-setup-user-source ((source helm-persp-filtered-buffers-source))
+    (cl-defmethod helm-setup-user-source
+      ((source helm-persp-filtered-buffers-source))
       (setf (slot-value source 'action)
             (append (helm-make-actions "Add buffer(s) to current perspective."
                                        (lambda (candidate)
                                          (mapcar 'persp-add-buffer
                                                  (helm-marked-candidates))))
                     helm-type-buffer-actions)))
+    (defvar helm-source-persp-current-buffers
+      (helm-make-source "Current Buffers" helm-persp-current-buffers-source))
+
+    (defvar helm-source-persp-filtered-buffers
+      (helm-make-source "Other Buffers" helm-persp-filtered-buffers-source))
 
     ;; WIP
-    (defun +helm-layouts ()
+    (defun +helm:layouts ()
       (interactive)
       (let ((helm-actions
              (helm-make-actions
@@ -1468,42 +1487,11 @@ Only for use with `advice-add'."
          :sources `(,(helm-build-sync-source "Perspectives"
                        :candidates #'persp-names
                        :action helm-actions)
-                    ,(helm-build-sync-source "Current Buffers"
-                       :candidates
-                       #'(lambda ()
-                           (helm-skip-boring-buffers
-                            (mapcar
-                             #'buffer-name
-                             (persp-buffer-list-restricted nil 0))
-                            helm-source-buffers-list))
-                       :action
-                       (helm-make-actions
-                        "Remove Buffer(s) from current Perspective"
-                        (lambda (c)
-                          (mapcar
-                           #'persp-remove-buffer
-                           (helm-marked-candidates)))))
-                    ,(helm-build-sync-source "Other Buffers"
-                       :candidates
-                       #'(lambda ()
-                           (helm-skip-boring-buffers
-                            (mapcar
-                             #'buffer-name
-                             (persp-buffer-list-restricted nil 1))
-                            helm-source-buffers-list))
-                       :action
-                       (helm-make-actions
-                        "Add Buffer(s) to current Perspective"
-                        (lambda (c)
-                          (mapcar
-                           #'persp-add-buffer
-                           (helm-marked-candidates)))))
-                    ;; helm-source-persp-current-buffers
-                    ;; helm-source-persp-filtered-buffers
-                    ))))
+                    helm-source-persp-current-buffers
+                    helm-source-persp-filtered-buffers))))
 
     
-    (bind-keys ("C-x C-l" . +helm-layouts))))
+    (bind-keys ("C-x C-l" . +helm:layouts))))
 
 (use-package osx-trash
   :defer 10
