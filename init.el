@@ -1377,7 +1377,13 @@ Cancels autosave on exiting persp-mode."
       (when persp--timed-auto-save-handler
         (cancel-timer persp--timed-auto-save-handler)
         (setq persp--timed-auto-save-handler nil))))
+
+  (defun persp--helm-wrapper (wrapped-buffer-command &rest r)
+    "Wrapper for helm-mini for use with `persp-mode'.
+Only for use with `advice-add'."
+    (with-persp-buffer-list () (apply wrapped-buffer-command r)))
   
+  (persp-set-keymap-prefix (kbd "C-c l"))
   (setq persp-nil-name "Home"
         persp-add-buffer-on-find-file t
         persp-add-buffer-on-after-change-major-mode 'free
@@ -1392,12 +1398,7 @@ Cancels autosave on exiting persp-mode."
         persp-autokill-buffer-on-remove nil)
   (add-hook 'persp-mode-hook #'persp-timed-auto-save)
 
-  ;; Integrations with other buffer management tools
-  (defun persp--helm-wrapper (wrapped-buffer-command &rest r)
-    "Wrapper for helm-mini for use with `persp-mode'.
-Only for use with `advice-add'."
-    (with-persp-buffer-list () (apply wrapped-buffer-command r)))
-
+  ;; Integrations
   (advice-add 'next-buffer :around
               #'persp--helm-wrapper)
   (advice-add 'previous-buffer :around
