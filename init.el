@@ -1051,6 +1051,10 @@ of `iedit' regions."
     "C-x n" "Narrowing"
     "C-x r" "Registers"
     "C-x v" "Version Control"
+    ;; C-c Map
+    "C-c l" "Layouts"
+    "C-c p" "Projects"
+    "C-c C-w" "Eyebrowse"
     ;; Leader Map
     "M-m b" "Buffers"
     "M-m f" "Files"
