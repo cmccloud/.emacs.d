@@ -1420,9 +1420,11 @@ Only for use with `advice-add'."
 
     (defun +helm-persp-buffers--init ()
       (setq helm-persp-current-buffers-cache
-            (mapcar #'buffer-name (persp-buffer-list-restricted nil 0))
+            (cl-loop for b in (persp-buffer-list-restricted nil 0)
+                     collect (buffer-name b))
             helm-persp-filtered-buffers-cache
-            (mapcar #'buffer-name (persp-buffer-list-restricted nil 1)))
+            (cl-loop for b in (persp-buffer-list-restricted nil 1)
+                     collect (buffer-name b)))
       (let ((result (cl-loop for b in (append helm-persp-current-buffers-cache
                                               helm-persp-filtered-buffers-cache)
                              maximize (length b) into len-buf
