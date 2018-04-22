@@ -1075,15 +1075,18 @@ of `iedit' regions."
 
 (use-package paradox
   :commands (paradox-list-packages)
-  :config
-  (setq package-archive-priorities '(("melpa-stable" . 10)
-                                     ("melpa" . 5)
-                                     ("gnu" . 0)
-                                     ("marmalade" . -5)))
+  :init
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                           ("melpa-stable" . "https://stable.melpa.org/packages/")
-                           ("org" . "http://orgmode.org/elpa/")
-                           ("gnu" . "http://elpa.gnu.org/packages/")))
+                         ("melpa-stable" . "https://stable.melpa.org/packages/")
+                         ("org" . "http://orgmode.org/elpa/")
+                         ("gnu" . "http://elpa.gnu.org/packages/"))
+
+      package-archive-priorities '(("melpa-stable" . 10)
+                                   ("melpa" . 5)
+                                   ("gnu" . 0)
+                                   ("marmalade" . -5))
+      package-menu-hide-low-priority nil)
+  :config
   (setq paradox-lines-per-entry 1)
   (paradox-enable))
 
