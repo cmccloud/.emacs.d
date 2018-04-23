@@ -1412,6 +1412,11 @@ Only for use with `advice-add'."
   (with-eval-after-load 'helm-imenu
     (advice-add 'helm-imenu-in-all-buffers :around
                 #'persp--helm-wrapper))
+  (with-eval-after-load 'helm-swoop
+    (advice-add 'helm-multi-swoop :around
+                #'persp--helm-wrapper)
+    (advice-add 'helm-multi-swoop-all :around
+                #'persp--helm-wrapper))
   
   (with-eval-after-load 'helm-buffers
     (defvar helm-persp-current-buffers-cache)
@@ -1472,9 +1477,9 @@ Only for use with `advice-add'."
        (action
         :initform
         (append (helm-make-actions "Add buffer(s) to current perspective."
-                                       (lambda (candidate)
-                                         (mapcar 'persp-add-buffer
-                                                 (helm-marked-candidates))))
+                                   (lambda (candidate)
+                                     (mapcar 'persp-add-buffer
+                                             (helm-marked-candidates))))
                 helm-type-buffer-actions))))
 
     ;; WIP
