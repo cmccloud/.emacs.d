@@ -1421,13 +1421,13 @@ Only for use with `advice-add'."
                 #'persp--helm-wrapper))
   
   (with-eval-after-load 'helm-buffers
-    (defvar helm-persp-current-buffers-cache)
+    (defvar helm-persp-current-buffers-cache nil)
 
-    (defvar helm-persp-filtered-buffers-cache)
+    (defvar helm-persp-filtered-buffers-cache nil)
 
-    (defvar helm-source-persp-current-buffers)
+    (defvar helm-source-persp-current-buffers nil)
 
-    (defvar helm-source-persp-filtered-buffers)
+    (defvar helm-source-persp-filtered-buffers nil)
 
     (defun +helm-persp-buffers--init ()
       (setq helm-persp-current-buffers-cache
