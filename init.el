@@ -107,6 +107,7 @@
 (setq-default frame-title-format nil
               fringes-outside-margins t
               bidi-display-reordering nil
+              inhibit-compacting-font-caches t
               blink-matching-paren nil
               cursor-in-non-selected-windows nil
               highlight-nonselected-windows nil
