@@ -70,9 +70,9 @@
 
 (use-package doom-themes
   :demand t
-  :config
-  (setq doom-themes-enable-bold t
-        doom-themes-enable-italic nil))
+  :custom
+  (doom-themes-enable-bold t)
+  (doom-themes-enable-italic nil))
 
 (use-package spacemacs-common
   :ensure spacemacs-theme
