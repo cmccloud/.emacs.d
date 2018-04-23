@@ -1833,9 +1833,6 @@ Only for use with `advice-add'."
                                     helm-source-recentf
                                     helm-source-buffer-not-found)
         helm-split-window-in-side-p t
-        helm-swoop-speed-or-color t
-        helm-swoop-candidate-number-limit 1000
-        helm-swoop-split-with-multiple-windows t
         
         ;; Avoid slow tramp performance when using helm
         helm-buffer-skip-remote-checking t
@@ -1900,8 +1897,11 @@ Only for use with `advice-add'."
   :config
   (setq helm-swoop-candidate-number-limit 500
         ;; Bring helm-swoop under shackle control
-        helm-swoop-split-window-function 'switch-to-buffer-other-window
-        helm-swoop-pre-input-function (lambda () "")))
+        helm-swoop-split-window-function 'switch-to-buffer-other-window)
+  :custom
+  (helm-swoop-speed-or-color t)
+  (helm-swoop-split-with-multiple-windows t)
+  (helm-swoop-pre-input-function (lambda () "")))
 
 (use-package helm-descbinds
   :after (helm)
