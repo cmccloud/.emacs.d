@@ -80,19 +80,12 @@
  '(git-gutter:deleted-sign " ")
  '(git-gutter:modified-sign " ")
  '(global-visual-line-mode t)
- '(golden-ratio-auto-scale t)
  '(golden-ratio-extra-commands
    (quote
     (windmove-left windmove-right windmove-down windmove-up select-window-1 select-window-2 select-window-3 select-window-4 select-window-5)))
- '(golden-ratio-mode nil)
  '(haskell-completing-read-function (quote helm--completing-read-default))
  '(haskell-tags-on-save t)
- '(helm-M-x-fuzzy-match nil)
  '(helm-ag-always-set-extra-option t)
- '(helm-autoresize-max-height 30)
- '(helm-boring-buffer-regexp-list
-   (quote
-    ("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*Minibuf" "\\*magit" "\\*lispy-goto*" "\\*Backtrace*")))
  '(helm-dash-browser-func (quote browse-url))
  '(helm-dash-docsets-path "/Users/Macnube/Library/Application Support/Dash/DocSets/")
  '(helm-ff-tramp-not-fancy nil)
@@ -103,8 +96,6 @@
  '(helm-mode t)
  '(helm-source-names-using-follow (quote ("Buffers")))
  '(helm-split-window-in-side-p t)
- '(helm-swoop-speed-or-color t)
- '(helm-swoop-split-with-multiple-windows t)
  '(help-window-select t)
  '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
  '(highlight-tail-colors
