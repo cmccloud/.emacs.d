@@ -2318,6 +2318,7 @@ Only for use with `advice-add'."
      "*Helm Multi Swoop*")))
 
 (use-package writeroom-mode
+  :disabled t
   :commands (writeroom-mode
              global-writeroom-mode)
   :init
