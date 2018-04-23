@@ -2296,8 +2296,14 @@ Only for use with `advice-add'."
       (progn
         (golden-ratio-mode 1)
         (golden-ratio))))
+
   (bind-keys :map leader-map
-             ("tg" . toggle-golden-ratio)))
+             ("tg" . toggle-golden-ratio))
+
+  (golden-ratio-mode t)
+  :custom
+  (golden-ratio-exclude-buffer-names '("*Helm Swoop*"
+                                       "*Helm Multi Swoop*")))
 
 (use-package writeroom-mode
   :commands (writeroom-mode
