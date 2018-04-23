@@ -746,9 +746,12 @@ icons."
       ('finished (if flycheck-current-errors
                      (let-alist (flycheck-count-errors flycheck-current-errors)
                        (let ((sum (+ (or .error 0) (or .warning 0))))
-                         (+doom-ml-icon "circle-slash"
-                                        (number-to-string sum)
-                                        (if .error 'doom-modeline-urgent 'doom-modeline-warning))))
+                         (+doom-ml-icon
+                          "circle-slash"
+                          (number-to-string sum)
+                          (if .error
+                              'doom-modeline-urgent
+                            'doom-modeline-warning))))
                    (concat
                     (+doom-ml-icon "check" nil 'doom-modeline-info) " ")))
       ('running     (+doom-ml-icon "ellipsis" "Running" 'font-lock-doc-face))
@@ -882,7 +885,8 @@ of `iedit' regions."
   (when-let
       (marked
        (and helm-marked-candidates
-            (cl-loop with cur-name = (assoc-default 'name (helm-get-current-source))
+            (cl-loop with cur-name = (assoc-default 'name
+                                                    (helm-get-current-source))
                      for c in helm-marked-candidates
                      for name = (assoc-default 'name (car c))
                      when (string= name cur-name)
