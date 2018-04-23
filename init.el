@@ -1997,6 +1997,8 @@ Only for use with `advice-add'."
   :defer t
   :commands (magit-mode
              magit-status
+             magit-status-internal
+             magit-blame
              magit-commit-popup
              magit-stage-file
              magit-unstage-file
@@ -2006,7 +2008,8 @@ Only for use with `advice-add'."
              magit-commit)
   :init
   (bind-keys :map leader-map
-             ("gs" . magit-status))
+             ("gs" . magit-status)
+             ("gb" . magit-blame))
   :config
   (defun +magit|refresh-visible-vc-state ()
     (dolist (window (window-list))
