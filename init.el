@@ -1894,7 +1894,8 @@ Only for use with `advice-add'."
   :config
   (setq helm-swoop-candidate-number-limit 500
         ;; Bring helm-swoop under shackle control
-        helm-swoop-split-window-function 'switch-to-buffer-other-window))
+        helm-swoop-split-window-function 'switch-to-buffer-other-window
+        helm-swoop-pre-input-function (lambda () "")))
 
 (use-package helm-descbinds
   :after (helm)
