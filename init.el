@@ -2312,8 +2312,10 @@ Only for use with `advice-add'."
 
   (golden-ratio-mode t)
   :custom
-  (golden-ratio-exclude-buffer-names '("*Helm Swoop*"
-                                       "*Helm Multi Swoop*")))
+  (golden-ratio-auto-scale t)
+  (golden-ratio-exclude-buffer-names
+   '("*Helm Swoop*"
+     "*Helm Multi Swoop*")))
 
 (use-package writeroom-mode
   :commands (writeroom-mode
