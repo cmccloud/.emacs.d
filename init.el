@@ -1820,7 +1820,8 @@ Only for use with `advice-add'."
                                          "\\*helm-mode"
                                          "\\*Echo Area"
                                          "\\*Minibuf"
-                                         "\\*magit"
+                                         "\\magit"
+                                         "\\*Diff*"
                                          "\\*lispy-goto*"
                                          "\\*Backtrace*")
         helm-mini-default-sources '(helm-source-buffers-list
