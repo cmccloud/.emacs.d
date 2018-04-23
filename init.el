@@ -1457,15 +1457,16 @@ Only for use with `advice-add'."
        (match :initform #'helm-buffers-match-function)
        (persistent-action :initform #'helm-buffers-list-persistent-action)
        (volatile :initform t)
-       (keymap :initform helm-buffer-map)
-       (action
-        :initform
-        (append (helm-make-actions "Remove buffer(s) from current perspective."
-                                   (lambda (candidate)
-                                     (mapcar 'persp-remove-buffer
-                                             (helm-marked-candidates))))
-                helm-type-buffer-actions))))
+       (keymap :initform helm-buffer-map)))
     
+    (cl-defmethod helm--setup-source ((source helm-persp-current-buffers-source))
+      (cl-call-next-method)
+      (setf (slot-value source 'action)
+            (append (helm-make-actions "Remove buffer(s) from current Perspective."
+                                       (lambda (c) (mapcar #'persp-remove-buffer
+                                                           (helm-marked-candidates))))
+                    (symbol-value (slot-value source 'action)))))
+
     (defclass helm-persp-filtered-buffers-source (helm-source-sync helm-type-buffer)
       ((init
         :initform #'+helm-persp-buffers--init)
@@ -1475,14 +1476,15 @@ Only for use with `advice-add'."
        (match :initform #'helm-buffers-match-function)
        (persistent-action :initform #'helm-buffers-list-persistent-action)
        (volatile :initform t)
-       (keymap :initform helm-buffer-map)
-       (action
-        :initform
-        (append (helm-make-actions "Add buffer(s) to current perspective."
-                                   (lambda (candidate)
-                                     (mapcar 'persp-add-buffer
-                                             (helm-marked-candidates))))
-                helm-type-buffer-actions))))
+       (keymap :initform helm-buffer-map)))
+    
+    (cl-defmethod helm--setup-source ((source helm-persp-filtered-buffers-source))
+      (cl-call-next-method)
+      (setf (slot-value source 'action)
+            (append (helm-make-actions "Add buffer(s) to current Perspective."
+                                       (lambda (c) (mapcar #'persp-add-buffer
+                                                           (helm-marked-candidates))))
+                    (symbol-value (slot-value source 'action)))))
 
     ;; WIP
     (defun +helm:layouts ()
@@ -1495,21 +1497,23 @@ Only for use with `advice-add'."
               (lambda (c) (persp-kill c))
               "Create New Perspective"
               (lambda (c) (call-interactively 'persp-add-new))))
-            (current-buffers
+            (current
              (or helm-source-persp-current-buffers
                  (setq helm-source-persp-current-buffers
-                       (helm-make-source "Current Buffers" helm-persp-current-buffers-source))))
-            (filtered-buffers
+                       (helm-make-source "Current Buffers"
+                           helm-persp-current-buffers-source))))
+            (filtered
              (or helm-source-persp-filtered-buffers
                  (setq helm-source-persp-filtered-buffers
-                       (helm-make-source "Filtered Buffers" helm-persp-filtered-buffers-source)))))
+                       (helm-make-source "Other Buffers"
+                           helm-persp-filtered-buffers-source)))))
         (helm
          :buffer "*helm layouts*"
          :sources `(,(helm-build-sync-source "Perspectives"
                        :candidates #'persp-names
                        :action helm-actions)
-                    ,current-buffers
-                    ,filtered-buffers))))
+                    ,current
+                    ,filtered))))
 
     
     (bind-keys ("C-x C-l" . +helm:layouts))))
