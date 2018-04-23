@@ -901,11 +901,9 @@ of `iedit' regions."
 
 (def-modeline-segment! helm-header-line-segment
   (when-let ((source (helm-get-current-source)))
-    (propertize (helm-interpret-value
-                 (and (listp source)
-                      (assoc-default 'header-line source))
-                 source)
-                'face 'helm-header)))
+    (propertize (helm-interpret-value (and (listp source)
+                                           (assoc-default 'header-line source))
+                                      source))))
 
 ;;
 ;; Mode lines
@@ -982,8 +980,7 @@ of `iedit' regions."
                            source))
                    (endstr (make-string (window-width) ? )))
                (setq header-line-format
-                     (propertize (concat " " hlstr endstr)
-                                 'face 'helm-header))))))
+                     (propertize (concat " " hlstr endstr)))))))
     (doom-set-modeline 'helm)
     (when force (force-mode-line-update)))
 
