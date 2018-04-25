@@ -4,12 +4,13 @@
       gc-cons-percentage .6)
 ;; Begin Emacs Initialization
 ;; Load Customization Settings
-(load (expand-file-name "custom.el" user-emacs-directory) nil t)
 
 ;; Good Looking Window
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . 'nil))
 (setq frame-resize-pixelwise t)
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file t t)
 
 ;; Extend Load Path
 (eval-and-compile
