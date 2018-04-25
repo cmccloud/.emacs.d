@@ -12,11 +12,6 @@
   (let ((default-directory (expand-file-name "site-lisp" user-emacs-directory)))
     (normal-top-level-add-subdirs-to-load-path)))
 
-;; Package Initialization
-(package-initialize)
-(require 'use-package)
-(setq use-package-always-defer t
-      use-package-verbose nil)
 ;; In Emacs 27+ this configuration block is contained in early-init.el
 (when (version< emacs-version "27.0")
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
@@ -26,6 +21,13 @@
   (customize-set-variable 'frame-resize-pixelwise t)
   ;; Use Package.el
   (package-initialize))
+
+(customize-set-variable 'use-package-always-defer t)
+(customize-set-variable 'use-package-verbose nil)
+
+(eval-when-compile
+  (require 'use-package))
+
 (add-hook 'after-init-hook
           (lambda () (message (concat "Emacs started in: " (emacs-init-time)))))
 
