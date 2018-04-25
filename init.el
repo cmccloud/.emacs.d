@@ -4,11 +4,6 @@
       gc-cons-percentage .6)
 ;; Begin Emacs Initialization
 ;; Load Customization Settings
-
-;; Good Looking Window
-(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-(add-to-list 'default-frame-alist '(ns-appearance . 'nil))
-(setq frame-resize-pixelwise t)
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file t t)
 
@@ -22,6 +17,15 @@
 (require 'use-package)
 (setq use-package-always-defer t
       use-package-verbose nil)
+;; In Emacs 27+ this configuration block is contained in early-init.el
+(when (version< emacs-version "27.0")
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . 'nil))
+  (customize-set-variable 'scroll-bar-mode nil)
+  (customize-set-variable 'tool-bar-mode nil)
+  (customize-set-variable 'frame-resize-pixelwise t)
+  ;; Use Package.el
+  (package-initialize))
 (add-hook 'after-init-hook
           (lambda () (message (concat "Emacs started in: " (emacs-init-time)))))
 
