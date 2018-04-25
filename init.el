@@ -18,11 +18,6 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file t t)
 
-;; Extend Load Path
-(eval-and-compile
-  (let ((default-directory (expand-file-name "site-lisp" user-emacs-directory)))
-    (normal-top-level-add-subdirs-to-load-path)))
-
 ;; In Emacs 27+ this configuration block is contained in early-init.el
 (when (version< emacs-version "27.0")
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
