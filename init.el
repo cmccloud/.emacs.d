@@ -914,11 +914,13 @@ of `iedit' regions."
      'face `(:inherit doom-modeline-panel))))
 
 (def-modeline-segment! helm-candidate-number
-  (concat (propertize (with-helm-buffer
-                        (helm-show-candidate-number
-                         (car-safe helm-mode-line-string)))
-                      'face '(:inherit doom-modeline-buffer-file))
-          " "))
+  (when-let (candidate (with-current-buffer (helm-buffer-get)
+                       (helm-show-candidate-number
+                        (car-safe helm-mode-line-string))))
+      (concat
+       (propertize candidate 'face '(:inherit doom-modeline-buffer-file))
+       " ")))
+
 (def-modeline-segment! helm-modeline-string-segment
   helm--mode-line-string-real)
 
