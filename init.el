@@ -25,17 +25,14 @@
   (customize-set-variable 'scroll-bar-mode nil)
   (customize-set-variable 'tool-bar-mode nil)
   (customize-set-variable 'frame-resize-pixelwise t)
-  ;; Use Package.el
   (package-initialize))
 
+;; Use-package
 (customize-set-variable 'use-package-always-defer t)
 (customize-set-variable 'use-package-verbose nil)
 
 (eval-when-compile
   (require 'use-package))
-
-(add-hook 'after-init-hook
-          (lambda () (message (concat "Emacs started in: " (emacs-init-time)))))
 
 ;; Libraries
 (use-package dash :demand t)
