@@ -1,4 +1,15 @@
-;;; init.el -*- lexical-binding: t -*- 
+;;; init.el -*- lexical-binding: t -*-
+;; Begin Commentary
+;; Naming conventions:
+;;
+;; m-...  public variables or functions
+;; m--..  private identifiers
+;; m:...  interactive function
+;; m|...  hook function
+;; m*...  advising function
+;; +....  as above, but part of a package, e.g. +helm:layouts
+;; 
+;; End Commentary
 ;; Supress Garbage Collection During Initialization
 (setq gc-cons-threshold 402653184
       gc-cons-percentage .6)
