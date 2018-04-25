@@ -1675,12 +1675,10 @@ Only for use with `advice-add'."
   (("C-c C-d" . elisp-slime-nav-describe-elisp-thing-at-point)))
 
 (use-package clojure-mode
-  :defer t
-  :config
-  (with-eval-after-load 'lispy
-    (load (expand-file-name
-           "site-lisp/clojure-semantic/clojure.el"
-           user-emacs-directory))))
+  :defer t)
+
+(use-package clojure-semantic
+  :load-path "site-lisp/clojure-semantic")
 
 (use-package haskell-mode
   :defer t
