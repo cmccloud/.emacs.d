@@ -28,6 +28,47 @@
   (customize-set-variable 'package-user-dir (concat user-emacs-directory "elpa"))
   (package-initialize))
 
+(when (fboundp 'set-charset-priority)
+  (set-charset-priority 'unicode))     
+(prefer-coding-system        'utf-8)   
+(set-terminal-coding-system  'utf-8)   
+(set-keyboard-coding-system  'utf-8)   
+(set-selection-coding-system 'utf-8)   
+(setq-default locale-coding-system   'utf-8
+              buffer-file-coding-system 'utf-8)
+
+(customize-set-variable 'auto-save-default nil)
+(customize-set-variable 'create-lockfiles nil)
+(customize-set-variable 'make-backup-files nil)
+
+(customize-set-variable 'blink-matching-paren nil)
+(customize-set-variable 'visible-cursor nil)
+(customize-set-variable 'cursor-in-non-selected-windows nil)
+(customize-set-variable 'highlight-nonselected-windows nil)
+(customize-set-variable 'indicate-buffer-boundaries nil)
+(customize-set-variable 'indicate-empty-lines nil)
+
+(customize-set-variable 'fit-window-to-buffer-horizontally t)
+(customize-set-variable 'save-interprogram-paste-before-kill t)
+
+(customize-set-variable 'jit-lock-defer-time nil)
+(customize-set-variable 'jit-lock-stealth-nice 0.1)
+(customize-set-variable 'jit-lock-stealth-time 0.2)
+(customize-set-variable 'jit-lock-stealth-verbose nil)
+
+(customize-set-variable 'compilation-scroll-output t)
+(customize-set-variable 'use-dialog-box nil)
+(customize-set-variable 'ring-bell-function #'ignore)
+(customize-set-variable 'visible-bell nil)
+(customize-set-variable 'apropos-do-all t)
+(customize-set-variable 'history-length 1000)
+
+(setq-default frame-title-format nil
+              fringes-outside-margins t
+              bidi-display-reordering nil
+              inhibit-compacting-font-caches t
+              image-animate-loop t)
+
 ;; Use-package
 (customize-set-variable 'use-package-always-defer t)
 (customize-set-variable 'use-package-verbose nil)
@@ -105,42 +146,6 @@
              text-scale-set
              text-scale-mode-amount))
 
-;;; ### FROM DOOM UI CORE  AND CORE###
-(when (fboundp 'set-charset-priority)
-  (set-charset-priority 'unicode))     
-(prefer-coding-system        'utf-8)   
-(set-terminal-coding-system  'utf-8)   
-(set-keyboard-coding-system  'utf-8)   
-(set-selection-coding-system 'utf-8)   
-(setq locale-coding-system   'utf-8)   
-(setq-default buffer-file-coding-system 'utf-8)
-
-(setq-default frame-title-format nil
-              fringes-outside-margins t
-              bidi-display-reordering nil
-              inhibit-compacting-font-caches t
-              blink-matching-paren nil
-              cursor-in-non-selected-windows nil
-              highlight-nonselected-windows nil
-              fit-window-to-buffer-horizontally t
-              image-animate-loop t
-              indicate-buffer-boundaries nil
-              indicate-empty-lines nil
-              save-interprogram-paste-before-kill t
-              jit-lock-defer-time nil
-              jit-lock-stealth-nice 0.1
-              jit-lock-stealth-time 0.2
-              jit-lock-stealth-verbose nil
-              compilation-scroll-output t 
-              use-dialog-box nil
-              visible-cursor nil
-              ring-bell-function #'ignore
-              visible-bell nil
-              apropos-do-all t
-              auto-save-default nil
-              create-lockfiles nil
-              history-length 1000
-              make-backup-files nil)
 
 ;; Window Divider
 (setq-default window-divider-default-places 'right-only
