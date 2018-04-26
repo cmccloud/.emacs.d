@@ -8,4 +8,5 @@
 (customize-set-variable 'frame-resize-pixelwise t)
 
 ;; Package Settings
+(customize-set-variable 'package-user-dir (concat user-emacs-directory "elpa"))
 (customize-set-variable 'package-quickstart t)

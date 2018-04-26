@@ -25,6 +25,7 @@
   (customize-set-variable 'scroll-bar-mode nil)
   (customize-set-variable 'tool-bar-mode nil)
   (customize-set-variable 'frame-resize-pixelwise t)
+  (customize-set-variable 'package-user-dir (concat user-emacs-directory "elpa"))
   (package-initialize))
 
 ;; Use-package
