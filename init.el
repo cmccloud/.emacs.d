@@ -1553,11 +1553,12 @@ Only for use with `advice-add'."
   (smooth-scrolling-mode))
 
 (use-package semantic
-  :disabled t
-  :init
-  (add-hook 'emacs-lisp-mode-hook #'semantic-mode)
-  :config
-  (semantic-default-elisp-setup))
+  :custom
+  (semantic-edits-verbose-flag t)
+  (semantic-idle-scheduler-idle-time 10)
+  (semantic-stickyfunc-indent-string " ")
+  (semanticdb-default-save-directory
+   (concat user-emacs-directory "cache/semanticdb")))
 
 (use-package imenu
   :defines imenu-generic-expression
