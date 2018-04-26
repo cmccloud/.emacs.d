@@ -2280,7 +2280,7 @@ Only for use with `advice-add'."
   :diminish golden-ratio-mode
   :commands (golden-ratio-mode)
   :init
-  (defun toggle-golden-ratio ()
+  (defun +golden-ratio:toggle ()
     "Toggles `golden-ratio-mode' and balances windows."
     (interactive)
     (if golden-ratio-mode
@@ -2292,7 +2292,7 @@ Only for use with `advice-add'."
         (golden-ratio))))
 
   (bind-keys :map leader-map
-             ("tg" . toggle-golden-ratio))
+             ("tg" . +golden-ratio:toggle))
 
   (golden-ratio-mode t)
   :custom
