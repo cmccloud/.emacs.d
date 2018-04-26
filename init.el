@@ -2021,6 +2021,12 @@ Only for use with `advice-add'."
              ("M-n" . nil)
              ("M-p" . nil)))
 
+(use-package magithub
+  :disabled t
+  :custom
+  (magithub-dir
+   (concat user-emacs-directory "cache/magithub")))
+
 (use-package magit-gh-pulls
   :after (magit)
   :commands (turn-on-magit-gh-pulls)
