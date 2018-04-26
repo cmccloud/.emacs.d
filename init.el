@@ -82,7 +82,7 @@
   (require 'use-package))
 
 ;; Libraries
-(use-package dash :demand t)
+(use-package dash :demand t :config (dash-enable-font-lock))
 (use-package s :demand t)
 (use-package hydra :demand t)
 (use-package seq)
