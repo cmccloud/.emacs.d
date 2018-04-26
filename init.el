@@ -1048,7 +1048,6 @@ of `iedit' regions."
 
 ;; Packages
 (use-package diminish
-  :defer t
   :config
   (diminish 'visual-line-mode))
 
@@ -1127,7 +1126,6 @@ of `iedit' regions."
   (setq reb-auto-match-limit 500))
 
 (use-package hl-line
-  :defer t
   :init
   (add-hook 'prog-mode-hook #'hl-line-mode)
   :config
@@ -1139,7 +1137,6 @@ of `iedit' regions."
         ("tH" . global-hl-line-mode)))
 
 (use-package exec-path-from-shell
-  :defer t
   :if (memq window-system '(mac ns))
   :init
   (setq exec-path
@@ -1164,7 +1161,6 @@ executing `exec-path-from-shell-initialize'.")
             dired-listing-switches "-aBhlp --group-directories-first"))))
 
 (use-package term
-  :defer t
   :commands (term
              ansi-term)
   :init
@@ -1179,7 +1175,6 @@ executing `exec-path-from-shell-initialize'.")
                ("M-x" . helm-M-x))))
 
 (use-package eshell
-  :defer t
   :commands (eshell)
   :init
   (setenv "NODE_NO_READLINE" "1")
@@ -1193,7 +1188,6 @@ executing `exec-path-from-shell-initialize'.")
                          ("M-p" . nil)))))
 
 (use-package yasnippet
-  :defer t
   :diminish yas-minor-mode
   :commands (yas-reload-all
              yas-minor-mode
@@ -1206,7 +1200,6 @@ executing `exec-path-from-shell-initialize'.")
 
 (use-package pdf-tools
   :disabled t
-  :defer t
   :mode (("\\.pdf\\'" . pdf-view-mode))
   :config
   (pdf-tools-install)
@@ -1220,7 +1213,6 @@ executing `exec-path-from-shell-initialize'.")
              ("v" . pdf-occur-view-occurrence)))
 
 (use-package doc-view
-  :defer t
   :config
   (bind-keys :map doc-view-mode-map
              ("k" . nil)
@@ -1232,7 +1224,6 @@ executing `exec-path-from-shell-initialize'.")
              ("g" . doc-view-goto-page)))
 
 (use-package eyebrowse
-  :defer t
   :commands (eyebrowse-mode
              eyebrowse-switch-to-window-config
              eyebrowse-switch-to-window-config-1
@@ -1563,7 +1554,6 @@ Only for use with `advice-add'."
 
 (use-package semantic
   :disabled t
-  :defer 5
   :init
   (add-hook 'emacs-lisp-mode-hook #'semantic-mode)
   :config
@@ -1627,13 +1617,11 @@ Only for use with `advice-add'."
   (show-smartparens-global-mode))
 
 (use-package expand-region
-  :defer t
   :commands (er/expand-region)
   :init
   (bind-keys ("C-r" . er/expand-region)))
 
 (use-package lispy
-  :defer t
   :commands (lispy-mode
              lispy-mark-symbol
              lispy-move-beginning-of-line
@@ -1680,29 +1668,24 @@ Only for use with `advice-add'."
   :bind
   (("C-c C-d" . elisp-slime-nav-describe-elisp-thing-at-point)))
 
-(use-package clojure-mode
-  :defer t)
+(use-package clojure-mode)
 
 (use-package clojure-semantic
   :load-path "site-lisp/clojure-semantic")
 
 (use-package haskell-mode
-  :defer t
   :config
   (add-hook 'haskell-mode-hook 'haskell-doc-mode))
 
 (use-package intero
-  :defer t
   :after (haskell-mode)
   :init
   (add-hook 'haskell-mode-hook 'intero-mode))
 
 (use-package shm
-  :defer t
   :commands (structured-haskell-mode))
 
 (use-package cider
-  :defer t
   :commands (cider-mode
              cider--display-interactive-eval-result)
   :init
@@ -1720,7 +1703,6 @@ Only for use with `advice-add'."
   :commands (run-geiser))
 
 (use-package slime
-  :defer t
   :commands (slime-mode)
   :init
   (add-hook 'lisp-mode-hook #'slime-mode)
@@ -1742,7 +1724,6 @@ Only for use with `advice-add'."
     (sp-local-pair 'markdown-mode "`" nil :actions nil)))
 
 (use-package avy
-  :defer t
   :commands (avy-goto-word-or-subword-1
              avy-goto-line
              avy-goto-char
@@ -1765,7 +1746,6 @@ Only for use with `advice-add'."
         dumb-jump-selector 'helm))
 
 (use-package helm
-  :defer t
   :commands (helm-M-x
              helm-find-files
              helm-locate
@@ -1886,7 +1866,6 @@ Only for use with `advice-add'."
              ("C-M-p" . helm-scroll-other-window-down)))
 
 (use-package helm-projectile
-  :defer t
   :after (helm projectile)
   :commands (helm-projectile-switch-to-buffer
              helm-projectile-find-dir
@@ -1907,7 +1886,6 @@ Only for use with `advice-add'."
 
 (use-package helm-ag
   :after (helm)
-  :defer t
   :commands (helm-do-ag
              helm-do-ag-project-root)
   :init
@@ -1917,7 +1895,6 @@ Only for use with `advice-add'."
 
 (use-package helm-swoop
   :after (helm)
-  :defer t
   :bind
   (("C-s" . helm-swoop))
   :config
@@ -1931,19 +1908,16 @@ Only for use with `advice-add'."
 
 (use-package helm-descbinds
   :after (helm)
-  :defer t
   :config
   (setq helm-descbinds-window-style 'split-window)
   :bind
   (("C-h b" . helm-descbinds)))
 
 (use-package helm-themes
-  :after (helm)
-  :defer t)
+  :after (helm))
 
 (use-package helm-dash
   :disabled t
-  :defer t
   :commands (helm-dash)
   :after (helm)
   :config
@@ -1961,7 +1935,6 @@ Only for use with `advice-add'."
              ("u" . helm-unicode)))
 
 (use-package projectile
-  :defer t
   :diminish projectile-mode
   :functions (projectile-project-root)
   :commands (projectile-mode
@@ -2025,7 +1998,6 @@ Only for use with `advice-add'."
     (add-hook 'ediff-quit-hook #'winner-undo)))
 
 (use-package magit
-  :defer t
   :commands (magit-mode
              magit-status
              magit-status-internal
@@ -2059,7 +2031,6 @@ Only for use with `advice-add'."
              ("M-p" . nil)))
 
 (use-package magit-gh-pulls
-  :defer t
   :after (magit)
   :commands (turn-on-magit-gh-pulls)
   :init
@@ -2107,7 +2078,6 @@ Only for use with `advice-add'."
     nil nil 'center))
 
 (use-package gist
-  :defer t
   :commands (gist-buffer
              gist-buffer-private
              gist-list
@@ -2129,7 +2099,6 @@ Only for use with `advice-add'."
               'diff-hl-magit-post-refresh)))
 
 (use-package company
-  :defer t
   :diminish company-mode
   :config
   (bind-keys :map company-active-map
@@ -2149,8 +2118,7 @@ Only for use with `advice-add'."
   :commands (company-tern))
 
 (use-package slime-company
-  :after (company)
-  :defer t)
+  :after (company))
 
 (use-package flycheck
   :config
@@ -2173,13 +2141,11 @@ Only for use with `advice-add'."
         ("tc" . flycheck-mode)))
 
 (use-package rainbow-mode
-  :defer t
   :commands (rainbow-mode)
   :init
   (add-hook 'css-mode-hook #'rainbow-mode))
 
 (use-package web-mode
-  :defer t
   :mode ("\\.phtml\\'"
          "\\.tpl\\.php\\'"
          "\\.[agj]sp\\'"
@@ -2198,7 +2164,6 @@ Only for use with `advice-add'."
              ("rk" . web-mode-element-kill)))
 
 (use-package emmet-mode
-  :defer t
   :commands (emmet-mode)
   :init
   (with-eval-after-load 'web-mode
@@ -2233,7 +2198,6 @@ Only for use with `advice-add'."
              ("<f5>" . chrome-refresh-current-tab)))
 
 (use-package nodejs-repl
-  :defer t
   :after (js2-mode)
   :commands (nodejs-repl-mode
              nodejs-repl-send-last-sexp
@@ -2252,7 +2216,6 @@ Only for use with `advice-add'."
                ("C-c C-k" . nodejs-repl-send-buffer))))
 
 (use-package skewer-mode
-  :defer t
   :commands (skewer-mode
              skewer-html-mode
              skewer-css-mode)
@@ -2263,7 +2226,6 @@ Only for use with `advice-add'."
                ("C-x C-e" . skewer-html-eval-tag))))
 
 (use-package impatient-mode
-  :defer t
   :init
   (add-hook 'html-mode-hook #'impatient-mode)
   (add-hook 'web-mode-hook #'impatient-mode)
@@ -2271,7 +2233,6 @@ Only for use with `advice-add'."
 
 (use-package tern
   :diminish tern-mode
-  :defer t
   :init
   (add-hook 'js2-mode-hook 'tern-mode))
 
@@ -2305,7 +2266,6 @@ Only for use with `advice-add'."
    ("M-5" . select-window-5)))
 
 (use-package winner
-  :defer t
   :commands (winner-undo
              winner-redo)
   :init
@@ -2316,7 +2276,6 @@ Only for use with `advice-add'."
   (winner-mode))
 
 (use-package golden-ratio
-  :defer t
   :diminish golden-ratio-mode
   :commands (golden-ratio-mode)
   :init
