@@ -7,7 +7,8 @@
 ;; m:...  interactive function
 ;; m|...  hook function
 ;; m*...  advising function
-;; +....  as above, but part of a package, e.g. +helm:layouts
+;; +....  as above, but part of a package, e.g. +helm:layouts,
+;;        +golden-ratio:toggle, +persp*helm-wrapper
 ;; 
 ;; End Commentary
 ;; Supress Garbage Collection During Initialization
@@ -17,6 +18,10 @@
 ;; Load Customization Settings
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file t t)
+
+;; Introductions
+(customize-set-variable 'user-full-name "Christopher McCloud")
+(customize-set-variable 'user-mail-address "mccloud.christopher@gmail.com")
 
 ;; In Emacs 27+ this configuration block is contained in early-init.el
 (when (version< emacs-version "27.0")
