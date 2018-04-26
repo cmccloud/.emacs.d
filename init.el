@@ -1137,28 +1137,18 @@ of `iedit' regions."
         ("tH" . global-hl-line-mode)))
 
 (use-package exec-path-from-shell
-  :if (memq window-system '(mac ns))
+  :if (equal system-type 'darwin)
   :init
-  (setq exec-path
-        (eval-when-compile
-          (exec-path-from-shell-initialize)
-          exec-path))
-  (defvar env-path-cache
-    (eval-when-compile
-      (exec-path-from-shell-initialize)
-      (getenv "PATH"))
-    "Cache the correctly generated $PATH environment variable at compile.
-This constant may then later be used at run-time without the expense of
-executing `exec-path-from-shell-initialize'.")
+  (customize-set-variable
+   'exec-path
+   (eval-when-compile (exec-path-from-shell-initialize) exec-path))
   
-  (setenv "PATH" env-path-cache)
+  (setenv "PATH" (eval-when-compile (exec-path-from-shell-initialize) (getenv "PATH")))
 
-  ;; Mac Specific Config
-  (when (equal system-type 'darwin)
-    (when-let ((gls (executable-find "gls"))
-               (ls (executable-find "ls")))
-      (setq insert-directory-program gls
-            dired-listing-switches "-aBhlp --group-directories-first"))))
+  (when-let ((gls (executable-find "gls"))
+             (ls (executable-find "ls")))
+    (setq insert-directory-program gls
+          dired-listing-switches "-aBhlp --group-directories-first")))
 
 (use-package term
   :commands (term
