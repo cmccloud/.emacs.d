@@ -114,6 +114,14 @@
              ("ad" . dired)))
 
 ;; Appearance and UI
+(use-package frame
+  :custom
+  (window-divider-default-places 'right-only)
+  (window-divider-default-bottom-width 1)
+  (window-divider-default-right-width 2)
+  :config
+  (window-divider-mode t))
+
 (use-package solaire-mode
   :disabled t
   :init
@@ -150,13 +158,6 @@
   :commands (text-scale-mode
              text-scale-set
              text-scale-mode-amount))
-
-
-;; Window Divider
-(setq-default window-divider-default-places 'right-only
-              window-divider-default-bottom-width 1
-              window-divider-default-right-width 3)
-(window-divider-mode 1)
 
 (advice-add #'display-startup-echo-area-message :override #'ignore)
 (setq inhibit-startup-message t
