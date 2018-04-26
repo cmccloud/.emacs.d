@@ -11,7 +11,7 @@
 ;; 
 ;; End Commentary
 ;; Supress Garbage Collection During Initialization
-(setq gc-cons-threshold 402653184
+(setq gc-cons-threshold (* 1024 1024 64)
       gc-cons-percentage .6)
 ;; Begin Emacs Initialization
 ;; Load Customization Settings
@@ -2378,5 +2378,5 @@ Valid alignments are `above', `below', `left', and `right'."
 
 ;; End Emacs Initialization
 ;; Re-enable Garbage Collection
-(setq gc-cons-threshold 16777216
+(setq gc-cons-threshold (* 1024 1024 16)
       gc-cons-percentage .1)
