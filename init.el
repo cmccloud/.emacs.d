@@ -71,6 +71,12 @@
 (customize-set-variable 'display-line-numbers-type 'relative)
 (customize-set-variable 'display-line-numbers-current-absolute t)
 
+(customize-set-variable 'inhibit-startup-message t)
+(customize-set-variable 'initial-major-mode 'fundamental-mode)
+(customize-set-variable 'initial-scratch-message nil)
+
+(fset #'yes-or-no-p #'y-or-n-p)
+
 (setq-default frame-title-format nil
               fringes-outside-margins t
               bidi-display-reordering nil
@@ -152,13 +158,6 @@
   :commands (text-scale-mode
              text-scale-set
              text-scale-mode-amount))
-
-(advice-add #'display-startup-echo-area-message :override #'ignore)
-(customize-set-variable 'inhibit-startup-message t)
-(customize-set-variable 'initial-major-mode 'fundamental-mode)
-(customize-set-variable 'initial-scratch-message nil)
-
-(fset #'yes-or-no-p #'y-or-n-p)
 
 (use-package doom-modeline
   :load-path "site-lisp/doom-modeline/"
