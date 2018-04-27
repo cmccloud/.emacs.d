@@ -1621,10 +1621,8 @@ Only for use with `advice-add'."
   (add-hook 'lisp-mode-hook #'lispy-mode)
   (add-hook 'emacs-lisp-mode-hook #'lispy-mode)
   (add-hook 'scheme-mode-hook #'lispy-mode)
-  (with-eval-after-load 'clojure-mode
-    (add-hook 'clojure-mode-hook #'lispy-mode))
-  (with-eval-after-load 'racket-mode
-    (add-hook 'racket-mode-hook #'lispy-mode))
+  (add-hook 'clojure-mode-hook #'lispy-mode)
+  (add-hook 'racket-mode-hook #'lispy-mode)
   :config
   (bind-keys :map lispy-mode-map
              ("C-j" . avy-goto-word-or-subword-1)
