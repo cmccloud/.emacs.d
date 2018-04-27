@@ -146,7 +146,7 @@
 
 (use-package linum
   :commands linum-mode
-  :preface (defvar linum-format "%4d ")
+  :preface (defvar linum-format 'dynamic)
   :init
   (bind-keys :map leader-map
              ("tl" . linum-mode))
