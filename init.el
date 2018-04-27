@@ -68,6 +68,9 @@
 (customize-set-variable 'apropos-do-all t)
 (customize-set-variable 'history-length 1000)
 
+(customize-set-variable 'display-line-numbers-type 'relative)
+(customize-set-variable 'display-line-numbers-current-absolute t)
+
 (setq-default frame-title-format nil
               fringes-outside-margins t
               bidi-display-reordering nil
@@ -104,6 +107,7 @@
              ("M-p" . previous-buffer))
   (bind-keys :map leader-map
              ("tF" . toggle-frame-fullscreen)
+             ("tl" . display-line-numbers-mode)
              ("bd" . kill-this-buffer)
              ("br" . rename-buffer)
              ("ws" . split-window-right)
@@ -143,16 +147,6 @@
   :ensure spacemacs-theme
   :init 
   (load-theme 'spacemacs-dark t))
-
-(use-package linum
-  :commands linum-mode
-  :preface (defvar linum-format 'dynamic)
-  :init
-  (bind-keys :map leader-map
-             ("tl" . linum-mode))
-  :config
-  (use-package hlinum :demand t)
-  (hlinum-activate))
 
 (use-package face-remap
   :commands (text-scale-mode
