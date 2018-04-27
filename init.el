@@ -160,9 +160,9 @@
              text-scale-mode-amount))
 
 (advice-add #'display-startup-echo-area-message :override #'ignore)
-(setq inhibit-startup-message t
-      initial-major-mode 'fundamental-mode
-      initial-scratch-message nil)
+(customize-set-variable 'inhibit-startup-message t)
+(customize-set-variable 'initial-major-mode 'fundamental-mode)
+(customize-set-variable 'initial-scratch-message nil)
 
 (fset #'yes-or-no-p #'y-or-n-p)
 
