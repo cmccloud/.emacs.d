@@ -1,5 +1,5 @@
 ;;; init.el -*- lexical-binding: t -*-
-;; Begin Commentary
+;;; Begin Commentary
 ;; Naming conventions:
 ;;
 ;; m-...  public variables or functions
@@ -1102,15 +1102,15 @@ of `iedit' regions."
   :commands (paradox-list-packages)
   :init
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("melpa-stable" . "https://stable.melpa.org/packages/")
-                         ("org" . "http://orgmode.org/elpa/")
-                         ("gnu" . "http://elpa.gnu.org/packages/"))
+                           ("melpa-stable" . "https://stable.melpa.org/packages/")
+                           ("org" . "http://orgmode.org/elpa/")
+                           ("gnu" . "http://elpa.gnu.org/packages/"))
 
-      package-archive-priorities '(("melpa-stable" . 10)
-                                   ("melpa" . 5)
-                                   ("gnu" . 0)
-                                   ("marmalade" . -5))
-      package-menu-hide-low-priority nil)
+        package-archive-priorities '(("melpa-stable" . 10)
+                                     ("melpa" . 5)
+                                     ("gnu" . 0)
+                                     ("marmalade" . -5))
+        package-menu-hide-low-priority nil)
   :config
   (setq paradox-lines-per-entry 1)
   (paradox-enable))
@@ -1140,9 +1140,8 @@ of `iedit' regions."
   :if (equal system-type 'darwin)
   :init
   (customize-set-variable
-   'exec-path
-   (eval-when-compile (exec-path-from-shell-initialize) exec-path))
-  
+   'exec-path (eval-when-compile (exec-path-from-shell-initialize) exec-path))
+
   (setenv "PATH" (eval-when-compile (exec-path-from-shell-initialize) (getenv "PATH")))
 
   (when-let ((gls (executable-find "gls"))
