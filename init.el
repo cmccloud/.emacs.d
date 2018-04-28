@@ -482,11 +482,10 @@ FRAME defaults to the current frame."
   (defvar persp--timed-auto-save-handler nil
     "Reference to handler for `persp-timed-auto-save")
   (bind-keys :map leader-map
-             ("tp" . persp-mode)
+             ("ll" . persp-mode)
              ("ls" . persp-switch)
              ("la" . persp-add-buffer)
              ("lr" . persp-remove-buffer))
-  (bind-keys ("C-x C-l" . persp-mode))
   :config
   (defun persp-timed-auto-save ()
     "Timed auto-save for `persp-mode.
@@ -544,105 +543,12 @@ Only for use with `advice-add'."
     (advice-add 'helm-multi-swoop :around
                 #'persp--helm-wrapper)
     (advice-add 'helm-multi-swoop-all :around
-                #'persp--helm-wrapper))
-  
-  (with-eval-after-load 'helm-buffers
-    (defvar helm-persp-current-buffers-cache nil)
+                #'persp--helm-wrapper)))
 
-    (defvar helm-persp-filtered-buffers-cache nil)
-
-    (defvar helm-source-persp-current-buffers nil)
-
-    (defvar helm-source-persp-filtered-buffers nil)
-
-    (defun +helm-persp-buffers--init ()
-      (setq helm-persp-current-buffers-cache
-            (cl-loop for b in (persp-buffer-list-restricted nil 0)
-                     collect (buffer-name b))
-            helm-persp-filtered-buffers-cache
-            (cl-loop for b in (persp-buffer-list-restricted nil 1)
-                     collect (buffer-name b)))
-      (let ((result (cl-loop for b in (append helm-persp-current-buffers-cache
-                                              helm-persp-filtered-buffers-cache)
-                             maximize (length b) into len-buf
-                             maximize (length (with-current-buffer b
-                                                (symbol-name major-mode)))
-                             into len-mode
-                             finally return (cons len-buf len-mode))))
-        (unless (default-value 'helm-buffer-max-length)
-          (helm-set-local-variable 'helm-buffer-max-length (car result)))
-        (unless (default-value  'helm-buffer-max-len-mode)
-          (helm-set-local-variable 'helm-buffer-max-len-mode (cdr result)))))
-    
-    (defclass helm-persp-current-buffers-source (helm-source-sync helm-type-buffer)
-      ((init
-        :initform #'+helm-persp-buffers--init)
-       (candidates
-        :initform helm-persp-current-buffers-cache)
-       (matchplugin :initform nil)
-       (match :initform #'helm-buffers-match-function)
-       (persistent-action :initform #'helm-buffers-list-persistent-action)
-       (volatile :initform t)
-       (keymap :initform helm-buffer-map)))
-    
-    (cl-defmethod helm--setup-source ((source helm-persp-current-buffers-source))
-      (cl-call-next-method)
-      (setf (slot-value source 'action)
-            (append (helm-make-actions "Remove buffer(s) from current Perspective."
-                                       (lambda (c) (mapcar #'persp-remove-buffer
-                                                           (helm-marked-candidates))))
-                    (symbol-value (slot-value source 'action)))))
-
-    (defclass helm-persp-filtered-buffers-source (helm-source-sync helm-type-buffer)
-      ((init
-        :initform #'+helm-persp-buffers--init)
-       (candidates
-        :initform helm-persp-filtered-buffers-cache)
-       (matchplugin :initform nil)
-       (match :initform #'helm-buffers-match-function)
-       (persistent-action :initform #'helm-buffers-list-persistent-action)
-       (volatile :initform t)
-       (keymap :initform helm-buffer-map)))
-    
-    (cl-defmethod helm--setup-source ((source helm-persp-filtered-buffers-source))
-      (cl-call-next-method)
-      (setf (slot-value source 'action)
-            (append (helm-make-actions "Add buffer(s) to current Perspective."
-                                       (lambda (c) (mapcar #'persp-add-buffer
-                                                           (helm-marked-candidates))))
-                    (symbol-value (slot-value source 'action)))))
-
-    ;; WIP
-    (defun +helm:layouts ()
-      (interactive)
-      (let ((helm-actions
-             (helm-make-actions
-              "Switch to Perspective"
-              (lambda (c) (persp-switch c))
-              "Remove Perspective"
-              (lambda (c) (persp-kill c))
-              "Create New Perspective"
-              (lambda (c) (call-interactively 'persp-add-new))))
-            (current
-             (or helm-source-persp-current-buffers
-                 (setq helm-source-persp-current-buffers
-                       (helm-make-source "Current Buffers"
-                           helm-persp-current-buffers-source))))
-            (filtered
-             (or helm-source-persp-filtered-buffers
-                 (setq helm-source-persp-filtered-buffers
-                       (helm-make-source "Other Buffers"
-                           helm-persp-filtered-buffers-source)))))
-        (helm
-         :buffer "*helm layouts*"
-         :sources `(,(helm-build-sync-source "Perspectives"
-                       :candidates #'persp-names
-                       :action helm-actions)
-                    ,current
-                    ,filtered))))
-
-    
-    (bind-keys ("C-x C-l" . +helm:layouts))))
+(use-package helm-persp
+  :load-path "site-lisp/helm-persp"
+  :bind
+  ("C-x C-l" . helm-persp-layouts))
 
 (use-package osx-trash
   :defer 10
