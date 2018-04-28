@@ -835,10 +835,10 @@ Only for use with `advice-add'."
     "As `previous-buffer' but respects `helm-boring-buffer-regexp-list'."
     (interactive)
     (helm--change-buffer 'previous-buffer))
-  
+
+  (customize-set-variable 'helm-buffer-max-length nil)
   (setq helm-grep-ag-command
         "rg -M 256 --color=always --smart-case --no-heading --line-number %s %s %s"
-        helm-buffer-max-length nil
         helm-M-x-fuzzy-match t
         helm-autoresize-max-height 30
         helm-display-header-line nil
