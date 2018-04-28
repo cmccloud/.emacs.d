@@ -36,11 +36,15 @@
 
 (defun helm-persp--buffers-init ()
   (setq helm-persp--current-buffers-cache
-        (cl-loop for b in (persp-buffer-list-restricted nil 0)
-                 collect (buffer-name b))
+        (cl-loop for b in (helm-skip-boring-buffers
+                           (mapcar #'buffer-name (persp-buffer-list-restricted nil 0))
+                           nil)
+                 collect b)
         helm-persp--filtered-buffers-cache
-        (cl-loop for b in (persp-buffer-list-restricted nil 1)
-                 collect (buffer-name b)))
+        (cl-loop for b in (helm-skip-boring-buffers
+                           (mapcar #'buffer-name (persp-buffer-list-restricted nil 1))
+                           nil)
+                 collect b))
   (let ((result (cl-loop for b in (append helm-persp--current-buffers-cache
                                           helm-persp--filtered-buffers-cache)
                          maximize (length b) into len-buf
