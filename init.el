@@ -160,7 +160,7 @@
              text-scale-mode-amount))
 
 (use-package doom-modeline
-  :load-path "site-lisp/doom-modeline/"
+  :load-path "site-lisp/doom-modeline"
   :demand t)
 
 (use-package page-break-lines
@@ -987,7 +987,7 @@ Only for use with `advice-add'."
 
 (use-package sublimity
   :commands sublimity-mode
-  :load-path "/site-lisp/sublimity"
+  :load-path "site-lisp/sublimity"
   :init
   (with-eval-after-load 'hydra
 
