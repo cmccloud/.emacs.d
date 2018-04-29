@@ -1011,7 +1011,20 @@ Only for use with `advice-add'."
         ediff-split-window-function 'split-window-horizontally)
 
   (with-eval-after-load 'winner
-    (add-hook 'ediff-quit-hook #'winner-undo)))
+    (add-hook 'ediff-quit-hook #'winner-undo))
+
+  (let ((state nil))
+    (defun ediff--maybe-suspend-golden-ratio ()
+      (when (bound-and-true-p golden-ratio-mode)
+        (setq state t)
+        (golden-ratio-mode -1)))
+    (defun ediff--maybe-restore-golden-ratio ()
+      (when state
+        (setq state nil)
+        (golden-ratio-mode 1)))
+    (add-hook 'ediff-mode-hook #'ediff--maybe-suspend-golden-ratio)
+    (add-hook 'ediff-quit-hook #'ediff--maybe-restore-golden-ratio)
+    (add-hook 'magit-ediff-quit-hook #'ediff--maybe-restore-golden-ratio)))
 
 (use-package magit
   :commands (magit-mode
