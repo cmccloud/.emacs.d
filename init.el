@@ -68,7 +68,7 @@
 (customize-set-variable 'apropos-do-all t)
 (customize-set-variable 'history-length 1000)
 
-(customize-set-variable 'display-line-numbers-type 'relative)
+(customize-set-variable 'display-line-numbers-type t)
 (customize-set-variable 'display-line-numbers-current-absolute t)
 
 (customize-set-variable 'inhibit-startup-message t)
