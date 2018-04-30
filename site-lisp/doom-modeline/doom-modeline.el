@@ -37,15 +37,6 @@ local value, whether or not it's permanent-local. Therefore, we cycle
 ;; no modeline in completion popups
 (add-hook 'completion-list-mode-hook #'doom-hide-modeline-mode)
 
-;; Bootstrap
-(when (display-graphic-p)
-  (push (cons 'left-fringe  4) default-frame-alist)
-  (push (cons 'right-fringe 4) default-frame-alist)
-  (add-hook 'emacs-startup-hook
-            (lambda () (set-window-fringes (minibuffer-window) 0 0 nil)))
-  (add-hook 'minibuffer-setup-hook
-            (lambda () (set-window-fringes (minibuffer-window) 0 0 nil))))
-
 ;;
 ;; Modeline
 ;;
