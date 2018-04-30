@@ -76,7 +76,6 @@
  '(fci-rule-color "#eee8d5")
  '(flycheck-highlighting-mode (quote sexps))
  '(foreground-color "#cccccc")
- '(fringe-mode nil nil (fringe))
  '(git-gutter:added-sign " ")
  '(git-gutter:ask-p nil)
  '(git-gutter:deleted-sign " ")

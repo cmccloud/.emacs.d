@@ -52,6 +52,7 @@
 (customize-set-variable 'highlight-nonselected-windows nil)
 (customize-set-variable 'indicate-buffer-boundaries nil)
 (customize-set-variable 'indicate-empty-lines nil)
+(customize-set-variable 'fringe-mode 4)
 
 (customize-set-variable 'fit-window-to-buffer-horizontally t)
 (customize-set-variable 'save-interprogram-paste-before-kill t)
