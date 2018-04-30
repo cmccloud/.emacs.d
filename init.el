@@ -133,6 +133,18 @@
   :config
   (window-divider-mode t))
 
+(use-package faces
+  :init
+  (defun m-font-lock-toggle-bold ()
+    "For font-lock faces, toggles weight to either normal or bold."
+    (interactive)
+    (let* ((old-value (face-attribute 'font-lock-type-face :weight))
+           (new-value (if (eq old-value 'normal) 'bold 'normal)))
+      (cl-loop for face in (face-list)
+               for name = (symbol-name face)
+               when (string-match "^font-lock.*" name)
+               do (set-face-attribute face nil :weight new-value)))))
+
 (use-package solaire-mode
   :disabled t
   :init
@@ -153,7 +165,8 @@
 (use-package spacemacs-common
   :ensure spacemacs-theme
   :init 
-  (load-theme 'spacemacs-dark t))
+  (load-theme 'spacemacs-dark t)
+  (m-font-lock-toggle-bold))
 
 (use-package face-remap
   :commands (text-scale-mode
@@ -454,7 +467,6 @@ FRAME defaults to the current frame."
                                       (get-frame-persp frame)
                                       frame))
 
-   
     (add-hook 'persp-before-switch-functions
               #'spacemacs/update-eyebrowse-for-perspective)
     (add-hook 'eyebrowse-post-window-switch-hook
