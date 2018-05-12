@@ -234,6 +234,27 @@
     "M-m w" "Window")
   (which-key-mode 1))
 
+(use-package helpful
+  :demand t
+  :init
+  (defun helpful-enable ()
+    (interactive)
+    (bind-keys
+     ([remap elisp-slime-nav-describe-elisp-thing-at-point] . helpful-at-point)
+     ([remap describe-function] . helpful-callable)
+     ([remap describe-key] . helpful-key)
+     ([remap describe-variable] . helpful-variable)))
+
+  (defun helpful-disable ()
+    (interactive)
+    (bind-keys
+     ([remap elisp-slime-nav-describe-elisp-thing-at-point] . nil)
+     ([remap describe-function] . nil)
+     ([remap describe-key] . nil)
+     ([remap describe-variable] . nil)))
+  :config
+  (helpful-enable))
+
 (use-package paradox
   :commands (paradox-list-packages)
   :init
