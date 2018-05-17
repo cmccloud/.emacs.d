@@ -1,3 +1,12 @@
+;;; custom.el --- User custom-set settings. -*- lexical-binding: t -*-
+
+;; Copyright (C) 2016-2018 Christopher McCloud
+
+;; Author: Christopher McCloud <mccloud.christopher@gmail.com>
+
+;; This file is not part of GNU Emacs
+
+;;; Code: 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -252,3 +261,5 @@
  '(region ((t (:background "slate grey" :foreground "black"))))
  '(show-paren-match ((t nil)))
  '(which-key-group-description-face ((t (:foreground "#a9a1e1" :weight semi-bold)))))
+
+;;; custom.el ends here

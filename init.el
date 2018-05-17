@@ -1,5 +1,12 @@
-;;; init.el -*- lexical-binding: t -*-
-;;; Begin Commentary
+;;; init.el --- Personal Emacs Configuration. -*- lexical-binding: t -*-
+
+;; Copyright (C) 2016-2018 Christopher McCloud
+
+;; Author: Christopher McCloud <mccloud.christopher@gmail.com>
+
+;; This file is not part of GNU Emacs
+
+;;; Commentary:
 ;; Naming conventions:
 ;;
 ;; m-...  public variables or functions
@@ -9,8 +16,9 @@
 ;; m*...  advising function
 ;; +....  as above, but part of a package, e.g. +helm:layouts,
 ;;        +golden-ratio:toggle, +persp*helm-wrapper
-;; 
-;; End Commentary
+;;
+
+;;; Code: 
 ;; Supress Garbage Collection During Initialization
 (setq gc-cons-threshold (* 1024 1024 64)
       gc-cons-percentage .6)
@@ -1419,3 +1427,5 @@ Valid alignments are `above', `below', `left', and `right'."
 ;; Re-enable Garbage Collection
 (setq gc-cons-threshold (* 1024 1024 16)
       gc-cons-percentage .1)
+
+;;; init.el ends here. 
