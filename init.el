@@ -292,6 +292,17 @@
   :config
   (setq reb-auto-match-limit 500))
 
+(use-package visual-regexp
+  :custom
+  (vr/default-replace-preview t)
+  :bind (("C-x /" . vr/query-replace)))
+
+(use-package visual-regexp-steroids
+  :after visual-regexp
+  :demand t
+  :custom
+  (vr/engine 'pcre2el))
+
 (use-package hl-line
   :custom
   (hl-line-sticky-flag nil)
