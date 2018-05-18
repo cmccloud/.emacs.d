@@ -168,7 +168,7 @@
 (use-package doom-themes
   :demand t
   :custom
-  (doom-themes-enable-bold t)
+  (doom-themes-enable-bold nil)
   (doom-themes-enable-italic nil))
 
 (use-package spacemacs-common
