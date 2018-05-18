@@ -898,7 +898,7 @@ Only for use with `advice-add'."
         helm-ff-tramp-not-fancy t)
 
   ;; Helm Candidate Number Limit
-  (setq helm-candidate-number-limit 100)
+  (customize-set-variable 'helm-candidate-number-limit 100)
   (with-eval-after-load 'helm-color
     (helm-attrset 'candidate-number-limit 9999 helm-source-colors)
     (helm-attrset 'candidate-number-limit 9999 helm-source-customize-face))
