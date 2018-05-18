@@ -790,13 +790,10 @@ Only for use with `advice-add'."
    ("M-g M-g" . avy-goto-line)))
 
 (use-package dumb-jump
-  :commands (dumb-jump-mode
-             dumb-jump-go
-             dumb-jump-back
-             dumb-jump-quick-look)
-  :config
-  (setq dumb-jump-force-searcher 'ag
-        dumb-jump-selector 'helm))
+  :bind (("M-g d" . dumb-jump-go)
+         ("M-g D" . dumb-jump-go-prompt))
+  :custom
+  (dumb-jump-selector 'helm))
 
 (use-package helm
   :commands (helm-M-x
