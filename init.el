@@ -53,6 +53,7 @@
 (customize-set-variable 'auto-save-default nil)
 (customize-set-variable 'create-lockfiles nil)
 (customize-set-variable 'make-backup-files nil)
+(customize-set-variable 'confirm-kill-emacs #'yes-or-no-p)
 
 (customize-set-variable 'blink-matching-paren nil)
 (customize-set-variable 'visible-cursor nil)
@@ -70,7 +71,7 @@
 (customize-set-variable 'jit-lock-stealth-time 0.2)
 (customize-set-variable 'jit-lock-stealth-verbose nil)
 
-(customize-set-variable 'compilation-scroll-output t)
+(customize-set-variable 'compilation-scroll-output nil)
 (customize-set-variable 'use-dialog-box nil)
 (customize-set-variable 'ring-bell-function #'ignore)
 (customize-set-variable 'visible-bell nil)
