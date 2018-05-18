@@ -1049,25 +1049,12 @@ Only for use with `advice-add'."
     (sublimity-map-set-delay nil)))
 
 (use-package ediff
+  :custom
+  (ediff-window-setup-function 'ediff-setup-windows-plain)
+  (ediff-split-window-function 'split-window-horizontally)
   :config
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain
-        ediff-split-window-function 'split-window-horizontally)
-
   (with-eval-after-load 'winner
-    (add-hook 'ediff-quit-hook #'winner-undo))
-
-  (let ((state nil))
-    (defun ediff--maybe-suspend-golden-ratio ()
-      (when (bound-and-true-p golden-ratio-mode)
-        (setq state t)
-        (golden-ratio-mode -1)))
-    (defun ediff--maybe-restore-golden-ratio ()
-      (when state
-        (setq state nil)
-        (golden-ratio-mode 1)))
-    (add-hook 'ediff-mode-hook #'ediff--maybe-suspend-golden-ratio)
-    (add-hook 'ediff-quit-hook #'ediff--maybe-restore-golden-ratio)
-    (add-hook 'magit-ediff-quit-hook #'ediff--maybe-restore-golden-ratio)))
+    (add-hook 'ediff-quit-hook #'winner-undo)))
 
 (use-package magit
   :commands (magit-mode
@@ -1354,8 +1341,12 @@ Only for use with `advice-add'."
   (winner-mode))
 
 (use-package golden-ratio
-  :diminish golden-ratio-mode
-  :commands (golden-ratio-mode)
+  :bind (:map leader-map
+              ("tg" . +golden-ratio:toggle))
+  :custom
+  (golden-ratio-auto-scale t)
+  (golden-ratio-exclude-buffer-names '("*Helm Swoop*" "*Helm Multi Swoop*"))
+  (golden-ratio-exclude-modes '("magit-popup-mode" "magit-status-mode" "ediff-mode"))
   :init
   (defun +golden-ratio:toggle ()
     "Toggles `golden-ratio-mode' and balances windows."
@@ -1368,15 +1359,19 @@ Only for use with `advice-add'."
         (golden-ratio-mode 1)
         (golden-ratio))))
 
-  (bind-keys :map leader-map
-             ("tg" . +golden-ratio:toggle))
+  ;; Try to make golden-ratio play nice with other packages
+  (defun +golden-ratio-helm-alive-p ()
+    (when (boundp 'helm-alive-p)
+      (symbol-value 'helm-alive-p)))
 
+  (defun +golden-ratio-in-ediff-p ()
+    (when (boundp 'ediff-this-buffer-ediff-sessions)
+      (symbol-value 'ediff-this-buffer-ediff-sessions)))
+  
   (golden-ratio-mode t)
-  :custom
-  (golden-ratio-auto-scale t)
-  (golden-ratio-exclude-buffer-names
-   '("*Helm Swoop*"
-     "*Helm Multi Swoop*")))
+  :config
+  (add-to-list 'golden-ratio-inhibit-functions #'+golden-ratio-helm-alive-p)
+  (add-to-list 'golden-ratio-inhibit-functions #'+golden-ratio-in-ediff-p))
 
 (use-package writeroom-mode
   :disabled t
