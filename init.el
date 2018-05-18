@@ -780,17 +780,14 @@ Only for use with `advice-add'."
     (sp-local-pair 'markdown-mode "`" nil :actions nil)))
 
 (use-package avy
-  :commands (avy-goto-word-or-subword-1
-             avy-goto-line
-             avy-goto-char
-             avy-goto-char-2)
-  :init
-  (bind-keys :map leader-map
-             ("j" . avy-goto-word-or-subword-1)
-             ("z" . avy-goto-line))
+  :custom
+  (avy-all-windows nil)
+  (avy-background t)
+  (avy-style 'at)
   :bind
-  (("C-j" . avy-goto-word-or-subword-1)
-   ("C-z" . avy-goto-line)))
+  (("M-g c" . avy-goto-char-timer)
+   ("M-g g" . avy-goto-line)
+   ("M-g M-g" . avy-goto-line)))
 
 (use-package dumb-jump
   :commands (dumb-jump-mode
