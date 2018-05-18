@@ -183,8 +183,8 @@
              text-scale-mode-amount))
 
 (use-package doom-modeline
-  :load-path "site-lisp/doom-modeline"
-  :demand t)
+  :demand t
+  :load-path "site-lisp/doom-modeline")
 
 (use-package page-break-lines
   :demand t
@@ -217,7 +217,6 @@
     "C-x 4" "Other Window"
     "C-x 5" "Frames"
     "C-x C-k" "K-Macro"
-    "C-x h" "Helm"
     "C-x n" "Narrowing"
     "C-x r" "Registers"
     "C-x v" "Version Control"
@@ -225,6 +224,10 @@
     "C-c l" "Layouts"
     "C-c p" "Projects"
     "C-c C-w" "Eyebrowse"
+    ;; M-s Map
+    "M-s a" "Ag"
+    "M-s r" "Riggrep"
+    "M-s h" "Highlight"
     ;; Leader Map
     "M-m b" "Buffers"
     "M-m f" "Files"
@@ -239,12 +242,14 @@
     "M-m p" "Projects"
     "M-m q" "Quit"
     "M-m s" "Search"
+    "M-m s r" "Ripgrep"
     "M-m t" "Toggle"
     "M-m w" "Window")
   (which-key-mode 1))
 
 (use-package helpful
-  :demand t
+  :commands (helpful-enable helpful-disable)
+  :custom (helpful-max-buffers 1)
   :init
   (defun helpful-enable ()
     (interactive)
@@ -253,32 +258,28 @@
      ([remap describe-function] . helpful-callable)
      ([remap describe-key] . helpful-key)
      ([remap describe-variable] . helpful-variable)))
-
   (defun helpful-disable ()
     (interactive)
     (bind-keys
      ([remap elisp-slime-nav-describe-elisp-thing-at-point] . nil)
      ([remap describe-function] . nil)
      ([remap describe-key] . nil)
-     ([remap describe-variable] . nil)))
-  :config
-  (helpful-enable))
+     ([remap describe-variable] . nil))))
 
 (use-package paradox
-  :commands (paradox-list-packages)
-  :init
-  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                           ("melpa-stable" . "https://stable.melpa.org/packages/")
-                           ("org" . "http://orgmode.org/elpa/")
-                           ("gnu" . "http://elpa.gnu.org/packages/"))
-
-        package-archive-priorities '(("melpa-stable" . 10)
-                                     ("melpa" . 5)
-                                     ("gnu" . 0)
-                                     ("marmalade" . -5))
-        package-menu-hide-low-priority nil)
+  :custom
+  (package-archives '(("melpa" . "https://melpa.org/packages/")
+                      ("melpa-stable" . "https://stable.melpa.org/packages/")
+                      ("org" . "http://orgmode.org/elpa/")
+                      ("gnu" . "http://elpa.gnu.org/packages/")))
+  (package-archive-priorities '(("melpa-stable" . 10)
+                                ("melpa" . 5)
+                                ("gnu" . 0)
+                                ("marmalade" . -5)))
+  (package-menu-hide-low-priority nil)
+  (paradox-lines-per-entry 2)
+  (paradox-use-homepage-buttons nil)
   :config
-  (setq paradox-lines-per-entry 1)
   (paradox-enable))
 
 (use-package autorevert
@@ -292,15 +293,15 @@
   (setq reb-auto-match-limit 500))
 
 (use-package hl-line
-  :init
-  (add-hook 'prog-mode-hook #'hl-line-mode)
-  :config
-  (setq hl-line-sticky-flag nil
-        global-hl-line-sticky-flag nil)
+  :custom
+  (hl-line-sticky-flag nil)
+  (global-hl-line-sticky-flag nil)
   :bind
   (:map leader-map
         ("th" . hl-line-mode)
-        ("tH" . global-hl-line-mode)))
+        ("tH" . global-hl-line-mode))
+  :init
+  (add-hook 'prog-mode-hook #'hl-line-mode))
 
 (use-package exec-path-from-shell
   :if (equal system-type 'darwin)
@@ -323,7 +324,7 @@
              ("at" . ansi-term))
   :config
   (bind-keys :map term-raw-map
-             ("M-x" . 'execute-extended-command)
+             ("M-x" . execute-extended-command)
              ("M-m" . nil))
   (with-eval-after-load 'helm
     (bind-keys :map term-raw-map
@@ -659,12 +660,8 @@ Only for use with `advice-add'."
     (add-hook 'emacs-lisp-mode-hook #'company-mode t)))
 
 (use-package smartparens
-  :commands (smartparens-mode
-             smartparens-strict-mode
-             show-smartparens-mode
-             smartparens-global-mode
-             smartparens-global-strict-mode
-             show-smartparens-global-mode)
+  :custom
+  (sp-echo-match-when-invisible nil)
   :defines (sp-activate)
   :init
   (add-hook 'prog-mode-hook #'smartparens-strict-mode)
@@ -695,7 +692,7 @@ Only for use with `advice-add'."
   (add-hook 'racket-mode-hook #'lispy-mode)
   :config
   (bind-keys :map lispy-mode-map
-             ("C-j" . avy-goto-word-or-subword-1)
+             ("C-j" . avy-goto-char-timer)
              ("C-z" . avy-goto-line)
              ("C-0" . lispy-describe-inline)
              ("M-m" . nil)
@@ -994,35 +991,9 @@ Only for use with `advice-add'."
              ("u" . helm-unicode)))
 
 (use-package projectile
-  :diminish projectile-mode
-  :functions (projectile-project-root)
-  :commands (projectile-mode
-             projectile-ack
-             projectile-ag
-             projectile-compile-project
-             projectile-dired
-             projectile-find-dir
-             projectile-find-file
-             projectile-find-tag
-             projectile-find-test-file
-             projectile-grep
-             projectile-invalidate-cache
-             projectile-kill-buffers
-             projectile-multi-occur
-             projectile-project-p
-             projectile-project-root
-             projectile-recentf
-             projectile-regenerate-tags
-             projectile-replace
-             projectile-run-async-shell-command-in-root
-             projectile-run-shell-command-in-root
-             projectile-switch-project
-             projectile-switch-to-buffer
-             projectile-vc)
+  :commands (projectile-project-root)
   :config
   (projectile-mode))
-
-(use-package neotree)
 
 (use-package stripe-buffer
   :commands stripe-buffer-mode
@@ -1057,37 +1028,32 @@ Only for use with `advice-add'."
     (add-hook 'ediff-quit-hook #'winner-undo)))
 
 (use-package magit
-  :commands (magit-mode
-             magit-status
-             magit-status-internal
-             magit-blame
-             magit-commit-popup
-             magit-stage-file
-             magit-unstage-file
-             magit-push-popup
-             magit-diff-popup
-             magit-diff-unstaged
-             magit-commit)
-  :init
-  (bind-keys :map leader-map
-             ("gs" . magit-status)
-             ("gb" . magit-blame))
+  :custom
+  (magit-display-buffer-function
+   'magit-display-buffer-fullframe-status-topleft-v1)
+  :bind (("C-x g" . magit-status)
+         ("C-x C-v" . magit-status)
+         :map leader-map
+         ("gs" . magit-status)
+         ("gb" . magit-blame)
+         ("gh" . magit-dispatch-popup)
+         :map magit-process-mode-map
+         ("M-n" . nil)
+         ("M-p" . nil)
+         :map magit-diff-mode-map
+         ("M-n" . nil)
+         ("M-p" . nil)
+         :map magit-status-mode-map
+         ("M-n" . nil)
+         ("M-p" . nil))
+  :commands (magit-commit-popup)
   :config
   (defun +magit|refresh-visible-vc-state ()
     (dolist (window (window-list))
       (with-current-buffer (window-buffer window)
         (vc-refresh-state))))
   ;; TODO: Needs Testing
-  (add-hook 'magit-post-refresh-hook #'+magit|refresh-visible-vc-state)
-  (bind-keys :map magit-process-mode-map
-             ("M-n" . nil)
-             ("M-p" . nil))
-  (bind-keys :map magit-diff-mode-map
-             ("M-n" . nil)
-             ("M-p" . nil))
-  (bind-keys :map magit-status-mode-map
-             ("M-n" . nil)
-             ("M-p" . nil)))
+  (add-hook 'magit-post-refresh-hook #'+magit|refresh-visible-vc-state))
 
 (use-package magithub
   :disabled t
@@ -1401,7 +1367,6 @@ Valid alignments are `above', `below', `left', and `right'."
         consequent
       alternative))
   (setq shackle-select-reused-windows t)
-  (shackle-mode 1)
   (let ((left-or-below (apply-partially #'+shackle-maybe-split 'left 'below)))
     (setq shackle-rules
           `(("*Process List*" :select t :align ,left-or-below :size 0.4)
@@ -1411,13 +1376,15 @@ Valid alignments are `above', `below', `left', and `right'."
             ("*slime-description*" :select t :align t :size 0.4)
             ("\\`\\*\[h|H]elm.*?\\*\\'" :regexp t :align t :size 0.3)
             ("*Help*" :select t :align ,left-or-below :size 0.4 :popup t)
+            ("^\\*helpful.*" :regexp t :select t :align ,left-or-below :size 0.4 :popup t)
             ("*Completions*" :select t :align t :size 0.4)
             ("*Compile-Log*" :select t :align ,left-or-below :size 0.4)
             ("*Man.*" :regexp t :select t :align ,left-or-below :size .5)
             ("*lispy-goto*" :align t :size 0.4)
             ("*git-gutter:diff*" :align ,left-or-below :size 0.4)
             ("*Diff*" :select t :align ,left-or-below :size 0.4)
-            ("*Package Commit List*" :select t :align ,left-or-below :size 0.4)))))
+            ("*Package Commit List*" :select t :align ,left-or-below :size 0.4))))
+  (shackle-mode 1))
 
 ;; End Emacs Initialization
 ;; Re-enable Garbage Collection
