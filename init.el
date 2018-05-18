@@ -19,7 +19,7 @@
 ;;
 
 ;;; Code: 
-;; Supress Garbage Collection During Initialization
+;; Suppress Garbage Collection During Initialization
 (setq gc-cons-threshold (* 1024 1024 64)
       gc-cons-percentage .6)
 ;; Begin Emacs Initialization
