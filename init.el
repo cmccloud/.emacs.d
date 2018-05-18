@@ -795,6 +795,25 @@ Only for use with `advice-add'."
   :custom
   (dumb-jump-selector 'helm))
 
+(use-package rg
+  :custom
+  (rg-group-result t)
+  (rg-keymap-prefix (kbd "M-s r"))
+  :init
+  (rg-enable-default-bindings))
+
+(use-package ag
+  :bind (("M-s a a" . ag-regexp)
+         ("M-s a p" . ag-project-regexp)
+         ("M-s a A" . ag)
+         ("M-s a P" . ag-project)
+         ("M-s a d" . ag-dired-regexp)
+         ("M-s a D" . ag-dired))
+  :custom
+  (ag-highlight-search t)
+  (ag-reuse-window t)
+  (ag-ignore-list '("archive-contents")))
+
 (use-package helm
   :commands (helm-M-x
              helm-find-files
