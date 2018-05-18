@@ -33,6 +33,7 @@
 (customize-set-variable 'scroll-bar-mode nil)
 (customize-set-variable 'tool-bar-mode nil)
 (customize-set-variable 'frame-resize-pixelwise t)
+(setq ns-use-proxy-icon nil)
 
 ;;;; Package Settings
 (customize-set-variable 'package-user-dir (concat user-emacs-directory "elpa"))
