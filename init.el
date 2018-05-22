@@ -34,7 +34,7 @@
 ;; In Emacs 27+ this configuration block is contained in early-init.el
 (when (version< emacs-version "27.0")
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-  (add-to-list 'default-frame-alist '(ns-appearance . 'nil))
+  (add-to-list 'default-frame-alist '(ns-appearance . nil))
   (customize-set-variable 'scroll-bar-mode nil)
   (customize-set-variable 'tool-bar-mode nil)
   (customize-set-variable 'frame-resize-pixelwise t)
