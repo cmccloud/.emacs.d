@@ -41,6 +41,12 @@
   (customize-set-variable 'package-user-dir (concat user-emacs-directory "elpa"))
   (package-initialize))
 
+;; Customize MacOS settings
+(customize-set-variable 'ns-use-native-fullscreen nil)
+(customize-set-variable 'ns-pop-up-frames 'fresh)
+(customize-set-variable 'ns-command-modifier 'meta)
+(customize-set-variable 'ns-option-modifier 'super)
+
 (when (fboundp 'set-charset-priority)
   (set-charset-priority 'unicode))     
 (prefer-coding-system        'utf-8)   
@@ -55,13 +61,20 @@
 (customize-set-variable 'make-backup-files nil)
 (customize-set-variable 'confirm-kill-emacs #'yes-or-no-p)
 
+;; Don't let find-file-at-point hang emacs with a bad ping attempt
+(customize-set-variable 'ffap-machine-p-unknown 'reject)
+(customize-set-variable 'ffap-machine-p-known 'reject)
+(customize-set-variable 'ffap-machine-p-local 'reject)
+;; Set the active region less eagerly. See GNU: #29661 and #29889
+(customize-set-variable 'select-active-regions 'only)
+
 (customize-set-variable 'blink-matching-paren nil)
 (customize-set-variable 'visible-cursor nil)
 (customize-set-variable 'cursor-in-non-selected-windows nil)
 (customize-set-variable 'highlight-nonselected-windows nil)
 (customize-set-variable 'indicate-buffer-boundaries nil)
 (customize-set-variable 'indicate-empty-lines nil)
-(customize-set-variable 'fringe-mode 4)
+(customize-set-variable 'fringe-mode 6)
 
 (customize-set-variable 'fit-window-to-buffer-horizontally t)
 (customize-set-variable 'save-interprogram-paste-before-kill t)
@@ -114,24 +127,27 @@
 ;; Keybinds
 (use-package bind-key
   :demand t
+  :custom
+  (bind-key-describe-special-forms t)
+  :bind
+  (("M-m" . leader-map)
+   ("M-u" . undo)
+   ("C-x C-c" . nil)
+   ("M-n" . next-buffer)
+   ("M-p" . previous-buffer)
+   :map leader-map
+   ("tF" . toggle-frame-fullscreen)
+   ("tl" . display-line-numbers-mode)
+   ("bd" . kill-this-buffer)
+   ("br" . rename-buffer)
+   ("ws" . split-window-right)
+   ("wd" . delete-window)
+   ("wm" . delete-other-windows)
+   ("wv" . split-window-below)
+   ("qq" . save-buffers-kill-emacs)
+   ("ad" . dired))
   :config
-  (define-prefix-command 'leader-map)
-  (bind-keys ("M-u" . undo)
-             ("C-x C-c" . nil)
-             ("M-m" . leader-map)
-             ("M-n" . next-buffer)
-             ("M-p" . previous-buffer))
-  (bind-keys :map leader-map
-             ("tF" . toggle-frame-fullscreen)
-             ("tl" . display-line-numbers-mode)
-             ("bd" . kill-this-buffer)
-             ("br" . rename-buffer)
-             ("ws" . split-window-right)
-             ("wd" . delete-window)
-             ("wm" . delete-other-windows)
-             ("wv" . split-window-below)
-             ("qq" . save-buffers-kill-emacs)
-             ("ad" . dired)))
+  (define-prefix-command 'leader-map))
 
 ;; Appearance and UI
 (use-package frame
@@ -144,26 +160,15 @@
 
 (use-package faces
   :init
-  (defun m-font-lock-toggle-bold ()
+  (defun m-font-lock-toggle-bold (&optional new-value)
     "For font-lock faces, toggles weight to either normal or bold."
     (interactive)
     (let* ((old-value (face-attribute 'font-lock-type-face :weight))
-           (new-value (if (eq old-value 'normal) 'bold 'normal)))
+           (new-value (or new-value (if (eq old-value 'normal) 'bold 'normal))))
       (cl-loop for face in (face-list)
                for name = (symbol-name face)
                when (string-match "^font-lock.*" name)
                do (set-face-attribute face nil :weight new-value)))))
-
-(use-package solaire-mode
-  :disabled t
-  :init
-  (defvar solaire-mode--themes-to-swap
-    '(doom-one doom-spacegrey doom-solarized-light)
-    "List of themes for which background colors must be changed by Solaire.")
-  (add-hook 'after-change-major-mode-hook #'turn-on-solaire-mode)
-  (add-hook 'ediff-prepare-buffer-hook #'solaire-mode)
-  (add-hook 'after-revert-hook #'turn-on-solaire-mode)
-  (add-hook 'minibuffer-setup-hook #'solaire-mode-in-minibuffer))
 
 (use-package doom-themes
   :demand t
@@ -175,16 +180,13 @@
   :ensure spacemacs-theme
   :init 
   (load-theme 'spacemacs-dark t)
-  (m-font-lock-toggle-bold))
-
-(use-package face-remap
-  :commands (text-scale-mode
-             text-scale-set
-             text-scale-mode-amount))
+  (m-font-lock-toggle-bold 'normal))
 
 (use-package doom-modeline
   :demand t
-  :load-path "site-lisp/doom-modeline")
+  :load-path "site-lisp/doom-modeline"
+  :config
+  (doom-modeline-mode 1))
 
 (use-package page-break-lines
   :demand t
@@ -198,14 +200,10 @@
 
 (use-package which-key
   :demand t
-  :diminish which-key-mode
+  :custom
+  (which-key-sort-order 'which-key-prefix-then-key-order-reverse)
+  :bind (:map help-map ("C-h" . nil))
   :config
-  (setq which-key-sort-order 'which-key-prefix-then-key-order-reverse)
-  
-  ;; Clear bindings on maps that block which-key paging command (C-h)
-  (bind-keys :map help-map
-             ("C-h" . nil))            ;help-for-help, also bound to ?
-  
   (which-key-add-key-based-replacements
     ;; C-x Map
     "C-x RET" "Encoding"
@@ -258,7 +256,7 @@
                                 ("gnu" . 0)
                                 ("marmalade" . -5)))
   (package-menu-hide-low-priority nil)
-  (paradox-lines-per-entry 2)
+  (paradox-lines-per-entry 1)
   (paradox-use-homepage-buttons nil)
   :config
   (paradox-enable))
@@ -292,16 +290,16 @@
   (:map leader-map
         ("th" . hl-line-mode)
         ("tH" . global-hl-line-mode))
-  :init
-  (add-hook 'prog-mode-hook #'hl-line-mode))
+  :hook (prog-mode . hl-line-mode))
 
 (use-package exec-path-from-shell
   :if (equal system-type 'darwin)
   :init
-  (customize-set-variable
-   'exec-path (eval-when-compile (exec-path-from-shell-initialize) exec-path))
+  (eval-when-compile (exec-path-from-shell-initialize))
 
-  (setenv "PATH" (eval-when-compile (exec-path-from-shell-initialize) (getenv "PATH")))
+  (customize-set-variable 'exec-path (eval-when-compile exec-path))
+
+  (setenv "PATH" (eval-when-compile (getenv "PATH")))
 
   (when-let ((gls (executable-find "gls"))
              (ls (executable-find "ls")))
@@ -309,25 +307,20 @@
           dired-listing-switches "-aBhlp --group-directories-first")))
 
 (use-package term
-  :commands (term
-             ansi-term)
-  :init
-  (bind-keys :map leader-map
-             ("at" . ansi-term))
+  :bind
+  (:map leader-map
+   ("at" . ansi-term)
+   :map term-raw-map
+   ("M-x" . execute-extended-command)
+   ("M-m" . nil))
   :config
-  (bind-keys :map term-raw-map
-             ("M-x" . execute-extended-command)
-             ("M-m" . nil))
   (with-eval-after-load 'helm
     (bind-keys :map term-raw-map
                ("M-x" . helm-M-x))))
 
 (use-package eshell
-  :commands (eshell)
-  :init
-  (setenv "NODE_NO_READLINE" "1")
-  (bind-keys :map leader-map
-             ("ae" . eshell))
+  :bind (:map leader-map ("ae" . eshell))
+  :init (setenv "NODE_NO_READLINE" "1")
   :config
   (add-hook 'eshell-mode-hook
             (lambda ()
@@ -336,196 +329,95 @@
                          ("M-p" . nil)))))
 
 (use-package yasnippet
-  :diminish yas-minor-mode
-  :commands (yas-reload-all
-             yas-minor-mode
-             yas-global-mode
-             yas-expand)
-  :init
-  (with-eval-after-load 'web-mode
-    (add-hook 'web-mode-hook #'yas-minor-mode))
+  :hook (web-mode . yas-minor-mode)
   :config (yas-reload-all))
 
 (use-package pdf-tools
   :disabled t
   :mode (("\\.pdf\\'" . pdf-view-mode))
+  :bind
+  (:map pdf-view-mode-map
+   ("C-s" . pdf-occur)
+   ("k" . nil)
+   ("g" . pdf-view-goto-page)
+   ("j" . pdf-view-next-line-or-next-page)
+   ("k" . pdf-view-previous-line-or-previous-page)
+   :map pdf-occur-buffer-mode-map
+   ("v" . pdf-occur-view-occurrence))
   :config
-  (pdf-tools-install)
-  (bind-keys :map pdf-view-mode-map
-             ("C-s" . pdf-occur)
-             ("k" . nil)
-             ("g" . pdf-view-goto-page)
-             ("j" . pdf-view-next-line-or-next-page)
-             ("k" . pdf-view-previous-line-or-previous-page))
-  (bind-keys :map pdf-occur-buffer-mode-map
-             ("v" . pdf-occur-view-occurrence)))
+  (pdf-tools-install))
 
 (use-package doc-view
   :config
-  (bind-keys :map doc-view-mode-map
-             ("k" . nil)
-             ("n" . doc-view-next-page)
-             ("p" . doc-view-previous-page)
-             ("w" . doc-view-fit-width-to-window)
-             ("h" . doc-view-fit-height-to-window)
-             ("s" . doc-view-search)
-             ("g" . doc-view-goto-page)))
+  :bind
+  (:map doc-view-mode-map
+   ("k" . nil)
+   ("n" . doc-view-next-page)
+   ("p" . doc-view-previous-page)
+   ("w" . doc-view-fit-width-to-window)
+   ("h" . doc-view-fit-height-to-window)
+   ("s" . doc-view-search)
+   ("g" . doc-view-goto-page)))
 
 (use-package eyebrowse
-  :commands (eyebrowse-mode
-             eyebrowse-switch-to-window-config
-             eyebrowse-switch-to-window-config-1
-             eyebrowse-switch-to-window-config-2
-             eyebrowse-switch-to-window-config-3
-             eyebrowse-switch-to-window-config-4
-             eyebrowse-switch-to-window-config-5
-             eyebrowse-switch-to-window-config-6
-             eyebrowse-rename-window-config
-             eyebrowse-close-window-config)
-  :init
-  (bind-keys* ("C-1" . eyebrowse-switch-to-window-config-1)
-              ("C-2" . eyebrowse-switch-to-window-config-2)
-              ("C-3" . eyebrowse-switch-to-window-config-3)
-              ("C-4" . eyebrowse-switch-to-window-config-4)
-              ("C-5" . eyebrowse-switch-to-window-config-5)
-              ("C-6" . eyebrowse-switch-to-window-config-6))
-  
-  (bind-keys :map leader-map
-             ("l1" . eyebrowse-switch-to-window-config-1)
-             ("l2" . eyebrowse-switch-to-window-config-2)
-             ("l3" . eyebrowse-switch-to-window-config-3)
-             ("l4" . eyebrowse-switch-to-window-config-4)
-             ("l5" . eyebrowse-switch-to-window-config-5)
-             ("l6" . eyebrowse-switch-to-window-config-6)
-             ("lS" . eyebrowse-switch-to-window-config)
-             ("lr" . eyebrowse-rename-window-config)
-             ("ld" . eyebrowse-close-window-config))
+  :bind*
+  (("C-1" . eyebrowse-switch-to-window-config-1)
+   ("C-2" . eyebrowse-switch-to-window-config-2)
+   ("C-3" . eyebrowse-switch-to-window-config-3)
+   ("C-4" . eyebrowse-switch-to-window-config-4)
+   ("C-5" . eyebrowse-switch-to-window-config-5)
+   ("C-6" . eyebrowse-switch-to-window-config-6)
+   :map leader-map
+   ("l1" . eyebrowse-switch-to-window-config-1)
+   ("l2" . eyebrowse-switch-to-window-config-2)
+   ("l3" . eyebrowse-switch-to-window-config-3)
+   ("l4" . eyebrowse-switch-to-window-config-4)
+   ("l5" . eyebrowse-switch-to-window-config-5)
+   ("l6" . eyebrowse-switch-to-window-config-6)
+   ("lS" . eyebrowse-switch-to-window-config)
+   ("lr" . eyebrowse-rename-window-config)
+   ("ld" . eyebrowse-close-window-config))
   :config
-  ;; Persp-Mode Integration
-  (with-eval-after-load 'persp-mode
-    (defun spacemacs//get-persp-workspace (&optional persp frame)
-      "Get the correct workspace parameters for perspective.
-PERSP is the perspective, and defaults to the current perspective.
-FRAME is the frame where the parameters are expected to be used, and
-defaults to the current frame."
-      (let ((param-names (if (display-graphic-p frame)
-                             '(gui-eyebrowse-window-configs
-                               gui-eyebrowse-current-slot
-                               gui-eyebrowse-last-slot)
-                           '(term-eyebrowse-window-configs
-                             term-eyebrowse-current-slot
-                             term-eyebrowse-last-slot))))
-        (--map (persp-parameter it persp) param-names)))
-
-    (defun spacemacs//set-persp-workspace (workspace-params &optional persp frame)
-      "Set workspace parameters for perspective.
-WORKSPACE-PARAMS should be a list containing 3 elements in this order:
-- window-configs, as returned by (eyebrowse--get 'window-configs)
-- current-slot, as returned by (eyebrowse--get 'current-slot)
-- last-slot, as returned by (eyebrowse--get 'last-slot)
-PERSP is the perspective, and defaults to the current perspective.
-FRAME is the frame where the parameters came from, and defaults to the
-current frame.
-
-Each perspective has two sets of workspace parameters: one set for
-graphical frames, and one set for terminal frames."
-      (let ((param-names (if (display-graphic-p frame)
-                             '(gui-eyebrowse-window-configs
-                               gui-eyebrowse-current-slot
-                               gui-eyebrowse-last-slot)
-                           '(term-eyebrowse-window-configs
-                             term-eyebrowse-current-slot
-                             term-eyebrowse-last-slot))))
-        (--zip-with (set-persp-parameter it other persp)
-                    param-names workspace-params)))
-
-    (defun spacemacs/load-eyebrowse-for-perspective (type &optional frame)
-      "Load an eyebrowse workspace according to a perspective's parameters.
- FRAME's perspective is the perspective that is considered, defaulting to
- the current frame's perspective.
- If the perspective doesn't have a workspace, create one."
-      (when (eq type 'frame)
-        (let* ((workspace-params (spacemacs//get-persp-workspace (get-frame-persp frame) frame))
-               (window-configs (nth 0 workspace-params))
-               (current-slot (nth 1 workspace-params))
-               (last-slot (nth 2 workspace-params)))
-          (if window-configs
-              (progn
-                (eyebrowse--set 'window-configs window-configs frame)
-                (eyebrowse--set 'current-slot current-slot frame)
-                (eyebrowse--set 'last-slot last-slot frame)
-                (eyebrowse--load-window-config current-slot))
-            (eyebrowse--set 'window-configs nil frame)
-            (eyebrowse-init frame)
-            (spacemacs/save-eyebrowse-for-perspective frame)))))
-
-    (defun spacemacs/load-eyebrowse-after-loading-layout (_state-file _phash persp-names)
-      "Bridge between `persp-after-load-state-functions' and
-`spacemacs/load-eyebrowse-for-perspective'.
-
-_PHASH is the hash were the loaded perspectives were placed, and
-PERSP-NAMES are the names of these perspectives."
-      (let ((cur-persp (get-current-persp)))
-        ;; load eyebrowse for current perspective only if it was one of the loaded
-        ;; perspectives
-        (when (member (or (and cur-persp (persp-name cur-persp))
-                          persp-nil-name)
-                      persp-names)
-          (spacemacs/load-eyebrowse-for-perspective 'frame))))
-
-    (defun spacemacs/update-eyebrowse-for-perspective (&rest _args)
-      "Update and save current frame's eyebrowse workspace to its perspective."
-      (let* ((current-slot (eyebrowse--get 'current-slot))
-             (current-tag (nth 2 (assoc current-slot (eyebrowse--get 'window-configs)))))
-        (eyebrowse--update-window-config-element
-         (eyebrowse--current-window-config current-slot current-tag)))
-      (spacemacs/save-eyebrowse-for-perspective))
-
-    (defun spacemacs/save-eyebrowse-for-perspective (&optional frame)
-      "Save FRAME's eyebrowse workspace to FRAME's perspective.
-FRAME defaults to the current frame."
-      (spacemacs//set-persp-workspace (list (eyebrowse--get 'window-configs frame)
-                                            (eyebrowse--get 'current-slot frame)
-                                            (eyebrowse--get 'last-slot frame))
-                                      (get-frame-persp frame)
-                                      frame))
-
-    (add-hook 'persp-before-switch-functions
-              #'spacemacs/update-eyebrowse-for-perspective)
-    (add-hook 'eyebrowse-post-window-switch-hook
-              #'spacemacs/save-eyebrowse-for-perspective)
-    (add-hook 'persp-activated-functions
-              #'spacemacs/load-eyebrowse-for-perspective)
-    (add-hook 'persp-before-save-state-to-file-functions
-              #'spacemacs/update-eyebrowse-for-perspective)
-    (add-hook 'persp-after-load-state-functions
-              #'spacemacs/load-eyebrowse-after-loading-layout))
-  
   (eyebrowse-mode))
 
 (use-package persp-mode
-  :commands (persp-mode
-             persp-switch
-             persp-add-buffer
-             persp-remove-buffer)
-  :init
-  (defvar persp-timed-auto-save-enable t
-    "If t, persp-mode will save perspectives to file every
-`persp-mode-timed-auto-save-interval seconds. Nil to disable.")
-  (defvar persp-timed-auto-save-interval 600
-    "Interval, in seconds, between persp-mode auto-saves if
-`persp-timed-auto-save-enable is t.")
-  (defvar persp--timed-auto-save-handler nil
-    "Reference to handler for `persp-timed-auto-save")
-  (bind-keys :map leader-map
-             ("ll" . persp-mode)
-             ("ls" . persp-switch)
-             ("la" . persp-add-buffer)
-             ("lr" . persp-remove-buffer))
+  :custom
+  (persp-nil-name "Home")
+  (persp-add-buffer-on-after-change-major-mode t)
+  (persp-reset-windows-on-nil-window-conf t)
+  (persp-restrict-buffers-to-if-foreign-buffer nil)
+  (persp-save-dir (expand-file-name "cache/persp-confs/" user-emacs-directory))
+  (persp-set-last-persp-for-new-frames t)
+  (persp-switch-to-added-buffer nil)
+  (persp-switch-wrap t)
+  (persp-auto-save-opt 2)
+  (persp-autokill-buffer-on-remove nil)
+  (persp-keymap-prefix (kbd "C-c l"))
+  (persp-auto-resume-time .1)
+  (persp-init-frame-behaviour 'persp-ignore-wconf-once)
+  :bind
+  (:map leader-map
+        ("ll" . persp-mode)
+        ("ls" . persp-switch)
+        ("la" . persp-add-buffer)
+        ("lr" . persp-remove-buffer)
+        ("lw" . persp-save-state-to-file)
+        ("lf" . persp-load-state-from-file))
   :config
+  (defvar persp-timed-auto-save-enable t
+    "If t, `persp-mode' will save perspectives to file every
+`persp-mode-timed-auto-save-interval' seconds.")
+  
+  (defvar persp-timed-auto-save-interval 600
+    "Interval, in seconds, between `persp-mode' auto-saves if
+`persp-timed-auto-save-enable' is t.")
+  
+  (defvar persp--timed-auto-save-handler nil
+    "Reference to handler for `persp-timed-auto-save'")
+  
   (defun persp-timed-auto-save ()
-    "Timed auto-save for `persp-mode.
-Saves persp-mode layouts every `persp-timed-auto-save-interval seconds.
+    "Timed auto-save for `persp-mode'.
+Saves layouts every `persp-timed-auto-save-interval' seconds.
 Cancels autosave on exiting persp-mode."
     (if (and persp-mode persp-timed-auto-save-enable)
         (progn
@@ -549,19 +441,6 @@ Cancels autosave on exiting persp-mode."
 Only for use with `advice-add'."
     (with-persp-buffer-list () (apply wrapped-buffer-command r)))
   
-  (persp-set-keymap-prefix (kbd "C-c l"))
-  (setq persp-nil-name "Home"
-        persp-add-buffer-on-find-file t
-        persp-add-buffer-on-after-change-major-mode 'free
-        persp-reset-windows-on-nil-window-conf t
-        persp-restrict-buffers-to-if-foreign-buffer nil
-        persp-save-dir (expand-file-name "cache/persp-confs/"
-                                         user-emacs-directory)
-        persp-set-last-persp-for-new-frames t
-        persp-switch-to-added-buffer nil
-        persp-switch-wrap t
-        persp-auto-save-opt 2
-        persp-autokill-buffer-on-remove nil)
   (add-hook 'persp-mode-hook #'persp-timed-auto-save)
 
   ;; Integrations
@@ -581,10 +460,10 @@ Only for use with `advice-add'."
     (advice-add 'helm-multi-swoop-all :around
                 #'persp--helm-wrapper)))
 
-(use-package helm-persp
-  :load-path "site-lisp/helm-persp"
-  :bind
-  ("C-x C-l" . helm-persp-layouts))
+(use-package eyebrowse-persp-bridge
+  :after (eyebrowse persp-mode)
+  :demand t
+  :load-path "site-lisp/eyebrowse-persp-bridge")
 
 (use-package osx-trash
   :defer 10
@@ -623,21 +502,10 @@ Only for use with `advice-add'."
      'imenu-generic-expression
      '("Packages" "^\\s-*(\\(use-package\\)\\s-+\\(\\(\\sw\\|\\s_\\)+\\)" 2) t))
   
-  (add-hook 'emacs-lisp-mode-hook #'setup--imenu-for-use-package)
-
-  ;; Style packages as requires and imports in helm-imenu
-  (with-eval-after-load 'helm-imenu
-    (push
-     (cons "^Packages$" 'font-lock-type-face)
-     helm-imenu-type-faces)))
+  (add-hook 'emacs-lisp-mode-hook #'setup--imenu-for-use-package))
 
 (use-package elisp-mode
   :init
-  (define-prefix-command 'emacs-lisp-mode-leader-map)
-  (bind-keys :map emacs-lisp-mode-map
-             ("M-m m" . emacs-lisp-mode-leader-map))
-  (which-key-add-major-mode-key-based-replacements 'emacs-lisp-mode
-    "M-m m" "Emacs Lisp Mode")
   (when (package-installed-p 'company)
     (defvar emacs-lisp-mode-company-backends
       '(company-elisp company-capf company-semantic)
@@ -654,62 +522,51 @@ Only for use with `advice-add'."
 (use-package smartparens
   :custom
   (sp-echo-match-when-invisible nil)
-  :defines (sp-activate)
-  :init
-  (add-hook 'prog-mode-hook #'smartparens-strict-mode)
-  (add-hook 'html-mode-hook #'smartparens-mode)
-  (with-eval-after-load 'web-mode
-    (add-hook 'web-mode-hook #'smartparens-mode))
-  (with-eval-after-load 'markdown-mode
-    (add-hook 'markdown-mode-hook #'smartparens-mode))
+  :hook (prog-mode . smartparens-strict-mode)
   :config
-  (use-package smartparens-config :demand t)
+  (require 'smartparens-config)
   (show-smartparens-global-mode))
 
 (use-package expand-region
-  :commands (er/expand-region)
-  :init
-  (bind-keys ("C-r" . er/expand-region)))
+  :bind ("C-r" . er/expand-region))
 
 (use-package lispy
-  :commands (lispy-mode
-             lispy-mark-symbol
-             lispy-move-beginning-of-line
-             lispy-move-end-of-line)
-  :init
-  (add-hook 'lisp-mode-hook #'lispy-mode)
-  (add-hook 'emacs-lisp-mode-hook #'lispy-mode)
-  (add-hook 'scheme-mode-hook #'lispy-mode)
-  (add-hook 'clojure-mode-hook #'lispy-mode)
-  (add-hook 'racket-mode-hook #'lispy-mode)
+  :custom
+  (lispy-avy-style-char 'at)
+  (lispy-avy-style-symbol 'at)
+  (lispy-compat '(edebug cider))
+  (lispy-completion-method 'helm)
+  (lispy-occur-backend 'helm)
+  (lispy-eval-display-style 'overlay)
+  (lispy-no-permanent-semantic t)
+  :bind
+  (("C-a" . lispy-move-beginning-of-line)
+   ("C-e" . lispy-move-end-of-line)
+   :map leader-map
+   ("M-m" . lispy-mark-symbol)
+   :map lispy-mode-map
+   ("C-j" . avy-goto-char-timer)
+   ("C-z" . avy-goto-line)
+   ("C-0" . lispy-describe-inline)
+   ("M-m" . nil)
+   ("M-n" . nil)
+   (":" . self-insert-command)
+   ("[" . lispy-brackets)
+   ("]" . self-insert-command)
+   ("C-z" . lispy-ace-paren))
+  :hook
+  ((lisp-mode emacs-lisp-mode scheme-mode clojure-mode racket-mode) . lispy-mode)
   :config
-  (bind-keys :map lispy-mode-map
-             ("C-j" . avy-goto-char-timer)
-             ("C-z" . avy-goto-line)
-             ("C-0" . lispy-describe-inline)
-             ("M-m" . nil)
-             ("M-n" . nil)
-             (":" . self-insert-command)
-             ("[" . lispy-brackets)
-             ("]" . self-insert-command)
-             ("C-z" . lispy-ace-paren))
-
   ;; Until we find a better alternative, use i-menu for tag navigation
   (lispy-define-key lispy-mode-map "g" 'helm-imenu-in-all-buffers)
   (lispy-define-key lispy-mode-map "G" 'helm-imenu)
-  (bind-keys :map leader-map
-             ("M-m" . lispy-mark-symbol))
-
   ;; Do everything we can to prevent semantic from killing emacs
   (dolist (command '(lispy-goto
                      lispy-goto-recursive
                      lispy-goto-local
                      lispy-goto-elisp-commands
                      lispy-goto-projectile))
-    (fset command #'ignore))
-  :bind
-  (("C-a" . lispy-move-beginning-of-line)
-   ("C-e" . lispy-move-end-of-line)))
+    (fset command #'ignore)))
 
 (use-package elisp-slime-nav
   :diminish elisp-slime-nav-mode
@@ -722,38 +579,24 @@ Only for use with `advice-add'."
   :load-path "site-lisp/clojure-semantic")
 
 (use-package haskell-mode
-  :config
-  (add-hook 'haskell-mode-hook 'haskell-doc-mode))
+  :hook (haskell-mode . haskell-doc-mode))
 
 (use-package intero
-  :after (haskell-mode)
-  :init
-  (add-hook 'haskell-mode-hook 'intero-mode))
+  :hook (haskell-mode . intero-mode))
 
-(use-package shm
-  :commands (structured-haskell-mode))
+(use-package shm)
 
 (use-package cider
-  :commands (cider-mode
-             cider--display-interactive-eval-result)
-  :init
-  (add-hook 'clojure-mode-hook #'cider-mode))
+  :commands (cider--display-interactive-eval-result)
+  :hook (clojure-mode . cider-mode))
 
-(use-package racket-mode
-  :commands (racket-mode racket-repl run-racket)
-  :config
-  (with-eval-after-load 'smartparens
-    (add-to-list 'sp--lisp-modes 'racket-mode)
-    (sp-local-pair 'racket-mode "'" nil :actions nil)
-    (sp-local-pair 'racket-mode "`" nil :actions nil)))
+(use-package racket-mode)
 
-(use-package geiser
-  :commands (run-geiser))
+(use-package geiser)
 
 (use-package slime
-  :commands (slime-mode)
-  :init
-  (add-hook 'lisp-mode-hook #'slime-mode)
+  :hook (lisp-mode . slime-mode)
+  :defines (inferior-lisp-program)
   :config
   (setq inferior-lisp-program "sbcl")
   (slime-setup '(slime-fancy slime-company)))
@@ -782,69 +625,55 @@ Only for use with `advice-add'."
    ("M-g M-g" . avy-goto-line)))
 
 (use-package dumb-jump
-  :bind (("M-g d" . dumb-jump-go)
-         ("M-g D" . dumb-jump-go-prompt))
   :custom
-  (dumb-jump-selector 'helm))
+  (dumb-jump-selector 'helm)
+  :bind (("M-g d" . dumb-jump-go)
+         ("M-g D" . dumb-jump-go-prompt)))
 
 (use-package rg
   :custom
   (rg-group-result t)
-  (rg-keymap-prefix (kbd "M-s r"))
+  :bind
+  (:map leader-map
+        ("s r r" . rg)
+        ("s r p" . rg-project)
+        ("s r d" . rg-dwim)
+        ("s r l" . rg-literal)
+        ("s r s" . rg-list-searches))
   :init
-  (rg-enable-default-bindings))
+  (rg-enable-default-bindings (kbd "M-s r")))
 
 (use-package ag
-  :bind (("M-s a a" . ag-regexp)
-         ("M-s a p" . ag-project-regexp)
-         ("M-s a A" . ag)
-         ("M-s a P" . ag-project)
-         ("M-s a d" . ag-dired-regexp)
-         ("M-s a D" . ag-dired))
   :custom
   (ag-highlight-search t)
   (ag-reuse-window t)
-  (ag-ignore-list '("archive-contents")))
+  (ag-ignore-list '("archive-contents"))
+  :bind
+  (("M-s a a" . ag-regexp)
+   ("M-s a p" . ag-project-regexp)
+   ("M-s a A" . ag)
+   ("M-s a P" . ag-project)
+   ("M-s a d" . ag-dired-regexp)
+   ("M-s a D" . ag-dired)))
 
 (use-package helm
-  :commands (helm-M-x
-             helm-find-files
-             helm-locate
-             helm-mini
-             helm-projectile
-             helm-apropos
-             helm-info
-             helm-show-kill-ring
-             helm-locate-library
-             helm-describe-function
-             helm-describe-variable
-             helm-next-interesting-buffer
-             helm-previous-interesting-buffer)
-  :diminish helm-mode
-  :init
-  (defun +helm-show-resume (arg)
-    (interactive "P")
-    (helm-resume (not arg)))
-  
-  (bind-keys ("M-x" . helm-M-x)
-             ("C-x C-f" . helm-find-files)
-             ("C-x C-b" . helm-mini)
-             ("C-h a" . helm-apropos)
-             ("C-h i" . helm-info)
-             ("C-h F" . find-function)
-             ("M-n" . helm-next-interesting-buffer)
-             ("M-p" . helm-previous-interesting-buffer))
-  (bind-keys :map leader-map
-             ("fl" . helm-locate)
-             ("ff" . helm-find-files)
-             ("bb" . helm-mini)
-             ("hdf" . describe-function)
-             ("hdv" . describe-variable)
-             ("hk" . helm-show-kill-ring)
-             ("hr" . +helm-show-resume)
-             ("hll" . helm-locate-library)
-             ("hb" . helm-filtered-bookmarks)
-             ("hm" . helm-all-mark-rings))
+  :custom
+  (helm-candidate-number-limit 100)
+  (helm-autoresize-max-height 30)
+  (helm-display-header-line nil)
+  (helm-split-window-inside-p t)
+  :bind
+  (("M-n" . helm-next-interesting-buffer)
+   ("M-p" . helm-previous-interesting-buffer)
+   :map leader-map
+   ("hdf" . describe-function)
+   ("hdv" . describe-variable)
+   :map helm-map
+   ("C-z" . helm-select-action)
+   ("<tab>" . helm-execute-persistent-action)
+   ("TAB" . helm-execute-persistent-action)
+   ("C-M-n" . helm-scroll-other-window)
+   ("C-M-p" . helm-scroll-other-window-down))
   :config
   ;; TODO - Move this to more general location
   ;; All these definitions should go into an integration package
@@ -880,97 +709,153 @@ Only for use with `advice-add'."
     "As `previous-buffer' but respects `helm-boring-buffer-regexp-list'."
     (interactive)
     (helm--change-buffer 'previous-buffer))
-
-  (customize-set-variable 'helm-buffer-max-length nil)
-  (setq helm-grep-ag-command
-        "rg -M 256 --color=always --smart-case --no-heading --line-number %s %s %s"
-        helm-M-x-fuzzy-match t
-        helm-autoresize-max-height 30
-        helm-display-header-line nil
-        helm-boring-buffer-regexp-list '("\\` "
-                                         "\\*helm"
-                                         "\\*helm-mode"
-                                         "\\*Echo Area"
-                                         "\\*Minibuf"
-                                         "\\magit"
-                                         "\\*Diff*"
-                                         "\\*lispy-goto*"
-                                         "\\*Backtrace*")
-        helm-mini-default-sources '(helm-source-buffers-list
-                                    helm-source-recentf
-                                    helm-source-buffer-not-found)
-        helm-split-window-in-side-p t
-        
-        ;; Avoid slow tramp performance when using helm
-        helm-buffer-skip-remote-checking t
-        helm-ff-tramp-not-fancy t)
-
-  ;; Helm Candidate Number Limit
-  (customize-set-variable 'helm-candidate-number-limit 100)
-  (with-eval-after-load 'helm-color
-    (helm-attrset 'candidate-number-limit 9999 helm-source-colors)
-    (helm-attrset 'candidate-number-limit 9999 helm-source-customize-face))
   
-  ;; Mac specific config
+  (use-package helm-config :demand t)
+  (helm-mode 1))
+
+(use-package helm-command
+  :custom
+  (helm-M-x-fuzzy-match t)
+  :bind
+  (("M-x" . helm-M-x)))
+
+(use-package helm-buffers
+  :custom
+  (helm-buffer-max-length nil)
+  (helm-buffer-skip-remote-checking t)
+  (helm-mini-default-sources
+   '(helm-source-buffers-list
+     helm-source-recentf
+     helm-source-buffer-not-found))
+  (helm-boring-buffer-regexp-list
+   '("\\` "
+     "\\*helm"
+     "\\*helm-mode"
+     "\\*Echo Area"
+     "\\*Minibuf"
+     "\\magit"
+     "\\*Diff*"
+     "\\*lispy-goto*"
+     "\\*Backtrace*"))
+  :bind
+  (("C-x C-b" . helm-mini)
+   :map leader-map
+   ("bb" . helm-mini)))
+
+(use-package helm-files
+  :custom
+  (helm-ff-tramp-not-fancy t)
+  :bind
+  (("C-x C-f" . helm-find-files)
+   :map leader-map
+   ("ff" . helm-find-files)))
+
+(use-package helm-grep
+  :custom
+  (helm-grep-ag-command
+   "rg -M 256 --color=always --smart-case --no-heading --line-number %s %s %s"))
+
+(use-package helm-locate
+  :bind (:map leader-map
+              ("fl" . helm-locate))
+  :config
   (when (equal system-type 'darwin)
-    (setq helm-locate-fuzzy-match nil
-          helm-locate-command "mdfind -name %s %s"))
-  
-  (use-package helm-config)
-  (helm-mode 1)
-  
-  (bind-keys :map helm-map
-             ("C-z" . helm-select-action)
-             ("<tab>" . helm-execute-persistent-action)
-             ("TAB" . helm-execute-persistent-action)
-             ("C-M-n" . helm-scroll-other-window)
-             ("C-M-p" . helm-scroll-other-window-down)))
+    (customize-set-variable 'helm-locate-fuzzy-match nil)
+    (customize-set-variable 'helm-locate-command "mdfind -name %s %s")))
+
+(use-package helm-elisp
+  :bind
+  (("C-h a" . helm-apropos)
+   :map leader-map
+   ("hll" . helm-locate-library)))
+
+(use-package helm-info
+  :bind
+  (("C-h i" . helm-info)))
+
+(use-package helm-color
+  :config
+  (helm-attrset 'candidate-number-limit 9999 helm-source-colors)
+  (helm-attrset 'candidate-number-limit 9999 helm-source-customize-face))
+
+(use-package helm-imenu
+  :config
+  (add-to-list 'helm-imenu-type-faces
+               '("^Packages$" . font-lock-type-face)))
 
 (use-package helm-projectile
-  :after (helm projectile)
-  :commands (helm-projectile-switch-to-buffer
-             helm-projectile-find-dir
-             helm-projectile-dired-find-dir
-             helm-projectile-recentf
-             helm-projectile-find-file
-             helm-projectile-switch-project
-             helm-projectile)
-  :init
-  (bind-keys ("C-x C-p" . helm-projectile))
-  (bind-keys :map leader-map
-             ("ps" . helm-projectile-switch-project)
-             ("pf" . helm-projectile-find-file)
-             ("pp" . helm-projectile)
-             ("pb" . helm-projectile-switch-to-buffer))
+  :bind
+  (("C-x C-p" . helm-projectile)
+   :map leader-map
+   ("ps" . helm-projectile-switch-project)
+   ("pf" . helm-projectile-find-file)
+   ("pp" . helm-projectile)
+   ("pb" . helm-projectile-switch-to-buffer))
   :config
   (helm-projectile-on))
 
+(use-package helm-persp
+  :load-path "site-lisp/helm-persp"
+  :bind
+  ("C-x C-l" . helm-persp-layouts))
+
 (use-package helm-ag
-  :after (helm)
-  :commands (helm-do-ag
-             helm-do-ag-project-root)
-  :init
-  (bind-keys :map leader-map
-             ("ss" . helm-do-ag)
-             ("sp" . helm-do-ag-project-root)))
+  :bind
+  (:map leader-map
+        ("ss" . helm-do-ag)
+        ("sp" . helm-do-ag-project-root)))
 
 (use-package helm-swoop
-  :after (helm)
-  :bind
-  (("C-s" . helm-swoop))
-  :config
-  (setq helm-swoop-candidate-number-limit 500
-        ;; Bring helm-swoop under shackle control
-        helm-swoop-split-window-function 'switch-to-buffer-other-window)
   :custom
   (helm-swoop-speed-or-color t)
   (helm-swoop-split-with-multiple-windows t)
-  (helm-swoop-pre-input-function (lambda () "")))
+  (helm-swoop-pre-input-function (lambda () ""))
+  :bind
+  (("C-s" . helm-swoop)
+   :map helm-swoop-map
+   ("C-s" . +helm-swoop-next)
+   :map helm-multi-swoop-map
+   ("C-s" . +helm-multi-swoop-next)
+   :map helm-map
+   ("C-s" . +helm-multi-swoop-next))
+  :config
+  (defvar +helm-swoop-next-input "")
+  
+  (defun +helm-swoop-next ()
+    "From `helm-swoop', calls `helm-multi-swoop-projectile' or `helm-multi-swoop-all'
+Preserves input from `helm-swoop'."
+    (interactive)
+    (setq +helm-swoop-next-input (minibuffer-contents-no-properties))
+    (helm-run-after-exit
+     (lambda ()
+       (let ((helm-swoop-pre-input-function
+              (lambda () +helm-swoop-next-input)))
+         (call-interactively (if (and (fboundp 'projectile-project-p)
+                                      (projectile-project-p))
+                                 #'helm-multi-swoop-projectile
+                               #'helm-multi-swoop-all))))))
+  
+  (defun +helm-multi-swoop-next ()
+    "From '`helm-multi-swoop', calls `helm-do-grep-ag'.
+Searches from either `projectile-project-root' or `default-directory'.
+Preserves input from `helm-multi-swoop'."
+    (interactive)
+    (when (string= helm-buffer "*Helm Multi Swoop*")
+      (setq +helm-swoop-next-input (minibuffer-contents-no-properties))
+      (helm-run-after-exit
+       (lambda ()
+         (minibuffer-with-setup-hook (lambda () (insert +helm-swoop-next-input))
+           (let* ((projectile-require-project-root nil)
+                  (default-directory (projectile-project-root)))
+             (call-interactively #'helm-do-grep-ag)))))))
+  
+  (setq helm-swoop-candidate-number-limit 200
+        ;; Bring helm-swoop under shackle control
+        helm-swoop-split-window-function 'switch-to-buffer-other-window))
 
 (use-package helm-descbinds
-  :after (helm)
-  :config
-  (setq helm-descbinds-window-style 'split-window)
+  :custom
+  (helm-descbinds-window-style 'split-window)
   :bind
   (("C-h b" . helm-descbinds)))
 
@@ -986,8 +871,9 @@ Only for use with `advice-add'."
              ("hdd" . helm-dash)))
 
 (use-package projectile
-  :commands (projectile-project-root)
+  :commands (projectile-project-root projectile-project-p)
   :config
+  (add-to-list 'projectile-globally-ignored-directories "semanticdb")
   (projectile-mode))
 
 (use-package stripe-buffer
@@ -997,31 +883,29 @@ Only for use with `advice-add'."
 (use-package ediff
   :custom
   (ediff-window-setup-function 'ediff-setup-windows-plain)
-  (ediff-split-window-function 'split-window-horizontally)
-  :config
-  (with-eval-after-load 'winner
-    (add-hook 'ediff-quit-hook #'winner-undo)))
+  (ediff-split-window-function 'split-window-horizontally))
 
 (use-package magit
   :custom
   (magit-display-buffer-function
    'magit-display-buffer-fullframe-status-topleft-v1)
-  :bind (("C-x g" . magit-status)
-         ("C-x C-v" . magit-status)
-         :map leader-map
-         ("gs" . magit-status)
-         ("gb" . magit-blame)
-         ("gh" . magit-dispatch-popup)
-         :map magit-process-mode-map
-         ("M-n" . nil)
-         ("M-p" . nil)
-         :map magit-diff-mode-map
-         ("M-n" . nil)
-         ("M-p" . nil)
-         :map magit-status-mode-map
-         ("M-n" . nil)
-         ("M-p" . nil))
-  :commands (magit-commit-popup)
+  :bind
+  (("C-x g" . magit-status)
+   ("C-x C-v" . magit-status)
+   :map leader-map
+   ("gs" . magit-status)
+   ("gb" . magit-blame)
+   ("gh" . magit-dispatch-popup)
+   ("gc" . magit-commit-popup)
+   :map magit-process-mode-map
+   ("M-n" . nil)
+   ("M-p" . nil)
+   :map magit-diff-mode-map
+   ("M-n" . nil)
+   ("M-p" . nil)
+   :map magit-status-mode-map
+   ("M-n" . nil)
+   ("M-p" . nil))
   :config
   (defun +magit|refresh-visible-vc-state ()
     (dolist (window (window-list))
@@ -1037,35 +921,33 @@ Only for use with `advice-add'."
    (concat user-emacs-directory "cache/magithub")))
 
 (use-package magit-gh-pulls
-  :after (magit)
+  :disabled t
   :commands (turn-on-magit-gh-pulls)
   :init
   (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
 
 (use-package git-gutter
   :demand t
+  :bind (:map leader-map ("gg" . hydra-git-gutter/body))
+  :hook ((magit-post-refresh focus-in) . git-gutter:update-all-windows)
   :config
-  (global-git-gutter-mode)
-  (with-eval-after-load 'magit
-    (add-hook 'magit-post-refresh-hook
-              #'git-gutter:update-all-windows))
-  (with-eval-after-load 'hydra
-    (defhydra hydra-git-gutter (:columns 3 :exit nil :foreign-keys warn)
-      "Git Gutter"
-      ("s" git-gutter:stage-hunk "Stage Hunk")
-      ("d" git-gutter:popup-hunk "Diff Hunk" :exit t)
-      ("n" git-gutter:next-hunk "Next Hunk")
-      ("p" git-gutter:previous-hunk "Previous Hunk")
-      ("r" git-gutter:revert-hunk "Revert Hunk")
-      ("c" magit-commit-popup "Commit" :color blue )
-      ("q" nil "Cancel" :color blue))
-    (bind-keys :map leader-map
-               ("gg" . hydra-git-gutter/body)))
-  (add-hook 'focus-in-hook 'git-gutter:update-all-windows)
-  (defun +git-gutter:force-select-popup (&optional diffinfo)
+  (defhydra hydra-git-gutter (:columns 3 :exit nil :foreign-keys warn)
+    "Git Gutter"
+    ("s" git-gutter:stage-hunk "Stage Hunk")
+    ("d" git-gutter:popup-hunk "Diff Hunk" :exit t)
+    ("n" git-gutter:next-hunk "Next Hunk")
+    ("p" git-gutter:previous-hunk "Previous Hunk")
+    ("r" git-gutter:revert-hunk "Revert Hunk")
+    ("c" magit-commit-popup "Commit" :color blue )
+    ("q" nil "Cancel" :color blue))
+  
+  (defun +git-gutter:force-select-popup (&optional _diffinfo)
     (pop-to-buffer "*git-gutter:diff*"))
+
   (advice-add 'git-gutter:popup-hunk :after
-              '+git-gutter:force-select-popup))
+              '+git-gutter:force-select-popup)
+
+  (global-git-gutter-mode))
 
 (use-package git-gutter-fringe
   :demand t
@@ -1084,18 +966,12 @@ Only for use with `advice-add'."
     nil nil 'center))
 
 (use-package gist
-  :commands (gist-buffer
-             gist-buffer-private
-             gist-list
-             gist-region
-             gist-region-or-buffer
-             gist-region-or-buffer-private)
-  :init
-  (bind-keys :map leader-map
-             ("gGb" . gist-buffer)
-             ("gGl" . gist-list)
-             ("gGr" . gist-region)
-             ("gGg" . gist-region-or-buffer)))
+  :bind
+  (:map leader-map
+        ("gGb" . gist-buffer)
+        ("gGl" . gist-list)
+        ("gGr" . gist-region)
+        ("gGg" . gist-region-or-buffer)))
 
 (use-package diff-hl
   :disabled t
@@ -1105,16 +981,38 @@ Only for use with `advice-add'."
               'diff-hl-magit-post-refresh)))
 
 (use-package company
-  :diminish company-mode
+  :custom
+  (company-idle-delay 0.2)
+  (company-tooltip-limit 12)
+  (company-require-match 'never)
+  (company-tooltip-align-annotations t)
+  :bind (:map company-active-map
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-previous)
+              ("C-c C-d" . company-show-doc-buffer)
+              ("RET" . nil)
+              ("<return>" . nil)
+              ("<tab>" . company-complete-selection)
+              ("TAB" . company-complete-selection)))
+
+(use-package company-box
+  :if (display-graphic-p)
+  :custom
+  (company-box-max-candidates 500)
+  :hook (company-mode . company-box-mode)
   :config
-  (bind-keys :map company-active-map
-             ("C-n" . company-select-next)
-             ("C-p" . company-select-previous)
-             ("C-c C-d" . company-show-doc-buffer)
-             ("RET" . nil)
-             ("<return>" . nil)
-             ("<tab>" . company-complete-selection)
-             ("TAB" . company-complete-selection)))
+  (setq company-box-backends-colors nil)
+  (when (package-installed-p 'all-the-icons)
+    (setq company-box-icons-elisp
+          (list
+           (all-the-icons-material "functions" :face 'all-the-icons-purple :height .8)
+           (all-the-icons-material "check_circle" :face 'all-the-icons-blue :height .8)
+           (all-the-icons-material "stars" :face 'all-the-icons-yellow :height .8)
+           (all-the-icons-material "format_paint" :face 'all-the-icons-pink :height .8))
+          company-box-icons-unknown
+          (all-the-icons-material "find_in_page" :face 'all-the-icons-silver :height .8)
+          company-box-icons-yasnippet
+          (all-the-icons-material "short_text" :face 'all-the-icons-green :height .8))))
 
 (use-package company-web
   :after (company))
@@ -1261,15 +1159,19 @@ Only for use with `advice-add'."
   (defun +golden-ratio-in-ediff-p ()
     (when (boundp 'ediff-this-buffer-ediff-sessions)
       (symbol-value 'ediff-this-buffer-ediff-sessions)))
-  
-  (golden-ratio-mode t)
-  :config
-  (add-to-list 'golden-ratio-inhibit-functions #'+golden-ratio-helm-alive-p)
-  (add-to-list 'golden-ratio-inhibit-functions #'+golden-ratio-in-ediff-p))
 
+  (defun +golden-ratio-company-box-p ()
+    (frame-parameter (selected-frame) 'company-box-buffer))
+  
+  (add-to-list 'golden-ratio-inhibit-functions #'+golden-ratio-helm-alive-p)
+  (add-to-list 'golden-ratio-inhibit-functions #'+golden-ratio-in-ediff-p)
+  (add-to-list 'golden-ratio-inhibit-functions #'+golden-ratio-company-box-p)
+  (golden-ratio-mode t))
 
 (use-package shackle
   :demand t
+  :custom
+  (shackle-select-reused-windows t)
   :config
   (defun +shackle-maybe-split (consequent alternative)
     "Determines window split alignment based on frame-width.
@@ -1278,7 +1180,15 @@ Valid alignments are `above', `below', `left', and `right'."
     (if (>= (frame-width) 160)
         consequent
       alternative))
-  (setq shackle-select-reused-windows t)
+  
+  (defun +shackle-elisp-slime-nav-help (b)
+    (and (string= (buffer-name b) "*Help*")
+         (eql this-command 'elisp-slime-nav-describe-elisp-thing-at-point)))
+
+  (defun +shackle-helm-help (b)
+    (and (string= (buffer-name b) "*Help*")
+         helm-alive-p))
+  
   (let ((left-or-below (apply-partially #'+shackle-maybe-split 'left 'below)))
     (setq shackle-rules
           `(("*Process List*" :select t :align ,left-or-below :size 0.4)
@@ -1287,7 +1197,7 @@ Valid alignments are `above', `below', `left', and `right'."
             ("*Geiser documentation*" :select t :align t :size 0.4)
             ("*slime-description*" :select t :align t :size 0.4)
             ("\\`\\*\[h|H]elm.*?\\*\\'" :regexp t :align t :size 0.3)
-            ("*Help*" :select t :align ,left-or-below :size 0.4 :popup t)
+            ("*Help*" :select t :align below :size 0.4 :popup t)
             ("^\\*helpful.*" :regexp t :select t :align ,left-or-below :size 0.4 :popup t)
             ("*Completions*" :select t :align t :size 0.4)
             ("*Compile-Log*" :select t :align ,left-or-below :size 0.4)
@@ -1296,6 +1206,7 @@ Valid alignments are `above', `below', `left', and `right'."
             ("*git-gutter:diff*" :align ,left-or-below :size 0.4)
             ("*Diff*" :select t :align ,left-or-below :size 0.4)
             ("*Package Commit List*" :select t :align ,left-or-below :size 0.4))))
+
   (shackle-mode 1))
 
 ;; End Emacs Initialization
