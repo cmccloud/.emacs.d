@@ -1125,6 +1125,14 @@ Valid alignments are `above', `below', `left', and `right'."
     (add-hook 'emacs-lisp-mode-hook #'company-mode t)))
 
 (use-package slime
+  :load-path "elpa/slime-20180519.1327/"
+  :init
+  ;; slime-autoloads are not recognized by package
+  ;; and so are not automatically bundled up when
+  ;; using package-quickstart. So we extend our
+  ;; load path and require them manually.
+  ;; See https://github.com/slime/slime/issues/443
+  (require 'slime-autoloads)
   :hook (lisp-mode . slime-mode)
   :defines (inferior-lisp-program)
   :config
