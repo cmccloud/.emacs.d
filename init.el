@@ -305,16 +305,15 @@
           dired-listing-switches "-aBhlp --group-directories-first")))
 
 (use-package term
+  :custom
+  (term-suppress-hard-newline t)
+  (term-buffer-maximum-size 1024)
   :bind
   (:map leader-map
-   ("at" . ansi-term)
-   :map term-raw-map
-   ("M-x" . execute-extended-command)
-   ("M-m" . nil))
-  :config
-  (with-eval-after-load 'helm
-    (bind-keys :map term-raw-map
-               ("M-x" . helm-M-x))))
+        ("at" . ansi-term)
+        :map term-raw-map
+        ("M-x" . helm-M-x)
+        ("M-m" . nil)))
 
 (use-package eshell
   :bind (:map leader-map ("ae" . eshell))
