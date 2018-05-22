@@ -604,8 +604,8 @@ Only for use with `advice-add'."
   (helm-display-header-line nil)
   (helm-split-window-inside-p t)
   :bind
-  (("M-n" . helm-next-interesting-buffer)
-   ("M-p" . helm-previous-interesting-buffer)
+  (("M-n" . next-file-buffer)
+   ("M-p" . previous-file-buffer)
    :map leader-map
    ("hdf" . describe-function)
    ("hdv" . describe-variable)
@@ -640,6 +640,19 @@ Only for use with `advice-add'."
                (--some (string-match it (buffer-name buffer))
                        helm-boring-buffer-regexp-list))
              change-buffer))
+
+  (defun next-file-buffer ()
+    "As `next-buffer' but ignores buffers without file names."
+    (interactive)
+    (filtered--change-buffer
+     (lambda (b) (not (buffer-file-name b)))
+     #'next-buffer))
+
+  (defun previous-file-buffer ()
+    "As `previous-buffer' but ignores buffers without file names."
+    (interactive)
+    (filtered--change-buffer (lambda (b) (not (buffer-file-name b)))
+                             #'previous-buffer))
   
   (defun helm-next-interesting-buffer ()
     "As `next-buffer' but respects `helm-boring-buffer-regexp-list'."
