@@ -1,5 +1,15 @@
 ;;; ui/doom-modeline/doom-modeline.el -*- lexical-binding: t; -*-
 
+(unless (display-graphic-p)
+  (defalias 'all-the-icons-octicon    #'ignore)
+  (defalias 'all-the-icons-faicon     #'ignore)
+  (defalias 'all-the-icons-fileicon   #'ignore)
+  (defalias 'all-the-icons-wicon      #'ignore)
+  (defalias 'all-the-icons-alltheicon #'ignore))
+
+(when (display-graphic-p)
+  (require 'all-the-icons))
+
 ;; A minor mode for toggling the mode-line
 (defvar-local doom--modeline-format nil
   "The modeline format to use when `doom-hide-modeline-mode' is active. Don't
@@ -7,6 +17,11 @@ set this directly. Bind it in `let' instead.")
 (defvar-local doom--old-modeline-format nil
   "The old modeline format, so `doom-hide-modeline-mode' can revert when it's
 disabled.")
+
+(defvar doom-saved-mode-line-format nil
+  "The value of `mode-line-format' prior to enabling `doom-modeline-mode'.
+Restored on exiting mode.")
+
 (define-minor-mode doom-hide-modeline-mode
   "Minor mode to hide the mode-line in the current buffer."
   :init-value nil
@@ -103,37 +118,23 @@ DEFAULT is non-nil, set the default mode-line for all buffers."
               (buffer-local-value 'mode-line-format (current-buffer)))
             modeline))))
 
-;;; ### FROM DOOM-MODELINE CONFIG ###
-(line-number-mode -1)
 
-;; all-the-icons doesn't work in the terminal, so we "disable" it.
-(unless (display-graphic-p)
-  (defalias 'all-the-icons-octicon    #'ignore)
-  (defalias 'all-the-icons-faicon     #'ignore)
-  (defalias 'all-the-icons-fileicon   #'ignore)
-  (defalias 'all-the-icons-wicon      #'ignore)
-  (defalias 'all-the-icons-alltheicon #'ignore))
+;; (use-package eldoc-eval
+;;   :demand t
+;;   :config
+;;   ;; Show eldoc in the mode-line with `eval-expression'
+;;   (defun +doom-modeline--show-eldoc (input)
+;;     "Display string STR in the mode-line next to minibuffer."
+;;     (with-current-buffer (eldoc-current-buffer)
+;;       (let* ((str              (and (stringp input) input))
+;;              (mode-line-format (or (and str (or (doom-modeline 'eldoc) str))
+;;                                    mode-line-format))
+;;              mode-line-in-non-selected-windows)
+;;         (force-mode-line-update)
+;;         (sit-for eldoc-show-in-mode-line-delay))))
 
-(use-package all-the-icons
-  :demand t
-  :when (display-graphic-p))
-
-(use-package eldoc-eval
-  :demand t
-  :config
-  ;; Show eldoc in the mode-line with `eval-expression'
-  (defun +doom-modeline--show-eldoc (input)
-    "Display string STR in the mode-line next to minibuffer."
-    (with-current-buffer (eldoc-current-buffer)
-      (let* ((str              (and (stringp input) input))
-             (mode-line-format (or (and str (or (doom-modeline 'eldoc) str))
-                                   mode-line-format))
-             mode-line-in-non-selected-windows)
-        (force-mode-line-update)
-        (sit-for eldoc-show-in-mode-line-delay))))
-
-  (setq eldoc-in-minibuffer-show-fn #'+doom-modeline--show-eldoc)
-  (eldoc-in-minibuffer-mode +1))
+;;   (setq eldoc-in-minibuffer-show-fn #'+doom-modeline--show-eldoc)
+;;   (eldoc-in-minibuffer-mode +1))
 
 ;;; Flash the mode-line on error
 ;; TODO More flexible colors (only suits dark themes)
@@ -159,10 +160,7 @@ DEFAULT is non-nil, set the default mode-line for all buffers."
                 (bound-and-true-p helm-alive-p))
       (setq +doom-modeline-current-window win))))
 
-(add-hook 'window-configuration-change-hook #'+doom-modeline|set-selected-window)
-(add-hook 'focus-in-hook #'+doom-modeline|set-selected-window)
-(advice-add #'handle-switch-frame :after #'+doom-modeline|set-selected-window)
-(advice-add #'select-window :after #'+doom-modeline|set-selected-window)
+
 
 
 ;;
@@ -277,6 +275,7 @@ active."
 ;; Show version string for multi-version managers like rvm, rbenv, pyenv, etc.
 (defvar-local +doom-modeline-env-version nil)
 (defvar-local +doom-modeline-env-command nil)
+
 (defun +doom-modeline|update-env ()
   (when +doom-modeline-env-command
     (let* ((default-directory (doom-project-root))
@@ -284,16 +283,7 @@ active."
       (setq +doom-modeline-env-version (if (string-match "[ \t\n\r]+\\'" s)
                                            (replace-match "" t t s)
                                          s)))))
-(add-hook 'focus-in-hook #'+doom-modeline|update-env)
-(add-hook 'find-file-hook #'+doom-modeline|update-env)
 
-;; Only support python and ruby for now
-(add-hook 'python-mode-hook
-          (lambda () (setq +doom-modeline-env-command
-                           "python --version 2>&1 | cut -d' ' -f2")))
-(add-hook 'ruby-mode-hook
-          (lambda () (setq +doom-modeline-env-command
-                           "ruby   --version 2>&1 | cut -d' ' -f2")))
 
 
 ;;
@@ -815,12 +805,18 @@ of `iedit' regions."
    helm-candidate-number
    " ")
   (helm-header-line-segment))
+(defun +doom-modeline|set-main-modeline ()
+  (doom-set-modeline 'main t))
+
+(defun +doom-modeline|set-special-modeline ()
+  (doom-set-modeline 'special))
+
+(defun +doom-modeline|set-media-modeline ()
+  (doom-set-modeline 'media))
 
 ;;
-(doom-set-modeline 'main t)
-
-;; helm modeline integration
-;; TODO:: THIS IS HACKY
+;; Hooks and Initialization
+;;
 (with-eval-after-load 'helm
   (defun doom--helm-display-mode-line (source &optional force)
     (let ((force nil))
@@ -836,34 +832,55 @@ of `iedit' regions."
                (setq header-line-format
                      (propertize (concat " " hlstr endstr)))))))
     (doom-set-modeline 'helm)
-    (when force (force-mode-line-update)))
-
-  (advice-add 'helm-display-mode-line :after
-              'doom--helm-display-mode-line))
-
-;; Window numbering screws up modeline on load
-(with-eval-after-load 'window-numbering
-  (add-hook 'window-numbering-mode-hook
-            (lambda () (doom-set-modeline 'main t))))
-
-;; This scratch buffer is already created, and doesn't get a modeline. For the
-;; love of Emacs, someone give the man a modeline!
-(with-current-buffer "*scratch*"
-  (doom-set-modeline 'main))
+    (when force (force-mode-line-update))))
 
 
-;;
-;; Hooks
-;;
+(define-minor-mode doom-modeline-mode
+  "Minor mode to hide the mode-line in the current buffer."
+  :init-value nil
+  :global t
+  (if doom-modeline-mode
+      (progn
+        ;; Save current Modeline
+        (setq doom-saved-mode-line-format mode-line-format)
+        ;; Maintains selected window
+        (add-hook 'window-configuration-change-hook #'+doom-modeline|set-selected-window)
+        (add-hook 'focus-in-hook #'+doom-modeline|set-selected-window)
+        (advice-add #'handle-switch-frame :after #'+doom-modeline|set-selected-window)
+        (advice-add #'select-window :after #'+doom-modeline|set-selected-window)
+        
+        ;; Keep the Environment up to date
+        (add-hook 'focus-in-hook #'+doom-modeline|update-env)
+        (add-hook 'find-file-hook #'+doom-modeline|update-env)
+        ;; Hacks for various modes
+        (add-hook 'org-src-mode-hook #'+doom-modeline|set-special-modeline)
+        (add-hook 'image-mode-hook #'+doom-modeline|set-media-modeline)
+        (add-hook 'window-numbering-mode-hook #'+doom-modeline|set-main-modeline)
+        (when (fboundp 'helm-display-mode-line)
+          (advice-add 'helm-display-mode-line :after
+                      #'doom--helm-display-mode-line))
+        ;; Finally set the modeline
+        (doom-set-modeline 'main t)
+        ;; For Scratch buffer too, in we want doom-modeline-mode enabled at startup.
+        (with-current-buffer "*scratch*"
+          (doom-set-modeline 'main))
+        (force-mode-line-update))
+    ;;
+    (remove-hook 'window-configuration-change-hook #'+doom-modeline|set-selected-window)
+    (remove-hook 'focus-in-hook #'+doom-modeline|set-selected-window)
+    (advice-remove #'handle-switch-frame #'+doom-modeline|set-selected-window)
+    (advice-remove #'select-window #'+doom-modeline|set-selected-window)
+    (remove-hook 'focus-in-hook #'+doom-modeline|update-env)
+    (remove-hook 'find-file-hook #'+doom-modeline|update-env)
+    (remove-hook 'org-src-mode-hook #'+doom-modeline|set-special-modeline)
+    (remove-hook 'image-mode-hook #'+doom-modeline|set-media-modeline)
+    (remove-hook 'window-numbering-mode-hook #'+doom-modeline|set-main-modeline)
+    (when (fboundp 'helm-display-mode-line)
+      (advice-remove 'helm-display-mode-line
+                     #'doom--helm-display-mode-line))
+    (setq-default mode-line-format doom-saved-mode-line-format)
+    (force-mode-line-update)))
 
-(defun +doom-modeline|set-special-modeline ()
-  (doom-set-modeline 'special))
-
-(defun +doom-modeline|set-media-modeline ()
-  (doom-set-modeline 'media))
-
-(add-hook 'org-src-mode-hook #'+doom-modeline|set-special-modeline)
-(add-hook 'image-mode-hook #'+doom-modeline|set-media-modeline)
 
 (provide 'doom-modeline)
 
