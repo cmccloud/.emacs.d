@@ -247,25 +247,6 @@
     "M-m w" "Window")
   (which-key-mode 1))
 
-(use-package helpful
-  :commands (helpful-enable helpful-disable)
-  :custom (helpful-max-buffers 1)
-  :init
-  (defun helpful-enable ()
-    (interactive)
-    (bind-keys
-     ([remap elisp-slime-nav-describe-elisp-thing-at-point] . helpful-at-point)
-     ([remap describe-function] . helpful-callable)
-     ([remap describe-key] . helpful-key)
-     ([remap describe-variable] . helpful-variable)))
-  (defun helpful-disable ()
-    (interactive)
-    (bind-keys
-     ([remap elisp-slime-nav-describe-elisp-thing-at-point] . nil)
-     ([remap describe-function] . nil)
-     ([remap describe-key] . nil)
-     ([remap describe-variable] . nil))))
-
 (use-package paradox
   :custom
   (package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -1004,16 +985,6 @@ Only for use with `advice-add'."
   (bind-keys :map leader-map
              ("hdd" . helm-dash)))
 
-(use-package helm-unicode
-  :after helm
-  :commands helm-unicode
-  :init
-  (bind-keys :map leader-map
-             ("hu" . helm-unicode))
-  :config
-  (bind-keys :map helm-command-prefix
-             ("u" . helm-unicode)))
-
 (use-package projectile
   :commands (projectile-project-root)
   :config
@@ -1022,26 +993,6 @@ Only for use with `advice-add'."
 (use-package stripe-buffer
   :commands stripe-buffer-mode
   :init (add-hook 'dired-mode-hook #'stripe-buffer-mode))
-
-(use-package sublimity
-  :commands sublimity-mode
-  :load-path "site-lisp/sublimity"
-  :init
-  (with-eval-after-load 'hydra
-
-    (defhydra hydra-minimap-scrolling
-      (:foreign-keys nil :exit nil :pre (sublimity-mode +1) :post (sublimity-mode -1))
-      "Page Scrolling: "
-      ("n" scroll-up-command "Scroll Forwards")
-      ("p" scroll-down-command "Scroll Backwards")
-      ("q" nil "Quit"))
-
-    (bind-keys ("C-v" . hydra-minimap-scrolling/scroll-up-command)
-               ("M-v" .  hydra-minimap-scrolling/scroll-down-command)))
-  :config
-  (use-package sublimity-map :demand t
-    :config
-    (sublimity-map-set-delay nil)))
 
 (use-package ediff
   :custom
@@ -1243,101 +1194,54 @@ Only for use with `advice-add'."
            js2-mode-company-backends))
 
     (add-hook 'js2-mode-hook #'js2-company-mode)
-    (add-hook 'js2-mode-hook #'company-mode t))
-
-  (defun chrome-refresh-current-tab ()
-    (interactive)
-    (do-applescript
-     "tell application \"Google Chrome\" to reload active tab of window 1"))
-  (bind-keys :map leader-map
-             ("<f5>" . chrome-refresh-current-tab)))
-
-(use-package nodejs-repl
-  :after (js2-mode)
-  :commands (nodejs-repl-mode
-             nodejs-repl-send-last-sexp
-             nodejs-repl-send-region
-             nodejs-repl-send-buffer)
-  :init
-  (defun nodejs-repl-eval-dwim ()
-    (interactive)
-    (if mark-active
-        (nodejs-repl-send-region (region-beginning)
-                                 (region-end))
-      (nodejs-repl-send-last-sexp)))
-  (with-eval-after-load 'js2-mode
-    (bind-keys :map js2-mode-map
-               ("C-x C-e" . nodejs-repl-eval-dwim)
-               ("C-c C-k" . nodejs-repl-send-buffer))))
-
-(use-package skewer-mode
-  :commands (skewer-mode
-             skewer-html-mode
-             skewer-css-mode)
-  :defines (skewer-html-mode-map)
-  :init
-  (with-eval-after-load 'skewer-html
-    (bind-keys :map skewer-html-mode-map
-               ("C-x C-e" . skewer-html-eval-tag))))
-
-(use-package impatient-mode
-  :init
-  (add-hook 'html-mode-hook #'impatient-mode)
-  (add-hook 'web-mode-hook #'impatient-mode)
-  (add-hook 'css-mode-hook #'impatient-mode))
+    (add-hook 'js2-mode-hook #'company-mode t)))
 
 (use-package tern
-  :diminish tern-mode
-  :init
-  (add-hook 'js2-mode-hook 'tern-mode))
+  :hook (js2-mode . tern-mode)
+  :diminish tern-mode)
 
 (use-package window-numbering
-  :commands (select-window-1
-             select-window-2
-             select-window-3
-             select-window-4
-             select-window-5)
-  :init
-  (defun split-and-balance-window-right ()
-    "As 'SPLIT-WINDOW-RIGHT' followed by 'BALANCE-WINDOWS'"
-    (interactive)
-    (split-window-right)
-    (balance-windows))
-  (defun delete-window-and-balance ()
-    "As 'DELETE-WINDOW' followed by 'BALNCE-WINDOWS'"
-    (interactive)
-    (delete-window)
-    (balance-windows))
-  (bind-keys :map leader-map
-             ("ws" . split-and-balance-window-right)
-             ("wd" . delete-window-and-balance))
-  :config
-  (window-numbering-mode 1)
   :bind
   (("M-1" . select-window-1)
    ("M-2" . select-window-2)
    ("M-3" . select-window-3)
    ("M-4" . select-window-4)
-   ("M-5" . select-window-5)))
+   ("M-5" . select-window-5)
+   :map leader-map
+   ("ws" . split-and-balance-window-right)
+   ("wd" . delete-window-and-balance))
+  :config
+  (defun split-and-balance-window-right ()
+    "As 'SPLIT-WINDOW-RIGHT' followed by 'BALANCE-WINDOWS'"
+    (interactive)
+    (split-window-right)
+    (balance-windows))
+  
+  (defun delete-window-and-balance ()
+    "As 'DELETE-WINDOW' followed by 'BALNCE-WINDOWS'"
+    (interactive)
+    (delete-window)
+    (balance-windows))
+  
+  (window-numbering-mode 1))
 
 (use-package winner
-  :commands (winner-undo
-             winner-redo)
-  :init
-  (bind-keys :map leader-map
-             ("wu" . winner-undo)
-             ("wr" . winner-redo))
+  :hook (ediff-quit-hook . winner-undo)
+  :bind (:map leader-map
+              ("wu" . winner-undo)
+              ("wr" . winner-redo))
   :config
   (winner-mode))
 
 (use-package golden-ratio
-  :bind (:map leader-map
-              ("tg" . +golden-ratio:toggle))
+  :demand t
   :custom
   (golden-ratio-auto-scale t)
   (golden-ratio-exclude-buffer-names '("*Helm Swoop*" "*Helm Multi Swoop*"))
   (golden-ratio-exclude-modes '("magit-popup-mode" "magit-status-mode" "ediff-mode"))
-  :init
+  :bind (:map leader-map
+              ("tg" . +golden-ratio:toggle))
+  :config
   (defun +golden-ratio:toggle ()
     "Toggles `golden-ratio-mode' and balances windows."
     (interactive)
@@ -1363,22 +1267,6 @@ Only for use with `advice-add'."
   (add-to-list 'golden-ratio-inhibit-functions #'+golden-ratio-helm-alive-p)
   (add-to-list 'golden-ratio-inhibit-functions #'+golden-ratio-in-ediff-p))
 
-(use-package writeroom-mode
-  :disabled t
-  :commands (writeroom-mode
-             global-writeroom-mode)
-  :init
-  (bind-keys :map leader-map
-             ("td" . writeroom-mode)
-             ("tD" . global-writeroom-mode))
-  :config
-  (defun writeroom-scale-text ()
-    (if (or writeroom-mode global-writeroom-mode)
-        (text-scale-set 2)
-      (text-scale-mode -1)
-      (text-scale-set 0)))
-  (add-hook 'writeroom-mode-hook #'writeroom-scale-text)
-  (add-hook 'global-writeroom-mode-hook #'writeroom-scale-text))
 
 (use-package shackle
   :demand t
