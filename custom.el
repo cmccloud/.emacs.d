@@ -17,8 +17,6 @@
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
    (vector "#657b83" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#fdf6e3"))
- '(ansi-term-color-vector
-   [unspecified "#1B2229" "#ff6c6b" "#98be65" "#ECBE7B" "#51afef" "#c678dd" "#46D9FF" "#DFDFDF"] t)
  '(apropos-do-all t t)
  '(auto-save-default nil)
  '(auto-save-file-name-transforms
@@ -45,7 +43,7 @@
  '(company-gtags-executable nil)
  '(company-idle-delay 0.2)
  '(company-minimum-prefix-length 2)
- '(company-require-match nil)
+ '(company-require-match 'never)
  '(compilation-message-face 'default)
  '(compilation-scroll-output nil)
  '(confirm-kill-emacs 'yes-or-no-p)
@@ -83,7 +81,7 @@
      (package :foreground "#cc7832")
      (deprecated :strike-through "#a9b7c6")))
  '(exec-path
-   '("/usr/local/bin/" "/usr/local/sbin/" "/usr/local/opt/nvm/versions/node/v6.2.0/bin/" "/usr/local/bin/" "/usr/local/sbin/" "/usr/bin/" "/bin/" "/usr/sbin/" "/sbin/" "/opt/X11/bin/" "/usr/local/MacGPG2/bin/" "/usr/local/opt/nvm/" "/Library/TeX/texbin/" "/usr/local/share/npm/bin/" "/usr/local/otp/nvm/" "/usr/local/opt/coreutils/libexec/gnubin/" "/usr/local/share/npm/bin/" "/usr/local/otp/nvm/" "/usr/local/opt/coreutils/libexec/gnubin/" "/usr/local/Cellar/emacs/HEAD-8f2a815/libexec/emacs/27.0.50/x86_64-apple-darwin16.7.0/"))
+   '("/usr/local/bin/" "/usr/local/sbin/" "/usr/local/opt/nvm/versions/node/v6.2.0/bin/" "/usr/local/bin/" "/usr/local/sbin/" "/usr/bin/" "/bin/" "/usr/sbin/" "/sbin/" "/opt/X11/bin/" "/usr/local/MacGPG2/bin/" "/usr/local/opt/nvm/" "/Library/TeX/texbin/" "/usr/local/share/npm/bin/" "/usr/local/otp/nvm/" "/usr/local/opt/coreutils/libexec/gnubin/" "/usr/local/share/npm/bin/" "/usr/local/otp/nvm/" "/usr/local/opt/coreutils/libexec/gnubin/" "/usr/local/Cellar/emacs-mac/HEAD-42546e2/libexec/emacs/26.1/x86_64-apple-darwin16.7.0/"))
  '(explicit-shell-file-name "/bin/zsh")
  '(fancy-splash-image nil)
  '(fci-rule-color "#eee8d5")
@@ -166,11 +164,14 @@
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
  '(ns-alternate-modifier 'super)
  '(ns-command-modifier 'meta)
+ '(ns-option-modifier 'super)
+ '(ns-pop-up-frames 'fresh)
+ '(ns-use-native-fullscreen nil)
  '(org-agenda-files '("~/.emacs.d/emacs-todo.org"))
  '(org-ellipsis "  ")
  '(package-quickstart t)
  '(package-selected-packages
-   '(company-box visual-regexp-steroids visual-regexp ag rg helpful doom-themes company solaire-mode helm-xref helm-unicode stripe-buffer hlinum eldoc-eval company-quickhelp dumb-jump git-commit lispy use-package persp-mode helm helm-ag helm-core helm-descbinds helm-describe-modes helm-projectile helm-swoop helm-themes bind-key hydra git-gutter-fringe git-gutter spacemacs-theme page-break-lines all-the-icons writeroom-mode visual-fill-column magit-gh-pulls impatient-mode company-web rainbow-mode company-tern clojure-mode paradox pdf-tools expand-region web-mode emmet-mode gist f request-deferred deferred request shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode nodejs-repl eyebrowse golden-ratio flycheck slime-company slime skewer-mode js-doc racket-mode geiser osx-trash projectile ggtags smooth-scrolling elisp-slime-nav window-numbering smartparens shackle magit js2-mode exec-path-from-shell cider avy))
+   '(apiwrap async dash dash-functional diminish elisp-refs gh ghub ghub+ which-key with-editor yasnippet company-box visual-regexp-steroids visual-regexp ag rg helpful doom-themes company solaire-mode helm-xref helm-unicode stripe-buffer hlinum eldoc-eval company-quickhelp dumb-jump git-commit lispy use-package persp-mode helm helm-ag helm-core helm-descbinds helm-describe-modes helm-projectile helm-swoop helm-themes bind-key hydra git-gutter-fringe git-gutter spacemacs-theme page-break-lines all-the-icons writeroom-mode visual-fill-column magit-gh-pulls impatient-mode company-web rainbow-mode company-tern clojure-mode paradox pdf-tools expand-region web-mode emmet-mode gist f request-deferred deferred request shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode nodejs-repl eyebrowse golden-ratio flycheck slime-company slime skewer-mode js-doc racket-mode geiser osx-trash projectile ggtags smooth-scrolling elisp-slime-nav window-numbering smartparens shackle magit js2-mode exec-path-from-shell cider avy))
  '(package-user-dir "~/.emacs.d/elpa")
  '(paradox-column-width-package 30)
  '(paradox-execute-asynchronously t)
@@ -203,6 +204,7 @@
  '(scroll-conservatively 101)
  '(scroll-margin 5)
  '(scroll-preserve-screen-position t)
+ '(select-active-regions 'only)
  '(semantic-edits-verbose-flag t t)
  '(semantic-idle-scheduler-idle-time 10 t)
  '(semantic-stickyfunc-indent-string " ")
