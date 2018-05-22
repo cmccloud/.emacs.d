@@ -113,7 +113,7 @@
 (eval-when-compile
   (require 'use-package))
 
-;; Libraries
+;;;; Libraries
 (use-package dash :demand t :config (dash-enable-font-lock))
 (use-package s :demand t)
 (use-package hydra :demand t)
@@ -124,7 +124,7 @@
 (use-package deferred)
 (use-package f)
 
-;; Keybinds
+;;;; Core Packages 
 (use-package bind-key
   :demand t
   :custom
@@ -149,7 +149,6 @@
   :config
   (define-prefix-command 'leader-map))
 
-;; Appearance and UI
 (use-package frame
   :custom
   (window-divider-default-places 'right-only)
@@ -193,7 +192,6 @@
   :config
   (global-page-break-lines-mode))
 
-;; Packages
 (use-package diminish
   :config
   (diminish 'visual-line-mode))
@@ -504,21 +502,6 @@ Only for use with `advice-add'."
   
   (add-hook 'emacs-lisp-mode-hook #'setup--imenu-for-use-package))
 
-(use-package elisp-mode
-  :init
-  (when (package-installed-p 'company)
-    (defvar emacs-lisp-mode-company-backends
-      '(company-elisp company-capf company-semantic)
-      "`emacs-lisp-mode' company-backends for use with `company-mode'.")
-
-    (defun emacs-lisp-company-mode ()
-      (interactive)
-      (set (make-local-variable 'company-backends)
-           emacs-lisp-mode-company-backends))
-
-    (add-hook 'emacs-lisp-mode-hook #'emacs-lisp-company-mode)
-    (add-hook 'emacs-lisp-mode-hook #'company-mode t)))
-
 (use-package smartparens
   :custom
   (sp-echo-match-when-invisible nil)
@@ -572,47 +555,6 @@ Only for use with `advice-add'."
   :diminish elisp-slime-nav-mode
   :bind
   (("C-c C-d" . elisp-slime-nav-describe-elisp-thing-at-point)))
-
-(use-package clojure-mode)
-
-(use-package clojure-semantic
-  :load-path "site-lisp/clojure-semantic")
-
-(use-package haskell-mode
-  :hook (haskell-mode . haskell-doc-mode))
-
-(use-package intero
-  :hook (haskell-mode . intero-mode))
-
-(use-package shm)
-
-(use-package cider
-  :commands (cider--display-interactive-eval-result)
-  :hook (clojure-mode . cider-mode))
-
-(use-package racket-mode)
-
-(use-package geiser)
-
-(use-package slime
-  :hook (lisp-mode . slime-mode)
-  :defines (inferior-lisp-program)
-  :config
-  (setq inferior-lisp-program "sbcl")
-  (slime-setup '(slime-fancy slime-company)))
-
-(use-package oz
-  :load-path "/Applications/Mozart2.app/Contents/Resources/share/mozart/elisp"
-  :mode (("\\.oz\\'" . oz-mode)
-         ("\\.ozg\\'" . oz-gump-mode))
-  :init
-  (setenv "OZHOME" "/Applications/Mozart2.app/Contents/Resources"))
-
-(use-package markdown-mode
-  :mode ("\\.m[k]d" . markdown-mode)
-  :config
-  (with-eval-after-load 'smartparens
-    (sp-local-pair 'markdown-mode "`" nil :actions nil)))
 
 (use-package avy
   :custom
@@ -1014,15 +956,7 @@ Preserves input from `helm-multi-swoop'."
           company-box-icons-yasnippet
           (all-the-icons-material "short_text" :face 'all-the-icons-green :height .8))))
 
-(use-package company-web
-  :after (company))
 
-(use-package company-tern
-  :after (company)
-  :commands (company-tern))
-
-(use-package slime-company
-  :after (company))
 
 (use-package flycheck
   :config
@@ -1048,55 +982,6 @@ Preserves input from `helm-multi-swoop'."
   :commands (rainbow-mode)
   :init
   (add-hook 'css-mode-hook #'rainbow-mode))
-
-(use-package web-mode
-  :mode ("\\.phtml\\'"
-         "\\.tpl\\.php\\'"
-         "\\.[agj]sp\\'"
-         "\\.as[cp]x\\'"
-         "\\.ert\\'"
-         "\\.mustache\\'"
-         "\\.djthml\\'")
-  :config
-  (define-prefix-command 'web-mode-leader-map)
-  (set-keymap-parent web-mode-leader-map leader-map)
-  (bind-keys :map web-mode-map ("M-m" . web-mode-leader-map))
-  (bind-keys :map web-mode-leader-map
-             ("rw" . web-mode-element-wrap)
-             ("rc" . web-mode-element-clone)
-             ("rr" . web-mode-element-rename)
-             ("rk" . web-mode-element-kill)))
-
-(use-package emmet-mode
-  :commands (emmet-mode)
-  :init
-  (with-eval-after-load 'web-mode
-    (add-hook 'web-mode-hook #'emmet-mode))
-  (add-hook 'html-mode-hook #'emmet-mode)
-  (add-hook 'css-mode-hook #'emmet-mode)
-  :config
-  (bind-keys :map emmet-mode-keymap
-             ("C-j" . nil)))
-
-(use-package js2-mode
-  :mode "\\.js$"
-  :init
-  (when (package-installed-p 'company)
-    (defvar js2-mode-company-backends
-      '(company-tern company-capf)
-      "`js2-mode' company-backends for use with `company-mode'.")
-
-    (defun js2-company-mode ()
-      (interactive)
-      (set (make-local-variable 'company-backends)
-           js2-mode-company-backends))
-
-    (add-hook 'js2-mode-hook #'js2-company-mode)
-    (add-hook 'js2-mode-hook #'company-mode t)))
-
-(use-package tern
-  :hook (js2-mode . tern-mode)
-  :diminish tern-mode)
 
 (use-package window-numbering
   :bind
@@ -1208,6 +1093,122 @@ Valid alignments are `above', `below', `left', and `right'."
             ("*Package Commit List*" :select t :align ,left-or-below :size 0.4))))
 
   (shackle-mode 1))
+
+;;;; Languages
+(use-package elisp-mode
+  :init
+  (when (package-installed-p 'company)
+    (defvar emacs-lisp-mode-company-backends
+      '(company-elisp company-capf company-semantic)
+      "`emacs-lisp-mode' company-backends for use with `company-mode'.")
+
+    (defun emacs-lisp-company-mode ()
+      (interactive)
+      (set (make-local-variable 'company-backends)
+           emacs-lisp-mode-company-backends))
+
+    (add-hook 'emacs-lisp-mode-hook #'emacs-lisp-company-mode)
+    (add-hook 'emacs-lisp-mode-hook #'company-mode t)))
+
+(use-package slime
+  :hook (lisp-mode . slime-mode)
+  :defines (inferior-lisp-program)
+  :config
+  (setq inferior-lisp-program "sbcl")
+  (slime-setup '(slime-fancy slime-company)))
+
+(use-package slime-company
+  :after (company))
+
+(use-package clojure-mode)
+
+(use-package cider
+  :commands (cider--display-interactive-eval-result)
+  :hook (clojure-mode . cider-mode))
+
+(use-package clojure-semantic
+  :load-path "site-lisp/clojure-semantic")
+
+(use-package haskell-mode
+  :hook (haskell-mode . haskell-doc-mode))
+
+(use-package intero
+  :hook (haskell-mode . intero-mode))
+
+(use-package shm)
+
+(use-package racket-mode)
+
+(use-package geiser)
+
+(use-package oz
+  :load-path "/Applications/Mozart2.app/Contents/Resources/share/mozart/elisp"
+  :mode (("\\.oz\\'" . oz-mode)
+         ("\\.ozg\\'" . oz-gump-mode))
+  :init
+  (setenv "OZHOME" "/Applications/Mozart2.app/Contents/Resources"))
+
+(use-package markdown-mode
+  :mode ("\\.m[k]d" . markdown-mode)
+  :config
+  (with-eval-after-load 'smartparens
+    (sp-local-pair 'markdown-mode "`" nil :actions nil)))
+
+(use-package web-mode
+  :mode ("\\.phtml\\'"
+         "\\.tpl\\.php\\'"
+         "\\.[agj]sp\\'"
+         "\\.as[cp]x\\'"
+         "\\.ert\\'"
+         "\\.mustache\\'"
+         "\\.djthml\\'")
+  :config
+  (define-prefix-command 'web-mode-leader-map)
+  (set-keymap-parent web-mode-leader-map leader-map)
+  (bind-keys :map web-mode-map ("M-m" . web-mode-leader-map))
+  (bind-keys :map web-mode-leader-map
+             ("rw" . web-mode-element-wrap)
+             ("rc" . web-mode-element-clone)
+             ("rr" . web-mode-element-rename)
+             ("rk" . web-mode-element-kill)))
+
+(use-package emmet-mode
+  :commands (emmet-mode)
+  :init
+  (with-eval-after-load 'web-mode
+    (add-hook 'web-mode-hook #'emmet-mode))
+  (add-hook 'html-mode-hook #'emmet-mode)
+  (add-hook 'css-mode-hook #'emmet-mode)
+  :config
+  (bind-keys :map emmet-mode-keymap
+             ("C-j" . nil)))
+
+(use-package company-web
+  :after (company))
+
+(use-package js2-mode
+  :mode "\\.js$"
+  :init
+  (when (package-installed-p 'company)
+    (defvar js2-mode-company-backends
+      '(company-tern company-capf)
+      "`js2-mode' company-backends for use with `company-mode'.")
+
+    (defun js2-company-mode ()
+      (interactive)
+      (set (make-local-variable 'company-backends)
+           js2-mode-company-backends))
+
+    (add-hook 'js2-mode-hook #'js2-company-mode)
+    (add-hook 'js2-mode-hook #'company-mode t)))
+
+(use-package tern
+  :hook (js2-mode . tern-mode)
+  :diminish tern-mode)
+
+(use-package company-tern
+  :after (company)
+  :commands (company-tern))
 
 ;; End Emacs Initialization
 ;; Re-enable Garbage Collection
