@@ -859,14 +859,7 @@ Preserves input from `helm-multi-swoop'."
    ("M-p" . nil)
    :map magit-status-mode-map
    ("M-n" . nil)
-   ("M-p" . nil))
-  :config
-  (defun +magit|refresh-visible-vc-state ()
-    (dolist (window (window-list))
-      (with-current-buffer (window-buffer window)
-        (vc-refresh-state))))
-  ;; TODO: Needs Testing
-  (add-hook 'magit-post-refresh-hook #'+magit|refresh-visible-vc-state))
+   ("M-p" . nil)))
 
 (use-package magithub
   :disabled t
@@ -881,6 +874,7 @@ Preserves input from `helm-multi-swoop'."
   (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
 
 (use-package git-gutter
+  :disabled t
   :demand t
   :bind (:map leader-map ("gg" . hydra-git-gutter/body))
   :hook ((magit-post-refresh focus-in) . git-gutter:update-all-windows)
@@ -904,6 +898,7 @@ Preserves input from `helm-multi-swoop'."
   (global-git-gutter-mode))
 
 (use-package git-gutter-fringe
+  :disabled t
   :demand t
   :config
   ;; colored fringe "bars"
@@ -919,6 +914,20 @@ Preserves input from `helm-multi-swoop'."
     [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
     nil nil 'center))
 
+(use-package diff-hl
+  :bind (:map leader-map
+              ("gg" . hydra-diff-hl/body))
+  :hook ((prog-mode . diff-hl-mode)
+         (prog-mode . diff-hl-flydiff-mode)
+         (magit-post-refresh . diff-hl-magit-post-refresh))
+  :config
+  (defhydra hydra-diff-hl (:columns 2 :exit nil :foreign-keys nil)
+    "Navigate diffs"
+    ("n" diff-hl-next-hunk "Next Hunk")
+    ("p" diff-hl-previous-hunk "Previous Hunk")
+    ("c" magit-commit-popup "Commit" :exit t)
+    ("q" nil "Quit" :exit t)))
+
 (use-package gist
   :bind
   (:map leader-map
@@ -926,13 +935,6 @@ Preserves input from `helm-multi-swoop'."
         ("gGl" . gist-list)
         ("gGr" . gist-region)
         ("gGg" . gist-region-or-buffer)))
-
-(use-package diff-hl
-  :disabled t
-  :config
-  (with-eval-after-load 'magit
-    (add-hook 'magit-post-refresh-hook
-              'diff-hl-magit-post-refresh)))
 
 (use-package company
   :custom
