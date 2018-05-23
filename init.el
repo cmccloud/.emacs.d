@@ -188,13 +188,12 @@
   (doom-modeline-mode 1))
 
 (use-package page-break-lines
-  :demand t
-  :config
-  (global-page-break-lines-mode))
-
-(use-package diminish
-  :config
-  (diminish 'visual-line-mode))
+  :hook ((emacs-lisp-mode . page-break-lines-mode)
+         (lisp-mode . page-break-lines-mode)
+         (scheme-mode . page-break-lines-mode)
+         (compilation-mode . page-break-lines-mode)
+         (outline-mode . page-break-lines-mode)
+         (help-mode . page-break-lines-mode)))
 
 (use-package which-key
   :demand t
