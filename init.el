@@ -535,12 +535,24 @@ Only for use with `advice-add'."
    ("[" . lispy-brackets)
    ("]" . self-insert-command)
    ("C-z" . lispy-ace-paren))
-  :hook
-  ((lisp-mode emacs-lisp-mode scheme-mode clojure-mode racket-mode) . lispy-mode)
+  :hook ((lisp-mode . lispy-mode)
+         (emacs-lisp-mode . lispy-mode)
+         (scheme-mode . lispy-mode)
+         (clojure-mode . lispy-mode)
+         (racket-mode . lispy-mode))
   :config
+  (defun lispy-ace-paren-unbounded (&optional arg)
+    "Jump to any open visible paren on the page.
+ARG can constrct the bounds to the current defun."
+    (interactive "P")
+    (funcall-interactively
+     'lispy-ace-paren
+     (not arg)))
+  
   ;; Until we find a better alternative, use i-menu for tag navigation
   (lispy-define-key lispy-mode-map "g" 'helm-imenu-in-all-buffers)
   (lispy-define-key lispy-mode-map "G" 'helm-imenu)
+  (lispy-define-key lispy-mode-map "q" 'lispy-ace-paren-unbounded)
   ;; Do everything we can to prevent semantic from killing emacs
   (dolist (command '(lispy-goto
                      lispy-goto-recursive
