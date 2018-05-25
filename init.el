@@ -602,9 +602,7 @@ ARG can constrct the bounds to the current defun."
         ("s r p" . rg-project)
         ("s r d" . rg-dwim)
         ("s r l" . rg-literal)
-        ("s r s" . rg-list-searches))
-  :init
-  (rg-enable-default-bindings (kbd "M-s r")))
+        ("s r s" . rg-list-searches)))
 
 (use-package ag
   :custom
