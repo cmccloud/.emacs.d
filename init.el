@@ -469,19 +469,6 @@ Only for use with `advice-add'."
   :init
   (osx-trash-setup))
 
-(use-package recentf
-  :disabled t
-  :functions
-  (recentf-track-opened-file)
-  :config
-  (recentf-mode)
-  (recentf-track-opened-file))
-
-(use-package smooth-scrolling
-  :disabled t
-  :config
-  (smooth-scrolling-mode))
-
 (use-package semantic
   :custom
   (semantic-edits-verbose-flag t)
@@ -1195,16 +1182,6 @@ Valid alignments are `above', `below', `left', and `right'."
              ("rr" . web-mode-element-rename)
              ("rk" . web-mode-element-kill)))
 
-(use-package emmet-mode
-  :commands (emmet-mode)
-  :init
-  (with-eval-after-load 'web-mode
-    (add-hook 'web-mode-hook #'emmet-mode))
-  (add-hook 'html-mode-hook #'emmet-mode)
-  (add-hook 'css-mode-hook #'emmet-mode)
-  :config
-  (bind-keys :map emmet-mode-keymap
-             ("C-j" . nil)))
 
 (use-package company-web
   :after (company))
