@@ -199,6 +199,7 @@
    ("wm" . delete-other-windows)
    ("wv" . split-window-below)
    ("qq" . save-buffers-kill-emacs)
+   ("qf" . delete-frame)
    ("ad" . dired))
   :config
   (define-prefix-command 'leader-map))
