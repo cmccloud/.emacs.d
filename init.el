@@ -1101,35 +1101,28 @@ Preserves input from `helm-multi-swoop'."
   (golden-ratio-auto-scale t)
   (golden-ratio-exclude-buffer-names '("*Helm Swoop*" "*Helm Multi Swoop*"))
   (golden-ratio-exclude-modes '("magit-popup-mode" "magit-status-mode" "ediff-mode"))
-  :bind (:map leader-map
-              ("tg" . +golden-ratio:toggle))
+  :bind (:map leader-map ("tg" . golden-ratio-mode))
+  :hook (golden-ratio-mode . balance-windows)
   :config
-  (defun +golden-ratio:toggle ()
-    "Toggles `golden-ratio-mode' and balances windows."
-    (interactive)
-    (if golden-ratio-mode
-        (progn
-          (golden-ratio-mode -1)
-          (balance-windows))
-      (progn
-        (golden-ratio-mode 1)
-        (golden-ratio))))
+  (defun golden-ratio-helm-alive-p ()
+    (ignore-errors helm-alive-p))
 
-  ;; Try to make golden-ratio play nice with other packages
-  (defun +golden-ratio-helm-alive-p ()
-    (when (boundp 'helm-alive-p)
-      (symbol-value 'helm-alive-p)))
+  (defun golden-ratio-in-ediff-p ()
+    (ignore-errors ediff-this-buffer-ediff-sessions))
 
-  (defun +golden-ratio-in-ediff-p ()
-    (when (boundp 'ediff-this-buffer-ediff-sessions)
-      (symbol-value 'ediff-this-buffer-ediff-sessions)))
-
-  (defun +golden-ratio-company-box-p ()
+  (defun golden-ratio-company-box-p ()
     (frame-parameter (selected-frame) 'company-box-buffer))
   
-  (add-to-list 'golden-ratio-inhibit-functions #'+golden-ratio-helm-alive-p)
-  (add-to-list 'golden-ratio-inhibit-functions #'+golden-ratio-in-ediff-p)
-  (add-to-list 'golden-ratio-inhibit-functions #'+golden-ratio-company-box-p)
+  (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-helm-alive-p)
+  (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-in-ediff-p)
+  (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-company-box-p)
+
+  ;; window-numbering
+  (cl-loop for num from 0 to 9
+           for wnum = (number-to-string num)
+           do (add-to-list 'golden-ratio-extra-commands
+                           (intern (concat "select-window-" wnum))))
+  (add-to-list 'golden-ratio-extra-commands 'ace-window)
   (golden-ratio-mode t))
 
 (use-package shackle
