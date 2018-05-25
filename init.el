@@ -1057,6 +1057,11 @@ Preserves input from `helm-multi-swoop'."
 (use-package rainbow-mode
   :hook (css-mode . rainbow-mode))
 
+(use-package ace-window
+  :custom
+  (aw-keys '(49 50 51 52 53 54 55 56 57 48))
+  :bind ("C-x o" . ace-window))
+
 (use-package window-numbering
   :bind
   (("M-1" . select-window-1)
