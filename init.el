@@ -634,58 +634,58 @@ ARG can constrct the bounds to the current defun."
    ("<tab>" . helm-execute-persistent-action)
    ("TAB" . helm-execute-persistent-action)
    ("C-M-n" . helm-scroll-other-window)
-   ("C-M-p" . helm-scroll-other-window-down))
+   ("C-M-p" . helm-scroll-other-window-down)
+   ("C-s" . +helm-into-next))
+  :init
+  (defvar helm-into-next-alist nil)
   :config
-  ;; TODO - Move this to more general location
-  ;; All these definitions should go into an integration package
-  ;; For the time being it only affects helm, later might also
-  ;; affect purpose
-  (defun filtered--change-buffer (pred change-buffer)
-    "Call CHANGE-BUFFER until pred returns nil on the current buffer.."
+  (defun +helm-into-next ()
+    (interactive)
+    (when-let ((input helm-input)
+               (next-func (cdr (assoc helm-buffer helm-into-next-alist))))
+      (with-helm-alive-p
+        (helm-run-after-exit next-func input))))
+  
+  (defun buffer-call-until (pred change-buffer)
+    "Call CHANGE-BUFFER until PRED returns t on the current buffer.."
     (let ((initial (current-buffer)))
       (funcall change-buffer)
       (let ((first-change (current-buffer)))
         (catch 'loop
-          (while (funcall pred (current-buffer))
+          (while (not (funcall pred (current-buffer)))
             (funcall change-buffer)
             (when (eq (current-buffer) first-change)
               (switch-to-buffer initial)
               (throw 'loop t)))))))
 
-  (defun helm--change-buffer (change-buffer)
-    "Call change bufffer until current buffer does not match any pattern in
-`helm-boring-buffer-regexp-list'."
-    (funcall 'filtered--change-buffer
-             (lambda (buffer)
-               (--some (string-match it (buffer-name buffer))
-                       helm-boring-buffer-regexp-list))
-             change-buffer))
-
   (defun next-file-buffer ()
     "As `next-buffer' but ignores buffers without file names."
     (interactive)
-    (filtered--change-buffer
-     (lambda (b) (not (buffer-file-name b)))
-     #'next-buffer))
+    (buffer-call-until
+     #'buffer-file-name #'next-buffer))
 
   (defun previous-file-buffer ()
     "As `previous-buffer' but ignores buffers without file names."
     (interactive)
-    (filtered--change-buffer (lambda (b) (not (buffer-file-name b)))
-                             #'previous-buffer))
-  
-  (defun helm-next-interesting-buffer ()
-    "As `next-buffer' but respects `helm-boring-buffer-regexp-list'."
-    (interactive)
-    (helm--change-buffer 'next-buffer))
-  
-  (defun helm-previous-interesting-buffer ()
-    "As `previous-buffer' but respects `helm-boring-buffer-regexp-list'."
-    (interactive)
-    (helm--change-buffer 'previous-buffer))
-  
-  (use-package helm-config :demand t)
+    (buffer-call-until
+     #'buffer-file-name #'previous-buffer)))
+
+(use-package helm-config
+  :after helm
+  :demand t)
+
+(use-package helm-mode
+  :after helm
+  :demand t
+  :custom
+  (helm-completion-in-region-fuzzy-match t)
+  :config
   (helm-mode 1))
+
+(use-package helm-adaptive
+  :custom
+  (helm-adaptive-history-file "~/.emacs.d/cache/helm-adaptive-history")
+  :hook (helm-mode . helm-adaptive-mode))
 
 (use-package helm-command
   :custom
@@ -714,7 +714,13 @@ ARG can constrct the bounds to the current defun."
   :bind
   (("C-x C-b" . helm-mini)
    :map leader-map
-   ("bb" . helm-mini)))
+   ("bb" . helm-mini))
+  :commands (helm-buffers-boring-p)
+  :config
+  (defun helm-buffers-boring-p (buffer)
+    (cl-some (lambda (regexp)
+               (string-match-p regexp (buffer-name buffer)))
+             helm-boring-buffer-regexp-list)))
 
 (use-package helm-files
   :custom
@@ -729,23 +735,42 @@ ARG can constrct the bounds to the current defun."
   (helm-grep-ag-command
    "rg -M 256 --color=always --smart-case --no-heading --line-number %s %s %s"))
 
+(use-package helm-regexp
+  :custom
+  (helm-moccur-always-search-in-current t)
+  (helm-moccur-auto-update-on-resume 'noask)
+  (helm-moccur-show-buffer-fontification nil)
+  (helm-moccur-use-ioccur-style-keys nil)
+  :bind (("C-s" . helm-occur)
+         ("C-x /" . helm-regexp)
+         :map helm-moccur-map
+         ("C-o" . helm-goto-next-file)
+         ("C-i" . helm-goto-precedent-file))
+  :config
+  (defun helm-multi-occur-all (&optional input)
+    (interactive)
+    (let ((buffers (cl-remove-if #'helm-buffers-boring-p (buffer-list))))
+      (helm-multi-occur-1 buffers input)))
+
+  (helm-attrset 'candidate-number-limit 500 helm-source-regexp)
+  (add-to-list 'helm-into-next-alist
+               '("*helm occur*" . helm-multi-occur-all)))
+
 (use-package helm-locate
   :bind (:map leader-map
-              ("fl" . helm-locate))
+         ("fl" . helm-locate))
   :config
   (when (equal system-type 'darwin)
     (customize-set-variable 'helm-locate-fuzzy-match nil)
     (customize-set-variable 'helm-locate-command "mdfind -name %s %s")))
 
 (use-package helm-elisp
-  :bind
-  (("C-h a" . helm-apropos)
-   :map leader-map
-   ("hll" . helm-locate-library)))
+  :bind (("C-h a" . helm-apropos)
+         :map leader-map
+         ("hll" . helm-locate-library)))
 
 (use-package helm-info
-  :bind
-  (("C-h i" . helm-info)))
+  :bind (("C-h i" . helm-info)))
 
 (use-package helm-color
   :config
@@ -753,18 +778,34 @@ ARG can constrct the bounds to the current defun."
   (helm-attrset 'candidate-number-limit 9999 helm-source-customize-face))
 
 (use-package helm-imenu
+  :custom
+  (helm-imenu-fuzzy-match t)
+  :bind (("C-x C-j" . helm-imenu-in-all-buffers))
   :config
+  (cl-defmethod helm-setup-user-source ((source helm-imenu-source))
+    (setf (slot-value source 'candidate-number-limit) 200))
+  
   (add-to-list 'helm-imenu-type-faces
                '("^Packages$" . font-lock-type-face)))
 
+(use-package helm-semantic
+  :custom
+  (helm-semantic-display-style nil))
+
+(use-package helm-ls-git
+  :custom
+  (helm-ls-git-status-command 'magit-status-internal)
+  :bind (("C-x C-d" . helm-browse-project)
+         :map helm-ls-git-map
+         ("C-s" . helm-ls-git-run-grep)))
+
 (use-package helm-projectile
-  :bind
-  (("C-x C-p" . helm-projectile)
-   :map leader-map
-   ("ps" . helm-projectile-switch-project)
-   ("pf" . helm-projectile-find-file)
-   ("pp" . helm-projectile)
-   ("pb" . helm-projectile-switch-to-buffer))
+  :bind (("C-x C-p" . helm-projectile)
+         :map leader-map
+         ("ps" . helm-projectile-switch-project)
+         ("pf" . helm-projectile-find-file)
+         ("pp" . helm-projectile)
+         ("pb" . helm-projectile-switch-to-buffer))
   :config
   (helm-projectile-on))
 
@@ -779,7 +820,18 @@ ARG can constrct the bounds to the current defun."
         ("ss" . helm-do-ag)
         ("sp" . helm-do-ag-project-root)))
 
+(use-package helm-rg
+  :custom
+  (helm-rg-default-directory 'default)
+  :bind (:map leader-map
+         ("sh" . helm-rg)
+         ("sH" . helm-projectile-rg))
+  :init
+  (add-to-list 'helm-into-next-alist
+               '("*helm multi occur*" . helm-rg)))
+
 (use-package helm-swoop
+  :disabled t
   :custom
   (helm-swoop-speed-or-color t)
   (helm-swoop-split-with-multiple-windows t)
@@ -793,21 +845,16 @@ ARG can constrct the bounds to the current defun."
    :map helm-map
    ("C-s" . +helm-multi-swoop-next))
   :config
-  (defvar +helm-swoop-next-input "")
   
   (defun +helm-swoop-next ()
     "From `helm-swoop', calls `helm-multi-swoop-projectile' or `helm-multi-swoop-all'
 Preserves input from `helm-swoop'."
     (interactive)
-    (setq +helm-swoop-next-input (minibuffer-contents-no-properties))
     (helm-run-after-exit
      (lambda ()
-       (let ((helm-swoop-pre-input-function
-              (lambda () +helm-swoop-next-input)))
-         (call-interactively (if (and (fboundp 'projectile-project-p)
-                                      (projectile-project-p))
-                                 #'helm-multi-swoop-projectile
-                               #'helm-multi-swoop-all))))))
+       (if (ignore-errors (projectile-project-p))
+           (helm-multi-swoop-projectile helm-input)
+         (helm-multi-swoop-all helm-input)))))
   
   (defun +helm-multi-swoop-next ()
     "From '`helm-multi-swoop', calls `helm-do-grep-ag'.
@@ -815,13 +862,13 @@ Searches from either `projectile-project-root' or `default-directory'.
 Preserves input from `helm-multi-swoop'."
     (interactive)
     (when (string= helm-buffer "*Helm Multi Swoop*")
-      (setq +helm-swoop-next-input (minibuffer-contents-no-properties))
       (helm-run-after-exit
        (lambda ()
-         (minibuffer-with-setup-hook (lambda () (insert +helm-swoop-next-input))
-           (let* ((projectile-require-project-root nil)
-                  (default-directory (projectile-project-root)))
-             (call-interactively #'helm-do-grep-ag)))))))
+         (minibuffer-with-setup-hook (lambda () (insert helm-input))
+           (let ((default-directory
+                   (or (ignore-errors (projectile-project-root))
+                       default-directory)))
+             (helm-do-grep-ag t)))))))
   
   (setq helm-swoop-candidate-number-limit 200
         ;; Bring helm-swoop under shackle control
