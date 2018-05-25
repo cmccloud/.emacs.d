@@ -59,6 +59,8 @@
 (customize-set-variable 'auto-save-default nil)
 (customize-set-variable 'create-lockfiles nil)
 (customize-set-variable 'make-backup-files nil)
+(customize-set-variable 'delete-by-moving-to-trash t)
+(customize-set-variable 'load-prefer-newer t)
 (customize-set-variable 'confirm-kill-emacs #'yes-or-no-p)
 
 ;; Don't let find-file-at-point hang emacs with a bad ping attempt
@@ -77,6 +79,9 @@
 (customize-set-variable 'fringe-mode 6)
 
 (customize-set-variable 'fit-window-to-buffer-horizontally t)
+(customize-set-variable 'window-combination-resize t)
+(customize-set-variable 'split-width-threshold 160)
+(customize-set-variable 'split-height-threshold 80)
 (customize-set-variable 'save-interprogram-paste-before-kill t)
 
 (customize-set-variable 'jit-lock-defer-time nil)
@@ -109,7 +114,7 @@
 ;; Use-package
 (customize-set-variable 'use-package-always-defer t)
 (customize-set-variable 'use-package-verbose nil)
-
+(customize-set-variable 'use-package-minimum-reported-time 0.01)
 (eval-when-compile
   (require 'use-package))
 
@@ -260,8 +265,9 @@
 
 (use-package autorevert
   :demand t
+  :custom
+  (auto-revert-verbose nil)
   :config
-  (setq auto-revert-verbose nil)
   (global-auto-revert-mode))
 
 (use-package re-builder
