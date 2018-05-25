@@ -1240,17 +1240,7 @@ Valid alignments are `above', `below', `left', and `right'."
          "\\.as[cp]x\\'"
          "\\.ert\\'"
          "\\.mustache\\'"
-         "\\.djthml\\'")
-  :config
-  (define-prefix-command 'web-mode-leader-map)
-  (set-keymap-parent web-mode-leader-map leader-map)
-  (bind-keys :map web-mode-map ("M-m" . web-mode-leader-map))
-  (bind-keys :map web-mode-leader-map
-             ("rw" . web-mode-element-wrap)
-             ("rc" . web-mode-element-clone)
-             ("rr" . web-mode-element-rename)
-             ("rk" . web-mode-element-kill)))
-
+         "\\.djthml\\'"))
 
 (use-package company-web
   :after (company))
