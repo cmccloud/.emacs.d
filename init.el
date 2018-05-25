@@ -214,7 +214,7 @@
 
 (use-package faces
   :init
-  (defun m-font-lock-toggle-bold (&optional new-value)
+  (defun m-font-lock-toggle-weight (&optional new-value)
     "For font-lock faces, toggles weight to either normal or bold."
     (interactive)
     (let* ((old-value (face-attribute 'font-lock-type-face :weight))
@@ -233,8 +233,8 @@
 (use-package spacemacs-common
   :ensure spacemacs-theme
   :init 
-  (load-theme 'spacemacs-dark t)
-  (m-font-lock-toggle-bold 'normal))
+  (load-theme 'spacemacs-dark 'no-confirm)
+  (m-font-lock-toggle-weight 'normal))
 
 (use-package doom-modeline
   :demand t
