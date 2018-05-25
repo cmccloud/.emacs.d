@@ -363,22 +363,16 @@
 
 (use-package eyebrowse
   :bind*
-  (("C-1" . eyebrowse-switch-to-window-config-1)
-   ("C-2" . eyebrowse-switch-to-window-config-2)
-   ("C-3" . eyebrowse-switch-to-window-config-3)
-   ("C-4" . eyebrowse-switch-to-window-config-4)
-   ("C-5" . eyebrowse-switch-to-window-config-5)
-   ("C-6" . eyebrowse-switch-to-window-config-6)
-   :map leader-map
-   ("l1" . eyebrowse-switch-to-window-config-1)
-   ("l2" . eyebrowse-switch-to-window-config-2)
-   ("l3" . eyebrowse-switch-to-window-config-3)
-   ("l4" . eyebrowse-switch-to-window-config-4)
-   ("l5" . eyebrowse-switch-to-window-config-5)
-   ("l6" . eyebrowse-switch-to-window-config-6)
-   ("lS" . eyebrowse-switch-to-window-config)
-   ("lr" . eyebrowse-rename-window-config)
-   ("ld" . eyebrowse-close-window-config))
+  (:map leader-map
+        ("l1" . eyebrowse-switch-to-window-config-1)
+        ("l2" . eyebrowse-switch-to-window-config-2)
+        ("l3" . eyebrowse-switch-to-window-config-3)
+        ("l4" . eyebrowse-switch-to-window-config-4)
+        ("l5" . eyebrowse-switch-to-window-config-5)
+        ("l6" . eyebrowse-switch-to-window-config-6)
+        ("lS" . eyebrowse-switch-to-window-config)
+        ("lR" . eyebrowse-rename-window-config)
+        ("lD" . eyebrowse-close-window-config))
   :config
   (eyebrowse-mode))
 
@@ -468,8 +462,7 @@ Only for use with `advice-add'."
   :load-path "site-lisp/eyebrowse-persp-bridge")
 
 (use-package osx-trash
-  :defer 10
-  :if (memq system-type '(osx darwin))
+  :if (equal system-type 'darwin)
   :init
   (osx-trash-setup))
 
@@ -568,9 +561,7 @@ ARG can constrct the bounds to the current defun."
     (fset command #'ignore)))
 
 (use-package elisp-slime-nav
-  :diminish elisp-slime-nav-mode
-  :bind
-  (("C-c C-d" . elisp-slime-nav-describe-elisp-thing-at-point)))
+  :bind (("C-c C-d" . elisp-slime-nav-describe-elisp-thing-at-point)))
 
 (use-package avy
   :custom
@@ -859,7 +850,8 @@ Preserves input from `helm-multi-swoop'."
 (use-package magit
   :custom
   (magit-display-buffer-function
-   'magit-display-buffer-fullframe-status-topleft-v1)
+   'magit-display-buffer-fullframe-status-v1)
+  (magit-auto-revert-mode nil)
   :bind
   (("C-x g" . magit-status)
    ("C-x C-v" . magit-status)
@@ -884,17 +876,12 @@ Preserves input from `helm-multi-swoop'."
   (magithub-dir
    (concat user-emacs-directory "cache/magithub")))
 
-(use-package magit-gh-pulls
-  :disabled t
-  :commands (turn-on-magit-gh-pulls)
-  :init
-  (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
-
 (use-package git-gutter
   :disabled t
   :demand t
   :bind (:map leader-map ("gg" . hydra-git-gutter/body))
-  :hook ((magit-post-refresh focus-in) . git-gutter:update-all-windows)
+  :hook ((magit-post-refresh . git-gutter:update-all-windows)
+         (focus-in . git-gutter:update-all-windows))
   :config
   (defhydra hydra-git-gutter (:columns 3 :exit nil :foreign-keys warn)
     "Git Gutter"
@@ -976,18 +963,17 @@ Preserves input from `helm-multi-swoop'."
   :config
   (setq company-box-backends-colors nil)
   (when (package-installed-p 'all-the-icons)
-    (setq company-box-icons-elisp
-          (list
-           (all-the-icons-material "functions" :face 'all-the-icons-purple :height .8)
-           (all-the-icons-material "check_circle" :face 'all-the-icons-blue :height .8)
-           (all-the-icons-material "stars" :face 'all-the-icons-yellow :height .8)
-           (all-the-icons-material "format_paint" :face 'all-the-icons-pink :height .8))
-          company-box-icons-unknown
-          (all-the-icons-material "find_in_page" :face 'all-the-icons-silver :height .8)
-          company-box-icons-yasnippet
-          (all-the-icons-material "short_text" :face 'all-the-icons-green :height .8))))
-
-
+    (cl-flet ((icons 'all-the-icons-material))
+      (setq company-box-icons-elisp
+            (list
+             (icons "functions" :face 'all-the-icons-purple :height .8)
+             (icons "check_circle" :face 'all-the-icons-blue :height .8)
+             (icons "stars" :face 'all-the-icons-yellow :height .8)
+             (icons "format_paint" :face 'all-the-icons-pink :height .8))
+            company-box-icons-unknown
+            (icons "find_in_page" :face 'all-the-icons-silver :height .8)
+            company-box-icons-yasnippet
+            (icons "short_text" :face 'all-the-icons-green :height .8)))))
 
 (use-package flycheck
   :config
@@ -1010,9 +996,7 @@ Preserves input from `helm-multi-swoop'."
         ("tc" . flycheck-mode)))
 
 (use-package rainbow-mode
-  :commands (rainbow-mode)
-  :init
-  (add-hook 'css-mode-hook #'rainbow-mode))
+  :hook (css-mode . rainbow-mode))
 
 (use-package window-numbering
   :bind
@@ -1040,7 +1024,7 @@ Preserves input from `helm-multi-swoop'."
   (window-numbering-mode 1))
 
 (use-package winner
-  :hook (ediff-quit-hook . winner-undo)
+  :hook (ediff-quit . winner-undo)
   :bind (:map leader-map
               ("wu" . winner-undo)
               ("wr" . winner-redo))
@@ -1188,10 +1172,7 @@ Valid alignments are `above', `below', `left', and `right'."
   (setenv "OZHOME" "/Applications/Mozart2.app/Contents/Resources"))
 
 (use-package markdown-mode
-  :mode ("\\.m[k]d" . markdown-mode)
-  :config
-  (with-eval-after-load 'smartparens
-    (sp-local-pair 'markdown-mode "`" nil :actions nil)))
+  :mode ("\\.m[k]d" . markdown-mode))
 
 (use-package web-mode
   :mode ("\\.phtml\\'"
@@ -1242,8 +1223,7 @@ Valid alignments are `above', `below', `left', and `right'."
     (add-hook 'js2-mode-hook #'company-mode t)))
 
 (use-package tern
-  :hook (js2-mode . tern-mode)
-  :diminish tern-mode)
+  :hook (js2-mode . tern-mode))
 
 (use-package company-tern
   :after (company)
