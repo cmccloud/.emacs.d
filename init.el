@@ -588,6 +588,11 @@ ARG can constrct the bounds to the current defun."
   :bind (("M-g d" . dumb-jump-go)
          ("M-g D" . dumb-jump-go-prompt)))
 
+(use-package smart-jump
+  :demand t
+  :config
+  (smart-jump-setup-default-registers))
+
 (use-package rg
   :custom
   (rg-group-result t)
