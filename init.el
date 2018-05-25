@@ -129,7 +129,56 @@
 (use-package deferred)
 (use-package f)
 
-;;;; Core Packages 
+;;;; Core Packages
+(use-package which-key
+  :demand t
+  :custom
+  (which-key-enable-extended-define-key t)
+  (which-key-min-display-lines 2)
+  (which-key-sort-order 'which-key-prefix-then-key-order-reverse)
+  :config
+  (which-key-add-key-based-replacements
+    ;; C-x Map
+    "C-x RET" "Encoding"
+    "C-x 8" "Char Insertions"
+    "C-x @" "Events"
+    "C-x X" "Edebug"
+    "C-x a" "Abbrev"
+    "C-x C-a" "Edebug"
+    "C-x 4" "Other Window"
+    "C-x 5" "Frames"
+    "C-x C-k" "K-Macro"
+    "C-x n" "Narrowing"
+    "C-x r" "Registers"
+    "C-x v" "Version Control"
+    ;; C-c Map
+    "C-c l" "Layouts"
+    "C-c p" "Projects"
+    "C-c C-w" "Eyebrowse"
+    ;; M-s Map
+    "M-s a" "Ag"
+    "M-s r" "Riggrep"
+    "M-s h" "Highlight"
+    ;; Leader Map
+    "M-m b" "Buffers"
+    "M-m f" "Files"
+    "M-m a" "Applications"
+    "M-m g" "Git"
+    "M-m gg" "Git Gutter"
+    "M-m gG" "Gist"
+    "M-m h" "Helm"
+    "M-m hd" "Describe"
+    "M-m hl" "Locate"
+    "M-m l" "Layouts"
+    "M-m p" "Projects"
+    "M-m q" "Quit"
+    "M-m s" "Search"
+    "M-m s r" "Ripgrep"
+    "M-m t" "Toggle"
+    "M-m w" "Window")
+  (which-key-setup-side-window-bottom)
+  (which-key-mode 1))
+
 (use-package bind-key
   :demand t
   :custom
@@ -200,61 +249,14 @@
          (outline-mode . page-break-lines-mode)
          (help-mode . page-break-lines-mode)))
 
-(use-package which-key
-  :demand t
-  :custom
-  (which-key-sort-order 'which-key-prefix-then-key-order-reverse)
-  :bind (:map help-map ("C-h" . nil))
-  :config
-  (which-key-add-key-based-replacements
-    ;; C-x Map
-    "C-x RET" "Encoding"
-    "C-x 8" "Char Insertions"
-    "C-x @" "Events"
-    "C-x X" "Edebug"
-    "C-x a" "Abbrev"
-    "C-x C-a" "Edebug"
-    "C-x 4" "Other Window"
-    "C-x 5" "Frames"
-    "C-x C-k" "K-Macro"
-    "C-x n" "Narrowing"
-    "C-x r" "Registers"
-    "C-x v" "Version Control"
-    ;; C-c Map
-    "C-c l" "Layouts"
-    "C-c p" "Projects"
-    "C-c C-w" "Eyebrowse"
-    ;; M-s Map
-    "M-s a" "Ag"
-    "M-s r" "Riggrep"
-    "M-s h" "Highlight"
-    ;; Leader Map
-    "M-m b" "Buffers"
-    "M-m f" "Files"
-    "M-m a" "Applications"
-    "M-m g" "Git"
-    "M-m gg" "Git Gutter"
-    "M-m gG" "Gist"
-    "M-m h" "Helm"
-    "M-m hd" "Describe"
-    "M-m hl" "Locate"
-    "M-m l" "Layouts"
-    "M-m p" "Projects"
-    "M-m q" "Quit"
-    "M-m s" "Search"
-    "M-m s r" "Ripgrep"
-    "M-m t" "Toggle"
-    "M-m w" "Window")
-  (which-key-mode 1))
-
 (use-package paradox
   :custom
   (package-archives '(("melpa" . "https://melpa.org/packages/")
                       ("melpa-stable" . "https://stable.melpa.org/packages/")
                       ("org" . "http://orgmode.org/elpa/")
                       ("gnu" . "http://elpa.gnu.org/packages/")))
-  (package-archive-priorities '(("melpa-stable" . 10)
-                                ("melpa" . 5)
+  (package-archive-priorities '(("melpa" . 10)
+                                ("melpa-stable" . 5)
                                 ("gnu" . 0)
                                 ("marmalade" . -5)))
   (package-menu-hide-low-priority nil)
