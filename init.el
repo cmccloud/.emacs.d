@@ -935,48 +935,6 @@ Preserves input from `helm-multi-swoop'."
   (magithub-dir
    (concat user-emacs-directory "cache/magithub")))
 
-(use-package git-gutter
-  :disabled t
-  :demand t
-  :bind (:map leader-map ("gg" . hydra-git-gutter/body))
-  :hook ((magit-post-refresh . git-gutter:update-all-windows)
-         (focus-in . git-gutter:update-all-windows))
-  :config
-  (defhydra hydra-git-gutter (:columns 3 :exit nil :foreign-keys warn)
-    "Git Gutter"
-    ("s" git-gutter:stage-hunk "Stage Hunk")
-    ("d" git-gutter:popup-hunk "Diff Hunk" :exit t)
-    ("n" git-gutter:next-hunk "Next Hunk")
-    ("p" git-gutter:previous-hunk "Previous Hunk")
-    ("r" git-gutter:revert-hunk "Revert Hunk")
-    ("c" magit-commit-popup "Commit" :color blue )
-    ("q" nil "Cancel" :color blue))
-  
-  (defun +git-gutter:force-select-popup (&optional _diffinfo)
-    (pop-to-buffer "*git-gutter:diff*"))
-
-  (advice-add 'git-gutter:popup-hunk :after
-              '+git-gutter:force-select-popup)
-
-  (global-git-gutter-mode))
-
-(use-package git-gutter-fringe
-  :disabled t
-  :demand t
-  :config
-  ;; colored fringe "bars"
-  (define-fringe-bitmap 'git-gutter-fr:added
-    [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224
-         224 224 224 224 224 224 224 224 224]
-    nil nil 'center)
-  (define-fringe-bitmap 'git-gutter-fr:modified
-    [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224
-         224 224 224 224 224 224 224 224 224]
-    nil nil 'center)
-  (define-fringe-bitmap 'git-gutter-fr:deleted
-    [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
-    nil nil 'center))
-
 (use-package diff-hl
   :bind (:map leader-map
               ("gg" . hydra-diff-hl/body))
