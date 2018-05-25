@@ -471,11 +471,32 @@ Only for use with `advice-add'."
 
 (use-package semantic
   :custom
-  (semantic-edits-verbose-flag t)
+  (semantic-elisp-store-documentation-in-tag nil)
+  (semantic-edits-verbose-flag nil)
   (semantic-idle-scheduler-idle-time 10)
   (semantic-stickyfunc-indent-string " ")
   (semanticdb-default-save-directory
-   (concat user-emacs-directory "cache/semanticdb")))
+   (concat user-emacs-directory "cache/semanticdb"))
+  (semantic-analyze-summary-function 'semantic-format-tag-summarize)
+  :config
+  (semantic-default-elisp-setup)
+  (setq-mode-local emacs-lisp-mode
+                   semanticdb-find-default-throttle
+                   (default-value 'semanticdb-find-default-throttle)
+                   imenu-create-index-function
+                   (default-value 'imenu-create-index-function))
+  (semantic-elisp-setup-form-parser
+      (lambda (form start end)
+        (let ((name (nth 1 form)))
+          (semantic-tag-new-include
+           (symbol-name (if (eq (car-safe name) 'quote)
+                            (nth 1 name)
+                          name))
+           nil)))
+    use-package))
+
+(use-package mode-local
+  :commands (mode-local-bind))
 
 (use-package imenu
   :defines imenu-generic-expression
