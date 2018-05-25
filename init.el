@@ -537,14 +537,12 @@ Only for use with `advice-add'."
    ("M-m" . lispy-mark-symbol)
    :map lispy-mode-map
    ("C-j" . avy-goto-char-timer)
-   ("C-z" . avy-goto-line)
    ("C-0" . lispy-describe-inline)
    ("M-m" . nil)
    ("M-n" . nil)
    (":" . self-insert-command)
    ("[" . lispy-brackets)
-   ("]" . self-insert-command)
-   ("C-z" . lispy-ace-paren))
+   ("]" . self-insert-command))
   :hook ((lisp-mode . lispy-mode)
          (emacs-lisp-mode . lispy-mode)
          (scheme-mode . lispy-mode)
@@ -559,10 +557,10 @@ ARG can constrct the bounds to the current defun."
      'lispy-ace-paren
      (not arg)))
   
+  (lispy-define-key lispy-mode-map "q" 'lispy-ace-paren-unbounded)
   ;; Until we find a better alternative, use i-menu for tag navigation
   (lispy-define-key lispy-mode-map "g" 'helm-imenu-in-all-buffers)
-  (lispy-define-key lispy-mode-map "G" 'helm-imenu)
-  (lispy-define-key lispy-mode-map "q" 'lispy-ace-paren-unbounded)
+  (lispy-define-key lispy-mode-map "G" 'helm-semantic-or-imenu)
   ;; Do everything we can to prevent semantic from killing emacs
   (dolist (command '(lispy-goto
                      lispy-goto-recursive
