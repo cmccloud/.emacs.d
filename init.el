@@ -1170,19 +1170,11 @@ Valid alignments are `above', `below', `left', and `right'."
 
 ;;;; Languages
 (use-package elisp-mode
-  :init
-  (when (package-installed-p 'company)
-    (defvar emacs-lisp-mode-company-backends
-      '(company-elisp company-capf company-semantic)
-      "`emacs-lisp-mode' company-backends for use with `company-mode'.")
-
-    (defun emacs-lisp-company-mode ()
-      (interactive)
-      (set (make-local-variable 'company-backends)
-           emacs-lisp-mode-company-backends))
-
-    (add-hook 'emacs-lisp-mode-hook #'emacs-lisp-company-mode)
-    (add-hook 'emacs-lisp-mode-hook #'company-mode t)))
+  :hook (emacs-lisp-mode . company-mode)
+  :config
+  (setq-mode-local emacs-lisp-mode
+                   company-backends
+                   '(company-elisp company-capf)))
 
 (use-package slime
   :load-path "elpa/slime-20180519.1327/"
