@@ -1070,21 +1070,9 @@ Preserves input from `helm-multi-swoop'."
    ("M-4" . select-window-4)
    ("M-5" . select-window-5)
    :map leader-map
-   ("ws" . split-and-balance-window-right)
-   ("wd" . delete-window-and-balance))
+   ("ws" . split-window-right)
+   ("wd" . delete-window))
   :config
-  (defun split-and-balance-window-right ()
-    "As 'SPLIT-WINDOW-RIGHT' followed by 'BALANCE-WINDOWS'"
-    (interactive)
-    (split-window-right)
-    (balance-windows))
-  
-  (defun delete-window-and-balance ()
-    "As 'DELETE-WINDOW' followed by 'BALNCE-WINDOWS'"
-    (interactive)
-    (delete-window)
-    (balance-windows))
-  
   (window-numbering-mode 1))
 
 (use-package winner
