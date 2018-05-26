@@ -517,7 +517,7 @@ Only for use with `advice-add'."
                    imenu-create-index-function
                    (default-value 'imenu-create-index-function))
   (semantic-elisp-setup-form-parser
-      (lambda (form start end)
+      (lambda (form _start _end)
         (let ((name (nth 1 form)))
           (semantic-tag-new-include
            (symbol-name (if (eq (car-safe name) 'quote)
