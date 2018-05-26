@@ -792,7 +792,7 @@ ARG can constrct the bounds to the current defun."
 
 (use-package helm-locate
   :bind (:map leader-map
-         ("fl" . helm-locate))
+              ("fl" . helm-locate))
   :config
   (when (equal system-type 'darwin)
     (customize-set-variable 'helm-locate-fuzzy-match nil)
@@ -943,7 +943,7 @@ Preserves input from `helm-multi-swoop'."
 (use-package magit
   :custom
   (magit-display-buffer-function
-   'magit-display-buffer-fullframe-status-v1)
+   'magit-display-buffer-fullcolumn-most-v1)
   (magit-auto-revert-mode nil)
   :bind
   (("C-x g" . magit-status)
