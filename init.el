@@ -62,6 +62,7 @@
 (customize-set-variable 'delete-by-moving-to-trash t)
 (customize-set-variable 'load-prefer-newer t)
 (customize-set-variable 'confirm-kill-emacs #'yes-or-no-p)
+(customize-set-variable 'save-interprogram-paste-before-kill t)
 
 ;; Don't let find-file-at-point hang emacs with a bad ping attempt
 (customize-set-variable 'ffap-machine-p-unknown 'reject)
@@ -77,12 +78,6 @@
 (customize-set-variable 'indicate-buffer-boundaries nil)
 (customize-set-variable 'indicate-empty-lines nil)
 (customize-set-variable 'fringe-mode 6)
-
-(customize-set-variable 'fit-window-to-buffer-horizontally t)
-(customize-set-variable 'window-combination-resize t)
-(customize-set-variable 'split-width-threshold 160)
-(customize-set-variable 'split-height-threshold 80)
-(customize-set-variable 'save-interprogram-paste-before-kill t)
 
 (customize-set-variable 'jit-lock-defer-time nil)
 (customize-set-variable 'jit-lock-stealth-nice 0.1)
@@ -211,6 +206,41 @@
   (window-divider-default-right-width 1)
   :config
   (window-divider-mode t))
+
+(use-package window
+  :custom
+  (window-combination-limit 'window-size)
+  (window-combination-resize t)
+  (fit-window-to-buffer-horizontally t)
+  (split-width-threshold 160)
+  (split-height-threshold 80)
+  (split-window-preferred-function 'split-window-sensibly)
+  :bind (:map leader-map
+              ("ws" . m-split-windows)
+              ("wd" . delete-window))
+  :init
+  (defun m-split-windows ()
+    "Splits windows while preserving a large editing space for the first window.
+
+With only one window, behaves as `split-window-right', with multiple windows,
+Always splits right from the second window."
+    (interactive)
+    (let* ((window-combination-limit t)
+           (root (frame-root-window))
+           (parent (window-parent)))
+      ;; In order to maintain the largest layout possible, we never want to
+      ;; split our left-most window more than once.  First we determine if
+      ;; we are in the left-most window of a 2+ window configuration
+      ;; i.e. whether we are in a left-most window that has already been
+      ;; split.
+      (if (and (equal parent root) (not (window-prev-sibling)))
+          ;; If we are, instead of allocating space from our partition of the
+          ;; frame, we create a new *left* split from the root, and move to it.
+          ;; This preserves the appearance of a right-split.
+          (progn (split-window root nil 'left t)
+                 (other-window -1))
+        ;; Under any other circumstances we simply split normally.
+        (split-window-right)))))
 
 (use-package faces
   :init
@@ -1026,10 +1056,7 @@ Preserves input from `helm-multi-swoop'."
    ("M-2" . select-window-2)
    ("M-3" . select-window-3)
    ("M-4" . select-window-4)
-   ("M-5" . select-window-5)
-   :map leader-map
-   ("ws" . split-window-right)
-   ("wd" . delete-window))
+   ("M-5" . select-window-5))
   :config
   (window-numbering-mode 1))
 
