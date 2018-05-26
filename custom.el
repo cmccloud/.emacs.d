@@ -262,7 +262,6 @@
  '(which-key-enable-extended-define-key t)
  '(which-key-min-display-lines 2)
  '(which-key-sort-order 'which-key-prefix-then-key-order-reverse)
- '(window-combination-resize t)
  '(window-divider-default-bottom-width 1)
  '(window-divider-default-places 'right-only)
  '(window-divider-default-right-width 1)
