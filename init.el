@@ -561,6 +561,9 @@ Only for use with `advice-add'."
   (lispy-occur-backend 'helm)
   (lispy-eval-display-style 'overlay)
   (lispy-no-permanent-semantic t)
+  (lispy-safe-delete t)
+  (lispy-safe-copy t)
+  (lispy-safe-paste t)
   :bind
   (("C-a" . lispy-move-beginning-of-line)
    ("C-e" . lispy-move-end-of-line)
@@ -654,6 +657,7 @@ ARG can constrct the bounds to the current defun."
   (helm-autoresize-max-height 30)
   (helm-display-header-line nil)
   (helm-split-window-inside-p t)
+  (helm-window-prefer-horizontal-split t)
   :bind
   (("M-n" . next-file-buffer)
    ("M-p" . previous-file-buffer)
