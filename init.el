@@ -943,7 +943,7 @@ Preserves input from `helm-multi-swoop'."
 (use-package magit
   :custom
   (magit-display-buffer-function
-   'magit-display-buffer-fullcolumn-most-v1)
+   'magit-display-buffer-same-window-except-diff-v1)
   (magit-auto-revert-mode nil)
   :bind
   (("C-x g" . magit-status)
