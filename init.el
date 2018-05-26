@@ -125,6 +125,32 @@
 (use-package f)
 
 ;;;; Core Packages
+(use-package bind-key
+  :demand t
+  :custom
+  (bind-key-describe-special-forms t)
+  :bind
+  (("M-m" . leader-map)
+   ("M-u" . undo)
+   ("C-x C-c" . nil)
+   ("M-n" . next-buffer)
+   ("M-p" . previous-buffer)
+   :map leader-map
+   ("tF" . toggle-frame-fullscreen)
+   ("tl" . display-line-numbers-mode)
+   ("bd" . kill-this-buffer)
+   ("br" . rename-buffer)
+   ("ws" . split-window-right)
+   ("wd" . delete-window)
+   ("wm" . delete-other-windows)
+   ("wv" . split-window-below)
+   ("qq" . save-buffers-kill-emacs)
+   ("qf" . delete-frame)
+   ("ad" . dired))
+  :config
+  (unless (bound-and-true-p leader-map)
+    (define-prefix-command 'leader-map)))
+
 (use-package which-key
   :demand t
   :custom
@@ -173,31 +199,6 @@
     "M-m w" "Window")
   (which-key-setup-side-window-bottom)
   (which-key-mode 1))
-
-(use-package bind-key
-  :demand t
-  :custom
-  (bind-key-describe-special-forms t)
-  :bind
-  (("M-m" . leader-map)
-   ("M-u" . undo)
-   ("C-x C-c" . nil)
-   ("M-n" . next-buffer)
-   ("M-p" . previous-buffer)
-   :map leader-map
-   ("tF" . toggle-frame-fullscreen)
-   ("tl" . display-line-numbers-mode)
-   ("bd" . kill-this-buffer)
-   ("br" . rename-buffer)
-   ("ws" . split-window-right)
-   ("wd" . delete-window)
-   ("wm" . delete-other-windows)
-   ("wv" . split-window-below)
-   ("qq" . save-buffers-kill-emacs)
-   ("qf" . delete-frame)
-   ("ad" . dired))
-  :config
-  (define-prefix-command 'leader-map))
 
 (use-package frame
   :custom
