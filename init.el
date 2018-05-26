@@ -310,7 +310,7 @@ Always splits right from the second window."
 
 (use-package visual-regexp
   :custom
-  (vr/default-replace-preview t)
+  (vr/default-replace-preview nil)
   :bind (("C-x /" . vr/query-replace)))
 
 (use-package visual-regexp-steroids
@@ -773,7 +773,6 @@ ARG can constrct the bounds to the current defun."
   (helm-moccur-show-buffer-fontification nil)
   (helm-moccur-use-ioccur-style-keys nil)
   :bind (("C-s" . helm-occur)
-         ("C-x /" . helm-regexp)
          :map helm-moccur-map
          ("C-o" . helm-goto-next-file)
          ("C-i" . helm-goto-precedent-file))
