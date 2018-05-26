@@ -1132,11 +1132,11 @@ Valid alignments are `above', `below', `left', and `right'."
             ("^\\*helpful.*" :regexp t :select t :align below :size 0.4 :popup t)
             ("*Completions*" :select t :align t :size 0.4)
             ("*Compile-Log*" :select t :align below :size 0.4)
-            ("*Man.*" :regexp t :select t :align right :size .5)
+            ("*Man.*" :regexp t :select t :align ,left-or-below :size .5)
             ("*lispy-goto*" :align t :size 0.4)
-            ("*git-gutter:diff*" :align right :size 0.4)
-            ("*Diff*" :select t :align right :size 0.4)
-            ("*Package Commit List*" :select t :align right :size 0.4))))
+            ("*git-gutter:diff*" :align ,left-or-below :size 0.4)
+            ("*Diff*" :select t :align ,left-or-below :size 0.4)
+            ("*Package Commit List*" :select t :align ,left-or-below :size 0.4))))
 
   (shackle-mode 1))
 
