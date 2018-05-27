@@ -98,7 +98,7 @@
 (customize-set-variable 'initial-major-mode 'fundamental-mode)
 (customize-set-variable 'initial-scratch-message nil)
 
-(fset #'yes-or-no-p #'y-or-n-p)
+(advice-add 'yes-or-no-p :override #'y-or-n-p)
 
 (setq-default frame-title-format nil
               fringes-outside-margins t
@@ -724,16 +724,22 @@ ARG can constrct the bounds to the current defun."
   :config
   (helm-mode 1))
 
-(use-package helm-adaptive
+(use-package helm-utils
   :custom
-  (helm-adaptive-history-file "~/.emacs.d/cache/helm-adaptive-history")
-  :hook (helm-mode . helm-adaptive-mode))
+  (helm-window-prefer-horizontal-split t)
+  :custom-face
+  (helm-match-item ((t (:inherit helm-match :underline t)))))
 
 (use-package helm-command
   :custom
   (helm-M-x-fuzzy-match t)
   :bind
   (("M-x" . helm-M-x)))
+
+(use-package helm-adaptive
+  :custom
+  (helm-adaptive-history-file "~/.emacs.d/cache/helm-adaptive-history")
+  :hook (helm-mode . helm-adaptive-mode))
 
 (use-package helm-buffers
   :custom
@@ -890,7 +896,6 @@ ARG can constrct the bounds to the current defun."
    :map helm-map
    ("C-s" . +helm-multi-swoop-next))
   :config
-  
   (defun +helm-swoop-next ()
     "From `helm-swoop', calls `helm-multi-swoop-projectile' or `helm-multi-swoop-all'
 Preserves input from `helm-swoop'."
