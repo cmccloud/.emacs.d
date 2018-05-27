@@ -629,7 +629,7 @@ ARG can constrct the bounds to the current defun."
 
 (use-package rg
   :custom
-  (rg-group-result t)
+  (rg-group-result nil)
   :bind
   (:map leader-map
         ("s r r" . rg)
@@ -651,13 +651,20 @@ ARG can constrct the bounds to the current defun."
    ("M-s a d" . ag-dired-regexp)
    ("M-s a D" . ag-dired)))
 
+(use-package wgrep
+  :custom
+  (wgrep-auto-save-buffer nil)
+  (wgrep-enable-key (kbd "C-c C-e")))
+
 (use-package helm
   :custom
   (helm-candidate-number-limit 100)
   (helm-autoresize-max-height 30)
   (helm-display-header-line nil)
   (helm-split-window-inside-p t)
-  (helm-window-prefer-horizontal-split t)
+  (helm-follow-mode-persistent t)
+  :custom-face
+  (helm-match ((t (:inherit font-lock-keyword-face :weight bold))))
   :bind
   (("M-n" . next-file-buffer)
    ("M-p" . previous-file-buffer)
@@ -768,7 +775,9 @@ ARG can constrct the bounds to the current defun."
 (use-package helm-grep
   :custom
   (helm-grep-ag-command
-   "rg -M 256 --color=always --smart-case --no-heading --line-number %s %s %s"))
+   "rg -M 256 --color=always --smart-case --no-heading --line-number %s %s %s")
+  :bind (:map helm-grep-mode-map
+              ("RET" . helm-grep-mode-jump-other-window)))
 
 (use-package helm-regexp
   :custom
@@ -849,6 +858,8 @@ ARG can constrct the bounds to the current defun."
   ("C-x C-l" . helm-persp-layouts))
 
 (use-package helm-ag
+  :custom
+  (helm-ag-always-set-extra-option nil)
   :bind
   (:map leader-map
         ("ss" . helm-do-ag)
@@ -858,8 +869,8 @@ ARG can constrct the bounds to the current defun."
   :custom
   (helm-rg-default-directory 'default)
   :bind (:map leader-map
-         ("sh" . helm-rg)
-         ("sH" . helm-projectile-rg))
+              ("sh" . helm-rg)
+              ("sH" . helm-projectile-rg))
   :init
   (add-to-list 'helm-into-next-alist
                '("*helm multi occur*" . helm-rg)))
