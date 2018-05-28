@@ -1086,49 +1086,33 @@ ARG can constrct the bounds to the current defun."
   :custom
   (shackle-select-reused-windows t)
   :config
-  (defun +shackle-maybe-split (consequent alternative)
-    "Determines window split alignment based on frame-width.
-Given a large enough frame, splits to consequent. Otherwise splits to alternative.
-Valid alignments are `above', `below', `left', and `right'."
-    (if (>= (frame-width) 160)
-        consequent
-      alternative))
-  
-  (defun +shackle-elisp-slime-nav-help (b)
-    (and (string= (buffer-name b) "*Help*")
-         (eql this-command 'elisp-slime-nav-describe-elisp-thing-at-point)))
-
-  (defun +shackle-helm-help (b)
-    (and (string= (buffer-name b) "*Help*")
-         helm-alive-p))
-  
-  (let ((left-or-below (apply-partially #'+shackle-maybe-split 'left 'below)))
-    (setq shackle-rules
-          `(("*Process List*" :select t :align below :size 0.4)
-            ("*Apropos*" :select t :align below :size 0.4)
-            ("Outline.*pdf" :regexp t :select t :align below :size 0.3)
-            ("*Geiser documentation*" :select t :align t :size 0.4)
-            ("*slime-description*" :select t :align t :size 0.4)
-            ("\\`\\*\[h|H]elm.*?\\*\\'" :regexp t :align t :size 0.3)
-            ("*Help*" :select t :align below :size 0.4 :popup t)
-            ("^\\*helpful.*" :regexp t :select t :align below :size 0.4 :popup t)
-            ("*Completions*" :select t :align t :size 0.4)
-            ("*Compile-Log*" :select t :align below :size 0.4)
-            ("*Man.*" :regexp t :select t :align ,left-or-below :size .5)
-            ("*lispy-goto*" :align t :size 0.4)
-            ("*git-gutter:diff*" :align ,left-or-below :size 0.4)
-            ("*Diff*" :select t :align ,left-or-below :size 0.4)
-            ("*Package Commit List*" :select t :align ,left-or-below :size 0.4))))
+  (defun shackle-left-or-below () (if (> (frame-width) 160) 'left 'below))
+  (setq shackle-rules
+        `(("*Process List*" :select t :align below :size 0.4)
+          ("*Apropos*" :select t :align below :size 0.4)
+          ("Outline.*pdf" :regexp t :select t :align below :size 0.3)
+          ("*Geiser documentation*" :select t :align t :size 0.4)
+          ("*slime-description*" :select t :align t :size 0.4)
+          ("\\`\\*\[h|H]elm.*?\\*\\'" :regexp t :align t :size 0.2)
+          ("*Help*" :select t :align below :size 0.4 :popup t)
+          ("^\\*helpful.*" :regexp t :select t :align below :size 0.4 :popup t)
+          ("*Completions*" :select t :align below :size 0.4)
+          ("*Compile-Log*" :select t :align below :size 0.4)
+          ("*Man.*" :regexp t :select t :align shackle-left-or-below :size .5)
+          ("*lispy-goto*" :align t :size 0.4)
+          ("*git-gutter:diff*" :align shackle-left-or-below :size 0.4)
+          ("*Diff*" :select t :align shackle-left-or-below :size 0.4)
+          ("*Package Commit List*" :select t :align shackle-left-or-below :size 0.4)
+          ("^\\*hgrep.*\\*" :regexp t :select t :align shackle-left-or-below :size 0.4)))
 
   (shackle-mode 1))
 
 ;;;; Languages
 (use-package elisp-mode
-  :hook (emacs-lisp-mode . company-mode)
+  :hook (emacs-lisp-mode . company-set-elisp-backends)
   :config
-  (setq-mode-local emacs-lisp-mode
-                   company-backends
-                   '(company-elisp company-capf)))
+  (defun company-set-elisp-backends ()
+    (setq-local company-backends '(company-elisp company-capf))))
 
 (use-package slime
   :load-path "elpa/slime-20180519.1327/"
