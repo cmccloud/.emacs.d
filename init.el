@@ -894,16 +894,6 @@ ARG can constrct the bounds to the current defun."
     (add-to-list 'helm-ls-git-default-sources
                  'helm-source-ls-git-project-history t)))
 
-(use-package helm-projectile
-  :bind (("C-x C-p" . helm-projectile)
-         :map leader-map
-         ("ps" . helm-projectile-switch-project)
-         ("pf" . helm-projectile-find-file)
-         ("pp" . helm-projectile)
-         ("pb" . helm-projectile-switch-to-buffer))
-  :config
-  (helm-projectile-on))
-
 (use-package helm-persp
   :load-path "site-lisp/helm-persp"
   :bind
@@ -946,7 +936,7 @@ ARG can constrct the bounds to the current defun."
   :custom
   (ediff-window-setup-function 'ediff-setup-windows-plain)
   (ediff-split-window-function 'split-window-horizontally)
-  (ediff-keep-variants nil))
+  (ediff-keep-variants t))
 
 (use-package magit
   :custom
@@ -1076,6 +1066,7 @@ ARG can constrct the bounds to the current defun."
   :bind (:map leader-map
               ("wu" . winner-undo)
               ("wr" . winner-redo))
+  :hook (ediff-quit . winner-undo)
   :config
   (winner-mode +1))
 
