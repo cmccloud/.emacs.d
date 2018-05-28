@@ -110,13 +110,16 @@
 (customize-set-variable 'use-package-always-defer t)
 (customize-set-variable 'use-package-verbose nil)
 (customize-set-variable 'use-package-minimum-reported-time 0.01)
+(customize-set-variable 'use-package-expand-minimally nil)
 (eval-when-compile
   (require 'use-package))
 
 ;;;; Libraries
-(use-package dash :demand t :config (dash-enable-font-lock))
-(use-package s :demand t)
-(use-package hydra :demand t)
+(use-package dash
+  :config
+  (dash-enable-font-lock))
+(use-package s)
+(use-package hydra)
 (use-package seq)
 (use-package map)
 (use-package dash-functional)
@@ -216,7 +219,7 @@
   (window-combination-limit 'window-size)
   (window-combination-resize t)
   (fit-window-to-buffer-horizontally t)
-  (split-width-threshold 160)
+  (split-width-threshold 80)
   (split-height-threshold 80)
   (split-window-preferred-function 'split-window-sensibly)
   :bind (:map leader-map
@@ -229,11 +232,11 @@
 With only one window, behaves as `split-window-right', with multiple windows,
 Always splits right from the second window."
     (interactive)
-    (let* ((window-combination-limit t)
+    (let* ((window-combination-limit t) ; Every split gets a new parent
            (root (frame-root-window))
            (parent (window-parent)))
       ;; In order to maintain the largest layout possible, we never want to
-      ;; split our left-most window more than once.  First we determine if
+      ;; split the left-most window more than once.  First we determine if
       ;; we are in the left-most window of a 2+ window configuration
       ;; i.e. whether we are in a left-most window that has already been
       ;; split.
@@ -274,6 +277,7 @@ Always splits right from the second window."
   :demand t
   :load-path "site-lisp/doom-modeline"
   :config
+  (setq doom-modeline-show-helm-modeline nil)
   (doom-modeline-mode 1))
 
 (use-package page-break-lines
@@ -411,7 +415,7 @@ Always splits right from the second window."
         ("lR" . eyebrowse-rename-window-config)
         ("lD" . eyebrowse-close-window-config))
   :config
-  (eyebrowse-mode))
+  (eyebrowse-mode +1))
 
 (use-package persp-mode
   :custom
@@ -626,7 +630,11 @@ ARG can constrct the bounds to the current defun."
          ("M-g D" . dumb-jump-go-prompt)))
 
 (use-package smart-jump
-  :demand t
+  :custom
+  (smart-jump-bind-keys nil)
+  :bind* (("M-." . smart-jump-go)
+          ("M-," . smart-jump-back)
+          ("M-?" . smart-jump-references))
   :config
   (smart-jump-setup-default-registers))
 
@@ -765,23 +773,20 @@ ARG can constrct the bounds to the current defun."
      "\\*Diff*"
      "\\*lispy-goto*"
      "\\*Backtrace*"))
-  :bind
-  (("C-x C-b" . helm-mini)
-   :map leader-map
-   ("bb" . helm-mini))
-  :commands (helm-buffers-boring-p)
-  :config
-  (defun helm-buffers-boring-p (buffer)
-    (cl-some (lambda (regexp)
-               (string-match-p regexp (buffer-name buffer)))
-             helm-boring-buffer-regexp-list)))
+  :bind (("C-x C-b" . helm-mini)
+         :map leader-map
+         ("bb" . helm-mini)))
 
 (use-package helm-files
   :custom
-  (helm-ff-tramp-not-fancy t)
+  (helm-ff-tramp-not-fancy 'dirs-only)
+  (helm-ff-auto-update-initial-value nil)
   :bind
   (("C-x C-f" . helm-find-files)
+   ("C-x C-p" . helm-projects-history)
    :map leader-map
+   ("ff" . helm-find-files)
+   ("hf" . helm-find)))
 
 (use-package helm-regexp
   :custom
@@ -794,12 +799,17 @@ ARG can constrct the bounds to the current defun."
          ("C-o" . helm-goto-next-file)
          ("C-i" . helm-goto-precedent-file))
   :config
-  (defun helm-multi-occur-all (&optional input)
-    (interactive)
-    (let ((buffers (cl-remove-if #'helm-buffers-boring-p (buffer-list))))
-      (helm-multi-occur-1 buffers input)))
+  (cl-defmethod helm-setup-user-source ((source helm-source-multi-occur))
+    (setf (slot-value source 'candidate-number-limit) 500))
 
-  (helm-attrset 'candidate-number-limit 500 helm-source-regexp)
+  (defun helm-multi-occur-all (&optional input)
+    "Runs `helm-occur' on all buffers visiting files."
+    (interactive)
+    (helm-multi-occur-1
+     (cl-remove-if-not #'buffer-file-name (buffer-list))
+     input))
+
+  (helm-attrset 'candidate-number-limit 300 helm-source-regexp)
   (add-to-list 'helm-into-next-alist
                '("*helm occur*" . helm-multi-occur-all)))
 
@@ -853,11 +863,11 @@ ARG can constrct the bounds to the current defun."
 
 (use-package helm-imenu
   :custom
-  (helm-imenu-fuzzy-match t)
+  (helm-imenu-fuzzy-match nil)
   :bind (("C-x C-j" . helm-imenu-in-all-buffers))
   :config
   (cl-defmethod helm-setup-user-source ((source helm-imenu-source))
-    (setf (slot-value source 'candidate-number-limit) 200))
+    (setf (slot-value source 'candidate-number-limit) 100))
   
   (add-to-list 'helm-imenu-type-faces
                '("^Packages$" . font-lock-type-face)))
@@ -871,7 +881,18 @@ ARG can constrct the bounds to the current defun."
   (helm-ls-git-status-command 'magit-status-internal)
   :bind (("C-x C-d" . helm-browse-project)
          :map helm-ls-git-map
-         ("C-s" . helm-ls-git-run-grep)))
+         ("C-s" . helm-ls-git-run-grep))
+  :config
+  (when (featurep 'projectile)
+    (defvar helm-source-ls-git-project-history
+      (helm-build-sync-source "Project History"
+        :candidates projectile-known-projects
+        :action (lambda (candidate)
+                  (with-helm-default-directory candidate
+                      (helm-browse-project nil)))))
+    
+    (add-to-list 'helm-ls-git-default-sources
+                 'helm-source-ls-git-project-history t)))
 
 (use-package helm-projectile
   :bind (("C-x C-p" . helm-projectile)
@@ -906,10 +927,16 @@ ARG can constrct the bounds to the current defun."
              ("hdd" . helm-dash)))
 
 (use-package projectile
+  :custom
+  (projectile-indexing-method 'alien)
+  (projectile-enable-caching t)
+  :bind (:map leader-map
+              ("sgp" . projectile-grep))
+  ;; doom-modeline still uses these
   :commands (projectile-project-root projectile-project-p)
   :config
   (add-to-list 'projectile-globally-ignored-directories "semanticdb")
-  (projectile-mode))
+  (projectile-mode +1))
 
 (use-package stripe-buffer
   :commands stripe-buffer-mode
@@ -918,7 +945,8 @@ ARG can constrct the bounds to the current defun."
 (use-package ediff
   :custom
   (ediff-window-setup-function 'ediff-setup-windows-plain)
-  (ediff-split-window-function 'split-window-horizontally))
+  (ediff-split-window-function 'split-window-horizontally)
+  (ediff-keep-variants nil))
 
 (use-package magit
   :custom
@@ -976,6 +1004,7 @@ ARG can constrct the bounds to the current defun."
   (company-tooltip-limit 12)
   (company-require-match 'never)
   (company-tooltip-align-annotations t)
+  :hook (emacs-lisp-mode . company-mode)
   :bind (:map company-active-map
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous)
@@ -1044,12 +1073,11 @@ ARG can constrct the bounds to the current defun."
   (window-numbering-mode 1))
 
 (use-package winner
-  :hook (ediff-quit . winner-undo)
   :bind (:map leader-map
               ("wu" . winner-undo)
               ("wr" . winner-redo))
   :config
-  (winner-mode))
+  (winner-mode +1))
 
 (use-package golden-ratio
   :demand t

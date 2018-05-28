@@ -817,26 +817,15 @@ of `iedit' regions."
 ;;
 ;; Hooks and Initialization
 ;;
-(with-eval-after-load 'helm
-  (defun doom--helm-display-mode-line (source &optional force)
-    (when doom-modeline-mode
-      (let ((force nil))
-        (cond (helm-echo-input-in-header-line
-               (setq force t)
-               (helm--set-header-line))
-              (helm-display-header-line
-               (let ((hlstr (helm-interpret-value
-                             (and (listp source)
-                                  (assoc-default 'header-line source))
-                             source))
-                     (endstr (make-string (window-width) ? )))
-                 (setq header-line-format
-                       (propertize (concat " " hlstr endstr)))))))
-      (doom-set-modeline 'helm)
-      (when force (force-mode-line-update))))
-  (advice-add 'helm-display-mode-line :after
-              #'doom--helm-display-mode-line))
+(defvar doom-modeline-show-helm-modeline t
+  "Whether doom-modeline-mode should display the modeline in helm buffers.")
 
+(defun doom--helm-display-mode-line (&optional _source _force)
+  (if doom-modeline-mode
+      (with-helm-buffer
+        (if doom-modeline-show-helm-modeline
+            (doom-set-modeline 'helm)
+          (setq mode-line-format nil)))))
 
 (define-minor-mode doom-modeline-mode
   "Minor mode to hide the mode-line in the current buffer."
@@ -856,9 +845,12 @@ of `iedit' regions."
         (add-hook 'focus-in-hook #'+doom-modeline|update-env)
         (add-hook 'find-file-hook #'+doom-modeline|update-env)
         ;; Hacks for various modes
+        ;; Both add-hook and advice-add work on uninitialized variables.
         (add-hook 'org-src-mode-hook #'+doom-modeline|set-special-modeline)
         (add-hook 'image-mode-hook #'+doom-modeline|set-media-modeline)
         (add-hook 'window-numbering-mode-hook #'+doom-modeline|set-main-modeline)
+        (add-hook 'helm-after-initialize-hook #'doom--helm-display-mode-line)
+        (advice-add 'helm-display-mode-line :after #'doom--helm-display-mode-line)
         ;; Finally set the modeline
         (doom-set-modeline 'main t)
         ;; For Scratch buffer too, in we want doom-modeline-mode enabled at startup.
@@ -875,6 +867,8 @@ of `iedit' regions."
     (remove-hook 'org-src-mode-hook #'+doom-modeline|set-special-modeline)
     (remove-hook 'image-mode-hook #'+doom-modeline|set-media-modeline)
     (remove-hook 'window-numbering-mode-hook #'+doom-modeline|set-main-modeline)
+    (remove-hook 'helm-after-initialize-hook #'doom--helm-display-mode-line)
+    (advice-remove 'helm-display-mode-line #'doom--helm-display-mode-line)
     (setq-default mode-line-format doom-saved-mode-line-format)
     (force-mode-line-update)))
 
