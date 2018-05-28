@@ -305,7 +305,7 @@ Always splits right from the second window."
   :custom
   (auto-revert-verbose nil)
   :config
-  (global-auto-revert-mode))
+  (global-auto-revert-mode +1))
 
 (use-package re-builder
   :config
@@ -924,7 +924,6 @@ ARG can constrct the bounds to the current defun."
   :custom
   (magit-display-buffer-function
    'magit-display-buffer-same-window-except-diff-v1)
-  (magit-auto-revert-mode nil)
   :bind
   (("C-x g" . magit-status)
    ("C-x C-v" . magit-status)

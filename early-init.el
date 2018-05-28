@@ -26,7 +26,9 @@
 ;; should be taken to ensure that the values shown here are not later overridden
 ;; by `customize'. 
 
-;;; Code: 
+;;; Code:
+;;;; #FIXME: MAGIT, see https://github.com/magit/magit/issues/3460
+(customize-set-variable 'global-auto-revert-mode t)
 ;;;; Graphical Elements Settings
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . nil))
