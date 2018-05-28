@@ -146,7 +146,8 @@
    ("wv" . split-window-below)
    ("qq" . save-buffers-kill-emacs)
    ("qf" . delete-frame)
-   ("ad" . dired))
+   ("ad" . dired)
+   ("sgg" . rgrep))
   :config
   (unless (bound-and-true-p leader-map)
     (define-prefix-command 'leader-map)))
@@ -195,6 +196,8 @@
     "M-m q" "Quit"
     "M-m s" "Search"
     "M-m s r" "Ripgrep"
+    "M-m s a" "Ag"
+    "M-m s g" "Grep/Git-Grep"
     "M-m t" "Toggle"
     "M-m w" "Window")
   (which-key-setup-side-window-bottom)
@@ -629,32 +632,35 @@ ARG can constrct the bounds to the current defun."
 
 (use-package rg
   :custom
-  (rg-group-result nil)
-  :bind
-  (:map leader-map
-        ("s r r" . rg)
-        ("s r p" . rg-project)
-        ("s r d" . rg-dwim)
-        ("s r l" . rg-literal)
-        ("s r s" . rg-list-searches)))
+  (rg-group-result t)
+  :bind (:map leader-map
+              ("s r r" . rg)
+              ("s r p" . rg-project)
+              ("s r d" . rg-dwim)
+              ("s r l" . rg-literal)
+              ("s r s" . rg-list-searches)))
 
 (use-package ag
   :custom
   (ag-highlight-search t)
   (ag-reuse-window t)
   (ag-ignore-list '("archive-contents"))
-  :bind
-  (("M-s a a" . ag-regexp)
-   ("M-s a p" . ag-project-regexp)
-   ("M-s a A" . ag)
-   ("M-s a P" . ag-project)
-   ("M-s a d" . ag-dired-regexp)
-   ("M-s a D" . ag-dired)))
+  :bind (:map leader-map
+              ("s a a" . ag-regexp)
+              ("s a p" . ag-project-regexp)
+              ("s a A" . ag)
+              ("s a P" . ag-project)
+              ("s a d" . ag-dired-regexp)
+              ("s a D" . ag-dired)))
 
 (use-package wgrep
   :custom
   (wgrep-auto-save-buffer nil)
   (wgrep-enable-key (kbd "C-c C-e")))
+
+(use-package wgrep-ag)
+
+(use-package wgrep-helm)
 
 (use-package helm
   :custom
@@ -776,14 +782,6 @@ ARG can constrct the bounds to the current defun."
   :bind
   (("C-x C-f" . helm-find-files)
    :map leader-map
-   ("ff" . helm-find-files)))
-
-(use-package helm-grep
-  :custom
-  (helm-grep-ag-command
-   "rg -M 256 --color=always --smart-case --no-heading --line-number %s %s %s")
-  :bind (:map helm-grep-mode-map
-              ("RET" . helm-grep-mode-jump-other-window)))
 
 (use-package helm-regexp
   :custom
@@ -805,6 +803,23 @@ ARG can constrct the bounds to the current defun."
   (add-to-list 'helm-into-next-alist
                '("*helm occur*" . helm-multi-occur-all)))
 
+(use-package helm-grep
+  :custom
+  (helm-grep-ag-command
+   "rg -M 256 --color=always --smart-case --no-heading --line-number %s %s %s")
+  :bind (:map helm-grep-mode-map
+              ("RET" . helm-grep-mode-jump-other-window))
+  :init
+  (defun helm-grep-ag-dwim (&optional input)
+    "Calls `helm-grep-ag' in git project root or default directory."
+    (interactive)
+    (minibuffer-with-setup-hook (lambda () (insert (or input "")))
+      (helm-grep-ag-1 (or (expand-file-name
+                           (locate-dominating-file default-directory ".git"))
+                          default-directory))))
+  (add-to-list 'helm-into-next-alist
+               '("*helm multi occur*" . helm-grep-ag-dwim)))
+
 (use-package helm-locate
   :bind (:map leader-map
               ("fl" . helm-locate))
@@ -812,6 +827,16 @@ ARG can constrct the bounds to the current defun."
   (when (equal system-type 'darwin)
     (customize-set-variable 'helm-locate-fuzzy-match nil)
     (customize-set-variable 'helm-locate-command "mdfind -name %s %s")))
+
+(use-package helm-rg
+  :custom
+  (helm-rg-default-directory 'default)
+  :custom-face
+  (helm-rg-preview-match-highlight ((t (:inherit helm-match-item))))
+  (helm-rg-preview-line-highlight ((t (:inherit helm-match))))
+  :bind (:map leader-map
+              ("sh" . helm-rg)
+              ("sH" . helm-projectile-rg)))
 
 (use-package helm-elisp
   :bind (("C-h a" . helm-apropos)
@@ -862,67 +887,6 @@ ARG can constrct the bounds to the current defun."
   :load-path "site-lisp/helm-persp"
   :bind
   ("C-x C-l" . helm-persp-layouts))
-
-(use-package helm-ag
-  :custom
-  (helm-ag-always-set-extra-option nil)
-  :bind
-  (:map leader-map
-        ("ss" . helm-do-ag)
-        ("sp" . helm-do-ag-project-root)))
-
-(use-package helm-rg
-  :custom
-  (helm-rg-default-directory 'default)
-  :bind (:map leader-map
-              ("sh" . helm-rg)
-              ("sH" . helm-projectile-rg))
-  :init
-  (add-to-list 'helm-into-next-alist
-               '("*helm multi occur*" . helm-rg)))
-
-(use-package helm-swoop
-  :disabled t
-  :custom
-  (helm-swoop-speed-or-color t)
-  (helm-swoop-split-with-multiple-windows t)
-  (helm-swoop-pre-input-function (lambda () ""))
-  :bind
-  (("C-s" . helm-swoop)
-   :map helm-swoop-map
-   ("C-s" . +helm-swoop-next)
-   :map helm-multi-swoop-map
-   ("C-s" . +helm-multi-swoop-next)
-   :map helm-map
-   ("C-s" . +helm-multi-swoop-next))
-  :config
-  (defun +helm-swoop-next ()
-    "From `helm-swoop', calls `helm-multi-swoop-projectile' or `helm-multi-swoop-all'
-Preserves input from `helm-swoop'."
-    (interactive)
-    (helm-run-after-exit
-     (lambda ()
-       (if (ignore-errors (projectile-project-p))
-           (helm-multi-swoop-projectile helm-input)
-         (helm-multi-swoop-all helm-input)))))
-  
-  (defun +helm-multi-swoop-next ()
-    "From '`helm-multi-swoop', calls `helm-do-grep-ag'.
-Searches from either `projectile-project-root' or `default-directory'.
-Preserves input from `helm-multi-swoop'."
-    (interactive)
-    (when (string= helm-buffer "*Helm Multi Swoop*")
-      (helm-run-after-exit
-       (lambda ()
-         (minibuffer-with-setup-hook (lambda () (insert helm-input))
-           (let ((default-directory
-                   (or (ignore-errors (projectile-project-root))
-                       default-directory)))
-             (helm-do-grep-ag t)))))))
-  
-  (setq helm-swoop-candidate-number-limit 200
-        ;; Bring helm-swoop under shackle control
-        helm-swoop-split-window-function 'switch-to-buffer-other-window))
 
 (use-package helm-descbinds
   :custom
