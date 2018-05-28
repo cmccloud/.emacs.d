@@ -274,6 +274,8 @@ Always splits right from the second window."
   (m-font-lock-toggle-weight 'normal))
 
 (use-package all-the-icons
+  :custom
+  (all-the-icons-scale-factor 1)
   :commands (all-the-icons-material
              all-the-icons-faicon
              all-the-icons-octicon
@@ -890,7 +892,7 @@ ARG can constrct the bounds to the current defun."
          :map helm-ls-git-map
          ("C-s" . helm-ls-git-run-grep))
   :config
-  (when (featurep 'projectile)
+  (with-eval-after-load 'projectile
     (defvar helm-source-ls-git-project-history
       (helm-build-sync-source "Project History"
         :candidates projectile-known-projects
