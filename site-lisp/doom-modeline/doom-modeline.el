@@ -827,6 +827,7 @@ of `iedit' regions."
             (doom-set-modeline 'helm)
           (setq mode-line-format nil)))))
 
+;;;###autoload
 (define-minor-mode doom-modeline-mode
   "Minor mode to hide the mode-line in the current buffer."
   :init-value nil
@@ -854,8 +855,9 @@ of `iedit' regions."
         ;; Finally set the modeline
         (doom-set-modeline 'main t)
         ;; For Scratch buffer too, in we want doom-modeline-mode enabled at startup.
-        (with-current-buffer "*scratch*"
-          (doom-set-modeline 'main))
+        (when-let ((scratch (get-buffer "*scratch*")))
+          (with-current-buffer scratch
+            (doom-set-modeline 'main)))
         (force-mode-line-update))
     ;;
     (remove-hook 'window-configuration-change-hook #'+doom-modeline|set-selected-window)
@@ -870,6 +872,9 @@ of `iedit' regions."
     (remove-hook 'helm-after-initialize-hook #'doom--helm-display-mode-line)
     (advice-remove 'helm-display-mode-line #'doom--helm-display-mode-line)
     (setq-default mode-line-format doom-saved-mode-line-format)
+    (when-let ((scratch (get-buffer "*scratch*")))
+          (with-current-buffer scratch
+            (setq mode-line-format doom-saved-mode-line-format)))
     (force-mode-line-update)))
 
 

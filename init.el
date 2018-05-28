@@ -273,12 +273,19 @@ Always splits right from the second window."
   (load-theme 'spacemacs-dark 'no-confirm)
   (m-font-lock-toggle-weight 'normal))
 
+(use-package all-the-icons
+  :commands (all-the-icons-material
+             all-the-icons-faicon
+             all-the-icons-octicon
+             all-the-icons-fileicon
+             all-the-icons-wicon))
+
 (use-package doom-modeline
-  :demand t
   :load-path "site-lisp/doom-modeline"
+  :bind (:map leader-map
+              ("tm" . doom-modeline-mode))
   :config
-  (setq doom-modeline-show-helm-modeline nil)
-  (doom-modeline-mode 1))
+  (setq doom-modeline-show-helm-modeline nil))
 
 (use-package page-break-lines
   :hook ((emacs-lisp-mode . page-break-lines-mode)
