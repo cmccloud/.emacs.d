@@ -54,8 +54,7 @@
  '(custom-buffer-done-kill t)
  '(custom-enabled-themes nil)
  '(custom-file "/Users/Macnube/.emacs.d/custom.el")
- '(custom-safe-themes
-   '("2a1b4531f353ec68f2afd51b396375ac2547c078d035f51242ba907ad8ca19da" "2af26301bded15f5f9111d3a161b6bfb3f4b93ec34ffa95e42815396da9cb560" "e91ca866d6cbb79786e314e0466f4f1b8892b72e77ed702e53bf7565e0dfd469" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "f03e2076bb6ba9f1178ef83f54b395c48c70dd160a34e37c80c876c925701b5a" "db2ecce0600e3a5453532a89fc19b139664b4a3e7cbefce3aaf42b6d9b1d6214" "e1e94aaecf0d3ed7bc6cdcebb02aafbf2a0236e711f4a78783337f8b0d32c842" "413a1712dfb0929cca961863482094057217bcb13475b4b813b35ea81da8e2e6" "5fea012429d3e720b7adc598295157befc00af4f3d433255087b407bf3a9ab71" "c31b688a76507c3b0458ae9d3848e3196346aeeadde457df5f828c7dc3e59fe3" "b40f4579788b1e990c553c163a4d294ac9d5a2a4615b1d1a757812ea427f8d50" "2f5dd0ac7dffdc0acf0aa15c9b7a5b1f86c37b9e11800325160b89c1b8a6fefe" "afbb40954f67924d3153f27b6d3399df221b2050f2a72eb2cfa8d29ca783c5a8" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" default))
+ '(custom-safe-themes t)
  '(delete-by-moving-to-trash t)
  '(display-line-numbers-current-absolute t)
  '(display-line-numbers-type t t)
@@ -173,7 +172,7 @@
  '(org-ellipsis "  ")
  '(package-quickstart t)
  '(package-selected-packages
-   '(ivy wgrep-ag wgrep-helm smart-jump helm-ls-git helm-rg slime-company visual-regexp-steroids visual-regexp ag rg helpful doom-themes company solaire-mode helm-xref helm-unicode stripe-buffer hlinum eldoc-eval company-quickhelp dumb-jump git-commit lispy use-package persp-mode helm helm-core helm-descbinds helm-describe-modes helm-themes bind-key hydra spacemacs-theme page-break-lines all-the-icons writeroom-mode visual-fill-column magit-gh-pulls impatient-mode company-web rainbow-mode company-tern clojure-mode paradox pdf-tools expand-region web-mode gist f request-deferred deferred request shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode nodejs-repl eyebrowse golden-ratio flycheck skewer-mode js-doc racket-mode osx-trash projectile smooth-scrolling elisp-slime-nav window-numbering shackle magit js2-mode exec-path-from-shell cider avy))
+   '(darktooth-theme ivy wgrep-ag wgrep-helm smart-jump helm-ls-git helm-rg slime-company visual-regexp-steroids visual-regexp ag rg helpful doom-themes company solaire-mode helm-xref helm-unicode stripe-buffer eldoc-eval company-quickhelp dumb-jump git-commit lispy use-package persp-mode helm helm-core helm-descbinds helm-describe-modes helm-themes bind-key hydra spacemacs-theme page-break-lines all-the-icons writeroom-mode visual-fill-column magit-gh-pulls impatient-mode company-web rainbow-mode company-tern clojure-mode paradox pdf-tools expand-region web-mode gist f request-deferred deferred request shm intero haskell-mode diff-hl gh-md markdown-mode vmd-mode nodejs-repl eyebrowse golden-ratio flycheck skewer-mode js-doc racket-mode osx-trash projectile smooth-scrolling elisp-slime-nav window-numbering shackle magit js2-mode exec-path-from-shell cider avy))
  '(package-user-dir "~/.emacs.d/elpa")
  '(paradox-column-width-package 30)
  '(paradox-execute-asynchronously t)
@@ -280,7 +279,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :slant normal :weight ultra-light :height 110 :width normal :foundry "nil" :family "Input Mono"))))
+ '(default ((t (:inherit nil :slant normal :weight normal :height 110 :width ultra-condensed :foundry "nil" :family "Input"))))
  '(helm-match ((t (:inherit font-lock-keyword-face :weight bold))))
  '(helm-match-item ((t (:inherit helm-match :underline t))))
  '(helm-rg-preview-line-highlight ((t (:inherit helm-match-item))))
