@@ -1,4 +1,7 @@
 ;;; ui/doom-modeline/doom-modeline.el -*- lexical-binding: t; -*-
+(require 'subr-x)
+(when (display-graphic-p)
+  (require 'all-the-icons))
 
 (unless (display-graphic-p)
   (defalias 'all-the-icons-octicon    #'ignore)
@@ -6,9 +9,6 @@
   (defalias 'all-the-icons-fileicon   #'ignore)
   (defalias 'all-the-icons-wicon      #'ignore)
   (defalias 'all-the-icons-alltheicon #'ignore))
-
-(when (display-graphic-p)
-  (require 'all-the-icons))
 
 ;; A minor mode for toggling the mode-line
 (defvar-local doom--modeline-format nil
@@ -167,7 +167,7 @@ DEFAULT is non-nil, set the default mode-line for all buffers."
 ;; Variables
 ;;
 
-(defvar +doom-modeline-height 29
+(defvar +doom-modeline-height (round (* (default-line-height) 1.4))
   "How tall the mode-line should be (only respected in GUI emacs).")
 
 (defvar +doom-modeline-bar-width 3
@@ -836,6 +836,8 @@ of `iedit' regions."
       (progn
         ;; Save current Modeline
         (setq doom-saved-mode-line-format mode-line-format)
+        ;; Recalculate height based on font
+        (setq +doom-modeline-height (round (* (default-line-height) 1.4)))
         ;; Maintains selected window
         (add-hook 'window-configuration-change-hook #'+doom-modeline|set-selected-window)
         (add-hook 'focus-in-hook #'+doom-modeline|set-selected-window)
