@@ -51,7 +51,7 @@
 (customize-set-variable 'make-backup-files nil)
 (customize-set-variable 'delete-by-moving-to-trash t)
 (customize-set-variable 'load-prefer-newer t)
-(customize-set-variable 'confirm-kill-emacs #'yes-or-no-p)
+(customize-set-variable 'confirm-kill-emacs #'y-or-n-p)
 (customize-set-variable 'save-interprogram-paste-before-kill t)
 
 ;; Don't let find-file-at-point hang emacs with a bad ping attempt
@@ -596,7 +596,7 @@ Only for use with `advice-add'."
 (use-package ace-window
   :custom
   (aw-keys '(49 50 51 52 53 54 55 56 57 48))
-  :bind ("C-x o" . ace-window))
+  :bind (("C-x o" . ace-window)))
 
 (use-package window-numbering
   :bind
@@ -900,8 +900,8 @@ Only for use with `advice-add'."
      "\\*helm"
      "\\*helm-mode"
      "\\*Echo Area"
+     "^magit:"
      "\\*Minibuf"
-     "\\magit"
      "\\*Diff*"
      "\\*lispy-goto*"
      "\\*Backtrace*"))
@@ -975,12 +975,12 @@ Only for use with `advice-add'."
   (helm-rg-preview-match-highlight ((t (:inherit helm-match-item))))
   (helm-rg-preview-line-highlight ((t (:inherit helm-match))))
   :bind (:map leader-map
-         ("sh" . helm-rg)
-         ("sH" . helm-projectile-rg)
-         :map helm-rg-map
-         ("M-o" . helm-rg--file-forward)
-         ("M-i" . helm-rg--file-backward)
-         ("C-x C-s" . helm-rg--bounce)))
+              ("sh" . helm-rg)
+              ("sH" . helm-projectile-rg)
+              :map helm-rg-map
+              ("M-o" . helm-rg--file-forward)
+              ("M-i" . helm-rg--file-backward)
+              ("C-x C-s" . helm-rg--bounce)))
 
 (use-package helm-elisp
   :bind (("C-h a" . helm-apropos)
