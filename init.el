@@ -914,9 +914,27 @@ Only for use with `advice-add'."
   (helm-ff-tramp-not-fancy 'dirs-only)
   (helm-ff-auto-update-initial-value nil)
   :bind (("C-x C-f" . helm-find-files)
+         ("C-x C-p" . helm-known-projects)
          :map leader-map
          ("ff" . helm-find-files)
-         ("hf" . helm-find)))
+         ("hf" . helm-find))
+  :config
+  (defvar helm-source-files-known-projects
+    (helm-build-sync-source "Known Project Repositories"
+      :candidates #'magit-list-repos
+      :action (helm-make-actions
+               "Browse Project"
+               (lambda (candidate)
+                 (with-helm-default-directory candidate
+                     (helm-browse-project nil)))
+               "Git Status"
+               (lambda (candidate)
+                 (magit-status-internal candidate)))))
+
+  (defun helm-known-projects ()
+    "Navigation between projects know `magit-list-repos'."
+    (interactive)
+    (helm :sources helm-source-files-known-projects)))
 
 (use-package helm-regexp
   :custom
@@ -1017,15 +1035,8 @@ Only for use with `advice-add'."
          :map helm-ls-git-map
          ("C-s" . helm-ls-git-run-grep))
   :config
-  (when (featurep 'magit)
-    (defvar helm-source-ls-git-known-projects
-      (helm-build-sync-source "Known Project Repositories"
-        :candidates #'magit-list-repos
-        :action (lambda (candidate)
-                  (with-helm-default-directory candidate
-                      (helm-browse-project nil)))))
-    (add-to-list 'helm-ls-git-default-sources
-                 'helm-source-ls-git-known-projects t)))
+  (add-to-list 'helm-ls-git-default-sources
+               'helm-source-files-known-projects t))
 
 (use-package helm-persp
   :load-path "site-lisp/helm-persp"
