@@ -38,7 +38,22 @@
 (setq ns-use-proxy-icon nil)
 
 ;;;; Package Settings
-(customize-set-variable 'package-user-dir (concat user-emacs-directory "elpa"))
+(customize-set-variable
+ 'package-quickstart-file
+ (expand-file-name "cache/package-quickstart.el" user-emacs-directory))
+(customize-set-variable
+ 'package-archives '(("melpa" . "https://melpa.org/packages/")
+                     ("melpa-stable" . "https://stable.melpa.org/packages/")
+                     ("org" . "http://orgmode.org/elpa/")
+                     ("gnu" . "http://elpa.gnu.org/packages/")))
+(customize-set-variable
+ 'package-archive-priorities '(("melpa" . 10)
+                               ("melpa-stable" . 5)
+                               ("gnu" . 0)
+                               ("marmalade" . -5)))
+(customize-set-variable
+ 'package-user-dir (expand-file-name "elpa" user-emacs-directory))
+(customize-set-variable 'package-menu-hide-low-priority t)
 (customize-set-variable 'package-quickstart t)
 
 ;;; early-init.el ends here

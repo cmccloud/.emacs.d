@@ -349,15 +349,6 @@ Always splits right from the second window."
 ;;*** Misc 
 (use-package paradox
   :custom
-  (package-archives '(("melpa" . "https://melpa.org/packages/")
-                      ("melpa-stable" . "https://stable.melpa.org/packages/")
-                      ("org" . "http://orgmode.org/elpa/")
-                      ("gnu" . "http://elpa.gnu.org/packages/")))
-  (package-archive-priorities '(("melpa" . 10)
-                                ("melpa-stable" . 5)
-                                ("gnu" . 0)
-                                ("marmalade" . -5)))
-  (package-menu-hide-low-priority t)
   (paradox-lines-per-entry 1)
   (paradox-use-homepage-buttons nil)
   :config
