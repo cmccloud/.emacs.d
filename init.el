@@ -354,6 +354,16 @@ Always splits right from the second window."
   :config
   (paradox-enable))
 
+(use-package lastpass
+  :custom
+  (lastpass-browser "generic")
+  (lastpass-multifactor-use-passcode t)
+  (lastpass-pass-length 24)
+  (lastpass-user user-mail-address)
+  :commands (lastpass-logged-in-p)
+  :config
+  (lastpass-auth-source-enable))
+
 (use-package exec-path-from-shell
   :if (equal system-type 'darwin)
   :init
