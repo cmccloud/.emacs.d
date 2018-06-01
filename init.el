@@ -443,7 +443,7 @@ Always splits right from the second window."
   (lispy-completion-method 'helm)
   (lispy-occur-backend 'helm)
   (lispy-eval-display-style 'overlay)
-  (lispy-no-permanent-semantic t)
+  (lispy-no-permanent-semantic nil)
   (lispy-safe-delete t)
   (lispy-safe-copy t)
   (lispy-safe-paste t)
@@ -473,18 +473,21 @@ ARG can constrct the bounds to the current defun."
     (funcall-interactively
      'lispy-ace-paren
      (not arg)))
+
+  (defun lispy--kill-semantic ()
+    "Disables semantic calls from lispy when semantic isn't behaving."
+    ;; Until we find a better alternative, use i-menu for tag navigation
+    (lispy-define-key lispy-mode-map "g" 'helm-imenu-in-all-buffers)
+    (lispy-define-key lispy-mode-map "G" 'helm-semantic-or-imenu)
+    ;; Do everything we can to prevent semantic from killing emacs
+    (dolist (command '(lispy-goto
+                       lispy-goto-recursive
+                       lispy-goto-local
+                       lispy-goto-elisp-commands
+                       lispy-goto-projectile))
+      (fset command #'ignore)))
   
-  (lispy-define-key lispy-mode-map "q" 'lispy-ace-paren-unbounded)
-  ;; Until we find a better alternative, use i-menu for tag navigation
-  (lispy-define-key lispy-mode-map "g" 'helm-imenu-in-all-buffers)
-  (lispy-define-key lispy-mode-map "G" 'helm-semantic-or-imenu)
-  ;; Do everything we can to prevent semantic from killing emacs
-  (dolist (command '(lispy-goto
-                     lispy-goto-recursive
-                     lispy-goto-local
-                     lispy-goto-elisp-commands
-                     lispy-goto-projectile))
-    (fset command #'ignore)))
+  (lispy-define-key lispy-mode-map "q" 'lispy-ace-paren-unbounded))
 
 ;;*** Window and Buffer Management 
 (use-package eyebrowse
@@ -661,7 +664,7 @@ Only for use with `advice-add'."
           ("*Completions*" :select t :align below :size 0.4)
           ("*Compile-Log*" :select t :align below :size 0.4)
           ("*Man.*" :regexp t :select t :align shackle-left-or-below :size .5)
-          ("*lispy-goto*" :align t :size 0.4)
+          ("*lispy-goto*" :align t :size 0.2)
           ("*git-gutter:diff*" :align shackle-left-or-below :size 0.4)
           ("*Diff*" :select t :align shackle-left-or-below :size 0.4)
           ("*Package Commit List*" :select t :align shackle-left-or-below :size 0.4)
@@ -679,13 +682,21 @@ Only for use with `advice-add'."
   (semanticdb-default-save-directory
    (concat user-emacs-directory "cache/semanticdb"))
   (semantic-analyze-summary-function 'semantic-format-tag-summarize)
+  :hook (semantic-mode . semantic-imenu-cleanup)
   :config
+  (defun semantic-imenu-cleanup ()
+    (unless semantic-mode
+      (setq-local imenu-create-index-function
+                  (default-value 'imenu-create-index-function))))
+  
   (semantic-default-elisp-setup)
+  
   (setq-mode-local emacs-lisp-mode
                    semanticdb-find-default-throttle
                    (default-value 'semanticdb-find-default-throttle)
-                   imenu-create-index-function
-                   (default-value 'imenu-create-index-function))
+                   completion-at-point-functions
+                   '(elisp-completion-at-point))
+  
   (semantic-elisp-setup-form-parser
       (lambda (form _start _end)
         (let ((name (nth 1 form)))
@@ -694,7 +705,20 @@ Only for use with `advice-add'."
                             (nth 1 name)
                           name))
            nil)))
-    use-package))
+    use-package)
+
+  (semantic-elisp-setup-form-parser
+      (lambda (form _start _end)
+        (semantic-tag-new-function
+         (symbol-name (nth 1 form))
+         "Mode"
+         nil))
+    define-minor-mode)
+  
+  (cl-loop for fun in '(semantic-analyze-completion-at-point-function
+                        semantic-analyze-notc-completion-at-point-function
+                        semantic-analyze-nolongprefix-completion-at-point-function)
+           do (advice-add fun :override #'ignore)))
 
 (use-package mode-local
   :commands (mode-local-bind))
