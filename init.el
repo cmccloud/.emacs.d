@@ -124,12 +124,12 @@
   :custom
   (bind-key-describe-special-forms t)
   :bind
-  (("M-m" . leader-map)
+  (("M-m" . mnemonic-map)
    ("M-u" . undo)
    ("C-x C-c" . nil)
    ("M-n" . next-buffer)
    ("M-p" . previous-buffer)
-   :map leader-map
+   :map mnemonic-map
    ("tF" . toggle-frame-fullscreen)
    ("tl" . display-line-numbers-mode)
    ("bd" . kill-this-buffer)
@@ -143,8 +143,8 @@
    ("ad" . dired)
    ("sgg" . rgrep))
   :config
-  (unless (bound-and-true-p leader-map)
-    (define-prefix-command 'leader-map)))
+  (unless (bound-and-true-p mnemonic-map)
+    (define-prefix-command 'mnemonic-map)))
 
 (use-package which-key
   :demand t
@@ -175,7 +175,7 @@
     "M-s a" "Ag"
     "M-s r" "Riggrep"
     "M-s h" "Highlight"
-    ;; Leader Map
+    ;; Mnemonic Map
     "M-m b" "Buffers"
     "M-m f" "Files"
     "M-m a" "Applications"
@@ -214,8 +214,8 @@
   (split-width-threshold 80)
   (split-height-threshold 80)
   (split-window-preferred-function 'split-window-sensibly)
-  :bind (:map leader-map
               ("ws" . m-split-windows)
+  :bind (:map mnemonic-map
               ("wd" . delete-window))
   :init
   (defun m-split-windows ()
@@ -277,7 +277,7 @@ Always splits right from the second window."
   (hl-line-sticky-flag nil)
   (global-hl-line-sticky-flag nil)
   :bind
-  (:map leader-map
+  (:map mnemonic-map
         ("th" . hl-line-mode)
         ("tH" . global-hl-line-mode))
   :hook (prog-mode . hl-line-mode))
@@ -287,14 +287,14 @@ Always splits right from the second window."
   (term-suppress-hard-newline t)
   (term-buffer-maximum-size 1024)
   :bind
-  (:map leader-map
+  (:map mnemonic-map
         ("at" . ansi-term)
         :map term-raw-map
         ("M-x" . helm-M-x)
         ("M-m" . nil)))
 
 (use-package eshell
-  :bind (:map leader-map ("ae" . eshell))
+  :bind (:map mnemonic-map ("ae" . eshell))
   :init (setenv "NODE_NO_READLINE" "1")
   :config
   (add-hook 'eshell-mode-hook
@@ -333,7 +333,7 @@ Always splits right from the second window."
 
 (use-package doom-modeline
   :load-path "site-lisp/doom-modeline"
-  :bind (:map leader-map
+  :bind (:map mnemonic-map
               ("tm" . doom-modeline-mode))
   :init
   (doom-modeline-mode +1)
@@ -450,7 +450,7 @@ Always splits right from the second window."
   :bind
   (("C-a" . lispy-move-beginning-of-line)
    ("C-e" . lispy-move-end-of-line)
-   :map leader-map
+   :map mnemonic-map
    ("M-m" . lispy-mark-symbol)
    :map lispy-mode-map
    ("C-j" . avy-goto-char-timer)
@@ -492,7 +492,7 @@ ARG can constrct the bounds to the current defun."
 ;;*** Window and Buffer Management 
 (use-package eyebrowse
   :bind*
-  (:map leader-map
+  (:map mnemonic-map
         ("l1" . eyebrowse-switch-to-window-config-1)
         ("l2" . eyebrowse-switch-to-window-config-2)
         ("l3" . eyebrowse-switch-to-window-config-3)
@@ -521,7 +521,7 @@ ARG can constrct the bounds to the current defun."
   (persp-auto-resume-time .1)
   (persp-init-frame-behaviour 'persp-ignore-wconf)
   :bind
-  (:map leader-map
+  (:map mnemonic-map
         ("ll" . persp-mode)
         ("ls" . persp-switch)
         ("la" . persp-add-buffer)
@@ -609,7 +609,7 @@ Only for use with `advice-add'."
   (window-numbering-mode 1))
 
 (use-package winner
-  :bind (:map leader-map
+  :bind (:map mnemonic-map
               ("wu" . winner-undo)
               ("wr" . winner-redo))
   :hook (ediff-quit . winner-undo)
@@ -617,12 +617,11 @@ Only for use with `advice-add'."
   (winner-mode +1))
 
 (use-package golden-ratio
-  :demand t
   :custom
   (golden-ratio-auto-scale t)
   (golden-ratio-exclude-buffer-names '("*Helm Swoop*" "*Helm Multi Swoop*"))
   (golden-ratio-exclude-modes '("magit-popup-mode" "magit-status-mode" "ediff-mode"))
-  :bind (:map leader-map ("tg" . golden-ratio-mode))
+  :bind (:map mnemonic-map ("tg" . golden-ratio-mode))
   :hook (golden-ratio-mode . balance-windows)
   :config
   (defun golden-ratio-helm-alive-p ()
@@ -767,7 +766,7 @@ Only for use with `advice-add'."
 (use-package rg
   :custom
   (rg-group-result t)
-  :bind (:map leader-map
+  :bind (:map mnemonic-map
          ("s r r" . rg)
          ("s r p" . rg-project)
          ("s r d" . rg-dwim)
@@ -784,7 +783,7 @@ Only for use with `advice-add'."
   (ag-highlight-search t)
   (ag-reuse-window t)
   (ag-ignore-list '("archive-contents"))
-  :bind (:map leader-map
+  :bind (:map mnemonic-map
               ("s a a" . ag-regexp)
               ("s a p" . ag-project-regexp)
               ("s a A" . ag)
@@ -814,7 +813,7 @@ Only for use with `advice-add'."
   :bind
   (("M-n" . next-file-buffer)
    ("M-p" . previous-file-buffer)
-   :map leader-map
+   :map mnemonic-map
    ("hdf" . describe-function)
    ("hdv" . describe-variable)
    :map helm-map
@@ -906,7 +905,7 @@ Only for use with `advice-add'."
      "\\*lispy-goto*"
      "\\*Backtrace*"))
   :bind (("C-x C-b" . helm-mini)
-         :map leader-map
+         :map mnemonic-map
          ("bb" . helm-mini)))
 
 (use-package helm-files
@@ -915,7 +914,7 @@ Only for use with `advice-add'."
   (helm-ff-auto-update-initial-value nil)
   :bind (("C-x C-f" . helm-find-files)
          ("C-x C-p" . helm-known-projects)
-         :map leader-map
+         :map mnemonic-map
          ("ff" . helm-find-files)
          ("hf" . helm-find))
   :config
@@ -935,6 +934,9 @@ Only for use with `advice-add'."
     "Navigation between projects know `magit-list-repos'."
     (interactive)
     (helm :sources helm-source-files-known-projects)))
+
+(use-package helm-find
+  :commands (helm-find-1))
 
 (use-package helm-regexp
   :custom
@@ -979,7 +981,7 @@ Only for use with `advice-add'."
                '("*helm multi occur*" . helm-grep-ag-dwim)))
 
 (use-package helm-locate
-  :bind (:map leader-map
+  :bind (:map mnemonic-map
               ("fl" . helm-locate))
   :config
   (when (equal system-type 'darwin)
@@ -992,7 +994,7 @@ Only for use with `advice-add'."
   :custom-face
   (helm-rg-preview-match-highlight ((t (:inherit helm-match-item))))
   (helm-rg-preview-line-highlight ((t (:inherit helm-match))))
-  :bind (:map leader-map
+  :bind (:map mnemonic-map
               ("sh" . helm-rg)
               ("sH" . helm-projectile-rg)
               :map helm-rg-map
@@ -1002,7 +1004,7 @@ Only for use with `advice-add'."
 
 (use-package helm-elisp
   :bind (("C-h a" . helm-apropos)
-         :map leader-map
+         :map mnemonic-map
          ("hll" . helm-locate-library)))
 
 (use-package helm-info
@@ -1058,7 +1060,7 @@ Only for use with `advice-add'."
   :bind
   (("C-x g" . magit-status)
    ("C-x C-v" . magit-status)
-   :map leader-map
+   :map mnemonic-map
    ("gs" . magit-status)
    ("gb" . magit-blame)
    ("gh" . magit-dispatch-popup)
@@ -1078,7 +1080,7 @@ Only for use with `advice-add'."
   :custom
   (projectile-indexing-method 'alien)
   (projectile-enable-caching t)
-  :bind (:map leader-map
+  :bind (:map mnemonic-map
               ("sgp" . projectile-grep))
   ;; doom-modeline still uses these
   :commands (projectile-project-root projectile-project-p)
@@ -1093,7 +1095,7 @@ Only for use with `advice-add'."
    (concat user-emacs-directory "cache/magithub")))
 
 (use-package diff-hl
-  :bind (:map leader-map
+  :bind (:map mnemonic-map
               ("gg" . hydra-diff-hl/body))
   :hook ((prog-mode . diff-hl-mode)
          (prog-mode . diff-hl-flydiff-mode)
@@ -1170,7 +1172,7 @@ Only for use with `advice-add'."
     :fringe-bitmap 'my-flycheck-fringe-indicator
     :fringe-face 'flycheck-fringe-info)
   :bind
-  (:map leader-map
+  (:map mnemonic-map
         ("tc" . flycheck-mode)))
 
 ;;** Languages and Language Extensions
