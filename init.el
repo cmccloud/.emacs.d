@@ -214,32 +214,41 @@
   (split-width-threshold 80)
   (split-height-threshold 80)
   (split-window-preferred-function 'split-window-sensibly)
-              ("ws" . m-split-windows)
   :bind (:map mnemonic-map
+              ("ws" . split-window-tree)
               ("wd" . delete-window))
   :init
-  (defun m-split-windows ()
-    "Splits windows while preserving a large editing space for the first window.
+  (defun split-window-tree ()
+    "Splits windows such that each gets half as much space as the previous.
 
-With only one window, behaves as `split-window-right', with multiple windows,
-Always splits right from the second window."
+E.G. for a four window split, each would receive the following percentage of
+the frame width: 1: 50% 2: 25% 3: 12.5% 4: 12.5%.
+
+The end effect, is that even while using `golden-ratio-mode', the first
+window will always have a relatively large portion of the screen, and so
+is rarely obscured.
+
+Also see `window-comination-limit'."
     (interactive)
-    (let* ((window-combination-limit t) ; Every split gets a new parent
-           (root (frame-root-window))
-           (parent (window-parent)))
-      ;; In order to maintain the largest layout possible, we never want to
-      ;; split the left-most window more than once.  First we determine if
-      ;; we are in the left-most window of a 2+ window configuration
-      ;; i.e. whether we are in a left-most window that has already been
-      ;; split.
-      (if (and (equal parent root) (not (window-prev-sibling)))
-          ;; If we are, instead of allocating space from our partition of the
-          ;; frame, we create a new *left* split from the root, and move to it.
-          ;; This preserves the appearance of a right-split.
-          (progn (split-window root nil 'left t)
-                 (other-window -1))
-        ;; Under any other circumstances we simply split normally.
-        (split-window-right)))))
+    (cl-flet ((swap-window-buffers
+               (window-1 window-2)
+               (let ((save-buf (window-buffer window-1))
+                     (save-start (window-start window-1)))
+                 (set-window-buffer window-1 (window-buffer window-2) t)
+                 (set-window-start window-1 (window-start window-2))
+                 (set-window-buffer window-2 save-buf t)
+                 (set-window-start window-2 save-start))))
+      (let* ((window-combination-limit t)
+             (target (selected-window))
+             (root (frame-root-window target))
+             (new-window (split-window root nil 'left))
+             (windows (window-list-1 new-window)))
+        (set-window-buffer new-window (window-buffer target) t)
+        (set-window-start new-window (window-start target))
+        (cl-loop for window in windows
+                 until (equal window target)
+                 do (swap-window-buffers window (cadr windows)))
+        (other-window -1)))))
 
 (use-package faces
   :init
