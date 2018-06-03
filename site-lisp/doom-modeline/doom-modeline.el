@@ -22,6 +22,11 @@ disabled.")
   "The value of `mode-line-format' prior to enabling `doom-modeline-mode'.
 Restored on exiting mode.")
 
+(defvar doom-original-mode-line-format
+  '("%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified mode-line-remote mode-line-frame-identification mode-line-buffer-identification "   " mode-line-position
+    (vc-mode vc-mode)
+    "  " mode-line-modes mode-line-misc-info mode-line-end-spaces))
+
 (define-minor-mode doom-hide-modeline-mode
   "Minor mode to hide the mode-line in the current buffer."
   :init-value nil
@@ -872,10 +877,10 @@ of `iedit' regions."
     (remove-hook 'window-numbering-mode-hook #'+doom-modeline|set-main-modeline)
     (remove-hook 'helm-after-initialize-hook #'doom--helm-display-mode-line)
     (advice-remove 'helm-display-mode-line #'doom--helm-display-mode-line)
-    (setq-default mode-line-format doom-saved-mode-line-format)
+    (setq-default mode-line-format doom-original-mode-line-format)
     (when-let ((scratch (get-buffer "*scratch*")))
           (with-current-buffer scratch
-            (setq mode-line-format doom-saved-mode-line-format)))
+            (setq mode-line-format doom-original-mode-line-format)))
     (force-mode-line-update)))
 
 
