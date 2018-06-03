@@ -360,8 +360,7 @@ have the same meaning as in `defun'."
 
 (defun doom-project-root (&optional strict-p)
   "Get the path to the root of your project."
-  (let ((projectile-require-project-root strict-p))
-    (ignore-errors (projectile-project-root))))
+  (ignore-errors (locate-dominating-file default-directory ".git")))
 
 (defun +doom-modeline--buffer-path ()
   "Displays the buffer's full path relative to the project root (includes the
