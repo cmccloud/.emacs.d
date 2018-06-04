@@ -1106,8 +1106,28 @@ Only for use with `advice-add'."
   (helm-ls-git-status-command 'magit-status-internal)
   :bind (("C-x C-d" . helm-browse-project)
          :map helm-ls-git-map
-         ("C-s" . helm-ls-git-run-grep))
+         ("C-s" . helm-ls-git-run-grep)
+         ("C-c /" . helm-ls-git-run-find))
   :config
+  (defun helm-ls-git-find (&optional _args)
+    "As `helm-find', but using the current project root."
+    (interactive)
+    (helm-find-1 (helm-ls-git-root-dir)))
+
+  (defun helm-ls-git-run-find ()
+    "Run find from helm-ls-git."
+    (interactive)
+    (with-helm-alive-p
+      (helm-exit-and-execute-action 'helm-ls-git-find)))
+
+  (cl-defmethod helm-setup-user-source ((source helm-ls-git-source))
+    (setf (slot-value source 'action)
+          (helm-append-at-nth
+           (slot-value source 'action)
+           (helm-make-actions "Find shell command in project `C-c /'"
+                              'helm-ls-git-find)
+           8)))
+  
   (add-to-list 'helm-ls-git-default-sources
                'helm-source-files-known-projects t))
 
