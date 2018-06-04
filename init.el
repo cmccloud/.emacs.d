@@ -495,20 +495,57 @@ ARG can constrct the bounds to the current defun."
      'lispy-ace-paren
      (not arg)))
 
-  (defun lispy--kill-semantic ()
-    "Disables semantic calls from lispy when semantic isn't behaving."
-    ;; Until we find a better alternative, use i-menu for tag navigation
-    (lispy-define-key lispy-mode-map "g" 'helm-imenu-in-all-buffers)
-    (lispy-define-key lispy-mode-map "G" 'helm-semantic-or-imenu)
-    ;; Do everything we can to prevent semantic from killing emacs
-    (dolist (command '(lispy-goto
-                       lispy-goto-recursive
-                       lispy-goto-local
-                       lispy-goto-elisp-commands
-                       lispy-goto-projectile))
-      (fset command #'ignore)))
+  (defun lispy--tag-name-elisp-extensions (f x &optional file)
+    "Adds a few more categories to how lispy tags are displayed."
+    (catch 'error (funcall f x file)
+           (cond ((eq (cadr x) 'function)
+                  (if (semantic-tag-get-attribute x :user-visible-flag)
+                      (lispy--propertize-tag "defun" x :command)
+                    (lispy--propertize-tag "defun" x :function)))
+                 ((eq (cadr x) 'type)
+                  (lispy--propertize-tag "defclass" x))
+                 (t (funcall f x file)))))
+
+  (defun lispy--helm-select-candidate (f candidates action)
+    (if (eq lispy-completion-method 'helm)
+        (helm :sources
+              (helm-build-sync-source "semantic tags"
+                :candidates candidates
+                :action action
+                :candidate-number-limit 300)
+              :preselect (lispy--current-tag)
+              :buffer "*lispy-goto*")
+      (funcall f candidates action)))
+
+  (defun lispy--recentf-suppress (f &optional file-list)
+    "Prevents `recentf-mode' history from being dirtied by `lispy--fetch-tags'."
+    (let (res
+          (recentf recentf-mode))
+      (recentf-mode -1)
+      (setq res (funcall f file-list))
+      (when recentf (recentf-mode +1))
+      res))
+
+  ;; Lispy key definitions
+  (lispy-define-key lispy-mode-map "q" 'lispy-ace-paren-unbounded)
+
+  ;; Better helm support for lispy-tags
+  (advice-add 'lispy--select-candidate :around
+              #'lispy--helm-select-candidate)
   
-  (lispy-define-key lispy-mode-map "q" 'lispy-ace-paren-unbounded))
+  ;; Extend lispy tags
+  (advice-add 'lispy--tag-name-elisp :around
+              #'lispy--tag-name-elisp-extensions)
+
+  ;; Keep recentf history clean
+  (advice-add 'lispy--fetch-tags :around
+              #'lispy--recentf-suppress)
+  
+  (setf (cadr lispy-tag-arity)
+        (append (cadr lispy-tag-arity)
+                '((cl-defmethod . 2)
+                  (cl-defgeneric . 1)
+                  (defclass . 1)))))
 
 ;;*** Window and Buffer Management 
 (use-package eyebrowse
@@ -717,28 +754,15 @@ Only for use with `advice-add'."
                    completion-at-point-functions
                    '(elisp-completion-at-point))
   
-  (semantic-elisp-setup-form-parser
-      (lambda (form _start _end)
-        (let ((name (nth 1 form)))
-          (semantic-tag-new-include
-           (symbol-name (if (eq (car-safe name) 'quote)
-                            (nth 1 name)
-                          name))
-           nil)))
-    use-package)
-
-  (semantic-elisp-setup-form-parser
-      (lambda (form _start _end)
-        (semantic-tag-new-function
-         (symbol-name (nth 1 form))
-         "Mode"
-         nil))
-    define-minor-mode)
-  
   (cl-loop for fun in '(semantic-analyze-completion-at-point-function
                         semantic-analyze-notc-completion-at-point-function
                         semantic-analyze-nolongprefix-completion-at-point-function)
            do (advice-add fun :override #'ignore)))
+
+(use-package semantic-el-extensions
+  :load-path "site-lisp/semantic-el-extensions"
+  :demand t
+  :after semantic)
 
 (use-package mode-local
   :commands (mode-local-bind))
