@@ -223,7 +223,7 @@ The end effect, is that even while using `golden-ratio-mode', the first
 window will always have a relatively large portion of the screen, and so
 is rarely obscured.
 
-Also see `window-comination-limit'."
+Also see `window-combination-limit'."
     (interactive)
     (cl-flet ((swap-window-buffers
                (window-1 window-2)
