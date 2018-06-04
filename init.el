@@ -1201,14 +1201,6 @@ Only for use with `advice-add'."
     ("c" magit-commit-popup "Commit" :exit t)
     ("q" nil "Quit" :exit t)))
 
-(use-package gist
-  :bind
-  (:map leader-map
-        ("gGb" . gist-buffer)
-        ("gGl" . gist-list)
-        ("gGr" . gist-region)
-        ("gGg" . gist-region-or-buffer)))
-
 ;;*** Syntax Checking and Completion 
 (use-package company
   :custom
