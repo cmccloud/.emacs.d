@@ -710,6 +710,12 @@ Only for use with `advice-add'."
   (shackle-select-reused-windows t)
   :config
   (defun shackle-left-or-below () (if (> (frame-width) 160) 'left 'below))
+  (defun shackle-display-helm-help (buffer alist plist)
+    (setq plist (seq-remove
+                 (lambda (elt) (or (functionp elt) (equal elt :custom)))
+                 plist))
+    (if (not (bound-and-true-p helm-alive-p))
+        (shackle--display-buffer buffer alist plist)))
   (setq shackle-rules
         `(("*Process List*" :select t :align below :size 0.4)
           ("*Apropos*" :select t :align below :size 0.4)
@@ -717,7 +723,8 @@ Only for use with `advice-add'."
           ("*Geiser documentation*" :select t :align t :size 0.4)
           ("*slime-description*" :select t :align t :size 0.4)
           ("\\`\\*\[h|H]elm.*?\\*\\'" :regexp t :align t :size 0.2)
-          ("*Help*" :select t :align below :size 0.4 :popup t)
+          ("*Help*" :custom shackle-display-helm-help
+           :select t :align below :size 0.4 :popup t)
           ("^\\*helpful.*" :regexp t :select t :align below :size 0.4 :popup t)
           ("*Completions*" :select t :align below :size 0.4)
           ("*Compile-Log*" :select t :align below :size 0.4)
@@ -726,7 +733,8 @@ Only for use with `advice-add'."
           ("*git-gutter:diff*" :align shackle-left-or-below :size 0.4)
           ("*Diff*" :select t :align shackle-left-or-below :size 0.4)
           ("*Package Commit List*" :select t :align shackle-left-or-below :size 0.4)
-          ("^\\*hgrep.*\\*" :regexp t :select t :align shackle-left-or-below :size 0.4)))
+          ("^\\*hgrep.*\\*" :regexp t :select t :align shackle-left-or-below :size 0.5)
+          ("*xref*" :select t :align shackle-left-or-below :size 0.5)))
 
   (shackle-mode 1))
 
