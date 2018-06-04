@@ -739,6 +739,23 @@ Only for use with `advice-add'."
   (shackle-mode 1))
 
 ;;*** Navigation/Code Navigation 
+(use-package xref
+  :custom
+  (xref-marker-ring-length 200)
+  :config
+  (defun xref-push-after (&rest _args)
+    (let* ((ring xref--marker-ring)
+           (len (cadr ring))
+           (markers (cddr ring))
+           (last (and (> len 0) (aref markers (1- len)))))
+      (unless (and last
+                   (eq (current-buffer) (marker-buffer last))
+                   (eq (point) (marker-position last)))
+        (xref-push-marker-stack))))
+  ;; Don't bother with global vs local vs xref markers
+  ;; Just track them all in xref-marker-ring
+  (advice-add 'push-mark :after #'xref-push-after))
+
 (use-package semantic
   :custom
   (semantic-elisp-store-documentation-in-tag nil)
