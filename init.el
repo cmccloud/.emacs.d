@@ -1179,8 +1179,6 @@ Only for use with `advice-add'."
   (projectile-enable-caching t)
   :bind (:map mnemonic-map
               ("sgp" . projectile-grep))
-  ;; doom-modeline still uses these
-  :commands (projectile-project-root projectile-project-p)
   :config
   (add-to-list 'projectile-globally-ignored-directories "semanticdb")
   (projectile-mode +1))
