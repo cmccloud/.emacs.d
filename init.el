@@ -339,6 +339,9 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   (set-font-lock-weight 'normal))
 
 (use-package doom-themes
+  :preface
+  ;; FIXME: See https://github.com/hlissner/emacs-doom-themes/issues/166
+  (defvar region-fg nil) 
   :custom
   (doom-themes-enable-bold nil)
   (doom-themes-enable-italic nil)
