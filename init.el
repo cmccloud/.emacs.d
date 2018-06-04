@@ -301,6 +301,10 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
         ("tH" . global-hl-line-mode))
   :hook (prog-mode . hl-line-mode))
 
+(use-package paren
+  :init
+  (show-paren-mode +1))
+
 (use-package term
   :custom
   (term-suppress-hard-newline t)
@@ -449,7 +453,7 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
 (use-package smartparens
   :custom
   (sp-echo-match-when-invisible nil)
-  :hook (prog-mode . smartparens-strict-mode)
+  :hook ((js2-mode . smartparens-mode))
   :config
   (require 'smartparens-config)
   (show-smartparens-global-mode))
