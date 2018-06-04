@@ -37,14 +37,7 @@
 (customize-set-variable 'ns-command-modifier 'meta)
 (customize-set-variable 'ns-option-modifier 'super)
 
-(when (fboundp 'set-charset-priority)
-  (set-charset-priority 'unicode))     
-(prefer-coding-system        'utf-8)   
-(set-terminal-coding-system  'utf-8)   
-(set-keyboard-coding-system  'utf-8)   
-(set-selection-coding-system 'utf-8)   
-(setq-default locale-coding-system   'utf-8
-              buffer-file-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
 
 (customize-set-variable 'auto-save-default nil)
 (customize-set-variable 'create-lockfiles nil)
@@ -53,6 +46,8 @@
 (customize-set-variable 'load-prefer-newer t)
 (customize-set-variable 'confirm-kill-emacs #'y-or-n-p)
 (customize-set-variable 'save-interprogram-paste-before-kill t)
+(customize-set-variable 'enable-recursive-minibuffers t)
+(customize-set-variable 'enable-local-variables :safe)
 
 ;; Don't let find-file-at-point hang emacs with a bad ping attempt
 (customize-set-variable 'ffap-machine-p-unknown 'reject)
@@ -469,7 +464,7 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   (lispy-completion-method 'helm)
   (lispy-occur-backend 'helm)
   (lispy-eval-display-style 'overlay)
-  (lispy-no-permanent-semantic nil)
+  (lispy-no-permanent-semantic t)
   (lispy-safe-delete t)
   (lispy-safe-copy t)
   (lispy-safe-paste t)
@@ -1080,6 +1075,8 @@ Only for use with `advice-add'."
 ;;*** Version Control and Project Management
 (use-package magit
   :custom
+  (magit-process-popup-time 5)
+  (magit-ediff-dwim-show-on-hunks nil)
   (magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
   (magit-repository-directories '(("~/Repos" . 1)
                                   ("~/.emacs.d/" . 1)))
