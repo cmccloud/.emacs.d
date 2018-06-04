@@ -970,7 +970,7 @@ Only for use with `advice-add'."
      "\\*helm"
      "\\*helm-mode"
      "\\*Echo Area"
-     "^magit:"
+     "^magit.*:"
      "\\*Minibuf"
      "\\*Diff*"
      "\\*lispy-goto*"
@@ -1167,7 +1167,11 @@ Only for use with `advice-add'."
    :map magit-status-mode-map
    ("M-n" . nil)
    ("M-p" . nil))
-  :commands (magit-list-repos))
+  :commands (magit-list-repos)
+  :config
+  (magit-wip-after-save-mode +1)
+  (magit-wip-after-apply-mode +1)
+  (magit-wip-before-change-mode +1))
 
 (use-package projectile
   :custom
@@ -1182,10 +1186,36 @@ Only for use with `advice-add'."
   (projectile-mode +1))
 
 (use-package magithub
-  :disabled t
   :custom
   (magithub-dir
-   (concat user-emacs-directory "cache/magithub")))
+   (concat user-emacs-directory "cache/magithub"))
+  (magithub-clone-default-directory (expand-file-name "~/Repos/"))
+  (magithub-datetime-format "%A %B %e%l:%M%p %Y")
+  (magithub-dashboard-show-read-notifications nil)
+  (magithub-preferred-remote-method 'clone_url)
+  :commands (magithub-clone)
+  :config
+  (defun magithub--prompt-for-lasspass-login (f &optional arg)
+    (if (lastpass-logged-in-p)
+        (funcall f arg)
+      (and (yes-or-no-p "Would you like to login to Lastpass?")
+           (lastpass-login))))
+  
+  (defun magithub--clone-prompt-for-lasspass-login (f &rest _args)
+    (interactive)
+    (if (lastpass-logged-in-p)
+        (call-interactively f)
+      (and (yes-or-no-p "Would you like to login to Lastpass?")
+           (lastpass-login))))
+  
+  (advice-add 'magithub-dispatch-popup :around
+              #'magithub--prompt-for-lasspass-login)
+  
+  (advice-add 'magithub-clone :around
+              #'magithub--clone-prompt-for-lasspass-login)
+  
+  (magithub-feature-autoinject
+   '(completion status-checks-header commit-browse pull-request-merge)))
 
 (use-package diff-hl
   :bind (:map mnemonic-map
