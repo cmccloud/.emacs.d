@@ -681,6 +681,8 @@ Only for use with `advice-add'."
   (golden-ratio-exclude-modes '("magit-popup-mode" "magit-status-mode" "ediff-mode"))
   :bind (:map mnemonic-map ("tg" . golden-ratio-mode))
   :hook (golden-ratio-mode . balance-windows)
+  :init
+  (golden-ratio-mode +1)
   :config
   (defun golden-ratio-helm-alive-p ()
     (ignore-errors helm-alive-p))
@@ -700,8 +702,7 @@ Only for use with `advice-add'."
            for wnum = (number-to-string num)
            do (add-to-list 'golden-ratio-extra-commands
                            (intern (concat "select-window-" wnum))))
-  (add-to-list 'golden-ratio-extra-commands 'ace-window)
-  (golden-ratio-mode t))
+  (add-to-list 'golden-ratio-extra-commands 'ace-window))
 
 (use-package shackle
   :demand t
