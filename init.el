@@ -1180,8 +1180,7 @@ Only for use with `advice-add'."
   :bind (:map mnemonic-map
               ("sgp" . projectile-grep))
   :config
-  (add-to-list 'projectile-globally-ignored-directories "semanticdb")
-  (projectile-mode +1))
+  (add-to-list 'projectile-globally-ignored-directories "semanticdb"))
 
 (use-package magithub
   :custom
