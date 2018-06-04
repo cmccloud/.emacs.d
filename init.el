@@ -252,15 +252,25 @@ Also see `window-comination-limit'."
 
 (use-package faces
   :init
-  (defun m-font-lock-toggle-weight (&optional new-value)
-    "For font-lock faces, toggles weight to either normal or bold."
+  (defun set-font-lock-weight (&optional new-value)
+    "For font-lock faces, sets weight to NEW-VALUE.
+
+If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
     (interactive)
     (let* ((old-value (face-attribute 'font-lock-type-face :weight))
            (new-value (or new-value (if (eq old-value 'normal) 'bold 'normal))))
       (cl-loop for face in (face-list)
                for name = (symbol-name face)
                when (string-match "^font-lock.*" name)
-               do (set-face-attribute face nil :weight new-value)))))
+               do (set-face-attribute face nil :weight new-value))))
+  
+  (defun set-font-size ()
+    "Query user for new font size, which is then applied to `default'."
+    (interactive)
+    (let* ((old-size (/ (face-attribute 'default :height) 10))
+           (new-size (read-string "Font Size: " (int-to-string old-size))))
+      (set-face-attribute
+       'default nil :height (* (string-to-number new-size) 10)))))
 
 (use-package page-break-lines
   :hook ((emacs-lisp-mode . page-break-lines-mode)
@@ -322,7 +332,7 @@ Also see `window-comination-limit'."
 (use-package spacemacs-common
   :init 
   (load-theme 'spacemacs-dark 'no-confirm)
-  (m-font-lock-toggle-weight 'normal))
+  (set-font-lock-weight 'normal))
 
 (use-package doom-themes
   :custom
