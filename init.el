@@ -1297,7 +1297,7 @@ Only for use with `advice-add'."
          '(company-elisp company-capf))))
 
 (use-package slime
-  :load-path "elpa/slime-20180519.1327/"
+  :load-path "elpa/slime-20180601.324"
   :init
   ;; slime-autoloads are not recognized by package
   ;; and so are not automatically bundled up when
