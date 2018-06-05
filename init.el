@@ -733,7 +733,8 @@ Only for use with `advice-add'."
           ("*Diff*" :select t :align shackle-left-or-below :size 0.4)
           ("*Package Commit List*" :select t :align shackle-left-or-below :size 0.4)
           ("^\\*hgrep.*\\*" :regexp t :select t :align shackle-left-or-below :size 0.5)
-          ("*xref*" :select t :align shackle-left-or-below :size 0.5)))
+          ("*xref*" :select t :align shackle-left-or-below :size 0.5)
+          ("magit-process:.*" :regexp t :select t :align below :size 0.2 :popup t)))
 
   (shackle-mode 1))
 
