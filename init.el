@@ -371,9 +371,6 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   :config
   (setq doom-modeline-show-helm-modeline nil))
 
-(use-package stripe-buffer
-  :hook (dired-mode . stripe-buffer-mode))
-
 (use-package rainbow-mode
   :hook (css-mode . rainbow-mode))
 
@@ -385,15 +382,13 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   :config
   (paradox-enable))
 
-(use-package lastpass
+(use-package dired-async
+  :hook (dired-mode . dired-async-mode))
+
+(use-package auth-source
   :custom
-  (lastpass-browser "generic")
-  (lastpass-multifactor-use-passcode t)
-  (lastpass-pass-length 24)
-  (lastpass-user user-mail-address)
-  :commands (lastpass-logged-in-p)
-  :config
-  (lastpass-auth-source-enable))
+  (auth-sources '(macos-keychain-internet macos-keychain-generic))
+  (auth-source-cache-expiry 10800))
 
 (use-package exec-path-from-shell
   :if (equal system-type 'darwin)
@@ -1202,25 +1197,6 @@ Only for use with `advice-add'."
   (magithub-preferred-remote-method 'clone_url)
   :commands (magithub-clone)
   :config
-  (defun magithub--prompt-for-lasspass-login (f &optional arg)
-    (if (lastpass-logged-in-p)
-        (funcall f arg)
-      (and (yes-or-no-p "Would you like to login to Lastpass?")
-           (lastpass-login))))
-  
-  (defun magithub--clone-prompt-for-lasspass-login (f &rest _args)
-    (interactive)
-    (if (lastpass-logged-in-p)
-        (call-interactively f)
-      (and (yes-or-no-p "Would you like to login to Lastpass?")
-           (lastpass-login))))
-  
-  (advice-add 'magithub-dispatch-popup :around
-              #'magithub--prompt-for-lasspass-login)
-  
-  (advice-add 'magithub-clone :around
-              #'magithub--clone-prompt-for-lasspass-login)
-  
   (magithub-feature-autoinject
    '(completion status-checks-header commit-browse pull-request-merge)))
 
