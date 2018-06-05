@@ -705,18 +705,23 @@ Only for use with `advice-add'."
   :config
   (defun shackle-left-or-below () (if (> (frame-width) 160) 'left 'below))
   (defun shackle-display-helm-help (buffer alist plist)
-    (setq plist (seq-remove
-                 (lambda (elt) (or (functionp elt) (equal elt :custom)))
-                 plist))
-    (if (not (bound-and-true-p helm-alive-p))
-        (shackle--display-buffer buffer alist plist)))
+    ;; When not in helm, we process the rule again without the custom
+    ;; property.  If we are in helm, do nothing and let helm (or a
+    ;; different matching rule) take care of how to display the help
+    ;; buffer.
+    (when (not (bound-and-true-p helm-alive-p))
+      (shackle--display-buffer
+       buffer
+       alist
+       (cl-remove-if
+        (lambda (elt) (or (functionp elt) (equal elt :custom))) plist))))
   (setq shackle-rules
         `(("*Process List*" :select t :align below :size 0.4)
           ("*Apropos*" :select t :align below :size 0.4)
           ("Outline.*pdf" :regexp t :select t :align below :size 0.3)
           ("*Geiser documentation*" :select t :align t :size 0.4)
           ("*slime-description*" :select t :align t :size 0.4)
-          ("\\`\\*\[h|H]elm.*?\\*\\'" :regexp t :align t :size 0.2)
+          ("\\`\\*[h|H]elm.*\\*\\'" :regexp t :align t :size 0.2)
           ("*Help*" :custom shackle-display-helm-help
            :select t :align below :size 0.4 :popup t)
           ("^\\*helpful.*" :regexp t :select t :align below :size 0.4 :popup t)
