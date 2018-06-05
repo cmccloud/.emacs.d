@@ -632,11 +632,10 @@ Only for use with `advice-add'."
 
   (defun persp-mode-setup-advice ()
     "Runs with `persp-mode', advising functions in `persp-mode-functions-to-advise'."
-    (if persp-mode
-        (cl-loop for func in persp-mode-functions-to-advise
-                 do (advice-add func :around #'persp-mode-wrapper))
-      (cl-loop for func in persp-mode-functions-to-advise
-               do (advice-remove func #'persp-mode-wrapper)))))
+    (cl-loop for func in persp-mode-functions-to-advise
+             do (if persp-mode
+                    (advice-add func :around #'persp-mode-wrapper)
+                  (advice-remove func #'persp-mode-wrapper)))))
 
 (use-package eyebrowse-persp-bridge
   :demand t
