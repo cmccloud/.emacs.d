@@ -769,8 +769,8 @@ Only for use with `advice-add'."
   :config
   (defun semantic-imenu-cleanup ()
     (unless semantic-mode
-      (setq-local imenu-create-index-function
-                  (default-value 'imenu-create-index-function))))
+      (setq-mode-local major-mode imenu-create-index-function
+                       (default-value 'imenu-create-index-function))))
   
   (semantic-default-elisp-setup)
   
