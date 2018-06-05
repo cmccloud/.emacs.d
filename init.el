@@ -522,15 +522,6 @@ ARG can constrct the bounds to the current defun."
               :buffer "*lispy-goto*")
       (funcall f candidates action)))
 
-  (defun lispy--recentf-suppress (f &optional file-list)
-    "Prevents `recentf-mode' history from being dirtied by `lispy--fetch-tags'."
-    (let (res
-          (recentf recentf-mode))
-      (recentf-mode -1)
-      (setq res (funcall f file-list))
-      (when recentf (recentf-mode +1))
-      res))
-
   ;; Lispy key definitions
   (lispy-define-key lispy-mode-map "q" 'lispy-ace-paren-unbounded)
 
@@ -542,10 +533,6 @@ ARG can constrct the bounds to the current defun."
   (advice-add 'lispy--tag-name-elisp :around
               #'lispy--tag-name-elisp-extensions)
 
-  ;; Keep recentf history clean
-  (advice-add 'lispy--fetch-tags :around
-              #'lispy--recentf-suppress)
-  
   (setf (cadr lispy-tag-arity)
         (append (cadr lispy-tag-arity)
                 '((cl-defmethod . 2)
