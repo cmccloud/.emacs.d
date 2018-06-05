@@ -459,6 +459,13 @@ directory, the file name, and its state (modified, read-only or non-existent)."
           segment))
     ""))
 
+(def-modeline-segment! dired-async-process
+  (when (and (bound-and-true-p dired-async-mode)
+             (dired-async-processes))
+      (propertize (format " %s Async job(s) running"
+                          (length (dired-async-processes)))
+                  'face 'dired-async-mode-message)))
+
 (def-modeline-segment! persp-name
   "Displays the current perspective if `persp-mode' is active.
 Signals whether current-buffer is a part of the current perspective."
@@ -766,6 +773,7 @@ of `iedit' regions."
    eyebrowse-workspace
    " "
    buffer-info
+   dired-async-process
    "  %l:%c %p  "
    selection-info)
   (buffer-encoding vcs major-mode flycheck))
@@ -824,12 +832,13 @@ of `iedit' regions."
 (defvar doom-modeline-show-helm-modeline t
   "Whether doom-modeline-mode should display the modeline in helm buffers.")
 
-(defun doom--helm-display-mode-line (&optional _source _force)
+(defun doom--helm-display-mode-line (&optional _source _force &rest args)
   (if doom-modeline-mode
       (with-helm-buffer
         (if doom-modeline-show-helm-modeline
             (doom-set-modeline 'helm)
-          (setq mode-line-format nil)))))
+          (setq mode-line-format nil)
+          (force-mode-line-update)))))
 
 ;;;###autoload
 (define-minor-mode doom-modeline-mode
