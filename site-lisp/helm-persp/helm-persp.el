@@ -1,4 +1,4 @@
-;;; helm-persp.el --- Helm integration for persp-mode
+;;; helm-persp.el --- Helm source for persp-mode. -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2018 Christopher McCloud
 
@@ -70,8 +70,8 @@
   (cl-call-next-method)
   (setf (slot-value source 'action)
         (append (helm-make-actions "Remove buffer(s) from current Perspective."
-                                   (lambda (c) (mapcar #'persp-remove-buffer
-                                                       (helm-marked-candidates))))
+                                   (lambda (_c) (mapcar #'persp-remove-buffer
+                                                        (helm-marked-candidates))))
                 (symbol-value (slot-value source 'action)))))
 
 (defclass helm-persp-filtered-buffers-source (helm-source-sync helm-type-buffer)
@@ -89,8 +89,8 @@
   (cl-call-next-method)
   (setf (slot-value source 'action)
         (append (helm-make-actions "Add buffer(s) to current Perspective."
-                                   (lambda (c) (mapcar #'persp-add-buffer
-                                                       (helm-marked-candidates))))
+                                   (lambda (_c) (mapcar #'persp-add-buffer
+                                                        (helm-marked-candidates))))
                 (symbol-value (slot-value source 'action)))))
 
 ;;;###autoload
