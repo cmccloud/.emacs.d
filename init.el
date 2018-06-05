@@ -282,6 +282,16 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   :config
   (global-auto-revert-mode +1))
 
+(use-package recentf
+  :custom
+  (recentf-auto-cleanup 'never)
+  (recentf-max-saved-items 1000)
+  (recentf-max-menu-items 10)
+  (recentf-exclude '("~/.emacs.d/cache/.*"))
+  (recentf-save-file "~/.emacs.d/cache/recentf")
+  :init
+  (recentf-mode 1))
+
 (use-package re-builder
   :config
   (setq reb-auto-match-limit 500))
