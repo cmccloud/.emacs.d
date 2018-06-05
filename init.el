@@ -668,8 +668,7 @@ Only for use with `advice-add'."
 (use-package golden-ratio
   :custom
   (golden-ratio-auto-scale t)
-  (golden-ratio-exclude-buffer-names '("*Helm Swoop*" "*Helm Multi Swoop*"))
-  (golden-ratio-exclude-modes '("magit-popup-mode" "magit-status-mode" "ediff-mode"))
+  (golden-ratio-exclude-buffer-names '("*helm marked*"))
   :bind (:map mnemonic-map ("tg" . golden-ratio-mode))
   :hook (golden-ratio-mode . balance-windows)
   :init
@@ -683,10 +682,14 @@ Only for use with `advice-add'."
 
   (defun golden-ratio-company-box-p ()
     (frame-parameter (selected-frame) 'company-box-buffer))
+
+  (defun golden-ratio-in-magit-p ()
+    (string-match-p ".*magit.*" (symbol-name major-mode)))
   
   (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-helm-alive-p)
   (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-in-ediff-p)
   (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-company-box-p)
+  (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-in-magit-p)
 
   ;; window-numbering
   (cl-loop for num from 0 to 9
