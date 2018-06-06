@@ -571,11 +571,11 @@ ARG can constrct the bounds to the current defun."
   (advice-add 'lispy--tag-name-elisp :around
               #'lispy--tag-name-elisp-extensions)
 
-  (setf (cadr lispy-tag-arity)
-        (append (cadr lispy-tag-arity)
-                '((cl-defmethod . 2)
-                  (cl-defgeneric . 1)
-                  (defclass . 1)))))
+  (setcdr (assq 'emacs-lisp-mode lispy-tag-arity)
+          (append (cdr (assq 'emacs-lisp-mode lispy-tag-arity))
+                  '((cl-defmethod . 2)
+                    (cl-defgeneric . 1)
+                    (defclass . 1)))))
 
 ;;*** Window and Buffer Management 
 (use-package eyebrowse
