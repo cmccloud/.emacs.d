@@ -807,8 +807,8 @@ Only for use with `advice-add'."
   :config
   (defun semantic-imenu-cleanup ()
     (unless semantic-mode
-      (setq-mode-local major-mode imenu-create-index-function
-                       (default-value 'imenu-create-index-function))))
+      (eval `(setq-mode-local ,major-mode imenu-create-index-function
+                              (default-value 'imenu-create-index-function)))))
   
   (semantic-default-elisp-setup)
   
