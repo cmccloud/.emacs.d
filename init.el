@@ -1101,7 +1101,7 @@ Only for use with `advice-add'."
 (use-package helm-imenu
   :custom
   (helm-imenu-fuzzy-match nil)
-  :bind (("C-x C-j" . helm-imenu-in-all-buffers))
+  :bind* (("C-x C-j" . helm-imenu-in-all-buffers))
   :config
   (cl-defmethod helm-setup-user-source ((source helm-imenu-source))
     (setf (slot-value source 'candidate-number-limit) 100))
