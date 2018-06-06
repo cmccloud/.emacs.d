@@ -186,9 +186,7 @@
     "M-m b" "Buffers"
     "M-m f" "Files"
     "M-m a" "Applications"
-    "M-m g" "Git"
-    "M-m gg" "Git Gutter"
-    "M-m gG" "Gist"
+    "M-m v" "Version Control"
     "M-m h" "Helm"
     "M-m hd" "Describe"
     "M-m hl" "Locate"
@@ -1163,10 +1161,10 @@ Only for use with `advice-add'."
   (("C-x g" . magit-status)
    ("C-x C-v" . magit-status)
    :map mnemonic-map
-   ("gs" . magit-status)
-   ("gb" . magit-blame)
-   ("gh" . magit-dispatch-popup)
-   ("gc" . magit-commit-popup)
+   ("vs" . magit-status)
+   ("vb" . magit-blame)
+   ("vh" . magit-dispatch-popup)
+   ("vc" . magit-commit-popup))
   :commands (magit-list-repos)
   :config
   (magit-wip-after-save-mode +1)
@@ -1196,8 +1194,7 @@ Only for use with `advice-add'."
    '(completion status-checks-header commit-browse pull-request-merge)))
 
 (use-package diff-hl
-  :bind (:map mnemonic-map
-              ("gg" . hydra-diff-hl/body))
+  :bind (:map diff-hl-command-map ("n" . hydra-diff-hl/body))
   :hook ((prog-mode . diff-hl-mode)
          (prog-mode . diff-hl-flydiff-mode)
          (magit-post-refresh . diff-hl-magit-post-refresh))
