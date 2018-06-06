@@ -1209,6 +1209,7 @@ Only for use with `advice-add'."
     "Navigate diffs"
     ("n" diff-hl-next-hunk "Next Hunk")
     ("p" diff-hl-previous-hunk "Previous Hunk")
+    ("d" vc-diff "Diff" :exit t)
     ("c" magit-commit-popup "Commit" :exit t)
     ("q" nil "Quit" :exit t)))
 
