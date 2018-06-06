@@ -1170,15 +1170,6 @@ Only for use with `advice-add'."
    ("gb" . magit-blame)
    ("gh" . magit-dispatch-popup)
    ("gc" . magit-commit-popup)
-   :map magit-process-mode-map
-   ("M-n" . nil)
-   ("M-p" . nil)
-   :map magit-diff-mode-map
-   ("M-n" . nil)
-   ("M-p" . nil)
-   :map magit-status-mode-map
-   ("M-n" . nil)
-   ("M-p" . nil))
   :commands (magit-list-repos)
   :config
   (magit-wip-after-save-mode +1)
