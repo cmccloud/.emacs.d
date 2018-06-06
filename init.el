@@ -832,16 +832,13 @@ Only for use with `advice-add'."
   :commands (mode-local-bind))
 
 (use-package imenu
-  :defines imenu-generic-expression
+  :hook (emacs-lisp-mode . imenu-emacs-lisp-add-expressions)
   :init
-  ;; Let imenu recognize use-package declarations
-  (defun setup--imenu-for-use-package ()
+  (defun imenu-emacs-lisp-add-expressions ()
     "Recognize `use-package' in imenu when in emacs-lisp-mode."
     (add-to-list
      'imenu-generic-expression
-     '("Packages" "^\\s-*(\\(use-package\\)\\s-+\\(\\(\\sw\\|\\s_\\)+\\)" 2) t))
-  
-  (add-hook 'emacs-lisp-mode-hook #'setup--imenu-for-use-package))
+     '("Packages" "^\\s-*(\\(use-package\\)\\s-+\\(\\(\\sw\\|\\s_\\)+\\)" 2) t)))
 
 (use-package elisp-slime-nav
   :bind (("C-c C-d" . elisp-slime-nav-describe-elisp-thing-at-point)))
