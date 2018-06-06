@@ -1160,8 +1160,8 @@ Only for use with `advice-add'."
   (magit-process-popup-time 5)
   (magit-ediff-dwim-show-on-hunks nil)
   (magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
-  (magit-repository-directories '(("~/Repos" . 1)
-                                  ("~/.emacs.d/" . 1)))
+  (magit-repository-directories
+   '(("~/Repos" . 1) ("~/.emacs.d/" . 1) ("~/.emacs.d/site-lisp/" . 1)))
   :bind
   (("C-x g" . magit-status)
    ("C-x C-v" . magit-status)
