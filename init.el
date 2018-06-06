@@ -221,9 +221,11 @@
   (split-width-threshold 80)
   (split-height-threshold 80)
   (split-window-preferred-function 'split-window-sensibly)
-  :bind (:map mnemonic-map
-              ("ws" . split-window-tree)
-              ("wd" . delete-window))
+  :bind (("M-n" . next-file-buffer)
+         ("M-p" . previous-file-buffer)
+         :map mnemonic-map
+         ("ws" . split-window-tree)
+         ("wd" . delete-window))
   :init
   (defun split-window-tree ()
     "Splits windows such that each gets half as much space as the previous.
@@ -255,7 +257,31 @@ Also see `window-combination-limit'."
         (cl-loop for window in windows
                  until (equal window target)
                  do (swap-window-buffers window (cadr windows)))
-        (other-window -1)))))
+        (other-window -1))))
+
+  (defun buffer-call-until (pred change-buffer)
+    "Call CHANGE-BUFFER until PRED returns t on the current buffer.."
+    (let ((initial (current-buffer)))
+      (funcall change-buffer)
+      (let ((first-change (current-buffer)))
+        (catch 'loop
+          (while (not (funcall pred (current-buffer)))
+            (funcall change-buffer)
+            (when (eq (current-buffer) first-change)
+              (switch-to-buffer initial)
+              (throw 'loop t)))))))
+
+  (defun next-file-buffer ()
+    "As `next-buffer' but ignores buffers without file names."
+    (interactive)
+    (buffer-call-until
+     #'buffer-file-name #'next-buffer))
+
+  (defun previous-file-buffer ()
+    "As `previous-buffer' but ignores buffers without file names."
+    (interactive)
+    (buffer-call-until
+     #'buffer-file-name #'previous-buffer)))
 
 (use-package faces
   :init
@@ -894,9 +920,7 @@ Only for use with `advice-add'."
   :custom-face
   (helm-match ((t (:inherit font-lock-keyword-face :weight bold))))
   :bind
-  (("M-n" . next-file-buffer)
-   ("M-p" . previous-file-buffer)
-   :map mnemonic-map
+  (:map mnemonic-map
    ("hdf" . describe-function)
    ("hdv" . describe-variable)
    :map helm-map
@@ -914,31 +938,7 @@ Only for use with `advice-add'."
     (when-let ((input helm-input)
                (next-func (cdr (assoc helm-buffer helm-into-next-alist))))
       (with-helm-alive-p
-        (helm-run-after-exit next-func input))))
-  
-  (defun buffer-call-until (pred change-buffer)
-    "Call CHANGE-BUFFER until PRED returns t on the current buffer.."
-    (let ((initial (current-buffer)))
-      (funcall change-buffer)
-      (let ((first-change (current-buffer)))
-        (catch 'loop
-          (while (not (funcall pred (current-buffer)))
-            (funcall change-buffer)
-            (when (eq (current-buffer) first-change)
-              (switch-to-buffer initial)
-              (throw 'loop t)))))))
-
-  (defun next-file-buffer ()
-    "As `next-buffer' but ignores buffers without file names."
-    (interactive)
-    (buffer-call-until
-     #'buffer-file-name #'next-buffer))
-
-  (defun previous-file-buffer ()
-    "As `previous-buffer' but ignores buffers without file names."
-    (interactive)
-    (buffer-call-until
-     #'buffer-file-name #'previous-buffer)))
+        (helm-run-after-exit next-func input)))))
 
 (use-package helm-config
   :demand t
