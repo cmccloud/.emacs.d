@@ -28,7 +28,19 @@
   (customize-set-variable 'scroll-bar-mode nil)
   (customize-set-variable 'tool-bar-mode nil)
   (customize-set-variable 'frame-resize-pixelwise t)
-  (customize-set-variable 'package-user-dir (concat user-emacs-directory "elpa"))
+  (customize-set-variable
+   'package-archives '(("melpa" . "https://melpa.org/packages/")
+                       ("melpa-stable" . "https://stable.melpa.org/packages/")
+                       ("org" . "http://orgmode.org/elpa/")
+                       ("gnu" . "http://elpa.gnu.org/packages/")))
+  (customize-set-variable
+   'package-archive-priorities '(("melpa" . 10)
+                                 ("melpa-stable" . 5)
+                                 ("gnu" . 0)
+                                 ("marmalade" . -5)))
+  (customize-set-variable
+   'package-user-dir (expand-file-name "elpa" user-emacs-directory))
+  (customize-set-variable 'package-menu-hide-low-priority t)
   (package-initialize))
 
 ;;*** Non Package Settings
