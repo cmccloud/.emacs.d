@@ -1283,10 +1283,15 @@ Only for use with `advice-add'."
 ;;** Languages and Language Extensions
 (use-package elisp-mode
   :hook (emacs-lisp-mode . elisp-setup-company)
+  :init
+  (defvar emacs-lisp-mode-company-backends
+    '(company-elisp company-capf)
+    "List of company backends which will be set for use by company.
+New emacs-lisp-mode backends should be registered here.")
   :config
   (defun elisp-setup-company ()
     (set (make-local-variable 'company-backends)
-         '(company-elisp company-capf))))
+         emacs-lisp-mode-company-backends)))
 
 (use-package slime
   :load-path "elpa/slime-20180601.324"
@@ -1350,15 +1355,22 @@ Only for use with `advice-add'."
 (use-package js2-mode
   :mode "\\.js$"
   :hook ((js2-mode . js2-setup-company))
+  :init
+  (defvar js2-mode-company-backends
+    '(company-capf)
+    "List of company backends which will be set for use by company.
+New js2-mode backends should be registered here.")
   :config
   (defun js2-setup-company ()
     (set (make-local-variable 'company-backends)
-         '(company-tern company-capf))))
+         js2-mode-company-backends)))
 
 (use-package tern
   :hook (js2-mode . tern-mode))
 
-(use-package company-tern)
+(use-package company-tern
+  :init
+  (add-to-list 'js2-mode-company-backends 'company-tern))
 
 ;; Re-enable Garbage Collection
 (setq gc-cons-threshold (* 1024 1024 16)
