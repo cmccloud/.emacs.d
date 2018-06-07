@@ -7,7 +7,7 @@
 ;; This file is not part of GNU Emacs
 
 ;;;; Code:
-;;** Emacs Settings and Customization 
+;;** Emacs Settings and Customization
 ;; Suppress Garbage Collection
 (setq gc-cons-threshold (* 1024 1024 64)
       gc-cons-percentage .6)
@@ -125,7 +125,7 @@
 (use-package f)
 
 ;;** Core Packages
-;;*** Keybinds 
+;;*** Keybinds
 (use-package bind-key
   :demand t
   :custom
@@ -202,7 +202,7 @@
   (which-key-setup-side-window-bottom)
   (which-key-mode 1))
 
-;;*** Built In 
+;;*** Built In
 (use-package frame
   :custom
   (window-divider-default-places 'right-only)
@@ -294,7 +294,7 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
                for name = (symbol-name face)
                when (string-match "^font-lock.*" name)
                do (set-face-attribute face nil :weight new-value))))
-  
+
   (defun set-font-size ()
     "Query user for new font size, which is then applied to `default'."
     (interactive)
@@ -373,16 +373,16 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   (ediff-split-window-function 'split-window-horizontally)
   (ediff-keep-variants t))
 
-;;*** Themes and UI 
+;;*** Themes and UI
 (use-package spacemacs-common
-  :init 
+  :init
   (load-theme 'spacemacs-dark 'no-confirm)
   (set-font-lock-weight 'normal))
 
 (use-package doom-themes
   :preface
   ;; FIXME: See https://github.com/hlissner/emacs-doom-themes/issues/166
-  (defvar region-fg nil) 
+  (defvar region-fg nil)
   :custom
   (doom-themes-enable-bold nil)
   (doom-themes-enable-italic nil)
@@ -410,7 +410,7 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
 (use-package rainbow-mode
   :hook (css-mode . rainbow-mode))
 
-;;*** Misc 
+;;*** Misc
 (use-package paradox
   :custom
   (paradox-lines-per-entry 1)
@@ -721,7 +721,7 @@ Only for use with `advice-add'."
 
   (defun golden-ratio-in-magit-p ()
     (string-match-p ".*magit.*" (symbol-name major-mode)))
-  
+
   (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-helm-alive-p)
   (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-in-ediff-p)
   (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-company-box-p)
@@ -774,7 +774,7 @@ Only for use with `advice-add'."
 
   (shackle-mode 1))
 
-;;*** Navigation/Code Navigation 
+;;*** Navigation/Code Navigation
 (use-package xref
   :custom
   (xref-marker-ring-length 200)
@@ -807,15 +807,15 @@ Only for use with `advice-add'."
     (unless semantic-mode
       (eval `(setq-mode-local ,major-mode imenu-create-index-function
                               (default-value 'imenu-create-index-function)))))
-  
+
   (semantic-default-elisp-setup)
-  
+
   (setq-mode-local emacs-lisp-mode
                    semanticdb-find-default-throttle
                    (default-value 'semanticdb-find-default-throttle)
                    completion-at-point-functions
                    '(elisp-completion-at-point))
-  
+
   (cl-loop for fun in '(semantic-analyze-completion-at-point-function
                         semantic-analyze-notc-completion-at-point-function
                         semantic-analyze-nolongprefix-completion-at-point-function)
@@ -904,7 +904,7 @@ Only for use with `advice-add'."
 
 (use-package wgrep-helm)
 
-;;*** Helm 
+;;*** Helm
 (use-package helm
   :custom
   (helm-candidate-number-limit 100)
@@ -1100,7 +1100,7 @@ Only for use with `advice-add'."
   :config
   (cl-defmethod helm-setup-user-source ((source helm-imenu-source))
     (setf (slot-value source 'candidate-number-limit) 100))
-  
+
   (add-to-list 'helm-imenu-type-faces
                '("^Packages$" . font-lock-type-face)))
 
@@ -1134,7 +1134,7 @@ Only for use with `advice-add'."
            (helm-make-actions "Find shell command in project `C-c /'"
                               'helm-ls-git-find)
            8)))
-  
+
   (add-to-list 'helm-ls-git-default-sources
                'helm-source-files-known-projects t))
 
@@ -1362,4 +1362,4 @@ New js2-mode backends should be registered here.")
 (setq gc-cons-threshold (* 1024 1024 16)
       gc-cons-percentage .1)
 
-;;; init.el ends here. 
+;;; init.el ends here.
