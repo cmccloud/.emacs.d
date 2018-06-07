@@ -444,20 +444,19 @@ directory, the file name, and its state (modified, read-only or non-existent)."
                 file-path)))))
 
 (def-modeline-segment! eyebrowse-workspace
-  (if (and (bound-and-true-p eyebrowse-mode)
-           (s-contains-p "eyebrowse-switch" (symbol-name last-command) t))
-      (let ((segment (concat (when (bound-and-true-p persp-mode) ":")
-                             (int-to-string (eyebrowse--get 'current-slot))
-                             ""))
-            (faces (if (and (bound-and-true-p persp-mode)
-                            (not (persp-contain-buffer-p)))
-                       'doom-modeline-persp-free-buffer
-                     'doom-modeline-persp-name)))
-        (if (active)
-            (propertize segment
-                        'face `(:inherit ,faces))
-          segment))
-    ""))
+  (when (and (bound-and-true-p eyebrowse-mode)
+             (string-match-p "eyebrowse" (symbol-name last-command)))
+    (let ((segment (concat (concat "|" (int-to-string (eyebrowse--get 'current-slot))
+                                   "|")
+                           ""))
+          (faces (if (and (bound-and-true-p persp-mode)
+                          (not (persp-contain-buffer-p)))
+                     'doom-modeline-persp-free-buffer
+                   'doom-modeline-persp-name)))
+      (if (active)
+          (propertize segment
+                      'face `(:inherit ,faces))
+        segment))))
 
 (def-modeline-segment! dired-async-process
   (when (and (bound-and-true-p dired-async-mode)
