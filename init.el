@@ -408,8 +408,6 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   :load-path "site-lisp/doom-modeline"
   :bind (:map mnemonic-map
               ("tm" . doom-modeline-mode))
-  :init
-  (doom-modeline-mode +1)
   :config
   (setq doom-modeline-show-helm-modeline nil))
 
