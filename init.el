@@ -425,6 +425,9 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   :config
   (paradox-enable))
 
+(use-package bookmark+
+  :load-path "site-lisp/bookmark-plus")
+
 (use-package dired-async
   :hook (dired-mode . dired-async-mode))
 
