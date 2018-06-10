@@ -419,6 +419,9 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   :custom
   (paradox-lines-per-entry 1)
   (paradox-use-homepage-buttons nil)
+  (paradox-column-width-package 30)
+  (paradox-github-token t)
+  (paradox-execute-asynchronously t)
   :config
   (paradox-enable))
 
