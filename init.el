@@ -455,20 +455,6 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   :init
   (osx-trash-setup))
 
-(use-package pdf-tools
-  :disabled t
-  :mode (("\\.pdf\\'" . pdf-view-mode))
-  :bind (:map pdf-view-mode-map
-              ("C-s" . pdf-occur)
-              ("k" . nil)
-              ("g" . pdf-view-goto-page)
-              ("j" . pdf-view-next-line-or-next-page)
-              ("k" . pdf-view-previous-line-or-previous-page)
-              :map pdf-occur-buffer-mode-map
-              ("v" . pdf-occur-view-occurrence))
-  :config
-  (pdf-tools-install))
-
 (use-package doc-view
   :config
   :bind (:map doc-view-mode-map
