@@ -57,7 +57,6 @@
 (customize-set-variable 'delete-by-moving-to-trash t)
 (customize-set-variable 'load-prefer-newer t)
 (customize-set-variable 'confirm-kill-emacs #'y-or-n-p)
-(customize-set-variable 'save-interprogram-paste-before-kill t)
 (customize-set-variable 'enable-recursive-minibuffers t)
 (customize-set-variable 'enable-local-variables :safe)
 
@@ -68,7 +67,6 @@
 ;; Set the active region less eagerly. See GNU: #29661 and #29889
 (customize-set-variable 'select-active-regions 'only)
 
-(customize-set-variable 'blink-matching-paren nil)
 (customize-set-variable 'visible-cursor nil)
 (customize-set-variable 'cursor-in-non-selected-windows nil)
 (customize-set-variable 'highlight-nonselected-windows nil)
@@ -341,6 +339,13 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
         ("th" . hl-line-mode)
         ("tH" . global-hl-line-mode))
   :hook (prog-mode . hl-line-mode))
+
+(use-package simple
+  :custom
+  (save-interprogram-paste-before-kill t)
+  (blink-matching-paren nil)
+  :init
+  (global-visual-line-mode +1))
 
 (use-package paren
   :init
