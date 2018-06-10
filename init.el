@@ -1167,46 +1167,12 @@ Only for use with `advice-add'."
     ("c" magit-commit-popup "Commit" :exit t)
     ("q" nil "Quit" :exit t)))
 
-;;*** Syntax Checking and Completion 
-(use-package company
-  :custom
-  (company-idle-delay 0.2)
-  (company-tooltip-limit 12)
-  (company-require-match 'never)
-  (company-tooltip-align-annotations t)
-  :hook ((emacs-lisp-mode . company-mode)
-         (js2-mode . company-mode)
-         (lisp-mode . company-mode))
-  :bind (:map company-active-map
-              ("C-n" . company-select-next)
-              ("C-p" . company-select-previous)
-              ("C-c C-d" . company-show-doc-buffer)
-              ("RET" . nil)
-              ("<return>" . nil)
-              ("<tab>" . company-complete-selection)
-              ("TAB" . company-complete-selection)))
-
-(use-package company-box
-  :if (display-graphic-p)
-  :custom
-  (company-box-max-candidates 500)
-  :hook (company-mode . company-box-mode)
-  :config
-  (setq company-box-backends-colors nil)
-  (when (package-installed-p 'all-the-icons)
-    (cl-flet ((icons 'all-the-icons-material))
-      (setq company-box-icons-elisp
-            (list
-             (icons "functions" :face 'all-the-icons-purple :height .8)
-             (icons "check_circle" :face 'all-the-icons-blue :height .8)
-             (icons "stars" :face 'all-the-icons-yellow :height .8)
-             (icons "format_paint" :face 'all-the-icons-pink :height .8))
-            company-box-icons-unknown
-            (icons "find_in_page" :face 'all-the-icons-silver :height .8)
-            company-box-icons-yasnippet
-            (icons "short_text" :face 'all-the-icons-green :height .8)))))
-
+;;*** Syntax Checking/Completion/Formatting
 (use-package flycheck
+  :custom
+  (flycheck-check-syntax-automatically '(save mode-enabled))
+  (flycheck-error-list-minimum-level 'error)
+  (flycheck-indication-mode 'right-fringe)
   :config
   (define-fringe-bitmap 'my-flycheck-fringe-indicator
     (vector 0 0 0 0 0 0 0 28 62 62 62 28 0 0 0 0 0))
@@ -1226,19 +1192,42 @@ Only for use with `advice-add'."
   (:map mnemonic-map
         ("tc" . flycheck-mode)))
 
-;;** Languages and Language Extensions
-(use-package elisp-mode
-  :hook (emacs-lisp-mode . elisp-setup-company)
-  :init
-  (defvar emacs-lisp-mode-company-backends
-    '(company-elisp company-capf)
-    "List of company backends which will be set for use by company.
-New emacs-lisp-mode backends should be registered here.")
-  :config
-  (defun elisp-setup-company ()
-    (set (make-local-variable 'company-backends)
-         emacs-lisp-mode-company-backends)))
+(use-package company
+  :custom
+  (company-idle-delay 0.2)
+  (company-tooltip-limit 12)
+  (company-require-match 'never)
+  (company-tooltip-align-annotations t)
+  :hook ((prog-mode . company-mode))
+  :bind (:map company-active-map
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-previous)
+              ("C-c C-d" . company-show-doc-buffer)
+              ("RET" . nil)
+              ("<return>" . nil)
+              ("<tab>" . company-complete-selection)
+              ("TAB" . company-complete-selection)))
 
+(use-package company-box
+  :if (display-graphic-p)
+  :custom
+  (company-box-max-candidates 500)
+  :config
+  (setq company-box-backends-colors nil)
+  (when (package-installed-p 'all-the-icons)
+    (cl-flet ((icons 'all-the-icons-material))
+      (setq company-box-icons-elisp
+            (list
+             (icons "functions" :face 'all-the-icons-purple :height .8)
+             (icons "check_circle" :face 'all-the-icons-blue :height .8)
+             (icons "stars" :face 'all-the-icons-yellow :height .8)
+             (icons "format_paint" :face 'all-the-icons-pink :height .8))
+            company-box-icons-unknown
+            (icons "find_in_page" :face 'all-the-icons-silver :height .8)
+            company-box-icons-yasnippet
+            (icons "short_text" :face 'all-the-icons-green :height .8)))))
+
+;;** Languages and Language Extensions
 (use-package slime
   :load-path "elpa/slime-20180601.324"
   :init
@@ -1254,7 +1243,8 @@ New emacs-lisp-mode backends should be registered here.")
   (setq inferior-lisp-program "sbcl")
   (slime-setup '(slime-fancy slime-company)))
 
-(use-package slime-company)
+(use-package slime-company
+  :after (slime company))
 
 (use-package clojure-mode)
 
@@ -1296,20 +1286,16 @@ New emacs-lisp-mode backends should be registered here.")
          "\\.mustache\\'"
          "\\.djthml\\'"))
 
-(use-package company-web)
+(use-package company-web
+  :after (web-mode company)
+  :init
+  (add-to-list 'company-backends 'company-web-html))
 
 (use-package js2-mode
   :mode "\\.js$"
-  :hook ((js2-mode . js2-setup-company))
-  :init
-  (defvar js2-mode-company-backends
-    '(company-capf)
-    "List of company backends which will be set for use by company.
-New js2-mode backends should be registered here.")
-  :config
-  (defun js2-setup-company ()
-    (set (make-local-variable 'company-backends)
-         js2-mode-company-backends)))
+  :custom
+  (js2-strict-missing-semi-warning nil)
+  (js2-missing-semi-one-line-override t))
 
 (use-package tern
   :hook (js2-mode . tern-mode))
