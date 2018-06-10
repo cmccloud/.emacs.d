@@ -702,11 +702,12 @@ Only for use with `advice-add'."
   (winner-mode +1))
 
 (use-package golden-ratio
+  :load-path "site-lisp/golden-ratio"
   :custom
   (golden-ratio-auto-scale t)
-  (golden-ratio-exclude-buffer-names '("*helm marked*"))
-  :bind (:map mnemonic-map ("tg" . golden-ratio-mode))
-  :hook (golden-ratio-mode . balance-windows)
+  :bind (:map mnemonic-map
+              ("tg" . golden-ratio-mode)
+              ("wg" . golden-ratio))
   :init
   (golden-ratio-mode +1)
   :config
@@ -725,14 +726,7 @@ Only for use with `advice-add'."
   (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-helm-alive-p)
   (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-in-ediff-p)
   (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-company-box-p)
-  (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-in-magit-p)
-
-  ;; window-numbering
-  (cl-loop for num from 0 to 9
-           for wnum = (number-to-string num)
-           do (add-to-list 'golden-ratio-extra-commands
-                           (intern (concat "select-window-" wnum))))
-  (add-to-list 'golden-ratio-extra-commands 'ace-window))
+  (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-in-magit-p))
 
 (use-package shackle
   :demand t
