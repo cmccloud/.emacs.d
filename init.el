@@ -600,7 +600,7 @@ ARG can constrct the bounds to the current defun."
   (persp-auto-save-opt 2)
   (persp-autokill-buffer-on-remove nil)
   (persp-keymap-prefix (kbd "C-c l"))
-  (persp-auto-resume-time .1)
+  (persp-auto-resume-time 0)
   (persp-init-frame-behaviour 'persp-ignore-wconf)
   :bind
   (:map mnemonic-map
@@ -610,20 +610,8 @@ ARG can constrct the bounds to the current defun."
         ("lr" . persp-remove-buffer)
         ("lw" . persp-save-state-to-file)
         ("lf" . persp-load-state-from-file))
-  :hook ((persp-mode . persp-timed-auto-save)
-         (persp-mode . persp-mode-setup-advice))
+  :hook ((persp-mode . persp-mode-setup-advice))
   :config
-  (defvar persp-timed-auto-save-enable t
-    "If t, `persp-mode' will save perspectives to file every
-`persp-mode-timed-auto-save-interval' seconds.")
-  
-  (defvar persp-timed-auto-save-interval 600
-    "Interval, in seconds, between `persp-mode' auto-saves if
-`persp-timed-auto-save-enable' is t.")
-  
-  (defvar persp--timed-auto-save-handler nil
-    "Reference to handler for `persp-timed-auto-save'")
-  
   (defvar persp-mode-functions-to-advise
     '(next-buffer
       previous-buffer
@@ -633,29 +621,6 @@ ARG can constrct the bounds to the current defun."
       helm-multi-swoop-all
       helm-multi-occur-all)
     "List of functions which need additional advising when using `persp-mode'.")
-
-  (defun persp-timed-auto-save ()
-    "Timed auto-save for `persp-mode'.
-Saves layouts every `persp-timed-auto-save-interval' seconds.
-Cancels autosave on exiting persp-mode."
-    (if (and persp-mode persp-timed-auto-save-enable)
-        (progn
-          (message "Persp-mode timed auto-save enabled.")
-          (setq persp--timed-auto-save-handler
-                (run-with-timer
-                 persp-timed-auto-save-interval
-                 persp-timed-auto-save-interval
-                 (lambda ()
-                   (if persp-timed-auto-save-enable
-                       (progn (message "Saving perspectives to file.")
-                              (persp-save-state-to-file))
-                     (cancel-timer persp--timed-auto-save-handler)
-                     (setq persp--timed-auto-save-handler nil))))))
-      
-      (when persp--timed-auto-save-handler
-        (message "Canceling persp-mode-timed-auto-save.")
-        (cancel-timer persp--timed-auto-save-handler)
-        (setq persp--timed-auto-save-handler nil))))
 
   (defun persp-mode-wrapper (wrapped-buffer-command &rest r)
     "Wrapper for commands which need advising for use with `persp-mode'.
