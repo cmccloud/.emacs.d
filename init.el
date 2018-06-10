@@ -821,7 +821,10 @@ Only for use with `advice-add'."
           ("M-," . smart-jump-back)
           ("M-?" . smart-jump-references))
   :config
-  (smart-jump-setup-default-registers))
+  (smart-jump-setup-default-registers)
+  ;; Use in js2-mode if available
+  (require 'smart-jump-typescript-mode)
+  (smart-jump-typescript-mode-register 'js2-mode))
 
 ;;*** Search (Grep/Git Grep/Ag/Rg)
 (use-package rg
@@ -1297,12 +1300,16 @@ Only for use with `advice-add'."
   (js2-strict-missing-semi-warning nil)
   (js2-missing-semi-one-line-override t))
 
-(use-package tern
-  :hook (js2-mode . tern-mode))
-
-(use-package company-tern
+(use-package tide
+  :bind (:map tide-mode-map
+              ("C-c C-d" . tide-documentation-at-point))
   :init
-  (add-to-list 'js2-mode-company-backends 'company-tern))
+  (add-hook 'js2-mode-hook #'tide-setup t)
+  :config
+  (defun tide-eldoc-cleanup (&optional _arg)
+    (when (commandp 'typescript-insert-and-indent)
+      (eldoc-remove-command 'typescript-insert-and-indent)))
+  (advice-add 'tide-mode :after 'tide-eldoc-cleanup))
 
 ;; Re-enable Garbage Collection
 (setq gc-cons-threshold (* 1024 1024 16)
