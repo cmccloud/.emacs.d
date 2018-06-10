@@ -1151,7 +1151,10 @@ Only for use with `advice-add'."
    '(completion status-checks-header commit-browse pull-request-merge)))
 
 (use-package diff-hl
-  :bind (:map diff-hl-command-map ("n" . hydra-diff-hl/body))
+  :bind (:map diff-hl-command-map
+         ("n" . hydra-diff-hl/body)
+         :map mnemonic-map
+         ("vn" . hydra-diff-hl/body))
   :hook ((prog-mode . diff-hl-mode)
          (prog-mode . diff-hl-flydiff-mode)
          (magit-post-refresh . diff-hl-magit-post-refresh))
