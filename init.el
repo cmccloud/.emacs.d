@@ -221,7 +221,8 @@
          ("M-p" . previous-file-buffer)
          :map mnemonic-map
          ("ws" . split-window-tree)
-         ("wd" . delete-window))
+         ("wd" . delete-window)
+         ("wb" . balance-windows))
   :init
   (defun split-window-tree ()
     "Splits windows such that each gets half as much space as the previous.
