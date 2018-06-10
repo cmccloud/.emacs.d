@@ -532,46 +532,46 @@ ARG can constrct the bounds to the current defun."
      'lispy-ace-paren
      (not arg)))
 
-  (defun lispy--tag-name-elisp-extensions (f x &optional file)
-    "Adds a few more categories to how lispy tags are displayed."
-    (catch 'error (funcall f x file)
-           (cond ((eq (cadr x) 'function)
-                  (if (semantic-tag-get-attribute x :user-visible-flag)
-                      (lispy--propertize-tag "defun" x :command)
-                    (lispy--propertize-tag "defun" x :function)))
-                 ((eq (cadr x) 'type)
-                  (lispy--propertize-tag "defclass" x))
-                 (t (funcall f x file)))))
-
-  (defun lispy--helm-select-candidate (f candidates action)
-    (if (eq lispy-completion-method 'helm)
-        (helm :sources
-              (helm-build-sync-source "semantic tags"
-                :candidates candidates
-                :action action
-                :candidate-number-limit 300)
-              :preselect (lispy--current-tag)
-              :buffer "*lispy-goto*")
-      (funcall f candidates action)))
-
   ;; Lispy key definitions
   (lispy-define-key lispy-mode-map "q" 'lispy-ace-paren-unbounded)
 
   ;; Better helm support for lispy-tags
   (advice-add 'lispy--select-candidate :around
-              #'lispy--helm-select-candidate)
-  
-  ;; Extend lispy tags
-  (advice-add 'lispy--tag-name-elisp :around
-              #'lispy--tag-name-elisp-extensions)
+              (lambda (f candidates action)
+                "Better helm support for lispy-goto"
+                (if (eq lispy-completion-method 'helm)
+                    (helm :sources
+                          (helm-build-sync-source "semantic tags"
+                            :candidates candidates
+                            :action action
+                            :candidate-number-limit 300)
+                          :preselect (lispy--current-tag)
+                          :buffer "*lispy-goto*")
+                  (funcall f candidates action)))
+              '((name . lispy--helm-select-candidate)))
 
+  ;; More informative tags for searching by type
+  (advice-add 'lispy--tag-name-elisp :around
+              (lambda (f x &optional file)
+                "Adds a few more categories to how lispy tags are displayed."
+                (catch 'error (funcall f x file)
+                       (cond ((eq (cadr x) 'function)
+                              (if (semantic-tag-get-attribute x :user-visible-flag)
+                                  (lispy--propertize-tag "defun" x :command)
+                                (lispy--propertize-tag "defun" x :function)))
+                             ((eq (cadr x) 'type)
+                              (lispy--propertize-tag "defclass" x))
+                             (t (funcall f x file)))))
+              '((name . lispy--tag-name-elisp-extensions)))
+  
+  ;; Parse arguments to more forms
   (setcdr (assq 'emacs-lisp-mode lispy-tag-arity)
           (append (cdr (assq 'emacs-lisp-mode lispy-tag-arity))
                   '((cl-defmethod . 2)
                     (cl-defgeneric . 1)
                     (defclass . 1)))))
 
-;;*** Window and Buffer Management 
+;;*** Window and Buffer Management
 (use-package eyebrowse
   :bind*
   (:map mnemonic-map
