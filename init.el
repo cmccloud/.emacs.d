@@ -666,6 +666,7 @@ Only for use with `advice-add'."
   :load-path "site-lisp/golden-ratio"
   :custom
   (golden-ratio-auto-scale t)
+  (golden-ratio-exclude-buffer-names '("*tide-documentation*"))
   :bind (:map mnemonic-map
               ("tg" . golden-ratio-mode)
               ("wg" . golden-ratio))
