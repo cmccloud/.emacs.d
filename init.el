@@ -1109,6 +1109,24 @@ Only for use with `advice-add'."
 
 (use-package helm-themes)
 
+(use-package helm-dash
+  :custom
+  (helm-dash-browser-func 'browse-url)
+  :hook ((emacs-lisp-mode . helm-dash-setup-docs)
+         (js2-mode . helm-dash-setup-docs))
+  :config
+  (defvar helm-dash-docsets-for-mode
+    `((emacs-lisp-mode . ("Emacs Lisp"))
+      (js2-mode . ("JavaScript" "NodeJS" "React")))
+    "An association list of the form (MODE . (DOCSETS)).
+MODE is a symbol and DOCSETS is a list of one or more strings.  When
+calling `helm-dash-at-point' or `helm-dash', this list will be used to
+set the active dash docsets based on the current major-mode.")
+
+  (defun helm-dash-setup-docs ()
+    (setq-local helm-dash-docsets
+                (alist-get major-mode helm-dash-docsets-for-mode))))
+
 ;;*** Version Control and Project Management
 (use-package magit
   :custom
