@@ -920,7 +920,8 @@ Only for use with `advice-add'."
   (avy-background t)
   (avy-style 'at)
   :bind
-  (("M-g c" . avy-goto-char-timer)
+  (("C-j" . avy-goto-char-timer)
+   ("M-g c" . avy-goto-char-timer)
    ("M-g g" . avy-goto-line)
    ("M-g M-g" . avy-goto-line)))
 
