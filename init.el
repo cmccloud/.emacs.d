@@ -1251,7 +1251,32 @@ Only for use with `advice-add'."
   (helm-descbinds-window-style 'split-window)
   :bind (("C-h b" . helm-descbinds)))
 
-(use-package helm-themes)
+(use-package helm-themes
+  :config
+  (defvar helm-themes-font-plist
+    '(spacemacs-dark
+      (default ((t (:height 120 :width ultra-condensed :family "Input"))))
+      darktooth
+      (default ((t (:height 120 :width ultra-condensed :family "Input"))))
+      doom-one
+      (default ((t (:height 120 :width ultra-condensed :family "Input"))))
+      doom-city-lights
+      (default ((t (:height 120 :width ultra-condensed :family "Input"))))
+      spacemacs-light
+      (default ((t (:height 120 :width normal :family "Input Mono"))))
+      doom-solarized-light
+      (default ((t (:height 120 :width normal :family "Input Mono")))))
+    "Mapping of themes to fonts used by `helm-themes'.
+
+Switching to an included theme will additionally set the default font
+as specified.")
+
+  (advice-add 'helm-themes :after
+              (lambda (&rest _args)
+                (when-let* ((theme (car custom-enabled-themes))
+                            (font (plist-get helm-themes-font-plist theme)))
+                  (custom-set-faces font)))
+              '((name . helm-themes-font-advice))))
 
 (use-package helm-dash
   :custom
