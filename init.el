@@ -1128,6 +1128,12 @@ set the active dash docsets based on the current major-mode.")
     (setq-local helm-dash-docsets
                 (alist-get major-mode helm-dash-docsets-for-mode))))
 
+(use-package helm-xref
+  :load-path "site-lisp/helm-xref"
+  :custom
+  (xref-show-xrefs-function 'helm-xref-show-xrefs)
+  :commands (helm-xref-show-xrefs))
+
 ;;*** Version Control and Project Management
 (use-package magit
   :custom
