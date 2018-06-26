@@ -672,11 +672,13 @@ ARG can constrct the bounds to the current defun."
   (persp-set-last-persp-for-new-frames t)
   (persp-switch-to-added-buffer nil)
   (persp-switch-wrap t)
-  (persp-auto-save-opt 2)
+  (persp-auto-save-opt 1)
   (persp-autokill-buffer-on-remove nil)
   (persp-keymap-prefix (kbd "C-c l"))
   (persp-auto-resume-time 0)
   (persp-init-frame-behaviour 'persp-ignore-wconf)
+  :custom-face
+  (persp-face-lighter-buffer-not-in-persp ((t (:inherit error))))
   :bind
   (:map mnemonic-map
         ("ll" . persp-mode)
