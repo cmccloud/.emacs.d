@@ -719,7 +719,11 @@ Only for use with `advice-add'."
 (use-package ace-window
   :custom
   (aw-keys '(49 50 51 52 53 54 55 56 57 48))
-  :bind (("C-x o" . ace-window)))
+  :custom-face
+  (aw-leading-char-face ((t (:inherit t :height 1.3))))
+  :bind* (("M-o" . ace-window)
+          :map mnemonic-map
+          ("wS" . ace-swap-window)))
 
 (use-package window-numbering
   :bind
