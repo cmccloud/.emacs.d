@@ -646,6 +646,8 @@ ARG can constrct the bounds to the current defun."
 
 ;;*** Window and Buffer Management
 (use-package eyebrowse
+  :custom
+  (eyebrowse-new-workspace t)
   :bind*
   (:map mnemonic-map
         ("l1" . eyebrowse-switch-to-window-config-1)
