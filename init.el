@@ -738,6 +738,8 @@ Only for use with `advice-add'."
   (window-numbering-mode))
 
 (use-package winner
+  :custom
+  (winner-dont-bind-my-keys t)
   :bind (:map mnemonic-map
               ("wu" . winner-undo)
               ("wr" . winner-redo))
