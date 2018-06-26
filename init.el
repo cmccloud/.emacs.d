@@ -14,7 +14,7 @@
 
 ;; Load Custom file as early as possible so we can rewrite the values later
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file t t)
+(load custom-file t 'no-error)
 
 ;; Introductions
 (customize-set-variable 'user-full-name "Christopher McCloud")
@@ -59,12 +59,15 @@
 (customize-set-variable 'confirm-kill-emacs #'y-or-n-p)
 (customize-set-variable 'enable-recursive-minibuffers t)
 (customize-set-variable 'enable-local-variables :safe)
+(customize-set-variable
+ 'completion-ignored-extensions
+ (cons ".DS_Store" completion-ignored-extensions))
 
 ;; Don't let find-file-at-point hang emacs with a bad ping attempt
 (customize-set-variable 'ffap-machine-p-unknown 'reject)
 (customize-set-variable 'ffap-machine-p-known 'reject)
 (customize-set-variable 'ffap-machine-p-local 'reject)
-;; Set the active region less eagerly. See GNU: #29661 and #29889
+;; Set the active region less eagerly. See GNU: #29889
 (customize-set-variable 'select-active-regions 'only)
 
 (customize-set-variable 'visible-cursor nil)
@@ -90,6 +93,9 @@
 (customize-set-variable 'display-line-numbers-current-absolute t)
 
 (customize-set-variable 'inhibit-startup-message t)
+(customize-set-variable
+ 'auto-save-list-file-prefix
+ (expand-file-name "cache/auto-save-list/.saves-" user-emacs-directory))
 (customize-set-variable 'initial-major-mode 'fundamental-mode)
 (customize-set-variable 'initial-scratch-message nil)
 
@@ -97,9 +103,8 @@
 
 (setq-default frame-title-format nil
               fringes-outside-margins t
-              bidi-display-reordering nil
-              inhibit-compacting-font-caches t
-              image-animate-loop t)
+              bidi-display-reordering t
+              inhibit-compacting-font-caches t)
 
 ;;*** Use-package Configuration
 (customize-set-variable 'use-package-always-defer t)
