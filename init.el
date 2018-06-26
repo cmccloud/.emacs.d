@@ -137,10 +137,6 @@
    ("tl" . display-line-numbers-mode)
    ("bd" . kill-this-buffer)
    ("br" . rename-buffer)
-   ("ws" . split-window-right)
-   ("wd" . delete-window)
-   ("wm" . delete-other-windows)
-   ("wv" . split-window-below)
    ("qq" . save-buffers-kill-emacs)
    ("qf" . delete-frame)
    ("ad" . dired)
@@ -220,7 +216,9 @@
          ("M-p" . previous-file-buffer)
          :map mnemonic-map
          ("ws" . split-window-tree)
+         ("wv" . split-window-below)
          ("wd" . delete-window)
+         ("wm" . delete-other-windows)
          ("wb" . balance-windows))
   :init
   (defun split-window-tree ()
