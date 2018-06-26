@@ -616,6 +616,13 @@ ARG can constrct the bounds to the current defun."
                   (funcall f candidates action)))
               '((name . lispy--helm-select-candidate)))
 
+  ;; Use Helm for Lispy Visit
+  (advice-add 'lispy-visit :override
+              (lambda (_arg &rest _args)
+                (interactive "p")
+                (helm :sources 'helm-source-ls-git))
+              '((name . lispy--visit-use-helm)))
+
   ;; More informative tags for searching by type
   (advice-add 'lispy--tag-name-elisp :around
               (lambda (f x &optional file)
