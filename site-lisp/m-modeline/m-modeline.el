@@ -1,4 +1,4 @@
-;;; m-modeline.el --- Personal mode-line configuration. -*- lexical-binding: t -*-
+;;; m-modeline.el --- Personal modeline settings. -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2016-2018 Christopher McCloud
 
@@ -6,20 +6,33 @@
 
 ;; This file is not part of GNU Emacs
 
-;;;; Code: 
-(defvar mode-line-default-format
-  (get 'mode-line-format 'standard-value))
-
+;;;; Code:
 (defvar mode-line-padding
-  '(:eval (let* ((mlf (remq mode-line-padding mode-line-format))
-                 (len (length (format-mode-line mlf))))
-            (make-string (- (window-total-width) len)
-                         (string-to-char " ")))))
+  '(:eval
+    (let ((mode-line-padding ""))
+      (make-string (max (- (window-total-width)
+                           (string-width (format-mode-line mode-line-format)))
+                        0)
+                   (string-to-char " ")))))
+
+(put 'mode-line-padding 'risky-local-variable t)
 
 (defvar mode-line-file-modified
   '(:eval (if (buffer-modified-p)
-       (propertize "[!]" 'face '(:inherit warning :weight bold))
-       (propertize "[-]" 'face '(:weight bold)))))
+              (propertize "!" 'face '(:inherit warning :weight bold))
+            (propertize "-" 'face '(:weight bold)))))
+
+(put 'mode-line-file-modified 'risky-local-variable t)
+
+(defvar mode-line-file-size
+  '(:eval (propertize "%I " 'face 'bold)))
+
+(put 'mode-line-file-size 'risky-local-variable t)
+
+(defvar mode-line-cursor-position
+  '(:eval (propertize "%l:%c" 'face 'bold)))
+
+(put 'mode-line-cursor-position 'risky-local-variable t)
 
 ;;;###autoload
 (define-minor-mode m-modeline-mode
@@ -30,18 +43,19 @@
       (setq-default mode-line-format
                     `("%e"
                       mode-line-front-space
-                      "%I "
+                      mode-line-file-size
                       mode-line-client
-                      ,mode-line-file-modified
-                      mode-line-frame-identification
-                      mode-line-buffer-identification
-                      "   "
-                      (:eval (propertize "%l:%c" 'face '(:weight bold)))
-                      ,mode-line-padding
-                      (format-mode-line (vc-mode vc-mode))
-                      "  "
-                      (:eval (propertize (format-mode-line mode-line-modes) 'face '(:weight bold)))
+                      mode-line-file-modified
+                      " "
                       mode-line-misc-info
+                      " "
+                      mode-line-buffer-identification
+                      " "
+                      mode-line-cursor-position
+                      mode-line-padding
+                      (vc-mode vc-mode)
+                      " "
+                      mode-line-modes
                       mode-line-end-spaces))
     (setq-default mode-line-format
                   (cdar (get 'mode-line-format 'standard-value)))))

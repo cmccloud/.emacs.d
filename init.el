@@ -422,12 +422,12 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
              all-the-icons-fileicon
              all-the-icons-wicon))
 
-(use-package doom-modeline
-  :load-path "site-lisp/doom-modeline"
+(use-package m-modeline
+  :load-path "site-lisp/m-modeline"
   :bind (:map mnemonic-map
-              ("tm" . doom-modeline-mode))
-  :config
-  (setq doom-modeline-show-helm-modeline nil))
+              ("tm" . m-modeline-mode))
+  :init
+  (m-modeline-mode))
 
 (use-package rainbow-mode
   :hook (css-mode . rainbow-mode))
