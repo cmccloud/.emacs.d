@@ -367,6 +367,9 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
         ("M-m" . nil)))
 
 (use-package eshell
+  :custom
+  (eshell-directory-name
+   (expand-file-name "cache/eshell/" user-emacs-directory))
   :bind (:map mnemonic-map ("ae" . eshell))
   :init (setenv "NODE_NO_READLINE" "1")
   :config
