@@ -82,13 +82,6 @@
 (customize-set-variable 'jit-lock-stealth-time 0.2)
 (customize-set-variable 'jit-lock-stealth-verbose nil)
 
-(customize-set-variable 'compilation-scroll-output nil)
-(customize-set-variable 'use-dialog-box nil)
-(customize-set-variable 'ring-bell-function #'ignore)
-(customize-set-variable 'visible-bell nil)
-(customize-set-variable 'apropos-do-all t)
-(customize-set-variable 'history-length 1000)
-
 (customize-set-variable 'display-line-numbers-type t)
 (customize-set-variable 'display-line-numbers-current-absolute t)
 
@@ -193,6 +186,7 @@
     "M-m h" "Helm"
     "M-m hd" "Describe"
     "M-m hl" "Locate"
+    "M-m c" "Customization"
     "M-m l" "Layouts"
     "M-m p" "Projects"
     "M-m q" "Quit"
@@ -383,6 +377,18 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   (ediff-window-setup-function 'ediff-setup-windows-plain)
   (ediff-split-window-function 'split-window-horizontally)
   (ediff-keep-variants t))
+
+(use-package cus-edit
+  :custom
+  (compilation-scroll-output nil)
+  (use-dialog-box nil)
+  (ring-bell-function #'ignore)
+  (visible-bell nil)
+  (apropos-do-all t)
+  (history-length 1000)
+  :bind (:map mnemonic-map
+              ("cg" . customize-group)
+              ("cf" . customize-apropos-faces)))
 
 ;;*** Themes and UI
 (use-package spacemacs-common
