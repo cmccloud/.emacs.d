@@ -130,8 +130,6 @@
   (("M-m" . mnemonic-map)
    ("M-u" . undo)
    ("C-x C-c" . nil)
-   ("M-n" . next-buffer)
-   ("M-p" . previous-buffer)
    :map mnemonic-map
    ("tF" . toggle-frame-fullscreen)
    ("tl" . display-line-numbers-mode)
