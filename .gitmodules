@@ -16,3 +16,6 @@
 [submodule "site-lisp/helm-xref"]
 	path = site-lisp/helm-xref
 	url = https://github.com/cmccloud/helm-xref.git
+[submodule "site-lisp/dimmer"]
+	path = site-lisp/dimmer
+	url = https://github.com/cmccloud/dimmer.el.git
