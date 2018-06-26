@@ -733,6 +733,8 @@ Only for use with `advice-add'."
    ("M-4" . select-window-4)
    ("M-5" . select-window-5))
   :config
+  (advice-add 'window-numbering-install-mode-line :override #'ignore)
+  (advice-add 'window-numbering-clear-mode-line :override #'ignore)
   (window-numbering-mode))
 
 (use-package winner
