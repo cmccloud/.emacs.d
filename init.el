@@ -505,8 +505,10 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   (sp-echo-match-when-invisible nil)
   :hook ((js2-mode . smartparens-mode))
   :config
-  (require 'smartparens-config)
-  (show-smartparens-global-mode))
+  (require 'smartparens-config))
+
+(use-package elec-pair
+  :hook ((js2-mode . electric-pair-local-mode)))
 
 (use-package lispy
   :custom
