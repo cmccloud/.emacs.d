@@ -432,6 +432,21 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
 (use-package rainbow-mode
   :hook (css-mode . rainbow-mode))
 
+(use-package delight
+  :init
+  (delight 'company-mode nil 'company)
+  (delight 'helm-mode nil 'helm-mode)
+  (delight 'golden-ratio-mode nil 'golden-ratio)
+  (delight 'which-key-mode nil 'which-key)
+  (delight 'page-break-lines-mode nil 'page-break-lines)
+  (delight 'visual-line-mode nil 'simple)
+  (delight 'lispy-mode nil 'lispy)
+  (delight 'outline-minor-mode nil 'outline)
+  (delight 'eldoc-mode nil 'eldoc)
+  (delight 'magit-wip-before-change-mode " W" 'magit-wip)
+  (delight 'magit-wip-after-apply-mode "I" 'magit-wip)
+  (delight 'magit-wip-after-save-local-mode "P" 'magit-wip))
+
 ;;*** Misc
 (use-package paradox
   :custom
