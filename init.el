@@ -860,8 +860,8 @@ Only for use with `advice-add'."
                    (eq (current-buffer) (marker-buffer last))
                    (eq (point) (marker-position last)))
         (xref-push-marker-stack))))
-  ;; Don't bother with global vs local vs xref markers
-  ;; Just track them all in xref-marker-ring
+  ;; Don't bother with global vs local vs xref markers, just track
+  ;; them all in xref-marker-ring.
   (advice-add 'push-mark :after #'xref-push-after))
 
 (use-package semantic
