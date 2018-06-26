@@ -755,14 +755,13 @@ Only for use with `advice-add'."
   :bind (:map mnemonic-map
               ("tg" . golden-ratio-mode)
               ("wg" . golden-ratio))
-  :init
-  (golden-ratio-mode +1)
   :config
   (defun golden-ratio-helm-alive-p ()
-    (ignore-errors helm-alive-p))
+    (ignore-errors (helm--alive-p)))
 
   (defun golden-ratio-in-ediff-p ()
-    (ignore-errors ediff-this-buffer-ediff-sessions))
+    (ignore-errors (or ediff-this-buffer-ediff-sessions
+                       (ediff-in-control-buffer-p))))
 
   (defun golden-ratio-company-box-p ()
     (frame-parameter (selected-frame) 'company-box-buffer))
