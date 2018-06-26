@@ -203,7 +203,7 @@
     "M-m t" "Toggle"
     "M-m w" "Window")
   (which-key-setup-side-window-bottom)
-  (which-key-mode 1))
+  (which-key-mode))
 
 ;;*** Built In
 (use-package frame
@@ -320,7 +320,7 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   :custom
   (auto-revert-verbose nil)
   :config
-  (global-auto-revert-mode +1))
+  (global-auto-revert-mode))
 
 (use-package recentf
   :custom
@@ -330,7 +330,7 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   (recentf-exclude '("~/.emacs.d/cache/.*"))
   (recentf-save-file "~/.emacs.d/cache/recentf")
   :init
-  (recentf-mode 1))
+  (recentf-mode))
 
 (use-package re-builder
   :config
@@ -351,11 +351,11 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   (save-interprogram-paste-before-kill t)
   (blink-matching-paren nil)
   :init
-  (global-visual-line-mode +1))
+  (global-visual-line-mode))
 
 (use-package paren
   :init
-  (show-paren-mode +1))
+  (show-paren-mode))
 
 (use-package term
   :custom
@@ -590,7 +590,7 @@ ARG can constrct the bounds to the current defun."
         ("lR" . eyebrowse-rename-window-config)
         ("lD" . eyebrowse-close-window-config))
   :config
-  (eyebrowse-mode +1))
+  (eyebrowse-mode))
 
 (use-package persp-mode
   :custom
@@ -657,7 +657,7 @@ Only for use with `advice-add'."
    ("M-4" . select-window-4)
    ("M-5" . select-window-5))
   :config
-  (window-numbering-mode 1))
+  (window-numbering-mode))
 
 (use-package winner
   :bind (:map mnemonic-map
@@ -665,7 +665,7 @@ Only for use with `advice-add'."
               ("wr" . winner-redo))
   :hook (ediff-quit . winner-undo)
   :config
-  (winner-mode +1))
+  (winner-mode))
 
 (use-package golden-ratio
   :load-path "site-lisp/golden-ratio"
@@ -911,7 +911,7 @@ Only for use with `advice-add'."
   :custom
   (helm-completion-in-region-fuzzy-match t)
   :config
-  (helm-mode 1))
+  (helm-mode))
 
 (use-package helm-utils
   :custom
@@ -1157,9 +1157,9 @@ set the active dash docsets based on the current major-mode.")
    ("vc" . magit-commit-popup))
   :commands (magit-list-repos)
   :config
-  (magit-wip-after-save-mode +1)
-  (magit-wip-after-apply-mode +1)
-  (magit-wip-before-change-mode +1))
+  (magit-wip-after-save-mode)
+  (magit-wip-after-apply-mode)
+  (magit-wip-before-change-mode))
 
 (use-package projectile
   :custom
