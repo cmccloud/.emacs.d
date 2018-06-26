@@ -532,8 +532,8 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
 
 ;;*** Editing
 (use-package yasnippet
-  :hook (web-mode . yas-minor-mode)
-  :config (yas-reload-all))
+  :config
+  (yas-reload-all))
 
 (use-package expand-region
   :bind ("C-r" . er/expand-region))
