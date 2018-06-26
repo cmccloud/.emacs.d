@@ -1515,13 +1515,13 @@ set the active dash docsets based on the current major-mode.")
 (use-package tide
   :bind (:map tide-mode-map
               ("C-c C-d" . tide-documentation-at-point))
-  :init
-  (add-hook 'js2-mode-hook #'tide-setup t)
+  :hook ((js2-mode . tide-setup)
+         (tide-mode . tide-eldoc-cleanup))
   :config
   (defun tide-eldoc-cleanup (&optional _arg)
-    (when (commandp 'typescript-insert-and-indent)
-      (eldoc-remove-command 'typescript-insert-and-indent)))
-  (advice-add 'tide-mode :after 'tide-eldoc-cleanup))
+    (when (and (not tide-mode)
+               (commandp 'typescript-insert-and-indent))
+      (eldoc-remove-command 'typescript-insert-and-indent))))
 
 ;; Re-enable Garbage Collection
 (setq gc-cons-threshold (* 1024 1024 16)
