@@ -311,6 +311,7 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   :demand t
   :custom
   (auto-revert-verbose nil)
+  (auto-revert-check-vc-info t)
   :config
   (global-auto-revert-mode))
 
