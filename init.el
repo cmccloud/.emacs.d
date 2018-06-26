@@ -180,8 +180,6 @@
     "M-m a" "Applications"
     "M-m v" "Version Control"
     "M-m h" "Helm"
-    "M-m hd" "Describe"
-    "M-m hl" "Locate"
     "M-m c" "Customization"
     "M-m l" "Layouts"
     "M-m p" "Projects"
@@ -994,17 +992,17 @@ Only for use with `advice-add'."
   (helm-follow-mode-persistent t)
   :custom-face
   (helm-match ((t (:inherit font-lock-keyword-face :weight bold))))
-  :bind
-  (:map mnemonic-map
-   ("hdf" . describe-function)
-   ("hdv" . describe-variable)
-   :map helm-map
-   ("C-z" . helm-select-action)
-   ("<tab>" . helm-execute-persistent-action)
-   ("TAB" . helm-execute-persistent-action)
-   ("C-M-n" . helm-scroll-other-window)
-   ("C-M-p" . helm-scroll-other-window-down)
-   ("C-s" . helm-into-next))
+  (helm-candidate-number ((t (:inherit bold :background nil))))
+  :bind (:map mnemonic-map
+              ("hr" . helm-resume)
+              ("hk" . helm-show-kill-ring)
+              :map helm-map
+              ("C-z" . helm-select-action)
+              ("<tab>" . helm-execute-persistent-action)
+              ("TAB" . helm-execute-persistent-action)
+              ("C-M-n" . helm-scroll-other-window)
+              ("C-M-p" . helm-scroll-other-window-down)
+              ("C-s" . helm-into-next))
   :init
   (defvar helm-into-next-alist nil)
   :config
@@ -1163,7 +1161,7 @@ Only for use with `advice-add'."
 (use-package helm-elisp
   :bind (("C-h a" . helm-apropos)
          :map mnemonic-map
-         ("hll" . helm-locate-library)))
+         ("hL" . helm-locate-library)))
 
 (use-package helm-info
   :bind (("C-h i" . helm-info)))
