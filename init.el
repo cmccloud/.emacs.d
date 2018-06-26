@@ -1332,6 +1332,17 @@ set the active dash docsets based on the current major-mode.")
   (magit-wip-after-apply-mode)
   (magit-wip-before-change-mode))
 
+(use-package vc
+  :custom-face
+  (vc-state-base ((t (:weight bold))))
+  (vc-conflict-state ((t (:inherit (diff-changed vc-state-base)))))
+  (vc-edited-state ((t (:inherit (diff-changed vc-state-base)))))
+  (vc-locally-added-state ((t (:inherit (diff-changed vc-state-base)))))
+  (vc-missing-state ((t (:inherit (diff-changed vc-state-base)))))
+  (vc-needs-update-state ((t (:inherit (diff-changed vc-state-base)))))
+  (vc-removed-state ((t (:inherit (diff-changed vc-state-base)))))
+  (vc-up-to-date-state ((t (:inherit (diff-added vc-state-base))))))
+
 (use-package projectile
   :custom
   (projectile-indexing-method 'alien)
