@@ -1183,20 +1183,6 @@ Only for use with `advice-add'."
     (customize-set-variable 'helm-locate-fuzzy-match nil)
     (customize-set-variable 'helm-locate-command "mdfind -name %s %s")))
 
-(use-package helm-rg
-  :custom
-  (helm-rg-default-directory 'default)
-  :custom-face
-  (helm-rg-preview-match-highlight ((t (:inherit helm-match-item))))
-  (helm-rg-preview-line-highlight ((t (:inherit helm-match))))
-  :bind (:map mnemonic-map
-              ("sh" . helm-rg)
-              ("sH" . helm-projectile-rg)
-              :map helm-rg-map
-              ("M-o" . helm-rg--file-forward)
-              ("M-i" . helm-rg--file-backward)
-              ("C-x C-s" . helm-rg--bounce)))
-
 (use-package helm-elisp
   :bind (("C-h a" . helm-apropos)
          :map mnemonic-map
