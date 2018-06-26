@@ -913,7 +913,7 @@ Only for use with `advice-add'."
     "Recognize `use-package' in imenu when in emacs-lisp-mode."
     (add-to-list
      'imenu-generic-expression
-     '("Packages" "^\\s-*(\\(use-package\\)\\s-+\\(\\(\\sw\\|\\s_\\)+\\)" 2) t)))
+     '("Package" "^\\s-*(\\(use-package\\)\\s-+\\(\\(\\sw\\|\\s_\\)+\\)" 2) t)))
 
 (use-package elisp-slime-nav
   :bind (("C-c C-d" . elisp-slime-nav-describe-elisp-thing-at-point)))
@@ -1176,13 +1176,14 @@ Only for use with `advice-add'."
 (use-package helm-imenu
   :custom
   (helm-imenu-fuzzy-match nil)
+  (helm-imenu-delimiter ": ")
   :bind* (("C-x C-j" . helm-imenu-in-all-buffers))
   :config
   (cl-defmethod helm-setup-user-source ((source helm-imenu-source))
     (setf (slot-value source 'candidate-number-limit) 100))
 
   (add-to-list 'helm-imenu-type-faces
-               '("^Packages$" . font-lock-type-face)))
+               '("^Package$" . font-lock-type-face)))
 
 (use-package helm-semantic
   :custom
