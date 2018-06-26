@@ -1021,6 +1021,31 @@ Only for use with `advice-add'."
   :after helm
   :custom
   (helm-completion-in-region-fuzzy-match t)
+  (helm-completing-read-handlers-alist
+   '((xref-find-definitions . helm-completing-read-default-find-tag)
+     (describe-function . helm-completing-read-symbols)
+     (describe-variable . helm-completing-read-symbols)
+     (describe-symbol . helm-completing-read-symbols)
+     (debug-on-entry . helm-completing-read-symbols)
+     (find-function . helm-completing-read-symbols)
+     (disassemble . helm-completing-read-symbols)
+     (trace-function . helm-completing-read-symbols)
+     (trace-function-foreground . helm-completing-read-symbols)
+     (trace-function-background . helm-completing-read-symbols)
+     (find-tag . helm-completing-read-default-find-tag)
+     (org-capture . helm-org-completing-read-tags)
+     (org-set-tags . helm-org-completing-read-tags)
+     (ffap-alternate-file)
+     (tmm-menubar)
+     (find-file)
+     (find-file-at-point . helm-completing-read-sync-default-handler)
+     (ffap . helm-completing-read-sync-default-handler)
+     (execute-extended-command)
+     (dired-do-rename . helm-read-file-name-handler-1)
+     (dired-do-copy . helm-read-file-name-handler-1)
+     (dired-do-symlink . helm-read-file-name-handler-1)
+     (dired-do-relsymlink . helm-read-file-name-handler-1)
+     (dired-do-hardlink . helm-read-file-name-handler-1)))
   :config
   (helm-mode))
 
