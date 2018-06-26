@@ -474,15 +474,14 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   (osx-trash-setup))
 
 (use-package doc-view
-  :config
   :bind (:map doc-view-mode-map
-              ("k" . nil)
-              ("n" . doc-view-next-page)
-              ("p" . doc-view-previous-page)
-              ("w" . doc-view-fit-width-to-window)
-              ("h" . doc-view-fit-height-to-window)
-              ("s" . doc-view-search)
-              ("g" . doc-view-goto-page)))
+         ("k" . nil)
+         ("n" . doc-view-next-page)
+         ("p" . doc-view-previous-page)
+         ("w" . doc-view-fit-width-to-window)
+         ("h" . doc-view-fit-height-to-window)
+         ("s" . doc-view-search)
+         ("g" . doc-view-goto-page)))
 
 ;;*** Editing
 (use-package yasnippet
