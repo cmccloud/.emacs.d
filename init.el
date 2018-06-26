@@ -1256,11 +1256,16 @@ Only for use with `advice-add'."
 (use-package helm-dash
   :custom
   (helm-dash-browser-func 'browse-url)
+  :bind (:map mnemonic-map
+              ("hd" . helm-dash-at-point))
   :hook ((emacs-lisp-mode . helm-dash-setup-docs)
          (js2-mode . helm-dash-setup-docs))
   :config
+  (defvar helm-dash-docsets nil
+    "Buffer local list of docsets to search by default.")
+
   (defvar helm-dash-docsets-for-mode
-    `((emacs-lisp-mode . ("Emacs Lisp"))
+    `((emacs-lisp-mode . ("Emacs Lisp" "Emacs-CL"))
       (js2-mode . ("JavaScript" "NodeJS" "React")))
     "An association list of the form (MODE . (DOCSETS)).
 MODE is a symbol and DOCSETS is a list of one or more strings.  When
