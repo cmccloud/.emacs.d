@@ -780,41 +780,75 @@ Only for use with `advice-add'."
   (shackle-select-reused-windows t)
   :config
   (defun shackle-left-or-below () (if (> (frame-width) 160) 'left 'below))
+  
   (defun shackle-display-helm-help (buffer alist plist)
     ;; When not in helm, we process the rule again without the custom
     ;; property.  If we are in helm, do nothing and let helm (or a
     ;; different matching rule) take care of how to display the help
     ;; buffer.
-    (when (not (bound-and-true-p helm-alive-p))
+    (if (bound-and-true-p helm-alive-p)
+        (let (shackle-rules)
+          (display-buffer buffer))
       (shackle--display-buffer
        buffer
        alist
-       (cl-remove-if
-        (lambda (elt) (or (functionp elt) (equal elt :custom))) plist))))
-  (setq shackle-rules
-        `(("*Process List*" :select t :align below :size 0.3)
-          ("*Apropos*" :select t :align below :size 0.3)
-          ("Outline.*pdf" :regexp t :select t :align below :size 0.3)
-          ("*Geiser documentation*" :select t :align below :size 0.3)
-          ("*slime-description*" :select t :align below :size 0.3)
-          ("\\`\\*[h|H]elm.*\\*\\'" :regexp t :align t :size 0.2)
-          ("*Help*" :custom shackle-display-helm-help
-           :select t :align below :size 0.3)
-          ("^\\*helpful.*" :regexp t :select t :align below :size 0.3)
-          ("*Completions*" :select t :align below :size 0.3)
-          ("*Compile-Log*" :select t :align below :size 0.3)
-          ("\\*Man.*" :regexp t :select t :align below :size 0.3 :popup t)
-          ("\\*WoMan.*" :regexp t :select t :align below :size 0.3 :popup t)
-          ("*lispy-goto*" :align t :size 0.2)
-          ("*git-gutter:diff*" :other t :size 0.3)
-          ("*Diff*" :select t :other t :size 0.3)
-          ("*Package Commit List*" :select t :other t :align right)
-          ("^\\*hgrep.*\\*" :regexp t :select t :other t)
-          ("*xref*" :select t :align below :size 0.3)
-          ("magit-process:.*" :regexp t :select t :align below :size 0.3 :popup t)
-          ("*tide-documentation*" :select t :align below :size 0.3 :popup t)))
+       (append
+        '(:custom shackle-set-no-other-window)
+        (cl-remove-if
+         (lambda (elt) (or (functionp elt) (equal elt :custom))) plist)))))
+  
+  (defun shackle-set-no-other-window (buffer alist plist)
+    (shackle--display-buffer
+     buffer
+     (append alist
+             `((window-parameters . ((no-other-window . t)))))
+     (cl-remove-if
+      (lambda (elt) (or (functionp elt) (equal elt :custom))) plist)))
+  
+  (customize-set-variable
+   'shackle-rules
+   `(("*Process List*" :custom shackle-set-no-other-window
+      :select t :align below :size 0.3)
+     ("*Apropos*" :custom shackle-set-no-other-window
+      :select t :align below :size 0.3)
+     ("Outline.*pdf" :custom shackle-set-no-other-window
+      :regexp t :select t :align below :size 0.3)
+     ("*Geiser documentation*" :custom shackle-set-no-other-window
+      :select t :align below :size 0.3)
+     ("*slime-description*" :custom shackle-set-no-other-window
+      :select t :align below :size 0.3)
+     ("\\`\\*[h|H]elm.*\\*\\'" :custom shackle-set-no-other-window
+      :regexp t :align t :size 0.3)
+     ("*Help*" :custom shackle-display-helm-help
+      :select t :align below :size 0.3)
+     ("^\\*helpful.*" :custom shackle-set-no-other-window
+      :regexp t :select t :align below :size 0.3)
+     ("*Completions*" :custom shackle-set-no-other-window
+      :select t :align below :size 0.3)
+     ("*Compile-Log*" :custom shackle-set-no-other-window
+      :select t :align below :size 0.3)
+     ("^\\*\\(Wo\\)?Man.*" :custom shackle-set-no-other-window
+      :regexp t :select t :align below :size 0.3 :popup t)
+     ("*lispy-goto*" :custom shackle-set-no-other-window
+      :align t :size 0.3)
+     ("*tide-documentation*" :custom shackle-set-no-other-window
+      :select t :align below :size 0.3 :popup t)
+     ("*lispy-help*" :custom shackle-set-no-other-window
+      :select t :align below :size 0.3 :popup t)
+     ("magit-process:.*" :custom shackle-set-no-other-window
+      :regexp t :select t :align below :size 0.3 :popup t)
+     ("*git-gutter:diff*" :other t :size 0.3)
+     ("*Diff*" :select t :other t :size 0.3)
+     ("*Package Commit List*" :select t :other t :align left)
+     ("^\\*hgrep.*\\*" :regexp t :select t :other t)
+     ("*hmoccur*" :select t :other t :inhibit-window-quit t)
+     ("*xref*" :select t :size 0.3 :other t :inhibit-window-quit t)
+     ("^\\*ag.search.text:.*\\*$"
+      :regexp t :select t :other t :inhibit-window-quit t)
+     ("^\\*xwidget.webkit:.*\\*"
+      :regexp t :select t :other t :inhibit-window-quit t)))
 
-  (shackle-mode 1))
+  (shackle-mode))
 
 ;;*** Navigation/Code Navigation
 (use-package xref
