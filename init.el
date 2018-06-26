@@ -339,6 +339,11 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
         ("tH" . global-hl-line-mode))
   :hook (prog-mode . hl-line-mode))
 
+(use-package whitespace
+  :custom
+  (whitespace-style '(face lines-tail))
+  (whitespace-line-column 80))
+
 (use-package simple
   :custom
   (save-interprogram-paste-before-kill t)
