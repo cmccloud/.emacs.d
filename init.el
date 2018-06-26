@@ -1086,11 +1086,26 @@ Only for use with `advice-add'."
      "\\*Backtrace*"))
   :bind (("C-x C-b" . helm-mini)
          :map mnemonic-map
-         ("bb" . helm-mini)))
+         ("bb" . helm-mini))
+  :config
+  (defun helm-next-buffer ()
+    (interactive)
+    (buffer-call-until
+     (lambda (b)
+       (not (cl-some (lambda (rxp) (string-match-p rxp (buffer-name b)))
+                     helm-boring-buffer-regexp-list)))
+     'next-buffer))
+
+  (defun helm-previous-buffer ()
+    (interactive)
+    (buffer-call-until
+     (lambda (b)
+       (not (cl-some (lambda (rxp) (string-match-p rxp (buffer-name b)))
+                     helm-boring-buffer-regexp-list)))
+     'previous)))
 
 (use-package helm-files
   :custom
-  (helm-ff-tramp-not-fancy 'dirs-only)
   (helm-ff-auto-update-initial-value nil)
   :bind (("C-x C-f" . helm-find-files)
          ("C-x C-p" . helm-known-projects)
