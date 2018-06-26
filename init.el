@@ -876,7 +876,7 @@ Only for use with `advice-add'."
   (semantic-stickyfunc-indent-string " ")
   (semanticdb-default-save-directory
    (concat user-emacs-directory "cache/semanticdb"))
-  (semantic-analyze-summary-function 'semantic-format-tag-summarize)
+  (semantic-analyze-summary-function 'semantic-format-tag-short-doc)
   :hook (semantic-mode . semantic-imenu-cleanup)
   :config
   (defun semantic-imenu-cleanup ()
@@ -892,9 +892,10 @@ Only for use with `advice-add'."
                    completion-at-point-functions
                    '(elisp-completion-at-point))
 
-  (cl-loop for fun in '(semantic-analyze-completion-at-point-function
-                        semantic-analyze-notc-completion-at-point-function
-                        semantic-analyze-nolongprefix-completion-at-point-function)
+  (cl-loop for fun in
+           '(semantic-analyze-completion-at-point-function
+             semantic-analyze-notc-completion-at-point-function
+             semantic-analyze-nolongprefix-completion-at-point-function)
            do (advice-add fun :override #'ignore)))
 
 (use-package semantic-el-extensions
