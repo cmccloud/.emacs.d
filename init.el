@@ -1506,6 +1506,12 @@ set the active dash docsets based on the current major-mode.")
   :init
   (add-to-list 'company-backends 'company-web-html))
 
+(use-package js
+  :custom
+  (js-chain-indent t)
+  (js-indent-align-list-continuation t)
+  (js-flat-functions t))
+
 (use-package js2-mode
   :mode "\\.js$"
   :custom
