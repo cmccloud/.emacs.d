@@ -460,6 +460,26 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
               ("td" . dimmer-mode)))
 
 ;;*** Misc
+(use-package xwidget
+  :if (featurep 'xwidget-internal)
+  :after helm-dash
+  :custom
+  (helm-dash-browser-func 'xwidget-webkit-display-url-buffer)
+  :bind (:map xwidget-webkit-mode-map
+              ("C-n" . xwidget-webkit-scroll-up-line)
+              ("C-p" . xwidget-webkit-scroll-down-line)
+              ([mouse-4] . xwidget-webkit-scroll-down-line)
+              ([mouse-5] . xwidget-webkit-scroll-up-line)
+              ("M-w" . xwidget-webkit-copy-selection-as-kill)
+              ("C-c" . xwidget-webkit-copy-selection-as-kill))
+  :init
+  (defun xwidget-webkit-display-url-buffer (url &optional _session)
+    "Browse url in existing webkit session using `display-buffer'."
+    (interactive)
+    (save-window-excursion
+      (xwidget-webkit-browse-url url))
+    (display-buffer xwidget-webkit-last-session-buffer)))
+
 (use-package paradox
   :custom
   (paradox-lines-per-entry 1)
