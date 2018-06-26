@@ -1223,7 +1223,8 @@ Only for use with `advice-add'."
   (defun helm-ls-git-find (&optional _args)
     "As `helm-find', but using the current project root."
     (interactive)
-    (helm-find-1 (helm-ls-git-root-dir)))
+    (let ((helm-ff-default-directory (helm-ls-git-root-dir)))
+      (helm-find-1 (helm-ls-git-root-dir))))
 
   (defun helm-ls-git-run-find ()
     "Run find from helm-ls-git."
