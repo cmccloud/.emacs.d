@@ -1309,12 +1309,15 @@ set the active dash docsets based on the current major-mode.")
 
 ;;*** Version Control and Project Management
 (use-package magit
+  :defer 3
   :custom
   (magit-process-popup-time 5)
   (magit-ediff-dwim-show-on-hunks nil)
   (magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
   (magit-repository-directories
-   '(("~/Repos" . 1) ("~/.emacs.d/" . 1) ("~/.emacs.d/site-lisp/" . 1)))
+   '(("/Users/Macnube/Repos" . 1)
+     ("/Users/Macnube/.emacs.d" . 1)
+     ("/Users/Macnube/.emacs.d/site-lisp" . 1)))
   :bind
   (("C-x g" . magit-status)
    ("C-x C-v" . magit-status)
