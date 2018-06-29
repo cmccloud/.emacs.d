@@ -224,7 +224,8 @@
          ("wv" . split-window-below)
          ("wd" . delete-window)
          ("wm" . delete-other-windows)
-         ("wb" . balance-windows))
+         ("wb" . balance-windows)
+         ("wt" . transpose-window))
   :init
   (defun split-window-tree ()
     "Splits windows such that each gets half as much space as the previous.
