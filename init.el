@@ -1468,7 +1468,10 @@ set the active dash docsets based on the current major-mode.")
   :custom
   (company-box-max-candidates 500)
   :config
-  (setq company-box-backends-colors nil)
+  (setq company-box-backends-colors nil
+        company-box-doc-frame-parameters
+        '((internal-border-width . 10)
+          (font . "Input 11")))
   (when (package-installed-p 'all-the-icons)
     (cl-flet ((icons 'all-the-icons-material))
       (setq company-box-icons-elisp
