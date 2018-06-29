@@ -302,7 +302,7 @@ function is used to display the contents of a veritically split
 
 (use-package faces
   :init
-  (defun set-font-lock-weight (&optional new-value)
+  (defun font-lock-set-weight (&optional new-value)
     "For font-lock faces, sets weight to NEW-VALUE.
 
 If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
@@ -424,7 +424,7 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
 (use-package spacemacs-common
   :init
   (load-theme 'spacemacs-dark 'no-confirm)
-  (set-font-lock-weight 'normal))
+  (font-lock-set-weight 'normal))
 
 (use-package doom-themes
   :preface
