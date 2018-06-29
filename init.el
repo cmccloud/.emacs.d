@@ -337,6 +337,16 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   :config
   (global-auto-revert-mode))
 
+(use-package woman
+  :custom
+  (woman-cache-filename "~/.emacs.d/cache/.wmncache.el")
+  (woman-cache-level 3)
+  (woman-fill-frame t))
+
+(use-package man
+  :custom
+  (Man-width 75))
+
 (use-package recentf
   :custom
   (recentf-auto-cleanup 'never)
