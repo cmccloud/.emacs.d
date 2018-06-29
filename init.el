@@ -1276,20 +1276,36 @@ Only for use with `advice-add'."
   :bind (("C-h b" . helm-descbinds)))
 
 (use-package helm-themes
+  :bind (:map mnemonic-map
+         ("ht" . helm-themes))
   :config
   (defvar helm-themes-font-plist
     '(spacemacs-dark
       (default ((t (:height 120 :width ultra-condensed :family "Input"))))
+      spacemacs-light
+      (default ((t (:height 120 :width normal :weight light :family "Input Mono"))))
       darktooth
       (default ((t (:height 120 :width ultra-condensed :family "Input"))))
       doom-one
       (default ((t (:height 120 :width ultra-condensed :family "Input"))))
+      doom-one-light
+      (default ((t (:height 120 :width normal :weight light :family "Input Mono"))))
+      doom-peacock
+      (default ((t (:height 120 :width ultra-condensed :family "Input"))))
+      doom-vibrant
+      (default ((t (:height 120 :width ultra-condensed :family "Input"))))
       doom-city-lights
       (default ((t (:height 120 :width ultra-condensed :family "Input"))))
-      spacemacs-light
-      (default ((t (:height 120 :width normal :family "Input Mono"))))
+      doom-spacegrey
+      (default ((t (:height 120 :width ultra-condensed :family "Input"))))
+      doom-tomorrow-night
+      (default ((t (:height 120 :width ultra-condensed :family "Input"))))
+      doom-tomorrow-day
+      (default ((t (:height 120 :width normal :weight light :family "Input Mono"))))
       doom-solarized-light
-      (default ((t (:height 120 :width normal :family "Input Mono")))))
+      (default ((t (:height 120 :width normal :weight light :family "Input Mono"))))
+      doom-opera-light
+      (default ((t (:height 120 :width normal :weight light :family "Input Mono")))))
     "Mapping of themes to fonts used by `helm-themes'.
 
 Switching to an included theme will additionally set the default font
