@@ -652,7 +652,7 @@ ARG can constrct the bounds to the current defun."
                   (funcall f candidates action)))
               '((name . lispy--helm-select-candidate)))
 
-  ;; Use Helm for Lispy Visit
+  ;; Use helm for lispy visit
   (advice-add 'lispy-visit :override
               (lambda (_arg &rest _args)
                 (interactive "p")
@@ -741,7 +741,7 @@ Only for use with `advice-add'."
     (with-persp-buffer-list () (apply wrapped-buffer-command r)))
 
   (defun persp-mode-setup-advice ()
-    "Runs with `persp-mode', advising functions in `persp-mode-functions-to-advise'."
+    "Adds or removes advice on functions in `persp-mode-functions-to-advise'."
     (cl-loop for func in persp-mode-functions-to-advise
              do (if persp-mode
                     (advice-add func :around #'persp-mode-wrapper)
