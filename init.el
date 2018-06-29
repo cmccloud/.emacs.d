@@ -249,6 +249,23 @@ Also see `window-combination-limit'."
                  do (swap-window-buffers window (cadr windows)))
         (other-window -1))))
 
+  (defun display-buffer-other-or-new-window (buffer alist)
+    (if (one-window-p)
+        (display-buffer-pop-up-window buffer alist)
+      (display-buffer-use-some-window buffer alist)))
+
+  (defun transpose-window ()
+    "Transforms the current window into the other 'working window'.
+
+Attempts to display the current window as the 'other window'
+relative to the previously selected window. In practice, this
+function is used to display the contents of a veritically split
+'minor window' in a full sized horizonal split."
+    (interactive)
+    (let ((buf (window-buffer)))
+      (delete-window)
+      (select-window (display-buffer-other-or-new-window buf nil))))
+
   (defun buffer-call-until (pred change-buffer)
     "Call CHANGE-BUFFER until PRED returns t on the current buffer.."
     (let ((initial (current-buffer)))
@@ -823,6 +840,9 @@ Only for use with `advice-add'."
              `((window-parameters . ((no-other-window . t)))))
      (cl-remove-if
       (lambda (elt) (or (functionp elt) (equal elt :custom))) plist)))
+
+  (defun shackle-other-or-new (buffer alist _plist)
+    (display-buffer-other-or-new-window buffer alist))
   
   (customize-set-variable
    'shackle-rules
@@ -846,8 +866,6 @@ Only for use with `advice-add'."
       :select t :align below :size 0.3)
      ("*Compile-Log*" :custom shackle-set-no-other-window
       :select t :align below :size 0.3)
-     ("^\\*\\(Wo\\)?Man.*" :custom shackle-set-no-other-window
-      :regexp t :select t :align below :size 0.3 :popup t)
      ("*lispy-goto*" :custom shackle-set-no-other-window
       :align t :size 0.3)
      ("*tide-documentation*" :custom shackle-set-no-other-window
@@ -856,16 +874,17 @@ Only for use with `advice-add'."
       :select t :align below :size 0.3 :popup t)
      ("magit-process:.*" :custom shackle-set-no-other-window
       :regexp t :select t :align below :size 0.3 :popup t)
+     ("^\\*\\(Wo\\)?Man.*" :custom shackle-set-no-other-window
+      :regexp t :select t :align below :size 0.3 :popup t)
      ("*git-gutter:diff*" :other t :size 0.3)
      ("*Diff*" :select t :other t :size 0.3)
      ("*Package Commit List*" :select t :other t :align left)
-     ("^\\*hgrep.*\\*" :regexp t :select t :other t)
-     ("*hmoccur*" :select t :other t :inhibit-window-quit t)
-     ("*xref*" :select t :size 0.3 :other t :inhibit-window-quit t)
-     ("^\\*ag.search.text:.*\\*$"
-      :regexp t :select t :other t :inhibit-window-quit t)
-     ("^\\*xwidget.webkit:.*\\*"
-      :regexp t :select t :other t :inhibit-window-quit t)))
+     ("^\\*hgrep.*\\*" :custom shackle-other-or-new)
+     ("*hmoccur*" :custom shackle-other-or-new)
+     ("*xref*" :custom shackle-other-or-new)
+     ("^\\*ag.search.text:.*\\*$" :custom shackle-other-or-new)
+     ("^\\*xwidget.webkit:.*\\*" :custom shackle-other-or-new)
+     (dired-mode :custom shackle-other-or-new)))
 
   (shackle-mode))
 
