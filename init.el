@@ -1221,6 +1221,8 @@ Only for use with `advice-add'."
               ("hm" . helm-man-woman)))
 
 (use-package helm-color
+  :bind (:map mnemonic-map
+              ("hc" . helm-colors))
   :config
   (helm-attrset 'candidate-number-limit 9999 helm-source-colors)
   (helm-attrset 'candidate-number-limit 9999 helm-source-customize-face))
