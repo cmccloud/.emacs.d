@@ -188,6 +188,15 @@
     "M-m s g" "Grep/Git-Grep"
     "M-m t" "Toggle"
     "M-m w" "Window")
+
+  (which-key-add-major-mode-key-based-replacements 'dired-mode
+    "*" "Mark"
+    "%" "Regexp"
+    ":" "Encryption"
+    "C-t" "Image"
+    "M-s" "Search"
+    "C-x" "Ctrl-X-Map")
+  
   (which-key-setup-side-window-bottom)
   (which-key-mode))
 
@@ -528,6 +537,10 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
 
 (use-package bookmark+
   :load-path "site-lisp/bookmark-plus")
+
+(use-package dired
+  :bind (:map dired-mode-map
+         ("?" . which-key-show-major-mode)))
 
 (use-package dired-async
   :hook (dired-mode . dired-async-mode))
