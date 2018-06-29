@@ -1214,6 +1214,12 @@ Only for use with `advice-add'."
 (use-package helm-info
   :bind (("C-h i" . helm-info)))
 
+(use-package helm-man
+  :custom
+  (helm-man-or-woman-function 'Man-getpage-in-background)
+  :bind (:map mnemonic-map
+              ("hm" . helm-man-woman)))
+
 (use-package helm-color
   :config
   (helm-attrset 'candidate-number-limit 9999 helm-source-colors)
