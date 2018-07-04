@@ -1361,45 +1361,32 @@ identical to the most recently added xref marker."
 
 (use-package helm-themes
   :bind (:map mnemonic-map
-         ("ht" . helm-themes))
+              ("ht" . helm-themes))
   :config
-  (defvar helm-themes-font-plist
-    '(spacemacs-dark
-      (default ((t (:height 120 :width ultra-condensed :family "Input"))))
-      spacemacs-light
-      (default ((t (:height 120 :width normal :weight light :family "Input Mono"))))
-      darktooth
-      (default ((t (:height 120 :width ultra-condensed :family "Input"))))
-      doom-one
-      (default ((t (:height 120 :width ultra-condensed :family "Input"))))
-      doom-one-light
-      (default ((t (:height 120 :width normal :weight light :family "Input Mono"))))
-      doom-peacock
-      (default ((t (:height 120 :width ultra-condensed :family "Input"))))
-      doom-vibrant
-      (default ((t (:height 120 :width ultra-condensed :family "Input"))))
-      doom-city-lights
-      (default ((t (:height 120 :width ultra-condensed :family "Input"))))
-      doom-spacegrey
-      (default ((t (:height 120 :width ultra-condensed :family "Input"))))
-      doom-tomorrow-night
-      (default ((t (:height 120 :width ultra-condensed :family "Input"))))
-      doom-tomorrow-day
-      (default ((t (:height 120 :width normal :weight light :family "Input Mono"))))
-      doom-solarized-light
-      (default ((t (:height 120 :width normal :weight light :family "Input Mono"))))
-      doom-opera-light
-      (default ((t (:height 120 :width normal :weight light :family "Input Mono")))))
-    "Mapping of themes to fonts used by `helm-themes'.
-
-Switching to an included theme will additionally set the default font
-as specified.")
+  (defvar helm-themes-font-alist
+    (let ((thin "-*-Input-normal-normal-normal-*-*-*-*-*-m-0-iso10646-1")
+          (light "-*-Input Mono-light-normal-normal-*-*-*-*-*-m-0-iso10646-1"))
+      `((spacemacs-dark . ,thin)
+        (darktooth . ,thin)
+        (doom-one . ,thin)
+        (doom-peacock . ,thin)
+        (doom-dracula . ,thin)
+        (doom-city-lights . ,thin)
+        (doom-spacegrey . ,thin)
+        (doom-tomorrow-night . ,thin)
+        (doom-opera . ,thin)
+        (spacemacs-light . ,light)
+        (doom-one-light . ,light)
+        (doom-tomorrow-day . ,light)
+        (doom-solarized-light . ,light)
+        (doom-opera-light . ,light)
+        (doom-nord-light . ,light))))
 
   (advice-add 'helm-themes :after
               (lambda (&rest _args)
                 (when-let* ((theme (car custom-enabled-themes))
-                            (font (plist-get helm-themes-font-plist theme)))
-                  (custom-set-faces font)))
+                            (font (cdr (assq theme helm-themes-font-alist))))
+                  (set-frame-font font t t)))
               '((name . helm-themes-font-advice))))
 
 (use-package helm-dash
