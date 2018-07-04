@@ -507,6 +507,7 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   :init
   (delight 'company-mode nil 'company)
   (delight 'helm-mode nil 'helm-mode)
+  (delight 'persp-mode nil 'persp-mode)
   (delight 'golden-ratio-mode nil 'golden-ratio)
   (delight 'which-key-mode nil 'which-key)
   (delight 'page-break-lines-mode nil 'page-break-lines)
@@ -740,6 +741,7 @@ ARG can constrct the bounds to the current defun."
 (use-package persp-mode
   :custom
   (persp-nil-name "Home")
+  (persp-set-ido-hooks t)
   (persp-add-buffer-on-after-change-major-mode t)
   (persp-reset-windows-on-nil-window-conf t)
   (persp-restrict-buffers-to-if-foreign-buffer nil)
@@ -753,24 +755,20 @@ ARG can constrct the bounds to the current defun."
   (persp-auto-resume-time 0)
   (persp-init-frame-behaviour 'persp-ignore-wconf)
   :custom-face
-  (persp-face-lighter-buffer-not-in-persp ((t (:inherit error))))
+  (persp-face-lighter-buffer-not-in-persp ((t (:inherit warning :weight bold))))
+  (persp-face-lighter-default ((t (:inherit default :weight bold))))
+  (persp-face-lighter-nil-persp ((t (:inherit default :weight bold))))
   :bind
   (:map mnemonic-map
         ("ll" . persp-mode)
-        ("ls" . persp-switch)
-        ("la" . persp-add-buffer)
-        ("lr" . persp-remove-buffer)
-        ("lw" . persp-save-state-to-file)
-        ("lf" . persp-load-state-from-file))
+        ("ls" . persp-load-state-from-files)
+        ("lw" . persp-save-state-to-file))
   :hook ((persp-mode . persp-mode-setup-advice))
   :config
   (defvar persp-mode-functions-to-advise
     '(next-buffer
       previous-buffer
-      helm-mini
       helm-imenu-in-all-buffers
-      helm-multi-swoop
-      helm-multi-swoop-all
       helm-multi-occur-all)
     "List of functions which need additional advising when using `persp-mode'.")
 

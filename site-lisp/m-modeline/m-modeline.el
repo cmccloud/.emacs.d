@@ -7,6 +7,14 @@
 ;; This file is not part of GNU Emacs
 
 ;;;; Code:
+(defvar m-modeline-persp-lighter
+  '(:eval
+    (when (bound-and-true-p persp-mode)
+      (let ((persp (get-current-persp)))
+        (concat "#" (safe-persp-name persp) " ")))))
+
+(put 'm-modeline-persp-lighter 'risky-local-variable t)
+
 (defvar mode-line-padding
   '(:eval
     (let ((mode-line-padding ""))
@@ -43,6 +51,7 @@
       (setq-default mode-line-format
                     `("%e"
                       mode-line-front-space
+                      m-modeline-persp-lighter
                       mode-line-file-size
                       mode-line-client
                       mode-line-file-modified
