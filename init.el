@@ -41,9 +41,6 @@
 (customize-set-variable 'confirm-kill-emacs #'y-or-n-p)
 (customize-set-variable 'enable-recursive-minibuffers t)
 (customize-set-variable 'enable-local-variables :safe)
-(customize-set-variable
- 'completion-ignored-extensions
- (cons ".DS_Store" completion-ignored-extensions))
 
 ;; Don't let find-file-at-point hang emacs with a bad ping attempt
 (customize-set-variable 'ffap-machine-p-unknown 'reject)
