@@ -33,6 +33,7 @@
 
 (prefer-coding-system 'utf-8)
 
+;; Files
 (customize-set-variable 'auto-save-default nil)
 (customize-set-variable 'create-lockfiles nil)
 (customize-set-variable 'make-backup-files nil)
@@ -49,6 +50,7 @@
 ;; Set the active region less eagerly. See GNU: #29889
 (customize-set-variable 'select-active-regions 'only)
 
+;; Emacs UI
 (customize-set-variable 'visible-cursor nil)
 (customize-set-variable 'cursor-in-non-selected-windows nil)
 (customize-set-variable 'highlight-nonselected-windows nil)
@@ -56,14 +58,17 @@
 (customize-set-variable 'indicate-empty-lines nil)
 (customize-set-variable 'fringe-mode 6)
 
+;; Font Locking
 (customize-set-variable 'jit-lock-defer-time nil)
 (customize-set-variable 'jit-lock-stealth-nice 0.1)
 (customize-set-variable 'jit-lock-stealth-time 0.2)
 (customize-set-variable 'jit-lock-stealth-verbose nil)
 
+;; Line Numbers
 (customize-set-variable 'display-line-numbers-type t)
 (customize-set-variable 'display-line-numbers-current-absolute t)
 
+;; Startup
 (customize-set-variable 'inhibit-startup-message t)
 (customize-set-variable
  'auto-save-list-file-prefix
@@ -168,6 +173,7 @@
     "M-m t" "Toggle"
     "M-m w" "Window")
 
+  ;; These replacements appear only on dired-mode-map
   (which-key-add-major-mode-key-based-replacements 'dired-mode
     "*" "Mark"
     "%" "Regexp"
@@ -260,7 +266,7 @@ function is used to display the contents of a veritically split
       (select-window (display-buffer-in-working-window buf nil))))
 
   (defun buffer-call-until (pred change-buffer)
-    "Call CHANGE-BUFFER until PRED returns t on the current buffer.."
+    "Call CHANGE-BUFFER until PRED returns t on the current buffer."
     (let ((initial (current-buffer)))
       (funcall change-buffer)
       (let ((first-change (current-buffer)))
@@ -931,6 +937,10 @@ Only for use with `advice-add'."
   (xref-marker-ring-length 200)
   :config
   (defun xref-push-after (&rest _args)
+    "Advises `push-mark' to conditionally push to the `xref--marker-ring'.
+
+Pushes mark to the xref marker stack unless the current mark is
+identical to the most recently added xref marker."
     (let* ((ring xref--marker-ring)
            (len (cadr ring))
            (markers (cddr ring))
