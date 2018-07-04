@@ -1546,24 +1546,6 @@ set the active dash docsets based on the current major-mode.")
             (icons "short_text" :face 'all-the-icons-green :height .8)))))
 
 ;;** Languages and Language Extensions
-(use-package slime
-  :load-path "elpa/slime-20180601.324"
-  :init
-  ;; slime-autoloads are not recognized by package
-  ;; and so are not automatically bundled up when
-  ;; using package-quickstart. So we extend our
-  ;; load path and require them manually.
-  ;; See https://github.com/slime/slime/issues/443
-  (require 'slime-autoloads)
-  :hook (lisp-mode . slime-mode)
-  :defines (inferior-lisp-program)
-  :config
-  (setq inferior-lisp-program "sbcl")
-  (slime-setup '(slime-fancy slime-company)))
-
-(use-package slime-company
-  :after (slime company))
-
 (use-package clojure-mode)
 
 (use-package cider
