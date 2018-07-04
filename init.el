@@ -1312,6 +1312,12 @@ identical to the most recently added xref marker."
 (use-package helm-ls-git
   :custom
   (helm-ls-git-status-command 'magit-status-internal)
+  :custom-face
+  (helm-ls-git-modified-not-staged-face ((t (:inherit diff-changed))))
+  (helm-ls-git-added-copied-face ((t (:inherit diff-added))))
+  (helm-ls-git-added-modified-face ((t (:inherit diff-added))))
+  (helm-ls-git-conflict-face ((t (:inherit diff-refine-removed))))
+  (helm-ls-git-untracked-face ((t (:inherit diff-removed))))
   :bind (("C-x C-d" . helm-browse-project)
          :map helm-ls-git-map
          ("C-s" . helm-ls-git-run-grep)
