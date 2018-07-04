@@ -305,6 +305,24 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
       (set-face-attribute
        'default nil :height (* (string-to-number new-size) 10)))))
 
+(use-package help-mode
+  :config
+  ;; Help buttons should respect our window management system
+  (gv-define-simple-setter button-type-get button-type-put)
+  (add-function
+   :around
+   (button-type-get 'help-function-def 'help-function)
+   (lambda (old-fn fun &optional file type)
+     (cl-letf (((symbol-function 'pop-to-buffer)
+                (lambda (buffer-or-name &optional _action _no-record)
+                  (select-window
+                   (display-buffer-in-working-window buffer-or-name nil))))
+               (window (selected-window)))
+       (funcall old-fn fun file type)
+       (unless (one-window-p)
+         (delete-window window))))
+   '((name . help-button-working-window))))
+
 (use-package page-break-lines
   :hook ((emacs-lisp-mode . page-break-lines-mode)
          (lisp-mode . page-break-lines-mode)
