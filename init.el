@@ -438,7 +438,8 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   (history-length 1000)
   :bind (:map mnemonic-map
               ("cg" . customize-group)
-              ("cf" . customize-apropos-faces)))
+              ("cf" . customize-apropos-faces)
+              ("ca" . customize-apropos)))
 
 ;;*** Themes and UI
 (use-package spacemacs-common
