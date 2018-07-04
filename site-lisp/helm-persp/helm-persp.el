@@ -34,6 +34,36 @@
 (defvar helm-source-persp-current-buffers)
 (defvar helm-source-persp-filtered-buffers)
 
+(defvar helm-persp-perspectives-source
+  (helm-build-sync-source "Perspectives"
+    :candidates #'persp-names
+    :action (helm-make-actions
+              "Switch to Perspective"
+              (lambda (c) (persp-switch c))
+              "Kill Perspective"
+              (lambda (c) (persp-kill c))
+              "Create New Perspective"
+              (lambda (_c) (persp-switch
+                           (persp-name
+                            (call-interactively 'persp-add-new)))))))
+
+(defvar helm-persp-new-persp-source
+  (helm-build-dummy-source "Create Perspective"
+    :action (helm-make-actions
+             "Create New Perspective"
+             (lambda (c) (persp-switch
+                          (persp-name
+                           (persp-add-new c)))))))
+
+(defun helm-persp-disjunct-buffer (buffer)
+  "Removes or adds BUFFER from/to current perspective.
+
+If BUFFER is a member of `get-current-persp', removes BUFFER from perspective,
+otherwise BUFFER is added to the current perspective."
+  (if (and (bufferp buffer) (persp-contain-buffer-p buffer))
+      (persp-remove-buffer buffer)
+    (persp-add-buffer buffer)))
+
 (defun helm-persp--buffers-init ()
   (setq helm-persp--current-buffers-cache
         (helm-skip-boring-buffers
@@ -70,8 +100,9 @@
   (cl-call-next-method)
   (setf (slot-value source 'action)
         (append (helm-make-actions "Remove buffer(s) from current Perspective."
-                                   (lambda (_c) (mapcar #'persp-remove-buffer
-                                                        (helm-marked-candidates))))
+                                   (lambda (_c)
+                                     (mapc #'helm-persp-disjunct-buffer
+                                           (helm-marked-candidates :all-sources t))))
                 (symbol-value (slot-value source 'action)))))
 
 (defclass helm-persp-filtered-buffers-source (helm-source-sync helm-type-buffer)
@@ -89,37 +120,28 @@
   (cl-call-next-method)
   (setf (slot-value source 'action)
         (append (helm-make-actions "Add buffer(s) to current Perspective."
-                                   (lambda (_c) (mapcar #'persp-add-buffer
-                                                        (helm-marked-candidates))))
+                                   (lambda (_c)
+                                     (mapc #'helm-persp-disjunct-buffer
+                                           (helm-marked-candidates :all-sources t))))
                 (symbol-value (slot-value source 'action)))))
 
 ;;;###autoload
 (defun helm-persp-layouts ()
   (interactive)
-  (if persp-mode
-      (let ((helm-actions
-             (helm-make-actions
-              "Switch to Perspective"
-              (lambda (c) (persp-switch c))
-              "Remove Perspective"
-              (lambda (c) (persp-kill c))
-              "Create New Perspective"
-              (lambda (c) (call-interactively 'persp-add-new))))
-            (current
-             (or (bound-and-true-p helm-source-persp-current-buffers)
-                 (setq helm-source-persp-current-buffers
-                       (helm-make-source "Current Buffers"
-                           helm-persp-current-buffers-source))))
-            (filtered
-             (or (bound-and-true-p helm-source-persp-filtered-buffers)
-                 (setq helm-source-persp-filtered-buffers
-                       (helm-make-source "Other Buffers"
-                           helm-persp-filtered-buffers-source)))))
-        (helm
-         :buffer "*helm layouts*"
-         :sources `(,(helm-build-sync-source "Perspectives"
-                       :candidates #'persp-names
-                       :action helm-actions)
-                    ,current
-                    ,filtered)))
-    (message "Persp-mode not enabled. Use M-x `persp-mode'.")))
+  (if (not persp-mode)
+      (message "Persp-mode not enabled. Use M-x `persp-mode'.")
+    (unless (bound-and-true-p helm-source-persp-current-buffers)
+      (setq helm-source-persp-current-buffers
+            (helm-make-source "Current Buffers"
+                helm-persp-current-buffers-source)))
+
+    (unless (bound-and-true-p helm-source-persp-filtered-buffers)
+      (setq helm-source-persp-filtered-buffers
+            (helm-make-source "Other Buffers"
+                helm-persp-filtered-buffers-source)))
+    (helm
+     :buffer "*helm layouts*"
+     :sources '(helm-persp-perspectives-source
+                helm-source-persp-current-buffers
+                helm-source-persp-filtered-buffers
+                helm-persp-new-persp-source))))
