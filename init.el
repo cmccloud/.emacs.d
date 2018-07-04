@@ -238,10 +238,14 @@ Also see `window-combination-limit'."
                  do (swap-window-buffers window (cadr windows)))
         (other-window -1))))
 
-  (defun display-buffer-other-or-new-window (buffer alist)
-    (if (one-window-p)
-        (display-buffer-pop-up-window buffer alist)
-      (display-buffer-use-some-window buffer alist)))
+  (defun display-buffer-in-working-window (buffer alist)
+    (let ((windows (cl-remove-if
+                    (lambda (w) (window-parameter w 'supporting-window))
+                    (window-list-1 nil 'never)))
+          (working-window-threshold (floor (/ (frame-width) 85))))
+      (if (>= (length windows) working-window-threshold)
+          (window--display-buffer buffer (car (last windows)) 'reuse alist)
+        (display-buffer-pop-up-window buffer alist))))
 
   (defun transpose-window ()
     "Transforms the current window into the other 'working window'.
@@ -253,7 +257,7 @@ function is used to display the contents of a veritically split
     (interactive)
     (let ((buf (window-buffer)))
       (delete-window)
-      (select-window (display-buffer-other-or-new-window buf nil))))
+      (select-window (display-buffer-in-working-window buf nil))))
 
   (defun buffer-call-until (pred change-buffer)
     "Call CHANGE-BUFFER until PRED returns t on the current buffer.."
@@ -831,62 +835,71 @@ Only for use with `advice-add'."
        buffer
        alist
        (append
-        '(:custom shackle-set-no-other-window)
+        '(:custom shackle-supporting-window)
         (cl-remove-if
          (lambda (elt) (or (functionp elt) (equal elt :custom))) plist)))))
+
+  (defun shackle-supporting-window--delete-other-windows (window)
+    (set-window-parameter window 'supporting-window nil)
+    (set-window-parameter window 'delete-other-windows nil)
+    (delete-other-windows window))
   
-  (defun shackle-set-no-other-window (buffer alist plist)
+  (defun shackle-supporting-window (buffer alist plist)
     (shackle--display-buffer
      buffer
      (append alist
-             `((window-parameters . ((no-other-window . t)))))
+             `((window-parameters
+                .
+                ((supporting-window . t)
+                 (delete-other-windows
+                  . shackle-supporting-window--delete-other-windows)))))
      (cl-remove-if
       (lambda (elt) (or (functionp elt) (equal elt :custom))) plist)))
 
-  (defun shackle-other-or-new (buffer alist _plist)
-    (display-buffer-other-or-new-window buffer alist))
+  (defun shackle-working-window (buffer alist _plist)
+    (display-buffer-in-working-window buffer alist))
   
   (customize-set-variable
    'shackle-rules
-   `(("*Process List*" :custom shackle-set-no-other-window
+   `(("*Process List*" :custom shackle-supporting-window
       :select t :align below :size 0.3)
-     ("*Apropos*" :custom shackle-set-no-other-window
+     ("*Apropos*" :custom shackle-supporting-window
       :select t :align below :size 0.3)
-     ("Outline.*pdf" :custom shackle-set-no-other-window
+     ("Outline.*pdf" :custom shackle-supporting-window
       :regexp t :select t :align below :size 0.3)
-     ("*Geiser documentation*" :custom shackle-set-no-other-window
+     ("*Geiser documentation*" :custom shackle-supporting-window
       :select t :align below :size 0.3)
-     ("*slime-description*" :custom shackle-set-no-other-window
+     ("*slime-description*" :custom shackle-supporting-window
       :select t :align below :size 0.3)
-     ("\\`\\*[h|H]elm.*\\*\\'" :custom shackle-set-no-other-window
+     ("\\`\\*[h|H]elm.*\\*\\'" :custom shackle-supporting-window
       :regexp t :align t :size 0.3)
      ("*Help*" :custom shackle-display-helm-help
       :select t :align below :size 0.3)
-     ("^\\*helpful.*" :custom shackle-set-no-other-window
+     ("^\\*helpful.*" :custom shackle-supporting-window
       :regexp t :select t :align below :size 0.3)
-     ("*Completions*" :custom shackle-set-no-other-window
+     ("*Completions*" :custom shackle-supporting-window
       :select t :align below :size 0.3)
-     ("*Compile-Log*" :custom shackle-set-no-other-window
+     ("*Compile-Log*" :custom shackle-supporting-window
       :select t :align below :size 0.3)
-     ("*lispy-goto*" :custom shackle-set-no-other-window
+     ("*lispy-goto*" :custom shackle-supporting-window
       :align t :size 0.3)
-     ("*tide-documentation*" :custom shackle-set-no-other-window
+     ("*tide-documentation*" :custom shackle-supporting-window
       :select t :align below :size 0.3 :popup t)
-     ("*lispy-help*" :custom shackle-set-no-other-window
+     ("*lispy-help*" :custom shackle-supporting-window
       :select t :align below :size 0.3 :popup t)
-     ("magit-process:.*" :custom shackle-set-no-other-window
+     ("magit-process:.*" :custom shackle-supporting-window
       :regexp t :select t :align below :size 0.3 :popup t)
-     ("^\\*\\(Wo\\)?Man.*" :custom shackle-set-no-other-window
+     ("^\\*\\(Wo\\)?Man.*" :custom shackle-supporting-window
       :regexp t :select t :align below :size 0.3 :popup t)
      ("*git-gutter:diff*" :other t :size 0.3)
+     ("^\\*xwidget.webkit:.*\\*" :regexp t :custom shackle-working-window)
      ("*Diff*" :select t :other t :size 0.3)
      ("*Package Commit List*" :select t :other t :align left)
-     ("^\\*hgrep.*\\*" :custom shackle-other-or-new)
-     ("*hmoccur*" :custom shackle-other-or-new)
-     ("*xref*" :custom shackle-other-or-new)
-     ("^\\*ag.search.text:.*\\*$" :custom shackle-other-or-new)
-     ("^\\*xwidget.webkit:.*\\*" :custom shackle-other-or-new)
-     (dired-mode :custom shackle-other-or-new)))
+     (helm-grep-mode :custom shackle-working-window)
+     (ag-mode :custom shackle-working-window)
+     (dired-mode :custom shackle-working-window)
+     (helm-moccur-mode :custom shackle-working-window)
+     (xref--xref-buffer-mode :custom shackle-working-window)))
 
   (shackle-mode))
 
