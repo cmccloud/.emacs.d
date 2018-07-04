@@ -437,12 +437,9 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   (font-lock-set-weight 'normal))
 
 (use-package doom-themes
-  :preface
-  ;; FIXME: See https://github.com/hlissner/emacs-doom-themes/issues/166
-  (defvar region-fg nil)
   :custom
-  (doom-themes-enable-bold nil)
-  (doom-themes-enable-italic nil)
+  (doom-themes-enable-bold t)
+  (doom-themes-enable-italic t)
   (doom-solarized-light-brighter-comments t)
   (doom-solarized-light-comment-bg t)
   (doom-nord-brighter-comments t)
@@ -467,7 +464,14 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   (doom-opera-light-comment-bg t)
   (doom-opera-brighter-comments t)
   (doom-opera-comment-bg t)
-  (doom-molokai-brighter-comments t))
+  (doom-molokai-brighter-comments t)
+  :config
+  ;; More prominent helm source headers
+  (setq
+   doom-themes-common-faces
+   (cons
+    '(helm-source-header :background variables :foreground base0 :inherit 'bold)
+    (assoc-delete-all 'helm-source-header doom-themes-common-faces))))
 
 (use-package all-the-icons
   :custom
