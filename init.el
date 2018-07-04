@@ -121,6 +121,7 @@
    ("tl" . display-line-numbers-mode)
    ("bd" . kill-this-buffer)
    ("br" . rename-buffer)
+   ("bq" . kill-buffer-and-window)
    ("qq" . save-buffers-kill-emacs)
    ("qf" . delete-frame)
    ("ad" . dired)
@@ -212,7 +213,8 @@
          ("wd" . delete-window)
          ("wm" . delete-other-windows)
          ("wb" . balance-windows)
-         ("wt" . transpose-window))
+         ("wt" . transpose-window)
+         ("wq" . kill-buffer-and-window))
   :init
   (defun split-window-tree ()
     "Splits windows such that each gets half as much space as the previous.
