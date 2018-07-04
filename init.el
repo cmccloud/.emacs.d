@@ -194,7 +194,7 @@
   (window-divider-default-bottom-width 1)
   (window-divider-default-right-width 1)
   :config
-  (window-divider-mode t))
+  (window-divider-mode))
 
 (use-package window
   :custom
