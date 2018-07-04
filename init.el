@@ -482,7 +482,7 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
    doom-themes-common-faces
    (cons
     '(helm-source-header :background variables :foreground base0 :inherit 'bold)
-    (assoc-delete-all 'helm-source-header doom-themes-common-faces))))
+    (assq-delete-all 'helm-source-header doom-themes-common-faces))))
 
 (use-package all-the-icons
   :custom
