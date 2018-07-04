@@ -393,6 +393,8 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   (global-visual-line-mode))
 
 (use-package paren
+  :custom
+  (show-paren-delay 0)
   :init
   (show-paren-mode))
 
