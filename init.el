@@ -78,6 +78,8 @@
 
 (advice-add 'yes-or-no-p :override #'y-or-n-p)
 
+(setq disabled-command-function nil)
+
 (setq-default frame-title-format nil
               fringes-outside-margins t
               bidi-display-reordering t
