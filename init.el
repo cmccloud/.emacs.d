@@ -20,30 +20,12 @@
 (customize-set-variable 'user-full-name "Christopher McCloud")
 (customize-set-variable 'user-mail-address "mccloud.christopher@gmail.com")
 
-;;*** Package Initalize and Early-Init block
-;; In Emacs 27+ this configuration block is contained in early-init.el
+;; Early Init: in Emacs 27+ this configuration is loaded prior to init.el
 (when (version< emacs-version "27.0")
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-  (add-to-list 'default-frame-alist '(ns-appearance . nil))
-  (customize-set-variable 'scroll-bar-mode nil)
-  (customize-set-variable 'tool-bar-mode nil)
-  (customize-set-variable 'frame-resize-pixelwise t)
-  (customize-set-variable
-   'package-archives '(("melpa" . "https://melpa.org/packages/")
-                       ("melpa-stable" . "https://stable.melpa.org/packages/")
-                       ("org" . "http://orgmode.org/elpa/")
-                       ("gnu" . "http://elpa.gnu.org/packages/")))
-  (customize-set-variable
-   'package-archive-priorities '(("melpa" . 10)
-                                 ("melpa-stable" . 5)
-                                 ("gnu" . 0)
-                                 ("marmalade" . -5)))
-  (customize-set-variable
-   'package-user-dir (expand-file-name "elpa" user-emacs-directory))
-  (customize-set-variable 'package-menu-hide-low-priority t)
+  (load (expand-file-name "early-init.el" user-emacs-directory))
   (package-initialize))
 
-;;*** Non Package Settings
+;; NS Settings
 (customize-set-variable 'ns-use-native-fullscreen nil)
 (customize-set-variable 'ns-pop-up-frames 'fresh)
 (customize-set-variable 'ns-command-modifier 'meta)
