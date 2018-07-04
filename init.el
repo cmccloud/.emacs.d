@@ -1217,7 +1217,8 @@ identical to the most recently added xref marker."
   (defun helm-known-projects ()
     "Navigation between projects know `magit-list-repos'."
     (interactive)
-    (helm :sources helm-source-files-known-projects)))
+    (helm :buffer "*helm projects*"
+          :sources helm-source-files-known-projects)))
 
 (use-package helm-find
   :commands (helm-find-1))
@@ -1251,8 +1252,6 @@ identical to the most recently added xref marker."
   :custom
   (helm-grep-ag-command
    "rg -M 256 --color=always --smart-case --no-heading --line-number %s %s %s")
-  :bind (:map helm-grep-mode-map
-              ("RET" . helm-grep-mode-jump-other-window))
   :init
   (defun helm-grep-ag-dwim (&optional input)
     "Calls `helm-grep-ag' in git project root or default directory."
