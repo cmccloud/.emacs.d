@@ -8,9 +8,13 @@
 
 ;;;; Code:
 ;;** Emacs Settings and Customization
-;; Suppress Garbage Collection
-(setq gc-cons-threshold (* 1024 1024 64)
-      gc-cons-percentage .6)
+;; Garbage Collection
+(setq gc-cons-threshold (* 16 1024 1024))
+
+;; Early Init: in Emacs 27+ this configuration is loaded prior to init.el
+(when (version< emacs-version "27.0")
+  (load (expand-file-name "early-init.el" user-emacs-directory))
+  (package-initialize))
 
 ;; Load Custom file as early as possible so we can rewrite the values later
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
@@ -19,11 +23,6 @@
 ;; Introductions
 (customize-set-variable 'user-full-name "Christopher McCloud")
 (customize-set-variable 'user-mail-address "mccloud.christopher@gmail.com")
-
-;; Early Init: in Emacs 27+ this configuration is loaded prior to init.el
-(when (version< emacs-version "27.0")
-  (load (expand-file-name "early-init.el" user-emacs-directory))
-  (package-initialize))
 
 ;; NS Settings
 (customize-set-variable 'ns-use-native-fullscreen nil)
@@ -1624,9 +1623,5 @@ set the active dash docsets based on the current major-mode.")
     (when (and (not tide-mode)
                (commandp 'typescript-insert-and-indent))
       (eldoc-remove-command 'typescript-insert-and-indent))))
-
-;; Re-enable Garbage Collection
-(setq gc-cons-threshold (* 1024 1024 16)
-      gc-cons-percentage .1)
 
 ;;; init.el ends here.
