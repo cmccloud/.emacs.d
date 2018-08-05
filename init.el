@@ -393,7 +393,9 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   :custom
   (save-interprogram-paste-before-kill t)
   (blink-matching-paren nil)
-  :init
+  :bind (:map mnemonic-map
+              ("tv" . visual-line-mode))
+  :config
   (global-visual-line-mode))
 
 (use-package paren
