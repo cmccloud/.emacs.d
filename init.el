@@ -1258,7 +1258,9 @@ identical to the most recently added xref marker."
 (use-package helm-grep
   :custom
   (helm-grep-ag-command
-   "rg -M 256 --color=always --smart-case --no-heading --line-number %s %s %s")
+   "ag --line-numbers -S -W 256 --hidden --nocolor --nogroup %s %s %s")
+  (helm-grep-ag-pipe-cmd-switches '("--nocolor"))
+  (helm-grep-file-path-style 'basename)
   :init
   (defun helm-grep-ag-dwim (&optional input)
     "Calls `helm-grep-ag' in git project root or default directory."
