@@ -632,6 +632,7 @@ added as a hook to eshell-mode."
 (use-package smartparens
   :custom
   (sp-echo-match-when-invisible nil)
+  (sp-show-pair-delay 0.01)
   :hook ((js2-mode . smartparens-mode))
   :config
   (require 'smartparens-config))
