@@ -33,6 +33,8 @@
 (customize-set-variable 'scroll-bar-mode nil)
 (customize-set-variable 'tool-bar-mode nil)
 (customize-set-variable 'frame-resize-pixelwise t)
+(customize-set-variable 'initial-frame-alist
+                        '((top . 30) (left . 50) (width . 90) (height . 50)))
 (setq ns-use-proxy-icon nil)
 
 ;;;; Package Settings
