@@ -82,7 +82,8 @@
 (setq-default frame-title-format nil
               fringes-outside-margins t
               bidi-display-reordering t
-              inhibit-compacting-font-caches t)
+              inhibit-compacting-font-caches t
+              diff-auto-refine-mode nil)
 
 ;;*** Use-package Configuration
 (customize-set-variable 'use-package-always-defer t)
