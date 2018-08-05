@@ -1081,7 +1081,6 @@ identical to the most recently added xref marker."
 (use-package helm
   :custom
   (helm-candidate-number-limit 100)
-  (helm-autoresize-max-height 30)
   (helm-display-header-line nil)
   (helm-split-window-inside-p t)
   (helm-follow-mode-persistent t)
@@ -1089,15 +1088,16 @@ identical to the most recently added xref marker."
   (helm-match ((t (:inherit font-lock-keyword-face :weight bold))))
   (helm-candidate-number ((t (:inherit bold :background nil))))
   :bind (:map mnemonic-map
-              ("hr" . helm-resume)
-              ("hk" . helm-show-kill-ring)
-              :map helm-map
-              ("C-z" . helm-select-action)
-              ("<tab>" . helm-execute-persistent-action)
-              ("TAB" . helm-execute-persistent-action)
-              ("C-M-n" . helm-scroll-other-window)
-              ("C-M-p" . helm-scroll-other-window-down)
-              ("C-s" . helm-into-next))
+         ("hr" . helm-resume)
+         ("hk" . helm-show-kill-ring)
+         :map helm-map
+         ("C-z" . helm-select-action)
+         ("C-c t" . helm-toggle-full-frame)
+         ("<tab>" . helm-execute-persistent-action)
+         ("TAB" . helm-execute-persistent-action)
+         ("C-M-n" . helm-scroll-other-window)
+         ("C-M-p" . helm-scroll-other-window-down)
+         ("C-s" . helm-into-next))
   :init
   (defvar helm-into-next-alist nil)
   :config
