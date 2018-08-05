@@ -1024,6 +1024,7 @@ identical to the most recently added xref marker."
 (use-package dumb-jump
   :custom
   (dumb-jump-selector 'helm)
+  (dumb-jump-default-project "~/emacs.d/")
   :bind (("M-g d" . dumb-jump-go)
          ("M-g D" . dumb-jump-go-prompt)))
 
