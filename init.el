@@ -1180,25 +1180,25 @@ identical to the most recently added xref marker."
      "\\*Diff*"
      "\\*lispy-goto*"
      "\\*Backtrace*"))
-  :bind (("C-x C-b" . helm-mini)
-         :map mnemonic-map
-         ("bb" . helm-mini))
+  :bind* (("C-x C-b" . helm-mini)
+          ("M-n" . helm-next-buffer)
+          ("M-p" . helm-previous-buffer))
   :config
+  (defun helm-interesting-buffer-p (buffer)
+    (cl-every (lambda (rxp) (not (string-match-p rxp (buffer-name buffer))))
+              helm-boring-buffer-regexp-list))
+
   (defun helm-next-buffer ()
     (interactive)
     (buffer-call-until
-     (lambda (b)
-       (not (cl-some (lambda (rxp) (string-match-p rxp (buffer-name b)))
-                     helm-boring-buffer-regexp-list)))
-     'next-buffer))
+     #'helm-interesting-buffer-p
+     #'next-buffer))
 
   (defun helm-previous-buffer ()
     (interactive)
     (buffer-call-until
-     (lambda (b)
-       (not (cl-some (lambda (rxp) (string-match-p rxp (buffer-name b)))
-                     helm-boring-buffer-regexp-list)))
-     'previous)))
+     #'helm-interesting-buffer-p
+     #'previous-buffer)))
 
 (use-package helm-files
   :custom
