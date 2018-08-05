@@ -984,11 +984,10 @@ identical to the most recently added xref marker."
                    completion-at-point-functions
                    '(elisp-completion-at-point))
 
-  (cl-loop for fun in
-           '(semantic-analyze-completion-at-point-function
-             semantic-analyze-notc-completion-at-point-function
-             semantic-analyze-nolongprefix-completion-at-point-function)
-           do (advice-add fun :override #'ignore)))
+  (dolist (fn '(semantic-analyze-completion-at-point-function
+                semantic-analyze-notc-completion-at-point-function
+                semantic-analyze-nolongprefix-completion-at-point-function))
+    (advice-add fn :override #'ignore)))
 
 (use-package semantic-el-extensions
   :load-path "site-lisp/semantic-el-extensions"
