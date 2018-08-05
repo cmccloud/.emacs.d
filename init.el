@@ -1484,7 +1484,8 @@ set the active dash docsets based on the current major-mode.")
   :bind (:map diff-hl-command-map
          ("n" . hydra-diff-hl/body)
          :map mnemonic-map
-         ("vn" . hydra-diff-hl/body))
+         ("vn" . hydra-diff-hl/body)
+         ("vp" . hydra-diff-hl/body))
   :hook ((prog-mode . diff-hl-mode)
          (prog-mode . diff-hl-flydiff-mode)
          (magit-post-refresh . diff-hl-magit-post-refresh))
