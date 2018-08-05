@@ -485,11 +485,8 @@ added as a hook to eshell-mode."
   (doom-molokai-brighter-comments t)
   :config
   ;; More prominent helm source headers
-  (setq
-   doom-themes-common-faces
-   (cons
-    '(helm-source-header :background variables :foreground base0 :inherit 'bold)
-    (assq-delete-all 'helm-source-header doom-themes-common-faces))))
+  (setcdr (assq 'helm-source-header doom-themes-common-faces)
+          '(:background variables :foreground base0 :inherit 'bold)))
 
 (use-package all-the-icons
   :custom
