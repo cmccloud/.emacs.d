@@ -65,6 +65,7 @@
                       (vc-mode vc-mode)
                       " "
                       mode-line-modes
+                      mode-line-mule-info
                       mode-line-end-spaces))
     (setq-default mode-line-format
                   (cdar (get 'mode-line-format 'standard-value)))))
