@@ -419,12 +419,15 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
    (expand-file-name "cache/eshell/" user-emacs-directory))
   :bind (:map mnemonic-map ("ae" . eshell))
   :init (setenv "NODE_NO_READLINE" "1")
+  :hook (eshell-mode . eshell-map-setup)
   :config
-  (add-hook 'eshell-mode-hook
-            (lambda ()
-              (bind-keys :map eshell-mode-map
-                         ("M-n" . nil)
-                         ("M-p" . nil)))))
+  (defun eshell-map-setup ()
+    "Sets bindings on `eshell-mode-map'.
+Because eshell-mode-map is set as buffer local, this must be
+added as a hook to eshell-mode."
+    (bind-keys :map eshell-mode-map
+               ("M-n" . nil)
+               ("M-p" . nil))))
 
 (use-package ediff
   :custom
