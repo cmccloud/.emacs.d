@@ -1520,6 +1520,9 @@ set the active dash docsets based on the current major-mode.")
   (:map mnemonic-map
         ("tc" . flycheck-mode)))
 
+(use-package flyspell
+  :hook (text-mode . flyspell-mode))
+
 (use-package company
   :custom
   (company-idle-delay 0.2)
