@@ -906,7 +906,7 @@ Only for use with `advice-add'."
       :select t :align below :size 0.3)
      ("*slime-description*" :custom shackle-supporting-window
       :select t :align below :size 0.3)
-     ("\\`\\*[h|H]elm.*\\*\\'" :custom shackle-supporting-window
+     ("\\*[hH]elm.*\\*" :custom shackle-supporting-window
       :regexp t :align t :size 0.3)
      ("*Help*" :custom shackle-display-helm-help
       :select t :align below :size 0.3)
@@ -926,15 +926,16 @@ Only for use with `advice-add'."
       :regexp t :select t :align below :size 0.3 :popup t)
      ("^\\*\\(Wo\\)?Man.*" :custom shackle-supporting-window
       :regexp t :select t :align below :size 0.3 :popup t)
-     ("*git-gutter:diff*" :other t :size 0.3)
      ("^\\*xwidget.webkit:.*\\*" :regexp t :custom shackle-working-window)
-     ("*Diff*" :select t :other t :size 0.3)
-     ("*Package Commit List*" :select t :other t :align left)
+     ("*Pp Eval Output*" :custom shackle-working-window)
+     (paradox-commit-list-mode :custom shackle-working-window)
      (helm-grep-mode :custom shackle-working-window)
      (ag-mode :custom shackle-working-window)
+     (rg-mode :custom shackle-working-window)
      (dired-mode :custom shackle-working-window)
      (helm-moccur-mode :custom shackle-working-window)
-     (xref--xref-buffer-mode :custom shackle-working-window)))
+     (xref--xref-buffer-mode :custom shackle-working-window)
+     (diff-mode :custom shackle-working-window)))
 
   (shackle-mode))
 
