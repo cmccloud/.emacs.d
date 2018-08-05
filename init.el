@@ -72,7 +72,7 @@
 (customize-set-variable
  'auto-save-list-file-prefix
  (expand-file-name "cache/auto-save-list/.saves-" user-emacs-directory))
-(customize-set-variable 'initial-major-mode 'fundamental-mode)
+(customize-set-variable 'initial-major-mode 'text-mode)
 (customize-set-variable 'initial-scratch-message nil)
 
 (advice-add 'yes-or-no-p :override #'y-or-n-p)
