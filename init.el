@@ -566,9 +566,6 @@ added as a hook to eshell-mode."
   :config
   (paradox-enable))
 
-(use-package bookmark+
-  :load-path "site-lisp/bookmark-plus")
-
 (use-package dired
   :bind (:map dired-mode-map
          ("?" . which-key-show-major-mode)))
