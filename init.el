@@ -254,7 +254,7 @@ Also see `window-combination-limit'."
     (let ((windows (cl-remove-if
                     (lambda (w) (window-parameter w 'supporting-window))
                     (window-list-1 nil 'never)))
-          (working-window-threshold (floor (/ (frame-width) 85))))
+          (working-window-threshold (floor (/ (frame-width) 80))))
       (if (>= (length windows) working-window-threshold)
           (window--display-buffer buffer (car (last windows)) 'reuse alist)
         (display-buffer-pop-up-window buffer alist))))
