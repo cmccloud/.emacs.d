@@ -564,6 +564,8 @@ added as a hook to eshell-mode."
   (paradox-column-width-package 30)
   (paradox-github-token t)
   (paradox-execute-asynchronously t)
+  :bind (:map mnemonic-map
+              ("ap" . paradox-list-packages))
   :config
   (paradox-enable))
 
