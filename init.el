@@ -136,6 +136,8 @@
   (which-key-enable-extended-define-key t)
   (which-key-min-display-lines 2)
   (which-key-sort-order 'which-key-prefix-then-key-order-reverse)
+  ;; Free C-h for paging in which-key
+  :bind (:map help-map ("C-h" . nil))
   :config
   (which-key-add-key-based-replacements
     ;; C-x Map
