@@ -718,11 +718,9 @@ ARG can constrct the bounds to the current defun."
               '((name . lispy--tag-name-elisp-extensions)))
   
   ;; Parse arguments to more forms
-  (setcdr (assq 'emacs-lisp-mode lispy-tag-arity)
-          (append (cdr (assq 'emacs-lisp-mode lispy-tag-arity))
-                  '((cl-defmethod . 2)
-                    (cl-defgeneric . 1)
-                    (defclass . 1)))))
+  (let ((tags (assq 'emacs-lisp-mode lispy-tag-arity)))
+    (dolist (tag '((cl-defmethod . 2) (cl-defgeneric . 1) (defclass . 1)))
+      (cl-pushnew tag tags))))
 
 ;;*** Window and Buffer Management
 (use-package eyebrowse
