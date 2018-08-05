@@ -1073,7 +1073,9 @@ identical to the most recently added xref marker."
   (wgrep-auto-save-buffer nil)
   (wgrep-enable-key (kbd "C-c C-e")))
 
-(use-package wgrep-ag)
+(use-package wgrep-ag
+  :hook ((rg-mode . wgrep-ag-setup)
+         (ag-mode . wgrep-ag-setup)))
 
 (use-package wgrep-helm)
 
