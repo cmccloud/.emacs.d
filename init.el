@@ -450,14 +450,15 @@ added as a hook to eshell-mode."
 
 ;;*** Themes and UI
 (use-package spacemacs-common
-  :init
+  :demand t
+  :config
   (load-theme 'spacemacs-dark 'no-confirm)
   (font-lock-set-weight 'normal))
 
 (use-package doom-themes
   :custom
   (doom-themes-enable-bold t)
-  (doom-themes-enable-italic t)
+  (doom-themes-enable-italic nil)
   (doom-solarized-light-brighter-comments t)
   (doom-solarized-light-comment-bg t)
   (doom-nord-brighter-comments t)
