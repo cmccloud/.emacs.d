@@ -259,7 +259,7 @@ Also see `window-combination-limit'."
           (window--display-buffer buffer (car (last windows)) 'reuse alist)
         (display-buffer-pop-up-window buffer alist))))
 
-  (defun transpose-window ()
+  (defun promote-window ()
     "Transforms the current window into the other 'working window'.
 
 Attempts to display the current window as the 'other window'
