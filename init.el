@@ -1279,6 +1279,8 @@ identical to the most recently added xref marker."
     (customize-set-variable 'helm-locate-command "mdfind -name %s %s")))
 
 (use-package helm-elisp
+  :custom
+  (helm-locate-library-fuzzy-match nil)
   :bind (("C-h a" . helm-apropos)
          :map mnemonic-map
          ("hL" . helm-locate-library)))
