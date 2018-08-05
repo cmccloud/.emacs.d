@@ -1439,8 +1439,9 @@ set the active dash docsets based on the current major-mode.")
    :map mnemonic-map
    ("vs" . magit-status)
    ("vb" . magit-blame)
-   ("vh" . magit-dispatch-popup)
-   ("vc" . magit-commit-popup))
+   ("vc" . magit-commit)
+   ("vf" . magit-file-popup)
+   ("vg" . magit-file-popup))
   :commands (magit-list-repos)
   :config
   (magit-wip-after-save-mode)
