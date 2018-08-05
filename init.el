@@ -1119,6 +1119,7 @@ identical to the most recently added xref marker."
   (helm-completion-in-region-fuzzy-match t)
   (helm-completing-read-handlers-alist
    '((xref-find-definitions . helm-completing-read-default-find-tag)
+     (Info-menu . helm-completing-read-default-find-tag)
      (describe-function . helm-completing-read-symbols)
      (describe-variable . helm-completing-read-symbols)
      (describe-symbol . helm-completing-read-symbols)
