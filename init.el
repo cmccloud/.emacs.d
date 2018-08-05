@@ -1061,12 +1061,15 @@ identical to the most recently added xref marker."
   (ag-reuse-window t)
   (ag-ignore-list '("archive-contents"))
   :bind (:map mnemonic-map
-              ("s a a" . ag-regexp)
-              ("s a p" . ag-project-regexp)
-              ("s a A" . ag)
-              ("s a P" . ag-project)
-              ("s a d" . ag-dired-regexp)
-              ("s a D" . ag-dired)))
+         ("s a a" . ag-regexp)
+         ("s a p" . ag-project-regexp)
+         ("s a A" . ag)
+         ("s a P" . ag-project)
+         ("s a d" . ag-dired-regexp)
+         ("s a D" . ag-dired)
+         :map ag-mode-map
+         ("C-n" . compilation-next-file)
+         ("C-p" . compilation-previous-file)))
 
 (use-package wgrep
   :custom
