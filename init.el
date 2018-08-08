@@ -1161,7 +1161,7 @@ identical to the most recently added xref marker."
 
 (use-package helm-command
   :custom
-  (helm-M-x-fuzzy-match t)
+  (helm-M-x-fuzzy-match nil)
   :bind
   (("M-x" . helm-M-x)))
 
