@@ -890,8 +890,10 @@ Only for use with `advice-add'."
      (cl-remove-if
       (lambda (elt) (or (functionp elt) (equal elt :custom))) plist)))
 
-  (defun shackle-working-window (buffer alist _plist)
-    (display-buffer-in-working-window buffer alist))
+  (defun shackle-working-window (buffer alist plist)
+    (let ((window (display-buffer-in-working-window buffer alist)))
+      (when (plist-get plist :select)
+        (select-window window))))
   
   (customize-set-variable
    'shackle-rules
@@ -925,16 +927,16 @@ Only for use with `advice-add'."
       :regexp t :select t :align below :size 0.3 :popup t)
      ("^\\*\\(Wo\\)?Man.*" :custom shackle-supporting-window
       :regexp t :select t :align below :size 0.3 :popup t)
-     ("^\\*xwidget.webkit:.*\\*" :regexp t :custom shackle-working-window)
-     ("*Pp Eval Output*" :custom shackle-working-window)
-     (paradox-commit-list-mode :custom shackle-working-window)
-     (helm-grep-mode :custom shackle-working-window)
-     (ag-mode :custom shackle-working-window)
-     (rg-mode :custom shackle-working-window)
-     (dired-mode :custom shackle-working-window)
-     (helm-moccur-mode :custom shackle-working-window)
-     (xref--xref-buffer-mode :custom shackle-working-window)
-     (diff-mode :custom shackle-working-window)))
+     ("^\\*xwidget.webkit:.*\\*" :regexp t :custom shackle-working-window :select t)
+     ("*Pp Eval Output*" :custom shackle-working-window :select t)
+     (paradox-commit-list-mode :custom shackle-working-window :select t)
+     (helm-grep-mode :custom shackle-working-window :select t)
+     (ag-mode :custom shackle-working-window :select t)
+     (rg-mode :custom shackle-working-window :select t)
+     (dired-mode :custom shackle-working-window :select t)
+     (helm-moccur-mode :custom shackle-working-window :select t)
+     (xref--xref-buffer-mode :custom shackle-working-window :select t)
+     (diff-mode :custom shackle-working-window :select t)))
 
   (shackle-mode))
 
