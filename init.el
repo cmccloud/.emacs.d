@@ -97,14 +97,6 @@
 (use-package dash
   :config
   (dash-enable-font-lock))
-(use-package s)
-(use-package hydra)
-(use-package seq)
-(use-package map)
-(use-package dash-functional)
-(use-package request)
-(use-package deferred)
-(use-package f)
 
 ;;** Core Packages
 ;;*** Keybinds
