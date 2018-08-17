@@ -451,6 +451,8 @@ added as a hook to eshell-mode."
 ;;*** Themes and UI
 (use-package spacemacs-common
   :demand t
+  :custom
+  (spacemacs-theme-org-height nil)
   :config
   (load-theme 'spacemacs-dark 'no-confirm)
   (font-lock-set-weight 'normal))
