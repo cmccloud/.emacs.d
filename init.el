@@ -524,18 +524,6 @@ added as a hook to eshell-mode."
   (delight 'magit-wip-after-apply-mode "I" 'magit-wip)
   (delight 'magit-wip-after-save-local-mode "P" 'magit-wip))
 
-(use-package dimmer
-  :load-path "site-lisp/dimmer"
-  :custom
-  (dimmer-exclusion-regexp-list
-   '("^\\*[h|H]elm.*\\*"
-     "^\\*Minibuf-[0-9]+\\*"
-     "^.\\*which-key\\*$"))
-  (dimmer-exclusion-predicates '(helm--alive-p window-minibuffer-p))
-  (dimmer-fraction 0.4)
-  :bind (:map mnemonic-map
-              ("td" . dimmer-mode)))
-
 ;;*** Misc
 (use-package xwidget
   :if (featurep 'xwidget-internal)
