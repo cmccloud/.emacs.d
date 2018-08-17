@@ -1442,7 +1442,8 @@ set the active dash docsets based on the current major-mode.")
   (magit-repository-directories
    '(("/Users/Macnube/Repos" . 1)
      ("/Users/Macnube/.emacs.d" . 1)
-     ("/Users/Macnube/.emacs.d/site-lisp" . 1)))
+     ("/Users/Macnube/.emacs.d/site-lisp" . 1)
+     ("/usr/local/Cellar/emacs/" . 1)))
   :bind
   (("C-x g" . magit-status)
    ("C-x C-v" . magit-status)
