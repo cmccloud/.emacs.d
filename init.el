@@ -929,7 +929,7 @@ Only for use with `advice-add'."
       :regexp t :select t :align below :size 0.3 :popup t)
      ("^\\*xwidget.webkit:.*\\*" :regexp t :custom shackle-working-window :select t)
      ("*Pp Eval Output*" :custom shackle-working-window :select t)
-     (paradox-commit-list-mode :custom shackle-working-window :select t)
+     ("*Package Commit List*" :custom shackle-working-window :select t)
      (helm-grep-mode :custom shackle-working-window :select t)
      (ag-mode :custom shackle-working-window :select t)
      (rg-mode :custom shackle-working-window :select t)
