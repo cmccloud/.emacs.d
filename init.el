@@ -559,7 +559,8 @@ added as a hook to eshell-mode."
 
 (use-package dired
   :bind (:map dired-mode-map
-         ("?" . which-key-show-major-mode)))
+         ("?" . which-key-show-major-mode)
+         ("C-c C-e" . wdired-change-to-wdired-mode)))
 
 (use-package dired-async
   :hook (dired-mode . dired-async-mode))
