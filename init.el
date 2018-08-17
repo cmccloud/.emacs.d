@@ -735,9 +735,13 @@ ARG can constrct the bounds to the current defun."
         ("l4" . eyebrowse-switch-to-window-config-4)
         ("l5" . eyebrowse-switch-to-window-config-5)
         ("l6" . eyebrowse-switch-to-window-config-6)
-        ("lS" . eyebrowse-switch-to-window-config)
-        ("lR" . eyebrowse-rename-window-config)
-        ("lD" . eyebrowse-close-window-config))
+        ("l7" . eyebrowse-switch-to-window-config-7)
+        ("l8" . eyebrowse-switch-to-window-config-8)
+        ("l9" . eyebrowse-switch-to-window-config-9)
+        ("l0" . eyebrowse-switch-to-window-config-0)
+        ("ls" . eyebrowse-switch-to-window-config)
+        ("lr" . eyebrowse-rename-window-config)
+        ("ld" . eyebrowse-close-window-config))
   :config
   (eyebrowse-mode))
 
