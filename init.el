@@ -611,9 +611,7 @@ added as a hook to eshell-mode."
          ("g" . doc-view-goto-page)))
 
 ;;*** Editing
-(use-package yasnippet
-  :config
-  (yas-reload-all))
+(use-package yasnippet)
 
 (use-package expand-region
   :bind ("C-r" . er/expand-region))
