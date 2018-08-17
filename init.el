@@ -1076,7 +1076,11 @@ identical to the most recently added xref marker."
 (use-package wgrep
   :custom
   (wgrep-auto-save-buffer nil)
-  (wgrep-enable-key (kbd "C-c C-e")))
+  (wgrep-enable-key (kbd "C-c C-e"))
+  :custom-face
+  (wgrep-face ((t (:inherit diff-changed))))
+  (wgrep-delete-face ((t (:inherit diff-removed))))
+  (wgrep-file-face ((t (:inherit highlight)))))
 
 (use-package wgrep-ag
   :hook ((rg-mode . wgrep-ag-setup)
