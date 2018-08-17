@@ -1552,6 +1552,11 @@ set the active dash docsets based on the current major-mode.")
               ("<tab>" . company-complete-selection)
               ("TAB" . company-complete-selection)))
 
+(use-package company-dabbrev
+  :custom
+  (company-dabbrev-other-buffers t)
+  (company-dabbrev-ignore-invisible t))
+
 (use-package company-box
   :if (display-graphic-p)
   :custom
