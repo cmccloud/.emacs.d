@@ -1375,33 +1375,7 @@ identical to the most recently added xref marker."
 
 (use-package helm-themes
   :bind (:map mnemonic-map
-              ("ht" . helm-themes))
-  :config
-  (defvar helm-themes-font-alist
-    (let ((thin "-*-Input-normal-normal-normal-*-*-*-*-*-m-0-iso10646-1")
-          (light "-*-Input Mono-light-normal-normal-*-*-*-*-*-m-0-iso10646-1"))
-      `((spacemacs-dark . ,thin)
-        (darktooth . ,thin)
-        (doom-one . ,thin)
-        (doom-peacock . ,thin)
-        (doom-dracula . ,thin)
-        (doom-city-lights . ,thin)
-        (doom-spacegrey . ,thin)
-        (doom-tomorrow-night . ,thin)
-        (doom-opera . ,thin)
-        (spacemacs-light . ,light)
-        (doom-one-light . ,light)
-        (doom-tomorrow-day . ,light)
-        (doom-solarized-light . ,light)
-        (doom-opera-light . ,light)
-        (doom-nord-light . ,light))))
-
-  (advice-add 'helm-themes :after
-              (lambda (&rest _args)
-                (when-let* ((theme (car custom-enabled-themes))
-                            (font (cdr (assq theme helm-themes-font-alist))))
-                  (set-frame-font font t t)))
-              '((name . helm-themes-font-advice))))
+              ("ht" . helm-themes)))
 
 (use-package helm-dash
   :custom
