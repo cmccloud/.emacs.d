@@ -1188,8 +1188,8 @@ identical to the most recently added xref marker."
      "\\*Diff*"
      "\\*lispy-goto*"
      "\\*Backtrace*"))
-  :bind* (("C-x C-b" . helm-mini)
-          ("M-n" . helm-next-buffer)
+  :bind (("C-x C-b" . helm-mini))
+  :bind* (("M-n" . helm-next-buffer)
           ("M-p" . helm-previous-buffer))
   :config
   (defun helm-interesting-buffer-p (buffer)
