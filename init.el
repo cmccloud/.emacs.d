@@ -333,6 +333,14 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
      (button-type-get type 'help-function)
      #'help-mode-button-advice)))
 
+(use-package cl-extra
+  :config
+  ;; cl-extra depends on help-mode
+  (add-function
+   :around
+   (button-type-get 'cl-type-definition 'help-function)
+   #'help-mode-button-advice))
+
 (use-package page-break-lines
   :hook ((emacs-lisp-mode . page-break-lines-mode)
          (lisp-mode . page-break-lines-mode)
