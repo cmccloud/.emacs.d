@@ -1652,12 +1652,6 @@ set the active dash docsets based on the current major-mode.")
 (use-package tide
   :bind (:map tide-mode-map
               ("C-c C-d" . tide-documentation-at-point))
-  :hook ((js2-mode . tide-setup)
-         (tide-mode . tide-eldoc-cleanup))
-  :config
-  (defun tide-eldoc-cleanup (&optional _arg)
-    (when (and (not tide-mode)
-               (commandp 'typescript-insert-and-indent))
-      (eldoc-remove-command 'typescript-insert-and-indent))))
+  :hook ((js2-mode . tide-setup)))
 
 ;;; init.el ends here.
