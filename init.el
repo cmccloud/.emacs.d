@@ -863,7 +863,8 @@ Only for use with `advice-add'."
     ;; different matching rule) take care of how to display the help
     ;; buffer.
     (if (bound-and-true-p helm-alive-p)
-        (let (shackle-rules)
+        (let ((shackle-rules
+               '(("*Help*" :regexp t :custom shackle-working-window :select t))))
           (display-buffer buffer))
       (shackle--display-buffer
        buffer
