@@ -200,15 +200,18 @@
   (split-height-threshold 80)
   (split-window-preferred-function 'split-window-sensibly)
   (recenter-positions '(top middle bottom))
-  :bind (:map mnemonic-map
-              ("ws" . split-window-tree)
-              ("wv" . split-window-below)
-              ("wd" . delete-window)
-              ("wm" . delete-other-windows)
-              ("wb" . balance-windows)
-              ("wt" . promote-window)
-              ("wf" . fit-window-to-buffer)
-              ("wq" . kill-buffer-and-window))
+  :bind (("M-P" . previous-buffer-matching-mode)
+         ("M-N" . next-buffer-matching-mode)
+         :map mnemonic-map
+         ("ws" . split-window-right)
+         ("wa" . hydra-window-alter/body)
+         ("wv" . split-window-below)
+         ("wd" . delete-window)
+         ("wm" . delete-other-windows)
+         ("wb" . balance-windows)
+         ("wt" . promote-window)
+         ("wf" . fit-window-to-buffer)
+         ("wq" . kill-buffer-and-window))
   :init
   (defun split-window-tree ()
     "Splits windows such that each gets half as much space as the previous.
