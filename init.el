@@ -621,7 +621,8 @@ added as a hook to eshell-mode."
 (use-package visual-regexp
   :custom
   (vr/default-replace-preview nil)
-  :bind (("C-x /" . vr/query-replace)))
+  (vr/match-separator-use-custom-face t)
+  :bind (("M-%" . vr/query-replace)))
 
 (use-package visual-regexp-steroids
   :demand t
