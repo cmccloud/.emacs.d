@@ -60,9 +60,10 @@
 
 If BUFFER is a member of `get-current-persp', removes BUFFER from perspective,
 otherwise BUFFER is added to the current perspective."
-  (if (and (bufferp buffer) (persp-contain-buffer-p buffer))
-      (persp-remove-buffer buffer)
-    (persp-add-buffer buffer)))
+  (when (bufferp buffer)
+    (if (persp-contain-buffer-p buffer)
+        (persp-remove-buffer buffer)
+      (persp-add-buffer buffer))))
 
 (defun helm-persp--buffers-init ()
   (setq helm-persp--current-buffers-cache
@@ -145,3 +146,5 @@ otherwise BUFFER is added to the current perspective."
                 helm-source-persp-current-buffers
                 helm-source-persp-filtered-buffers
                 helm-persp-new-persp-source))))
+
+;; helm-persp.el ends here.
