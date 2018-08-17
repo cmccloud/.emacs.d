@@ -29,6 +29,7 @@
 (customize-set-variable 'ns-pop-up-frames 'fresh)
 (customize-set-variable 'ns-command-modifier 'meta)
 (customize-set-variable 'ns-option-modifier 'super)
+(customize-set-variable 'ns-use-thin-smoothing t)
 
 (prefer-coding-system 'utf-8)
 
