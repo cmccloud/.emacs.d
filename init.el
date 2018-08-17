@@ -285,7 +285,35 @@ function is used to display the contents of a veritically split
     "As `previous-buffer' but ignores buffers without file names."
     (interactive)
     (buffer-call-until
-     #'buffer-file-name #'previous-buffer)))
+     #'buffer-file-name #'previous-buffer))
+
+  (defun next-buffer-matching-mode ()
+    "As `next-buffer' but only for buffers sharing same `major-mode'."
+    (interactive)
+    (let ((mmode major-mode))
+      (buffer-call-until
+       (lambda (b)
+         (with-current-buffer b
+           (equal mmode major-mode)))
+       #'next-buffer)))
+
+  (defun previous-buffer-matching-mode ()
+    "As `previous-buffer' but only for buffers sharing same `major-mode'."
+    (interactive)
+    (let ((mmode major-mode))
+      (buffer-call-until
+       (lambda (b)
+         (with-current-buffer b
+           (equal mmode major-mode)))
+       #'previous-buffer)))
+
+  (defhydra hydra-window-alter (:columns 3 :exit nil :foreign-keys nil)
+    "Adjust current window size"
+    ("w" enlarge-window-horizontally "Widen Window")
+    ("n" shrink-window-horizontally "Narrow Window")
+    ("s" shrink-window "Shrink Window Height" )
+    ("e" enlarge-window "Enlarge Window Height")
+    ("q" nil "Quit" :exit t)))
 
 (use-package faces
   :init
