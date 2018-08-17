@@ -601,10 +601,14 @@ added as a hook to eshell-mode."
   (osx-trash-setup))
 
 (use-package doc-view
+  :custom
+  (doc-view-resolution 200)
   :bind (:map doc-view-mode-map
          ("k" . nil)
          ("n" . doc-view-next-page)
          ("p" . doc-view-previous-page)
+         ("<right>" . doc-view-next-page)
+         ("<left>" . doc-view-previous-page)
          ("w" . doc-view-fit-width-to-window)
          ("h" . doc-view-fit-height-to-window)
          ("s" . doc-view-search)
