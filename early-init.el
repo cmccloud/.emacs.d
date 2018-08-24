@@ -28,8 +28,13 @@
 
 ;;; Code:
 ;;;; Graphical Elements Settings
-(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-(add-to-list 'default-frame-alist '(ns-appearance . nil))
+(dolist (prop '((ns-transparent-titlebar . t)
+                (ns-appearance . nil)
+                (height . 60)
+                (width . 90)
+                (left . 75)
+                (top . 75)))
+  (add-to-list 'default-frame-alist prop))
 (customize-set-variable 'scroll-bar-mode nil)
 (customize-set-variable 'tool-bar-mode nil)
 (customize-set-variable 'frame-resize-pixelwise t)
