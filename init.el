@@ -487,46 +487,24 @@ added as a hook to eshell-mode."
 
 ;;*** Themes and UI
 (use-package spacemacs-common
-  :demand t
   :custom
   (spacemacs-theme-org-height nil)
   :config
-  (load-theme 'spacemacs-dark 'no-confirm)
   (font-lock-set-weight 'normal))
 
 (use-package doom-themes
-  :custom
-  (doom-themes-enable-bold t)
-  (doom-themes-enable-italic nil)
-  (doom-solarized-light-brighter-comments t)
-  (doom-solarized-light-comment-bg t)
-  (doom-nord-brighter-comments t)
-  (doom-nord-comment-bg t)
-  (doom-nord-light-brighter-comments t)
-  (doom-nord-light-comment-bg t)
-  (doom-one-brighter-comments t)
-  (doom-one-comment-bg t)
-  (doom-one-light-brighter-comments t)
-  (doom-one-light-comment-bg t)
-  (doom-city-lights-brighter-comments t)
-  (doom-city-lights-comment-bg t)
-  (doom-dracula-brighter-comments t)
-  (doom-dracula-comment-bg t)
-  (doom-vibrant-brighter-comments t)
-  (doom-vibrant-comment-bg t)
-  (doom-peacock-brighter-comments t)
-  (doom-peacock-comment-bg t)
-  (doom-spacegrey-brighter-comments t)
-  (doom-spacegrey-comment-bg t)
-  (doom-opera-light-brighter-comments t)
-  (doom-opera-light-comment-bg t)
-  (doom-opera-brighter-comments t)
-  (doom-opera-comment-bg t)
-  (doom-molokai-brighter-comments t)
+  :demand t
   :config
+  ;; Use preferred comment style in all doom themes
+  (dolist (theme (custom-available-themes))
+    (let ((name (symbol-name theme)))
+      (when (string-match-p "^doom.*" name)
+        (customize-set-variable (intern (concat name "-brighter-comments")) t)
+        (customize-set-variable (intern (concat name "-comment-bg")) t))))
   ;; More prominent helm source headers
   (setcdr (assq 'helm-source-header doom-themes-common-faces)
-          '(:background variables :foreground base0 :inherit 'bold)))
+          '(:background variables :foreground base0 :inherit 'bold))
+  (load-theme 'doom-one 'no-confirm))
 
 (use-package all-the-icons
   :custom
