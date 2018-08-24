@@ -317,6 +317,8 @@ function is used to display the contents of a veritically split
     ("n" shrink-window-horizontally "Narrow Window")
     ("s" shrink-window "Shrink Window Height" )
     ("e" enlarge-window "Enlarge Window Height")
+    ("b" balance-windows "Balance Windows")
+    ("f" fit-window-to-buffer "Fit Window to Buffer")
     ("q" nil "Quit" :exit t)))
 
 (use-package faces
