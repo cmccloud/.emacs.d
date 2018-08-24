@@ -366,8 +366,9 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
      #'help-mode-button-advice)))
 
 (use-package cl-extra
+  :after help-mode
   :config
-  ;; cl-extra depends on help-mode
+  ;; Help buttons should respect our window management system
   (add-function
    :around
    (button-type-get 'cl-type-definition 'help-function)
