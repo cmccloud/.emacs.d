@@ -344,6 +344,8 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
 (use-package help-mode
   :config
   ;; Help buttons should respect our window management system
+  (gv-define-simple-setter button-type-get button-type-put)
+  
   (defun help-mode-button-advice (oldfun &rest args)
     (cl-letf* ((window (selected-window))
                (supporting-window-p (window-parameter window 'supporting-window))
@@ -356,8 +358,6 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
       (apply oldfun args)
       (when supporting-window-p
         (delete-window window))))
-  
-  (gv-define-simple-setter button-type-get button-type-put)
   
   (dolist (type '(help-function-def help-variable-def help-face-def))
     (add-function
