@@ -893,46 +893,37 @@ Only for use with `advice-add'."
   :custom
   (shackle-select-reused-windows t)
   :config
-  (defun shackle-left-or-below () (if (> (frame-width) 160) 'left 'below))
-  
-  (defun shackle-display-helm-help (buffer alist plist)
-    ;; When not in helm, we process the rule again without the custom
-    ;; property.  If we are in helm, do nothing and let helm (or a
-    ;; different matching rule) take care of how to display the help
-    ;; buffer.
-    (if (bound-and-true-p helm-alive-p)
-        (let ((shackle-rules
-               '(("*Help*" :regexp t :custom shackle-working-window :select t))))
-          (display-buffer buffer))
-      (shackle--display-buffer
-       buffer
-       alist
-       (append
-        '(:custom shackle-supporting-window)
-        (cl-remove-if
-         (lambda (elt) (or (functionp elt) (equal elt :custom))) plist)))))
+  (defun shackle-working-window (buffer alist plist)
+    "Displays BUFFER in a working window. Returns window."
+    (let ((window (display-buffer-in-working-window buffer alist)))
+      (when (plist-get plist :select)
+        (select-window window))
+      window))
 
+  (defun shackle-supporting-window (buffer alist plist)
+    "Displays BUFFER in a supporting window. Returns window."
+    (let* ((plist (cl-remove-if
+                   (lambda (elt) (or (functionp elt) (equal elt :custom)))
+                   plist))
+           (window (shackle--display-buffer buffer alist plist))
+           (delete-others #'shackle-supporting-window--delete-other-windows))
+      (set-window-parameter window 'supporting-window t)
+      (set-window-parameter window 'delete-other-windows delete-others)
+      window))
+  
   (defun shackle-supporting-window--delete-other-windows (window)
     (set-window-parameter window 'supporting-window nil)
     (set-window-parameter window 'delete-other-windows nil)
     (delete-other-windows window))
-  
-  (defun shackle-supporting-window (buffer alist plist)
-    (shackle--display-buffer
-     buffer
-     (append alist
-             `((window-parameters
-                .
-                ((supporting-window . t)
-                 (delete-other-windows
-                  . shackle-supporting-window--delete-other-windows)))))
-     (cl-remove-if
-      (lambda (elt) (or (functionp elt) (equal elt :custom))) plist)))
 
-  (defun shackle-working-window (buffer alist plist)
-    (let ((window (display-buffer-in-working-window buffer alist)))
-      (when (plist-get plist :select)
-        (select-window window))))
+  (defun shackle-help-window (buffer alist plist)
+    "Displays buffer in either working or supporting window. Returns window."
+    ;; Helm mode makes extensive use of help windows, and we want
+    ;; different behavior depending on whether or not there is a helm
+    ;; buffer active
+    (if (bound-and-true-p helm-alive-p)
+        (shackle-working-window buffer alist plist)
+      (shackle-supporting-window buffer alist plist)))
   
   (customize-set-variable
    'shackle-rules
@@ -948,7 +939,7 @@ Only for use with `advice-add'."
       :select t :align below :size 0.3)
      ("\\*[hH]elm.*\\*" :custom shackle-supporting-window
       :regexp t :align t :size 0.3)
-     ("*Help*" :custom shackle-display-helm-help
+     ("*Help*" :custom shackle-help-window
       :select t :align below :size 0.3)
      ("^\\*helpful.*" :custom shackle-supporting-window
       :regexp t :select t :align below :size 0.3)
@@ -964,8 +955,7 @@ Only for use with `advice-add'."
       :select t :align below :size 0.3 :popup t)
      ("magit-process:.*" :custom shackle-supporting-window
       :regexp t :select t :align below :size 0.3 :popup t)
-     ("^\\*\\(Wo\\)?Man.*" :custom shackle-supporting-window
-      :regexp t :select t :align below :size 0.3 :popup t)
+     ("^\\*\\(Wo\\)?Man.*" :regexp t :custom shackle-working-window :select t)
      ("^\\*xwidget.webkit:.*\\*" :regexp t :custom shackle-working-window :select t)
      ("*Pp Eval Output*" :custom shackle-working-window :select t)
      ("*Package Commit List*" :custom shackle-working-window :select t)
@@ -975,7 +965,8 @@ Only for use with `advice-add'."
      (dired-mode :custom shackle-working-window :select t)
      (helm-moccur-mode :custom shackle-working-window :select t)
      (xref--xref-buffer-mode :custom shackle-working-window :select t)
-     (diff-mode :custom shackle-working-window :select t)))
+     (diff-mode :custom shackle-working-window :select t)
+     (locate-mode :custom shackle-working-window :select t)))
 
   (shackle-mode))
 
