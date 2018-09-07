@@ -24,7 +24,7 @@
 ;;
 ;; Configuration in this file occurs *before* loading `custom-file' so care 
 ;; should be taken to ensure that the values shown here are not later overridden
-;; by `customize'. 
+;; by customize. 
 
 ;;; Code:
 ;;;; Graphical Elements Settings

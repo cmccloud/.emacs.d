@@ -5,7 +5,7 @@
 ;; Author: Christopher McCloud <mccloud.christopher@gmail.com>
 
 ;; This file is not part of GNU Emacs
-
+;;; Commentary:
 ;;;; Code:
 ;;** Emacs Settings and Customization
 ;; Garbage Collection
