@@ -196,7 +196,7 @@
   (window-combination-limit 'window-size)
   (window-combination-resize t)
   (fit-window-to-buffer-horizontally t)
-  (split-width-threshold 80)
+  (split-width-threshold 160)
   (split-height-threshold 80)
   (split-window-preferred-function 'split-window-sensibly)
   (recenter-positions '(top middle bottom))
