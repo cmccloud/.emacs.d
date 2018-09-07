@@ -1280,8 +1280,8 @@ identical to the most recently added xref marker."
 (use-package helm-grep
   :custom
   (helm-grep-ag-command
-   "ag --line-numbers -S -W 256 --hidden --nocolor --nogroup -z -U %s %s %s")
-  (helm-grep-ag-pipe-cmd-switches '("--nocolor"))
+   "ag --line-numbers -S -W 256 --hidden --color --color-match='1;31' --nogroup -U -z %s %s %s")
+  (helm-grep-ag-pipe-cmd-switches '("--color-match='1;31'"))
   (helm-grep-file-path-style 'basename)
   :init
   (defun helm-grep-ag-dwim (&optional input)
