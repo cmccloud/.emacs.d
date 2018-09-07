@@ -1216,15 +1216,11 @@ identical to the most recently added xref marker."
 
   (defun helm-next-buffer ()
     (interactive)
-    (buffer-call-until
-     #'helm-interesting-buffer-p
-     #'next-buffer))
+    (buffer-call-until #'helm-interesting-buffer-p #'next-buffer))
 
   (defun helm-previous-buffer ()
     (interactive)
-    (buffer-call-until
-     #'helm-interesting-buffer-p
-     #'previous-buffer)))
+    (buffer-call-until #'helm-interesting-buffer-p #'previous-buffer)))
 
 (use-package helm-files
   :custom
