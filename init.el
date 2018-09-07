@@ -1509,7 +1509,8 @@ set the active dash docsets based on the current major-mode.")
   (flycheck-error-list-minimum-level 'error)
   (flycheck-indication-mode 'right-fringe)
   :bind (:map mnemonic-map
-              ("tc" . flycheck-mode))
+              ("tc" . flycheck-mode)
+              ("tC" . global-flycheck-mode))
   :config
   (define-fringe-bitmap 'my-flycheck-fringe-indicator
     (vector 0 0 0 0 0 0 0 28 62 62 62 28 0 0 0 0 0))
