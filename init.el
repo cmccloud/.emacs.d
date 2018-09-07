@@ -111,7 +111,6 @@
    ("C-x C-c" . nil)
    :map mnemonic-map
    ("tF" . toggle-frame-fullscreen)
-   ("tl" . display-line-numbers-mode)
    ("bd" . kill-this-buffer)
    ("br" . rename-buffer)
    ("bq" . kill-buffer-and-window)
@@ -375,6 +374,14 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
    :around
    (button-type-get 'cl-type-definition 'help-function)
    #'help-mode-button-advice))
+
+(use-package display-line-numbers
+  :custom
+  (display-line-numbers-type t)
+  (display-line-numbers-current-absolute t)
+  :bind (:map mnemonic-map
+         ("tl" . display-line-numbers-mode)
+         ("tL" . global-display-line-numbers-mode)))
 
 (use-package page-break-lines
   :hook ((emacs-lisp-mode . page-break-lines-mode)
