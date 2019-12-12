@@ -28,24 +28,26 @@
 
 ;;; Code:
 ;;;; Graphical Elements Settings
+(customize-set-variable 'initial-frame-alist
+                        '((top . 75) (left . 500) (width . 185) (height . 60)))
+(customize-set-variable 'scroll-bar-mode nil)
+(customize-set-variable 'tool-bar-mode nil)
+(customize-set-variable 'menu-bar-mode nil)
+(customize-set-variable 'frame-resize-pixelwise t)
+(custom-set-faces '(default ((t (:height 100 :family "Input")))))
+(setq ns-use-proxy-icon nil)
 (dolist (prop '((ns-transparent-titlebar . t)
                 (ns-appearance . nil)
                 (height . 60)
-                (width . 90)
+                (width . 185)
                 (left . 75)
                 (top . 75)))
   (add-to-list 'default-frame-alist prop))
-(customize-set-variable 'scroll-bar-mode nil)
-(customize-set-variable 'tool-bar-mode nil)
-(customize-set-variable 'frame-resize-pixelwise t)
-(customize-set-variable 'initial-frame-alist
-                        '((top . 75) (left . 25) (width . 90) (height . 60)))
-(setq ns-use-proxy-icon nil)
 
 ;;;; Package Settings
 (customize-set-variable
  'package-quickstart-file
- (expand-file-name "cache/package-quickstart.el" user-emacs-directory))
+ (expand-file-name "var/package-quickstart.el" user-emacs-directory))
 (customize-set-variable
  'package-archives '(("melpa" . "https://melpa.org/packages/")
                      ("melpa-stable" . "https://stable.melpa.org/packages/")

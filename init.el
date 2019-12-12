@@ -70,9 +70,6 @@
 
 ;; Startup
 (customize-set-variable 'inhibit-startup-message t)
-(customize-set-variable
- 'auto-save-list-file-prefix
- (expand-file-name "cache/auto-save-list/.saves-" user-emacs-directory))
 (customize-set-variable 'initial-major-mode 'text-mode)
 (customize-set-variable 'initial-scratch-message nil)
 
@@ -91,13 +88,12 @@
 (customize-set-variable 'use-package-verbose nil)
 (customize-set-variable 'use-package-minimum-reported-time 0.01)
 (customize-set-variable 'use-package-expand-minimally nil)
-(eval-when-compile
-  (require 'use-package))
+(customize-set-variable 'use-package-always-ensure nil)
+(require 'use-package)
 
 ;;** Libraries
-(use-package dash
-  :config
-  (dash-enable-font-lock))
+(use-package no-littering
+  :demand t)
 
 ;;** Core Packages
 ;;*** Keybinds
@@ -170,7 +166,6 @@
     "M-m t" "Toggle"
     "M-m w" "Window")
 
-  ;; These replacements appear only on dired-mode-map
   (which-key-add-major-mode-key-based-replacements 'dired-mode
     "*" "Mark"
     "%" "Regexp"
@@ -178,6 +173,13 @@
     "C-t" "Image"
     "M-s" "Search"
     "C-x" "Ctrl-X-Map")
+
+  (which-key-add-major-mode-key-based-replacements 'web-mode
+    "C-c C-a" "Attribute"
+    "C-c C-b" "Block"
+    "C-c C-d" "DOM"
+    "C-c C-e" "Element"
+    "C-c C-t" "Tag")
   
   (which-key-setup-side-window-bottom)
   (which-key-mode))
@@ -197,7 +199,7 @@
   (window-combination-resize t)
   (fit-window-to-buffer-horizontally t)
   (split-width-threshold 160)
-  (split-height-threshold 80)
+  (split-height-threshold 160)
   (split-window-preferred-function 'split-window-sensibly)
   (recenter-positions '(top middle bottom))
   :bind (("M-P" . previous-buffer-matching-mode)
@@ -247,12 +249,16 @@ Also see `window-combination-limit'."
 
   (defun display-buffer-in-working-window (buffer alist)
     (let ((windows (cl-remove-if
-                    (lambda (w) (window-parameter w 'supporting-window))
+                    (lambda (w)
+                      (or (window-parameter w 'supporting-window)
+                          (string-match-p "Treemacs"
+                                          (buffer-name (window-buffer w)))))
                     (window-list-1 nil 'never)))
           (working-window-threshold (floor (/ (frame-width) 80))))
       (if (>= (length windows) working-window-threshold)
           (window--display-buffer buffer (car (last windows)) 'reuse alist)
-        (display-buffer-pop-up-window buffer alist))))
+        (or (display-buffer-pop-up-window buffer alist)
+            (display-buffer-same-window buffer alist)))))
 
   (defun promote-window ()
     "Transforms the current window into the other 'working window'.
@@ -346,7 +352,7 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   :config
   ;; Help buttons should respect our window management system
   (gv-define-simple-setter button-type-get button-type-put)
-  
+
   (defun help-mode-button-advice (oldfun &rest args)
     (cl-letf* ((window (selected-window))
                (supporting-window-p (window-parameter window 'supporting-window))
@@ -359,7 +365,7 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
       (apply oldfun args)
       (when supporting-window-p
         (delete-window window))))
-  
+
   (dolist (type '(help-function-def help-variable-def help-face-def))
     (add-function
      :around
@@ -400,7 +406,6 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
 
 (use-package woman
   :custom
-  (woman-cache-filename "~/.emacs.d/cache/.wmncache.el")
   (woman-cache-level 3)
   (woman-fill-frame t))
 
@@ -409,8 +414,6 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   (recentf-auto-cleanup 'never)
   (recentf-max-saved-items 1000)
   (recentf-max-menu-items 10)
-  (recentf-exclude '("~/.emacs.d/cache/.*"))
-  (recentf-save-file "~/.emacs.d/cache/recentf")
   :init
   (recentf-mode))
 
@@ -438,7 +441,8 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
   (save-interprogram-paste-before-kill t)
   (blink-matching-paren nil)
   :bind (:map mnemonic-map
-              ("tv" . visual-line-mode))
+              ("tv" . visual-line-mode)
+              ("tf" . display-fill-column-indicator-mode))
   :config
   (global-visual-line-mode))
 
@@ -460,9 +464,6 @@ If NEW-VALUE is not provided, then toggles between `bold' and `normal' weight."
         ("M-m" . nil)))
 
 (use-package eshell
-  :custom
-  (eshell-directory-name
-   (expand-file-name "cache/eshell/" user-emacs-directory))
   :bind (:map mnemonic-map ("ae" . eshell))
   :init (setenv "NODE_NO_READLINE" "1")
   :hook (eshell-mode . eshell-map-setup)
@@ -502,6 +503,8 @@ added as a hook to eshell-mode."
   (font-lock-set-weight 'normal))
 
 (use-package doom-themes
+  :custom
+  (doom-themes-enable-italic nil)
   :demand t
   :config
   ;; Use preferred comment style in all doom themes
@@ -511,7 +514,7 @@ added as a hook to eshell-mode."
         (customize-set-variable (intern (concat name "-brighter-comments")) t)
         (customize-set-variable (intern (concat name "-comment-bg")) t))))
   ;; More prominent helm source headers
-  (setcdr (assq 'helm-source-header doom-themes-common-faces)
+  (setcdr (assq 'helm-source-header doom-themes-base-faces)
           '(:background variables :foreground base0 :inherit 'bold))
   (load-theme 'doom-one 'no-confirm))
 
@@ -524,12 +527,13 @@ added as a hook to eshell-mode."
              all-the-icons-fileicon
              all-the-icons-wicon))
 
+(use-package doom-modeline
+  :init (doom-modeline-mode))
+
 (use-package m-modeline
   :load-path "site-lisp/m-modeline"
   :bind (:map mnemonic-map
-              ("tm" . m-modeline-mode))
-  :init
-  (m-modeline-mode))
+              ("tm" . m-modeline-mode)))
 
 (use-package rainbow-mode
   :hook (css-mode . rainbow-mode))
@@ -545,13 +549,11 @@ added as a hook to eshell-mode."
   (delight 'visual-line-mode nil 'simple)
   (delight 'lispy-mode nil 'lispy)
   (delight 'outline-minor-mode nil 'outline)
-  (delight 'eldoc-mode nil 'eldoc)
-  (delight 'magit-wip-before-change-mode " W" 'magit-wip)
-  (delight 'magit-wip-after-apply-mode "I" 'magit-wip)
-  (delight 'magit-wip-after-save-local-mode "P" 'magit-wip))
+  (delight 'eldoc-mode nil 'eldoc))
 
 ;;*** Misc
 (use-package xwidget
+  :disabled t
   :if (featurep 'xwidget-internal)
   :after helm-dash
   :custom
@@ -591,9 +593,14 @@ added as a hook to eshell-mode."
 (use-package dired-async
   :hook (dired-mode . dired-async-mode))
 
+(use-package treemacs
+  :bind (:map mnemonic-map
+              ("tt" . treemacs-select-window)
+              ("tT" . treemacs)))
+
 (use-package auth-source
   :custom
-  (auth-sources '(macos-keychain-internet macos-keychain-generic))
+  (auth-sources '("~/.authinfo" "~/.authinfo.gpg" "~/.netrc"))
   (auth-source-cache-expiry 10800))
 
 (use-package exec-path-from-shell
@@ -630,7 +637,8 @@ added as a hook to eshell-mode."
          ("g" . doc-view-goto-page)))
 
 ;;*** Editing
-(use-package yasnippet)
+(use-package yasnippet
+  :commands yas-expand-snippet)
 
 (use-package expand-region
   :bind ("C-r" . er/expand-region))
@@ -651,6 +659,7 @@ added as a hook to eshell-mode."
   :custom
   (sp-echo-match-when-invisible nil)
   (sp-show-pair-delay 0.01)
+  :commands (sp-point-in-string-or-comment)
   :hook ((js2-mode . smartparens-mode))
   :config
   (require 'smartparens-config))
@@ -770,7 +779,6 @@ ARG can constrct the bounds to the current defun."
   (persp-add-buffer-on-after-change-major-mode t)
   (persp-reset-windows-on-nil-window-conf t)
   (persp-restrict-buffers-to-if-foreign-buffer nil)
-  (persp-save-dir (expand-file-name "cache/persp-confs/" user-emacs-directory))
   (persp-set-last-persp-for-new-frames t)
   (persp-switch-to-added-buffer nil)
   (persp-switch-wrap t)
@@ -818,7 +826,7 @@ Only for use with `advice-add'."
   :custom
   (aw-keys '(49 50 51 52 53 54 55 56 57 48))
   :custom-face
-  (aw-leading-char-face ((t (:inherit t :height 1.3))))
+  (aw-leading-char-face ((t (:inherit font-lock-type-face :height 1.3))))
   :bind* (("M-o" . ace-window)
           :map mnemonic-map
           ("wS" . ace-swap-window)))
@@ -844,33 +852,6 @@ Only for use with `advice-add'."
   :hook (ediff-quit . winner-undo)
   :config
   (winner-mode))
-
-(use-package golden-ratio
-  :load-path "site-lisp/golden-ratio"
-  :custom
-  (golden-ratio-auto-scale t)
-  (golden-ratio-exclude-buffer-names '("*tide-documentation*"))
-  :bind (:map mnemonic-map
-              ("tg" . golden-ratio-mode)
-              ("wg" . golden-ratio))
-  :config
-  (defun golden-ratio-helm-alive-p ()
-    (ignore-errors (helm--alive-p)))
-
-  (defun golden-ratio-in-ediff-p ()
-    (ignore-errors (or ediff-this-buffer-ediff-sessions
-                       (ediff-in-control-buffer-p))))
-
-  (defun golden-ratio-company-box-p ()
-    (frame-parameter (selected-frame) 'company-box-buffer))
-
-  (defun golden-ratio-in-magit-p ()
-    (string-match-p ".*magit.*" (symbol-name major-mode)))
-
-  (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-helm-alive-p)
-  (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-in-ediff-p)
-  (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-company-box-p)
-  (add-to-list 'golden-ratio-inhibit-functions #'golden-ratio-in-magit-p))
 
 (use-package shackle
   :demand t
@@ -901,12 +882,13 @@ Only for use with `advice-add'."
     (delete-other-windows window))
 
   (defun shackle-help-window (buffer alist plist)
-    "Displays buffer in either working or supporting window. Returns window."
-    ;; Helm mode makes extensive use of help windows, and we want
-    ;; different behavior depending on whether or not there is a helm
-    ;; buffer active
+    "Displays help buffer in supporting window when not in helm session.
+Helm mode makes extensive use of help windows, and we want
+different behavior depending on whether or not there is a helm
+buffer active"
     (if (bound-and-true-p helm-alive-p)
-        (shackle-working-window buffer alist plist)
+        (let (shackle-rules)
+          (shackle--display-buffer-same buffer alist))
       (shackle-supporting-window buffer alist plist)))
   
   (customize-set-variable
@@ -922,7 +904,7 @@ Only for use with `advice-add'."
      ("*slime-description*" :custom shackle-supporting-window
       :select t :align below :size 0.3)
      ("\\*[hH]elm.*\\*" :custom shackle-supporting-window
-      :regexp t :align t :size 0.3)
+      :regexp t :align below :size 0.3)
      ("*Help*" :custom shackle-help-window
       :select t :align below :size 0.3)
      ("^\\*helpful.*" :custom shackle-supporting-window
@@ -958,6 +940,7 @@ Only for use with `advice-add'."
 (use-package xref
   :custom
   (xref-marker-ring-length 200)
+  (xref-show-xrefs-function 'helm-xref-show-xrefs)
   :config
   (defun xref-push-after (&rest _args)
     "Advises `push-mark' to conditionally push to the `xref--marker-ring'.
@@ -982,8 +965,6 @@ identical to the most recently added xref marker."
   (semantic-edits-verbose-flag nil)
   (semantic-idle-scheduler-idle-time 10)
   (semantic-stickyfunc-indent-string " ")
-  (semanticdb-default-save-directory
-   (concat user-emacs-directory "cache/semanticdb"))
   (semantic-analyze-summary-function 'semantic-format-tag-short-doc)
   :hook (semantic-mode . semantic-imenu-cleanup)
   :config
@@ -1023,7 +1004,8 @@ identical to the most recently added xref marker."
      '("Package" "^\\s-*(\\(use-package\\)\\s-+\\(\\(\\sw\\|\\s_\\)+\\)" 2) t)))
 
 (use-package elisp-slime-nav
-  :bind (("C-c C-d" . elisp-slime-nav-describe-elisp-thing-at-point)))
+  :bind (:map emacs-lisp-mode-map
+              ("C-c C-d" . elisp-slime-nav-describe-elisp-thing-at-point)))
 
 (use-package avy
   :custom
@@ -1097,13 +1079,13 @@ identical to the most recently added xref marker."
   (wgrep-file-face ((t (:inherit highlight)))))
 
 (use-package wgrep-ag
-  :hook ((rg-mode . wgrep-ag-setup)
-         (ag-mode . wgrep-ag-setup)))
+  :hook (ag-mode . wgrep-ag-setup))
 
 (use-package wgrep-helm)
 
 ;;*** Helm
 (use-package helm
+  :demand t
   :custom
   (helm-candidate-number-limit 100)
   (helm-display-header-line nil)
@@ -1113,25 +1095,18 @@ identical to the most recently added xref marker."
   (helm-match ((t (:inherit font-lock-keyword-face :weight bold))))
   (helm-candidate-number ((t (:inherit bold :background nil))))
   :bind (:map mnemonic-map
-         ("hr" . helm-resume)
-         ("hk" . helm-show-kill-ring)
-         :map helm-map
-         ("C-z" . helm-select-action)
-         ("C-c t" . helm-toggle-full-frame)
-         ("<tab>" . helm-execute-persistent-action)
-         ("TAB" . helm-execute-persistent-action)
-         ("C-M-n" . helm-scroll-other-window)
-         ("C-M-p" . helm-scroll-other-window-down)
-         ("C-s" . helm-into-next))
-  :init
-  (defvar helm-into-next-alist nil)
-  :config
-  (defun helm-into-next ()
-    (interactive)
-    (when-let ((input helm-input)
-               (next-func (cdr (assoc helm-buffer helm-into-next-alist))))
-      (with-helm-alive-p
-        (helm-run-after-exit next-func input)))))
+              ("hr" . helm-resume)
+              ("hk" . helm-show-kill-ring)
+              :map helm-map
+              ("C-z" . helm-select-action)
+              ("C-c t" . helm-toggle-full-frame)
+              ("<tab>" . helm-execute-persistent-action)
+              ("TAB" . helm-execute-persistent-action)
+              ("C-M-n" . helm-scroll-other-window)
+              ("C-M-p" . helm-scroll-other-window-down)))
+
+(use-package helm-source
+  :commands helm-make-source)
 
 (use-package helm-config
   :demand t
@@ -1184,8 +1159,6 @@ identical to the most recently added xref marker."
   (("M-x" . helm-M-x)))
 
 (use-package helm-adaptive
-  :custom
-  (helm-adaptive-history-file "~/.emacs.d/cache/helm-adaptive-history")
   :hook (helm-mode . helm-adaptive-mode))
 
 (use-package helm-buffers
@@ -1205,7 +1178,9 @@ identical to the most recently added xref marker."
      "\\*Minibuf"
      "\\*Diff*"
      "\\*lispy-goto*"
-     "\\*Backtrace*"))
+     "\\*Backtrace*"
+     "\\.*-ls\*"
+     "\\.*-ls::stderr\*"))
   :bind (("C-x C-b" . helm-mini))
   :bind* (("M-n" . helm-next-buffer)
           ("M-p" . helm-previous-buffer))
@@ -1258,24 +1233,7 @@ identical to the most recently added xref marker."
   (helm-moccur-auto-update-on-resume 'noask)
   (helm-moccur-show-buffer-fontification nil)
   (helm-moccur-use-ioccur-style-keys nil)
-  :bind (("C-s" . helm-occur)
-         :map helm-moccur-map
-         ("C-o" . helm-goto-next-file)
-         ("C-i" . helm-goto-precedent-file))
-  :config
-  (cl-defmethod helm-setup-user-source ((source helm-source-multi-occur))
-    (setf (slot-value source 'candidate-number-limit) 500))
-
-  (defun helm-multi-occur-all (&optional input)
-    "Runs `helm-occur' on all buffers visiting files."
-    (interactive)
-    (helm-multi-occur-1
-     (cl-remove-if-not #'buffer-file-name (buffer-list))
-     input))
-
-  (helm-attrset 'candidate-number-limit 300 helm-source-regexp)
-  (add-to-list 'helm-into-next-alist
-               '("*helm occur*" . helm-multi-occur-all)))
+  :bind (("C-s" . helm-occur)))
 
 (use-package helm-grep
   :custom
@@ -1283,16 +1241,17 @@ identical to the most recently added xref marker."
    "ag --line-numbers -S -W 256 --hidden --color --color-match='1;31' --nogroup -U -z %s %s %s")
   (helm-grep-ag-pipe-cmd-switches '("--color-match='1;31'"))
   (helm-grep-file-path-style 'basename)
+  :bind (("C-M-s" . helm-grep-ag-dwim))
   :init
   (defun helm-grep-ag-dwim (&optional input)
     "Calls `helm-grep-ag' in git project root or default directory."
     (interactive)
     (minibuffer-with-setup-hook (lambda () (insert (or input "")))
-      (helm-grep-ag-1 (or (expand-file-name
+      (helm-grep-ag-1 (or (and (boundp 'projectile-project-root)
+                               (projectile-project-root))
+                          (expand-file-name
                            (locate-dominating-file default-directory ".git"))
-                          default-directory))))
-  (add-to-list 'helm-into-next-alist
-               '("*helm multi occur*" . helm-grep-ag-dwim)))
+                          default-directory)))))
 
 (use-package helm-locate
   :bind (:map mnemonic-map
@@ -1391,34 +1350,39 @@ identical to the most recently added xref marker."
   :bind (:map mnemonic-map
               ("ht" . helm-themes)))
 
-(use-package helm-dash
+(use-package dash-docs
   :custom
-  (helm-dash-browser-func 'browse-url)
-  :bind (:map mnemonic-map
-              ("hd" . helm-dash-at-point))
-  :hook ((emacs-lisp-mode . helm-dash-setup-docs)
-         (js2-mode . helm-dash-setup-docs))
+  (dash-docs-docsets-path "~/.emacs.d/var/.docsets")
+  (dash-docs-enable-debugging nil)
+  :hook ((emacs-lisp-mode . dash-docs-setup-docs)
+         (js2-mode . dash-docs-setup-docs)
+         (rjsx-mode . dash-docs-setup-docs))
   :config
-  (defvar helm-dash-docsets nil
+  (defvar dash-docs-docsets nil
     "Buffer local list of docsets to search by default.")
 
-  (defvar helm-dash-docsets-for-mode
-    `((emacs-lisp-mode . ("Emacs Lisp" "Emacs-CL"))
-      (js2-mode . ("JavaScript" "NodeJS" "React")))
+  (defvar dash-docs-docsets-for-mode
+    `((emacs-lisp-mode . ("Emacs Lisp"))
+      (js2-mode . ("JavaScript" "NodeJS" "React"))
+      (rjsx-mode . ("JavaScript" "NodeJS" "React")))
     "An association list of the form (MODE . (DOCSETS)).
 MODE is a symbol and DOCSETS is a list of one or more strings.  When
 calling `helm-dash-at-point' or `helm-dash', this list will be used to
 set the active dash docsets based on the current major-mode.")
 
-  (defun helm-dash-setup-docs ()
-    (setq-local helm-dash-docsets
-                (alist-get major-mode helm-dash-docsets-for-mode))))
+  (defun dash-docs-setup-docs ()
+    (setq-local dash-docs-docsets
+                (alist-get major-mode dash-docs-docsets-for-mode))))
+
+(use-package helm-dash
+  :custom
+  (helm-dash-browser-func 'browse-url)
+  :bind (("C-c C-d" . helm-dash-at-point)
+         :map mnemonic-map
+         ("hd" . helm-dash-at-point)))
 
 (use-package helm-xref
-  :load-path "site-lisp/helm-xref"
-  :custom
-  (xref-show-xrefs-function 'helm-xref-show-xrefs)
-  :commands (helm-xref-show-xrefs))
+  :functions helm-xref-show-xrefs)
 
 ;;*** Version Control and Project Management
 (use-package magit
@@ -1426,26 +1390,20 @@ set the active dash docsets based on the current major-mode.")
   :custom
   (magit-process-popup-time 5)
   (magit-ediff-dwim-show-on-hunks nil)
-  (magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
+  (magit-display-buffer-function 'magit-display-buffer-traditional)
+  (magit-section-visibility-indicator '("…" . t))
   (magit-repository-directories
-   '(("/Users/Macnube/Repos" . 1)
-     ("/Users/Macnube/.emacs.d" . 1)
-     ("/Users/Macnube/.emacs.d/site-lisp" . 1)
-     ("/usr/local/Cellar/emacs/" . 1)))
+   '(("/home/cmccloud/Documents/Repos" . 1)
+     ("/home/cmccloud/.emacs.d/" . 0)
+     ("/home/cmccloud/.emacs.d/site-lisp/" . 1)))
   :bind
   (("C-x g" . magit-status)
    ("C-x C-v" . magit-status)
    :map mnemonic-map
    ("vs" . magit-status)
-   ("vb" . magit-blame)
-   ("vc" . magit-commit)
    ("vf" . magit-file-popup)
    ("vg" . magit-file-popup))
-  :commands (magit-list-repos)
-  :config
-  (magit-wip-after-save-mode)
-  (magit-wip-after-apply-mode)
-  (magit-wip-before-change-mode))
+  :commands (magit-list-repos))
 
 (use-package vc
   :custom-face
@@ -1466,19 +1424,6 @@ set the active dash docsets based on the current major-mode.")
               ("sgp" . projectile-grep))
   :config
   (add-to-list 'projectile-globally-ignored-directories "semanticdb"))
-
-(use-package magithub
-  :custom
-  (magithub-dir
-   (concat user-emacs-directory "cache/magithub"))
-  (magithub-clone-default-directory (expand-file-name "~/Repos/"))
-  (magithub-datetime-format "%A %B %e%l:%M%p %Y")
-  (magithub-dashboard-show-read-notifications nil)
-  (magithub-preferred-remote-method 'clone_url)
-  :commands (magithub-clone)
-  :config
-  (magithub-feature-autoinject
-   '(completion status-checks-header commit-browse pull-request-merge)))
 
 (use-package diff-hl
   :bind (:map diff-hl-command-map
@@ -1547,41 +1492,34 @@ set the active dash docsets based on the current major-mode.")
   (company-dabbrev-other-buffers t)
   (company-dabbrev-ignore-invisible t))
 
-(use-package company-box
-  :if (display-graphic-p)
+;;** Language Server Protocol 
+(use-package lsp
   :custom
-  (company-box-max-candidates 500)
-  :config
-  (defun company-box-doc-set-font (font)
-    (interactive "M\Font name: ")
-    (when-let ((frame (frame-parameter nil 'company-box-doc-frame)))
-      (with-selected-frame frame
-        (set-frame-font font t))))
+  (lsp-auto-configure t)
+  (lsp-keep-workspace-alive nil)
+  (lsp-eldoc-render-all nil)
+  (lsp-prefer-flymake nil)
+  (lsp-enable-snippet t)
+  :hook ((js-mode . lsp)
+         (js2-mode . lsp)
+         (rjsx-mode . lsp)
+         (web-mode . lsp)
+         (html-mode . lsp)
+         (css-mode . lsp)))
 
-  (advice-add 'helm-themes :after
-              (lambda () (company-box-doc-set-font "Input Mono 11"))
-              '((name . helm-themes-set-company-box-doc)
-                (depth . 1)))
-  
-  (setq company-box-backends-colors nil
-        company-box-doc-frame-parameters
-        '((internal-border-width . 10)
-          (font . "Input 11")))
-  
-  (when (package-installed-p 'all-the-icons)
-    (cl-flet ((icons 'all-the-icons-material))
-      (setq company-box-icons-elisp
-            (list
-             (icons "functions" :face 'all-the-icons-purple :height .8)
-             (icons "check_circle" :face 'all-the-icons-blue :height .8)
-             (icons "stars" :face 'all-the-icons-yellow :height .8)
-             (icons "format_paint" :face 'all-the-icons-pink :height .8))
-            company-box-icons-unknown
-            (icons "find_in_page" :face 'all-the-icons-silver :height .8)
-            company-box-icons-yasnippet
-            (icons "short_text" :face 'all-the-icons-green :height .8)))))
+(use-package lsp-ui
+  :custom
+  (lsp-ui-doc-enable nil)
+  (lsp-ui-sideline-enable nil)
+  (lsp-ui-flycheck-enable t)
+  (lsp-ui-imenu-enable t)
+  (lsp-ui-peek-enable t))
 
-;;** Languages and Language Extensions
+(use-package company-lsp
+  :custom
+  (company-lsp-cache-candidates t))
+
+;;** Languages 
 (use-package clojure-mode)
 
 (use-package cider
@@ -1593,9 +1531,6 @@ set the active dash docsets based on the current major-mode.")
 
 (use-package haskell-mode
   :hook (haskell-mode . haskell-doc-mode))
-
-(use-package intero
-  :hook (haskell-mode . intero-mode))
 
 (use-package shm)
 
@@ -1614,7 +1549,8 @@ set the active dash docsets based on the current major-mode.")
   :mode ("\\.m[k]d" . markdown-mode))
 
 (use-package web-mode
-  :mode ("\\.phtml\\'"
+  :mode ("\\.html\\'"
+         "\\.phtml\\'"
          "\\.tpl\\.php\\'"
          "\\.[agj]sp\\'"
          "\\.as[cp]x\\'"
@@ -1639,9 +1575,17 @@ set the active dash docsets based on the current major-mode.")
   (js2-strict-missing-semi-warning nil)
   (js2-missing-semi-one-line-override t))
 
-(use-package tide
-  :bind (:map tide-mode-map
-              ("C-c C-d" . tide-documentation-at-point))
-  :hook ((js2-mode . tide-setup)))
+(use-package rjsx-mode
+  :init
+  (defun rjsx-javascript-jsx-file-p ()
+    "Detect React or preact imports early in the file."
+    (and buffer-file-name
+         (string= (file-name-extension buffer-file-name) "js")
+         (re-search-forward
+          "\\(^\\s-*import +React\\|\\( from \\|require(\\)[\"']p?react\\)"
+          magic-mode-regexp-match-limit t)
+         (progn (goto-char (match-beginning 1))
+                (not (sp-point-in-string-or-comment)))))
+  (add-to-list 'magic-mode-alist '(rjsx-javascript-jsx-file-p . rjsx-mode)))
 
 ;;; init.el ends here.
