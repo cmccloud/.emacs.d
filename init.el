@@ -55,6 +55,7 @@
  '(enable-recursive-minibuffers t)
  '(show-paren-delay 0)
  '(lazy-highlight-initial-delay 0)
+ '(scroll-conservatively 101)
  ;; Window
  '(window-combination-resize t)
  '(window-divider-default-bottom-width 2)
