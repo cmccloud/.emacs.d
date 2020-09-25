@@ -316,3 +316,7 @@
 
 (use-package forge
   :after magit)
+
+(use-package transient
+  :config
+  (transient-bind-q-to-quit))
