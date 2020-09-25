@@ -313,3 +313,6 @@
 (use-package magit
   :bind
   ("C-x C-g" . magit-status))
+
+(use-package forge
+  :after magit)
