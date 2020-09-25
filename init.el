@@ -269,7 +269,9 @@
 
 (use-package helm-descbinds)
 
-(use-package helm-xref :demand t)
+(use-package helm-xref
+  :after helm
+  :demand t)
 
 (use-package treemacs
   :custom
@@ -315,6 +317,7 @@
   ("C-x C-g" . magit-status))
 
 (use-package forge
+  :demand t
   :after magit)
 
 (use-package transient
