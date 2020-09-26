@@ -212,6 +212,7 @@
         ("C-n" . company-select-next)
         ("C-p" . company-select-previous)
         ("C-c C-d" . company-show-doc-buffer)
+	("C-h" . nil)
         ("RET" . nil)
         ("<return>" . nil)
         ("<tab>" . company-complete-selection)
@@ -271,8 +272,8 @@
 (use-package helm-descbinds)
 
 (use-package helm-xref
-  :after helm
-  :demand t)
+  :demand t
+  :after helm)
 
 (use-package treemacs
   :custom
@@ -324,3 +325,9 @@
 (use-package transient
   :config
   (transient-bind-q-to-quit))
+
+(use-package diff-hl
+  :custom
+  (diff-hl-side 'right)
+  :hook ((prog-mode . diff-hl-mode)
+	 (prog-mode . diff-hl-flydiff-mode)))

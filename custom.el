@@ -4,8 +4,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(apropos-do-all t)
- '(auth-source-cache-expiry 10800)
- '(auth-sources '("~/.authinfo" "~/.authinfo.gpg" "~/.netrc"))
  '(auto-save-default nil)
  '(create-lockfiles nil)
  '(cursor-in-non-selected-windows nil)
@@ -45,10 +43,11 @@
  '(package-quickstart t)
  '(package-quickstart-file "/home/cmccloud/.emacs.d/var/package-quickstart.el")
  '(package-selected-packages
-   '(forge yasnippet which-key use-package treemacs-all-the-icons posframe no-littering magit lsp-mode lispy helm-xref helm-themes helm-descbinds frame-local elisp-slime-nav doom-themes doom-modeline company))
+   '(diff-hl yasnippet which-key use-package treemacs-all-the-icons posframe no-littering lsp-mode lispy helm-xref helm-themes helm-descbinds frame-local forge elisp-slime-nav doom-themes doom-modeline company))
  '(package-user-dir "/home/cmccloud/.emacs.d/elpa")
  '(save-interprogram-paste-before-kill t)
  '(scroll-bar-mode t)
+ '(scroll-conservatively 101)
  '(search-whitespace-regexp ".*")
  '(show-paren-delay 0)
  '(split-height-threshold nil)
