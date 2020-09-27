@@ -334,3 +334,13 @@
 
 (use-package markdown
   :mode ("README\\.md" . gfm-mode))
+
+(use-package web-mode
+  :mode ("\\.html\\'"
+         "\\.phtml\\'"
+         "\\.tpl\\.php\\'"
+         "\\.[agj]sp\\'"
+         "\\.as[cp]x\\'"
+         "\\.ert\\'"
+         "\\.mustache\\'"
+         "\\.djthml\\'"))
