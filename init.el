@@ -80,6 +80,7 @@
 (winner-mode)
 (global-auto-revert-mode)
 (desktop-save-mode)
+(global-so-long-mode)
 
 (advice-add 'yes-or-no-p :override #'y-or-n-p)
 
@@ -225,15 +226,13 @@
   (helm-follow-mode-persistent t)
   (helm-split-window-inside-p t)
   (helm-display-buffer-default-height 20)
+  (helm-locate-project-list '("~/Documents/Repos" "~/.emacs.d"))
   (helm-display-header-line nil)
   (helm-buffer-max-length nil)
   (helm-ff-skip-boring-files t)
   (helm-boring-buffer-regexp-list
-   '("\\*helm" "\\*Echo Area" "\\*Minibuf" "eldoc for.*" "^\\ .*"))
+   '("\\*helm" "\\*Echo Area" "\\*Minibuf" "eldoc for.*" "^\\ .*" "^magit.*:"))
   (switch-to-prev-buffer-skip 'helm-boring-buffer-p)
-  :custom-face
-  (helm-match ((t (:inherit font-lock-keyword-face :weight bold))))
-  (helm-candidate-number ((t (:inherit bold :background nil))))
   :bind
   (("M-x" . helm-M-x)
    ("C-x C-f" . helm-find-files)
@@ -247,6 +246,7 @@
    ("hk" . helm-show-kill-ring)
    ("ff" . helm-find-files)
    ("hf" . helm-find)
+   ("hl" . helm-locate)
    ("hL" . helm-locate-library)
    ("hm" . helm-man-woman)
    ("hc" . helm-colors)
