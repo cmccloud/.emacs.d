@@ -330,7 +330,8 @@
   :custom
   (diff-hl-side 'right)
   :hook ((prog-mode . diff-hl-mode)
-	 (prog-mode . diff-hl-flydiff-mode)))
+	 (prog-mode . diff-hl-flydiff-mode)
+	 (magit-post-refresh . diff-hl-magit-post-refresh)))
 
 (use-package markdown
   :mode ("README\\.md" . gfm-mode))
