@@ -43,7 +43,7 @@
  '(package-quickstart t)
  '(package-quickstart-file "/home/cmccloud/.emacs.d/var/package-quickstart.el")
  '(package-selected-packages
-   '(diff-hl yasnippet which-key use-package treemacs-all-the-icons posframe no-littering lsp-mode lispy helm-xref helm-themes helm-descbinds frame-local forge elisp-slime-nav doom-themes doom-modeline company))
+   '(yasnippet which-key use-package treemacs-all-the-icons posframe no-littering lsp-mode lispy helm-xref helm-themes helm-descbinds frame-local forge elisp-slime-nav doom-themes doom-modeline diff-hl company))
  '(package-user-dir "/home/cmccloud/.emacs.d/elpa")
  '(save-interprogram-paste-before-kill t)
  '(scroll-bar-mode t)

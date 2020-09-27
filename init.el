@@ -131,7 +131,9 @@
    ("tv" . visual-line-mode)
    ("tf" . display-fill-column-indicator-mode)
    ("th" . hl-line-mode)
-   ("tH" . global-hl-line-mode))
+   ("tH" . global-hl-line-mode)
+   ("tl" . display-line-numbers-mode)
+   ("tL" . global-display-line-numbers-mode))
   :config
   (unless (bound-and-true-p mnemonic-map)
     (define-prefix-command 'mnemonic-map)))
@@ -172,8 +174,6 @@
     "C-c p" "Projects"
     "C-c C-w" "Eyebrowse"
     ;; M-s Map
-    "M-s a" "Ag"
-    "M-s r" "Riggrep"
     "M-s h" "Highlight"
     ;; Mnemonic Map
     "M-m b" "Buffers"
@@ -331,3 +331,6 @@
   (diff-hl-side 'right)
   :hook ((prog-mode . diff-hl-mode)
 	 (prog-mode . diff-hl-flydiff-mode)))
+
+(use-package markdown
+  :mode ("README\\.md" . gfm-mode))
