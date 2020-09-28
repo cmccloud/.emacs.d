@@ -55,7 +55,6 @@
  '(enable-recursive-minibuffers t)
  '(show-paren-delay 0)
  '(lazy-highlight-initial-delay 0)
- '(scroll-conservatively 101)
  ;; Window
  '(window-combination-resize t)
  '(window-divider-default-bottom-width 2)
@@ -69,7 +68,11 @@
  ;; Apropos
  '(apropos-do-all t)
  ;; Desktop
- '(desktop-load-locked-desktop nil))
+ '(desktop-load-locked-desktop nil)
+ ;; Recentf
+ '(recentf-max-saved-items 1000)
+ ;; History
+ '(history-delete-duplicates t))
 
 ;; Default Modes
 (show-paren-mode)
@@ -147,6 +150,11 @@
 (use-package doom-themes
   :init (load-theme 'doom-one 'no-confirm))
 
+(use-package spacemacs-common
+  :custom
+  (spacemacs-theme-underline-parens nil)
+  (spacemacs-theme-comment-bg t))
+
 (use-package doom-modeline
   :init
   (doom-modeline-mode))
@@ -184,6 +192,15 @@
     "M-m h" "Helm"
     "M-m c" "Customization"
     "M-m l" "LSP"
+    "M-m l =" "Formatting"
+    "M-m l F" "Folders"
+    "M-m l G" "Peek"
+    "M-m l T" "Toggle"
+    "M-m l a" "Code Actions"
+    "M-m l g" "Goto"
+    "M-m l r" "Refactor"
+    "M-m l h" "Help"
+    "M-m l s" "Sessions"
     "M-m p" "Projects"
     "M-m q" "Quit"
     "M-m s" "Search"
@@ -240,6 +257,7 @@
    ("M-s o" . helm-occur)
    ("C-h a" . helm-apropos)
    ("C-h b" . helm-descbinds)
+   ("C-h i" . helm-info)
    ("C-M-s" . helm-occur)
    :map mnemonic-map
    ("hr" . helm-resume)
@@ -265,7 +283,8 @@
 		    (buffer-name buffer)
 		    #'string-match-p))
   :config
-  (helm-mode))
+  (helm-mode)
+  (helm-adaptive-mode))
 
 (use-package helm-themes)
 
@@ -299,26 +318,45 @@
     (lispy-define-key lispy-mode-map "g" #'helm-imenu)
     (lispy-define-key lispy-mode-map "G" #'helm-do-grep-ag)))
 
-(use-package lsp
+(use-package lsp-mode
   :custom
   (lsp-eldoc-enable-hover nil)
   (lsp-modeline-diagnostics-enable nil)
   (lsp-signature-function 'eldoc-minibuffer-message)
   (lsp-signature-render-documentation nil)
-  :bind (:map lsp-mode-map
-	      ("C-c C-d" . lsp-describe-thing-at-point)
-	      :map mnemonic-map
+  (lsp-keymap-prefix "M-m l")
+  :hook ((haskell-mode . lsp-deferred)
+	 (js-mode . lsp-deferred)
+	 (web-mode . lsp-deferred)
+         (html-mode . lsp-deferred)
+         (css-mode . lsp-deferred)
+	 (typescript-mode . lsp-deferred))
+  :bind (:map mnemonic-map
 	      ("ll" . lsp)
-	      ("la" . lsp-execute-code-action)
-	      ("lr" . lsp-rename)))
+	      :map lsp-mode-map
+	      ("C-c C-d" . lsp-describe-thing-at-point)))
+
+(use-package lsp-haskell)
+
+(use-package tree-sitter
+  :hook ((js-mode . tree-sitter-hl-mode)
+	 (typescript-mode . tree-sitter-hl-mode)
+	 (haskell-mode . tree-sitter-hl-mode)
+	 (c-mode-common . tree-sitter-hl-mode)
+	 (python-mode . tree-sitter-hl-mode)
+	 (rust-mode . tree-sitter-hl-mode)))
+
+(use-package tree-sitter-langs
+  :after tree-sitter
+  :demand t)
 
 (use-package magit
   :bind
   ("C-x C-g" . magit-status))
 
 (use-package forge
-  :demand t
-  :after magit)
+  :after magit
+  :demand t)
 
 (use-package transient
   :config
@@ -349,3 +387,10 @@
          "\\.ert\\'"
          "\\.mustache\\'"
          "\\.djthml\\'"))
+
+(use-package js
+  :hook ((js-mode . electric-pair-mode))
+  :bind (:map js-mode-map
+	      ("M-." . nil)))
+
+(use-package haskell-mode)

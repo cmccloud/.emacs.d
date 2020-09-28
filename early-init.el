@@ -43,11 +43,13 @@
 (customize-set-variable
  'package-archives '(("melpa" . "https://melpa.org/packages/")
                      ("melpa-stable" . "https://stable.melpa.org/packages/")
+		     ("ublt" . "https://elpa.ubolonton.org/packages/")
                      ("org" . "http://orgmode.org/elpa/")
                      ("gnu" . "http://elpa.gnu.org/packages/")))
 (customize-set-variable
  'package-archive-priorities '(("melpa" . 10)
                                ("melpa-stable" . 5)
+			       ("ublt" . 10)
                                ("gnu" . 0)
                                ("marmalade" . -5)))
 (customize-set-variable
