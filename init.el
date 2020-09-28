@@ -292,9 +292,7 @@
 	 (scheme-mode . lispy-mode)
 	 (clojure-mode . lispy-mode)
 	 (racket-mode . lispy-mode))
-  :bind (:map mnemonic-map
-	      ("M-m" . lispy-mark-symbol)
-	      :map lispy-mode-map
+  :bind (:map lispy-mode-map
 	      ("M-." . nil))
   :config
   (with-eval-after-load 'helm
@@ -328,10 +326,16 @@
 
 (use-package diff-hl
   :custom
-  (diff-hl-side 'right)
+  (diff-hl-side 'left)
   :hook ((prog-mode . diff-hl-mode)
 	 (prog-mode . diff-hl-flydiff-mode)
-	 (magit-post-refresh . diff-hl-magit-post-refresh)))
+	 (magit-post-refresh . diff-hl-magit-post-refresh)
+	 (magit-pre-refresh . diff-hl-magit-pre-refresh)))
+
+(use-package expand-region
+  :bind*
+  (:map mnemonic-map
+	("M-m" . er/expand-region)))
 
 (use-package markdown
   :mode ("README\\.md" . gfm-mode))
