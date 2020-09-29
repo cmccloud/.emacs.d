@@ -248,7 +248,13 @@
   (helm-buffer-max-length nil)
   (helm-ff-skip-boring-files t)
   (helm-boring-buffer-regexp-list
-   '("\\*helm" "\\*Echo Area" "\\*Minibuf" "eldoc for.*" "^\\ .*" "^magit.*:"))
+   '("\\*helm"
+     "\\*Echo Area"
+     "\\*Minibuf"
+     "eldoc for.*"
+     "^\\ .*"
+     "^magit.*:"
+     "\\*ts-ls.*\\*"))
   (switch-to-prev-buffer-skip 'helm-boring-buffer-p)
   :bind
   (("M-x" . helm-M-x)
@@ -299,7 +305,9 @@
   (treemacs-is-never-other-window t)
   :bind (:map mnemonic-map
 	      ("tT" . treemacs)
-	      ("tt" . treemacs-select-window)))
+	      ("tt" . treemacs-select-window))
+  :config
+  (treemacs-fringe-indicator-mode))
 
 (use-package treemacs-all-the-icons
   :demand t
@@ -324,6 +332,7 @@
   (lsp-modeline-diagnostics-enable nil)
   (lsp-signature-function 'eldoc-minibuffer-message)
   (lsp-signature-render-documentation nil)
+  (lsp-keep-workspace-alive nil)
   (lsp-keymap-prefix "M-m l")
   :hook ((haskell-mode . lsp-deferred)
 	 (js-mode . lsp-deferred)
