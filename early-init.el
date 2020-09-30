@@ -30,7 +30,7 @@
 ;;; Code:
 
 ;;;; Graphical Elements Settings
-(customize-set-variable 'scroll-bar-mode t)
+(customize-set-variable 'scroll-bar-mode nil)
 (customize-set-variable 'menu-bar-mode nil)
 (customize-set-variable 'tool-bar-mode nil)
 (custom-set-faces '(default ((t (:height 100 :family "Input")))))

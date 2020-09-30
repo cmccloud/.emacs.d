@@ -74,7 +74,7 @@
  ;; History
  '(history-delete-duplicates t))
 
-;; Default Modes
+;; Default Modes - scroll-bars, tool-bars, and menu-bars disabled in early-init
 (show-paren-mode)
 (global-visual-line-mode)
 (column-number-mode)
@@ -132,6 +132,7 @@
    ("qf" . delete-frame)
    ("ad" . dired)
    ("sgg" . rgrep)
+   ("ts" . scroll-bar-mode)
    ("tv" . visual-line-mode)
    ("tf" . display-fill-column-indicator-mode)
    ("th" . hl-line-mode)
@@ -247,6 +248,7 @@
   (helm-display-header-line nil)
   (helm-buffer-max-length nil)
   (helm-ff-skip-boring-files t)
+  (helm-grep-file-path-style 'relative)
   (helm-boring-buffer-regexp-list
    '("\\*helm"
      "\\*Echo Area"
@@ -254,7 +256,7 @@
      "eldoc for.*"
      "^\\ .*"
      "^magit.*:"
-     "\\*ts-ls.*\\*"))
+     "\\*.*-ls.*\\*"))
   (switch-to-prev-buffer-skip 'helm-boring-buffer-p)
   :bind
   (("M-x" . helm-M-x)
@@ -305,7 +307,10 @@
   (treemacs-is-never-other-window t)
   :bind (:map mnemonic-map
 	      ("tT" . treemacs)
-	      ("tt" . treemacs-select-window))
+	      ("tt" . treemacs-select-window)
+	      :map treemacs-mode-map
+	      ("S" . helm-do-grep-ag)
+	      ("/" . helm-find))
   :config
   (treemacs-fringe-indicator-mode))
 
@@ -350,10 +355,8 @@
 (use-package tree-sitter
   :hook ((js-mode . tree-sitter-hl-mode)
 	 (typescript-mode . tree-sitter-hl-mode)
-	 (haskell-mode . tree-sitter-hl-mode)
 	 (c-mode-common . tree-sitter-hl-mode)
-	 (python-mode . tree-sitter-hl-mode)
-	 (rust-mode . tree-sitter-hl-mode)))
+	 (python-mode . tree-sitter-hl-mode)))
 
 (use-package tree-sitter-langs
   :after tree-sitter
@@ -373,7 +376,7 @@
 
 (use-package diff-hl
   :custom
-  (diff-hl-side 'left)
+  (diff-hl-side 'right)
   :hook ((prog-mode . diff-hl-mode)
 	 (prog-mode . diff-hl-flydiff-mode)
 	 (magit-post-refresh . diff-hl-magit-post-refresh)
@@ -383,6 +386,11 @@
   :bind*
   (:map mnemonic-map
 	("M-m" . er/expand-region)))
+
+(use-package vterm
+  :custom
+  (vterm-clear-scrollback-when-clearing t)
+  (vterm-buffer-name-string "vterm %s"))
 
 (use-package markdown
   :mode ("README\\.md" . gfm-mode))
