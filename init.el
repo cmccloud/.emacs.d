@@ -8,7 +8,7 @@
 ;;; Commentary:
 ;;;; Code:
 
-;; Performance improvements
+;; Performance improvements - LSP in particular benefits greatly.
 (setq gc-cons-threshold (* 64 1024 1024)
       read-process-output-max (* 1024 1024)
       inhibit-compacting-font-caches t)
@@ -64,6 +64,7 @@
  '(fit-frame-to-buffer-margins '(100 100 100 100))
  ;; Isearch
  '(isearch-allow-scroll 'unlimited)
+ ;; Adds more flexible matching to isearch
  '(search-whitespace-regexp ".*")
  ;; Apropos
  '(apropos-do-all t)
@@ -237,6 +238,7 @@
         ("<tab>" . company-complete-selection)
         ("TAB" . company-complete-selection)))
 
+;; Begin configuration of Helm base packages
 (use-package helm
   :custom
   (helm-candidate-number-limit 100)
@@ -264,7 +266,6 @@
    ("C-x C-b" . helm-mini)
    ("M-s o" . helm-occur)
    ("C-h a" . helm-apropos)
-   ("C-h b" . helm-descbinds)
    ("C-h i" . helm-info)
    ("C-M-s" . helm-occur)
    :map mnemonic-map
@@ -276,7 +277,6 @@
    ("hL" . helm-locate-library)
    ("hm" . helm-man-woman)
    ("hc" . helm-colors)
-   ("ht" . helm-themes)
    :map helm-map
    ("C-z" . helm-select-action)
    ("C-c t" . helm-toggle-full-frame)
@@ -285,6 +285,19 @@
    ("C-M-n" . helm-scroll-other-window)
    ("C-M-p" . helm-scroll-other-window-down))
   :init
+  ;; Helm Buffer List allows for duplicates, if the same buffer is present on
+  ;; multiple visible windows. Fix that.
+  (define-advice helm-buffers-get-visible-buffers
+      (:override (&rest r) remove-duplicates)
+    (let (result)
+      (walk-windows
+       (lambda (x)
+	 (cl-pushnew (buffer-name (window-buffer x)) result))
+       nil 'visible)
+      result))
+  ;; As of 27.1, `switch-to-prev-buffer-skip' allows the built-in `next-buffer'
+  ;; and `previous-buffer' to skip based on a user defined predicate. We
+  ;; want to sync that behavior up with Helm's built in boring buffers.
   (defun helm-boring-buffer-p (_window buffer _bury-or-skip)
     "Return t if buffer is contained in `helm-boring-buffer-regexp-list'."
     (seq-contains-p helm-boring-buffer-regexp-list
@@ -294,9 +307,20 @@
   (helm-mode)
   (helm-adaptive-mode))
 
-(use-package helm-themes)
+;; Extend helm-imenu to recognize package types, e.g. `use-package'.
+(use-package helm-imenu
+  :config
+  (add-to-list 'helm-imenu-type-faces '("^Package$" . font-lock-type-face)))
 
-(use-package helm-descbinds)
+;; Begin configuration of Helm addons:
+;; We prefer using base Helm, but make exceptions for a few, simple and well
+;; maintained packages.
+(use-package helm-themes
+  :bind (:map mnemonic-map
+	      ("ht" . helm-themes)))
+
+(use-package helm-descbinds
+  :bind (("C-h b" . helm-descbinds)))
 
 (use-package helm-xref
   :demand t
@@ -391,6 +415,33 @@
   :custom
   (vterm-clear-scrollback-when-clearing t)
   (vterm-buffer-name-string "vterm %s"))
+
+(use-package vterm-toggle
+  :bind (:map mnemonic-map
+	      ("at" . vterm-toggle-cd))
+  :config
+  ;; By default, on hiding vterm, vterm-toggle restores the window configuration
+  ;; to what it was when vterm was shown. Lets introduce some functionality to
+  ;; make that optional, and disable it by default.
+  (defcustom vterm-toggle-restore-windows nil
+    "Whether to reset window configuration after hiding vterm buffer.")
+
+  (define-advice vterm-toggle-hide
+      (:around (oldfun &rest r) preserve-windows)
+    (let ((vterm-toggle--window-configration
+	   (and vterm-toggle-restore-windows
+		vterm-toggle--window-configration)))
+      (apply oldfun r)))
+
+  ;; Display vterm below window from which it is called. 
+  (add-to-list 'display-buffer-alist
+               '((lambda (bufname _)
+		   (with-current-buffer bufname (equal major-mode 'vterm-mode)))
+		 (display-buffer-reuse-window display-buffer-in-direction)
+		 (direction . below)
+		 (dedicated . t)
+		 (reusable-frames . visible)
+		 (window-height . 0.25))))
 
 (use-package markdown
   :mode ("README\\.md" . gfm-mode))

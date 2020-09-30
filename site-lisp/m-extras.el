@@ -7,9 +7,8 @@
 ;; This file is not part of GNU Emacs
 ;;; Commentary:
 ;;;; Code:
-;; Desktop and one off instances of emacs
 (require 'cl-seq)
-
+;; Desktop and one off instances of emacs
 (defun m-extras-desktop-not-loaded ()
   "Handles initial behavior of second+ emacs instance.
 Added to `desktop-after-not-loaded-hook'."
@@ -52,21 +51,6 @@ Added to `desktop-after-not-loaded-hook'."
   (add-to-list
    'imenu-generic-expression
    '("Package" "^\\s-*(\\(use-package\\)\\s-+\\(\\(\\sw\\|\\s_\\)+\\)" 2) t))
-
-;; Helm Imenu
-(with-eval-after-load 'helm-imenu
-  (add-to-list 'helm-imenu-type-faces '("^Package$" . font-lock-type-face)))
-
-;; Helm
-;; FIX: Helm Buffer List allows duplicates (as of when?)
-(define-advice helm-buffers-get-visible-buffers
-    (:override (&rest r) remove-duplicates)
-  (let (result)
-    (walk-windows
-     (lambda (x)
-       (cl-pushnew (buffer-name (window-buffer x)) result))
-     nil 'visible)
-    result))
 
 (provide 'm-extras.el)
 
