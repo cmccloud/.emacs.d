@@ -16,9 +16,10 @@ Added to `desktop-after-not-loaded-hook'."
   (desktop-save-mode-off)
   (setq fit-window-to-buffer-horizontally t
 	fit-frame-to-buffer-margins '(300 100 300 100))
-  (run-with-timer 0 nil (lambda ()
-			  (fit-frame-to-buffer
-			   (selected-frame) nil 50 nil 80 nil))))
+  (run-with-timer
+   0 nil (lambda ()
+	   (fit-frame-to-buffer)
+	   (set-frame-position (selected-frame) 2800 100))))
 
 ;; Help Mode
 ;; Alters the behavior of how the various help mode buttons function
@@ -56,6 +57,7 @@ Added to `desktop-after-not-loaded-hook'."
 (with-eval-after-load 'helm-imenu
   (add-to-list 'helm-imenu-type-faces '("^Package$" . font-lock-type-face)))
 
+;; Helm
 ;; FIX: Helm Buffer List allows duplicates (as of when?)
 (define-advice helm-buffers-get-visible-buffers
     (:override (&rest r) remove-duplicates)
