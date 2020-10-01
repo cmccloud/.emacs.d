@@ -326,6 +326,19 @@
   :demand t
   :after helm)
 
+(use-package helm-project
+  :load-path "site-lisp/helm-project"
+  :bind (("C-x C-p" . helm-project)
+	 ("M-s p" . helm-project-grep-ag)
+	 ([remap project-find-regexp] . helm-project-grep-ag)
+	 ([remap project-switch-to-buffer] . helm-project-project-buffers)
+	 ([remap project-find-files] . helm-project-project-files)
+	 :map mnemonic-map
+	 ("ps" . helm-project-grep-ag)
+	 ("pf" . helm-project-project-files)
+	 ("pp" . helm-project)
+	 ("pb" . helm-project-source-project-buffers)))
+
 (use-package treemacs
   :custom
   (treemacs-is-never-other-window t)
