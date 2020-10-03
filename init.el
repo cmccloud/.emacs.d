@@ -326,6 +326,8 @@
   :demand t
   :after helm)
 
+;; project.el has matured enough that it's worth using to manage projects.
+;; And if it's worth using, it's worth using with Helm.
 (use-package helm-project
   :load-path "site-lisp/helm-project"
   :bind (("C-x C-p" . helm-project)
@@ -333,10 +335,11 @@
 	 ([remap project-find-regexp] . helm-project-grep-ag)
 	 ([remap project-switch-to-buffer] . helm-project-project-buffers)
 	 ([remap project-find-files] . helm-project-project-files)
+	 ([remap project-switch-project] . helm-project-list-projects)
 	 :map mnemonic-map
 	 ("ps" . helm-project-grep-ag)
 	 ("pf" . helm-project-project-files)
-	 ("pp" . helm-project)
+	 ("pp" . helm-project-list-projects)
 	 ("pb" . helm-project-source-project-buffers)))
 
 (use-package treemacs
@@ -350,6 +353,12 @@
 	      ("/" . helm-find))
   :config
   (treemacs-fringe-indicator-mode))
+
+;; Since we're using project.el, let's allow it to recognize treemacs projects
+(use-package project-treemacs
+  :after treemacs
+  :demand t
+  :load-path "site-lisp/project-treemacs")
 
 (use-package treemacs-all-the-icons
   :demand t
