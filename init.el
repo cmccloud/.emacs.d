@@ -285,8 +285,8 @@
    ("C-M-n" . helm-scroll-other-window)
    ("C-M-p" . helm-scroll-other-window-down))
   :init
-  ;; Helm Buffer List allows for duplicates, if the same buffer is present on
-  ;; multiple visible windows. Fix that.
+  ;; Helm Buffer List allows for duplicate entries, if the same buffer is
+  ;; present on multiple visible windows. Fix that.
   (define-advice helm-buffers-get-visible-buffers
       (:override (&rest r) remove-duplicates)
     (let (result)
@@ -327,7 +327,7 @@
   :after helm)
 
 ;; project.el has matured enough that it's worth using to manage projects.
-;; And if it's worth using, it's worth using with Helm.
+;; But bring the interface into helm.
 (use-package helm-project
   :load-path "site-lisp/helm-project"
   :bind (("C-x C-p" . helm-project)
@@ -371,7 +371,9 @@
 	 (clojure-mode . lispy-mode)
 	 (racket-mode . lispy-mode))
   :bind (:map lispy-mode-map
-	      ("M-." . nil))
+	      ("M-." . nil)
+	      ("[" . lispy-brackets))
+  
   :config
   (with-eval-after-load 'helm
     (lispy-define-key lispy-mode-map "g" #'helm-imenu)
@@ -398,6 +400,9 @@
 
 (use-package lsp-haskell)
 
+;; Use tree-sitter for syntax highlighting where the tree-sitter highlighting
+;; is better maintained/more robust than the major-mode font-locking.
+;; Expect this list to expand dramatically as tree-sitter development continues.
 (use-package tree-sitter
   :hook ((js-mode . tree-sitter-hl-mode)
 	 (typescript-mode . tree-sitter-hl-mode)
@@ -410,7 +415,7 @@
 
 (use-package magit
   :bind
-  ("C-x C-g" . magit-status))
+  ("C-x C-v" . magit-status))
 
 (use-package forge
   :after magit
@@ -433,6 +438,8 @@
   (:map mnemonic-map
 	("M-m" . er/expand-region)))
 
+;; vterm configuration relies heavily on extending shell configuration, see
+;; the homepage for instructions.
 (use-package vterm
   :custom
   (vterm-clear-scrollback-when-clearing t)
