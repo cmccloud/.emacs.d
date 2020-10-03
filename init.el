@@ -364,6 +364,16 @@
   :demand t
   :config (treemacs-load-theme 'all-the-icons))
 
+(use-package visual-regexp
+  :custom (vr/match-separator-use-custom-face t)
+  :bind (([remap query-replace] . vr/query-replace)))
+
+(use-package visual-regexp-steroids
+  :demand t
+  :after visual-regexp
+  :custom
+  (vr/engine 'python))
+
 (use-package lispy
   :hook ((lisp-mode . lispy-mode)
 	 (emacs-lisp-mode . lispy-mode)
