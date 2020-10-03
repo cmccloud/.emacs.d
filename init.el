@@ -60,7 +60,10 @@
  '(window-divider-default-bottom-width 2)
  '(window-divider-default-right-width 2)
  '(fit-window-to-buffer-horizontally t)
+ ;; Disallow vertical window splits except when called explicitly or through
+ ;; specialized entries in `display-buffer-alist'.
  '(split-height-threshold nil)
+ ;; Leave some space for the desktop on automatic frame resizing. 
  '(fit-frame-to-buffer-margins '(100 100 100 100))
  ;; Isearch
  '(isearch-allow-scroll 'unlimited)
@@ -68,14 +71,13 @@
  '(search-whitespace-regexp ".*")
  ;; Apropos
  '(apropos-do-all t)
- ;; Desktop
+ ;; Session persistence
  '(desktop-load-locked-desktop nil)
- ;; Recentf
  '(recentf-max-saved-items 1000)
- ;; History
  '(history-delete-duplicates t))
 
 ;; Default Modes - scroll-bars, tool-bars, and menu-bars disabled in early-init
+;; as it avoids frame flashing.
 (show-paren-mode)
 (global-visual-line-mode)
 (column-number-mode)
@@ -113,6 +115,7 @@
    :map isearch-mode-map
    ("DEL" . isearch-del-char)
    :map mnemonic-map
+   ("ap" . package-list-packages)
    ("cg" . customize-group)
    ("cf" . customize-apropos-faces)
    ("ca" . customize-apropos)
@@ -397,6 +400,9 @@
   (lsp-signature-render-documentation nil)
   (lsp-keep-workspace-alive nil)
   (lsp-keymap-prefix "M-m l")
+  ;; lsp-deferred waits until the buffer is visible before starting up an lsp
+  ;; process, which is a better fit since we use desktop to persist sessions,
+  ;; and want to avoid spinning up multiple servers on emacs initialization.
   :hook ((haskell-mode . lsp-deferred)
 	 (js-mode . lsp-deferred)
 	 (web-mode . lsp-deferred)
@@ -424,8 +430,12 @@
   :demand t)
 
 (use-package magit
+  :custom
+  (magit-bury-buffer-function 'magit-mode-quit-window)
   :bind
-  ("C-x C-v" . magit-status))
+  ("C-x C-v" . magit-status)
+  :config
+  (magit-wip-mode))
 
 (use-package forge
   :after magit
@@ -482,6 +492,11 @@
 		 (reusable-frames . visible)
 		 (window-height . 0.25))))
 
+(use-package elec-pair
+  :hook ((typescript-mode . electric-pair-local-mode)
+	 (js-mode . electric-pair-local-mode)
+	 (web-mode . electric-pair-local-mode)))
+
 (use-package markdown
   :mode ("README\\.md" . gfm-mode))
 
@@ -496,7 +511,9 @@
          "\\.djthml\\'"))
 
 (use-package js
-  :hook ((js-mode . electric-pair-mode))
+  :custom
+  (js-chain-indent t)
+  (js-indent-level 2)
   :bind (:map js-mode-map
 	      ("M-." . nil)))
 

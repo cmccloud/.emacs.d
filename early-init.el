@@ -20,7 +20,7 @@
 ;; 
 ;; For the time being, configuration in early-init will be limited to:
 ;; 1. Graphical elements such as frame parameters
-;; 2. Package system configuration.
+;; 2. Package system configuration
 ;; 3. Native Compilation Settings
 ;;
 ;; Configuration in this file occurs *before* loading `custom-file' so care 
