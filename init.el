@@ -291,7 +291,7 @@
   ;; Helm Buffer List allows for duplicate entries, if the same buffer is
   ;; present on multiple visible windows. Fix that.
   (define-advice helm-buffers-get-visible-buffers
-      (:override (&rest r) remove-duplicates)
+      (:override (&rest _r) remove-duplicates)
     (let (result)
       (walk-windows
        (lambda (x)
