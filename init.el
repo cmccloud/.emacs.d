@@ -55,6 +55,7 @@
  '(enable-recursive-minibuffers t)
  '(show-paren-delay 0)
  '(lazy-highlight-initial-delay 0)
+ '(message-truncate-lines t)
  ;; Window
  '(window-combination-resize t)
  '(window-divider-default-bottom-width 2)
@@ -76,12 +77,11 @@
  '(recentf-max-saved-items 1000)
  '(history-delete-duplicates t))
 
-;; Default Modes - scroll-bars, tool-bars, and menu-bars disabled in early-init
-;; as it avoids frame flashing.
+;; Default Modes - tool-bars, and menu-bars disabled in early-init as it avoids
+;; frame flashing.
 (show-paren-mode)
 (global-visual-line-mode)
 (column-number-mode)
-(global-hl-line-mode)
 (window-divider-mode)
 (winner-mode)
 (global-auto-revert-mode)
@@ -221,6 +221,9 @@
         ("C-c C-d" . elisp-slime-nav-describe-elisp-thing-at-point)
 	:map lisp-interaction-mode-map
 	("C-c C-d" . elisp-slime-nav-describe-elisp-thing-at-point)))
+
+(use-package hl-line
+  :hook (prog-mode . hl-line-mode))
 
 (use-package company
   :custom

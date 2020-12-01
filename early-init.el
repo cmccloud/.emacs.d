@@ -42,6 +42,7 @@
 (customize-set-variable
  'package-archives '(("melpa" . "https://melpa.org/packages/")
                      ("melpa-stable" . "https://stable.melpa.org/packages/")
+		     ;; Tree-Sitter
 		     ("ublt" . "https://elpa.ubolonton.org/packages/")
                      ("org" . "http://orgmode.org/elpa/")
                      ("gnu" . "http://elpa.gnu.org/packages/")))

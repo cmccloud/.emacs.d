@@ -18,10 +18,14 @@ Added to `desktop-after-not-loaded-hook'."
   (run-with-timer
    0 nil (lambda ()
 	   (fit-frame-to-buffer)
-	   (set-frame-position (selected-frame) 2800 100))))
+	   ;; Ubuntu doesn't correctly open applications on the primary display
+	   ;; so we offset the x-position by the width of the secondary display
+	   (set-frame-position (selected-frame) (+ (/ (display-pixel-width) 2) 240) 100))))
 
 ;; Help Mode
-;; Alters the behavior of how the various help mode buttons function
+;; Alters the behavior of how the various help mode buttons function:
+;; Use display-buffer rather than pop-to-buffer
+;; Kill help buffer on button press
 (gv-define-simple-setter button-type-get button-type-put)
 
 (defun help-mode-button-advice (oldfun &rest args)
@@ -33,11 +37,11 @@ Added to `desktop-after-not-loaded-hook'."
                  (display-buffer-same-window buffer-or-name nil)))))
     (apply oldfun args)))
 
-  (dolist (type '(help-function-def help-variable-def help-face-def))
-    (add-function
-     :around
-     (button-type-get type 'help-function)
-     #'help-mode-button-advice))
+(dolist (type '(help-function-def help-variable-def help-face-def))
+  (add-function
+   :around
+   (button-type-get type 'help-function)
+   #'help-mode-button-advice))
 
 (with-eval-after-load 'cl-extra
   (add-function
