@@ -17,7 +17,7 @@ Added to `desktop-after-not-loaded-hook'."
 	fit-frame-to-buffer-margins '(300 100 300 100))
   (run-with-timer
    0 nil (lambda ()
-	   (fit-frame-to-buffer)
+	   (fit-frame-to-buffer (selected-frame) nil 60 nil 80)
 	   ;; Ubuntu doesn't correctly open applications on the primary display
 	   ;; so we offset the x-position by the width of the secondary display
 	   (set-frame-position (selected-frame) (+ (/ (display-pixel-width) 2) 240) 100))))

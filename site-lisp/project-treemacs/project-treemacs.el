@@ -55,7 +55,7 @@
 		  (treemacs-workspace->projects
 		   (treemacs-current-workspace)))))
 
-(add-to-list 'project-find-functions #'project-treemacs-try t)
+(add-to-list 'project-find-functions #'project-treemacs-try)
 
 (provide 'project-treemacs)
 

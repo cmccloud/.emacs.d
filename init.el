@@ -9,7 +9,7 @@
 ;;;; Code:
 
 ;; Performance improvements - LSP in particular benefits greatly.
-(setq gc-cons-threshold (* 64 1024 1024)
+(setq gc-cons-threshold (* 16 1024 1024)
       read-process-output-max (* 1024 1024)
       inhibit-compacting-font-caches t)
 
@@ -19,8 +19,6 @@
   (package-initialize))
 
 ;; Configure built-in settings
-(setq-default frame-title-format "GNU Emacs")
-
 (custom-set-variables
  ;; Introductions
  '(user-full-name "Christopher McCloud")
@@ -72,6 +70,8 @@
  '(search-whitespace-regexp ".*")
  ;; Apropos
  '(apropos-do-all t)
+ ;; Remove partial completion to avoid performance hit.
+ '(completion-styles '(basic emacs22))
  ;; Session persistence
  '(desktop-load-locked-desktop nil)
  '(recentf-max-saved-items 1000)
@@ -94,12 +94,15 @@
 (require 'use-package)
 (custom-set-variables
  '(use-package-always-defer t)
- '(use-package-minimum-reported-time 0.01)
+ '(use-package-minimum-reported-time 0.001)
  '(use-package-expand-minimally nil))
 
 ;; Configure Packages
 (use-package no-littering
   :demand t)
+
+(use-package doom-themes
+  :init (load-theme 'doom-one 'no-confirm))
 
 (use-package bind-key
   :demand t
@@ -149,11 +152,10 @@
 
 (use-package m-extras
   :load-path "site-lisp"
-  :hook ((emacs-lisp-mode . m-extras-imenu-elisp-extras)
-	 (desktop-not-loaded . m-extras-desktop-not-loaded)))
+  :hook ((emacs-lisp-mode . m-extras-imenu-elisp-extras)))
 
-(use-package doom-themes
-  :init (load-theme 'doom-one 'no-confirm))
+(use-package desktop
+  :hook ((desktop-not-loaded . desktop-save-mode-off)))
 
 (use-package spacemacs-common
   :custom
@@ -362,12 +364,13 @@
 
 ;; Since we're using project.el, let's allow it to recognize treemacs projects
 (use-package project-treemacs
-  :after treemacs
   :demand t
+  :after treemacs
   :load-path "site-lisp/project-treemacs")
 
 (use-package treemacs-all-the-icons
   :demand t
+  :after treemacs
   :config (treemacs-load-theme 'all-the-icons))
 
 (use-package visual-regexp
@@ -379,6 +382,10 @@
   :after visual-regexp
   :custom
   (vr/engine 'python))
+
+(use-package wgrep)
+
+(use-package wgrep-helm)
 
 (use-package lispy
   :hook ((lisp-mode . lispy-mode)
@@ -429,8 +436,8 @@
 	 (python-mode . tree-sitter-hl-mode)))
 
 (use-package tree-sitter-langs
-  :after tree-sitter
-  :demand t)
+  :demand t
+  :after tree-sitter)
 
 (use-package magit
   :custom
@@ -441,8 +448,8 @@
   (magit-wip-mode))
 
 (use-package forge
-  :after magit
-  :demand t)
+  :demand t
+  :after magit)
 
 (use-package transient
   :config
