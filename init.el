@@ -330,6 +330,7 @@
 (use-package helm-descbinds
   :bind (("C-h b" . helm-descbinds)))
 
+;; TODO: Possible deprication due to changes to xref-capf on master branch.
 (use-package helm-xref
   :demand t
   :after helm)
@@ -362,7 +363,9 @@
   :config
   (treemacs-fringe-indicator-mode))
 
-;; Since we're using project.el, let's allow it to recognize treemacs projects
+;; Since we're using project.el, let's treat a treemacs workspace as a project
+;; space. A treemacs project maps to a project.el project, while a treemacs
+;; workspace maps to project.el external project roots.
 (use-package project-treemacs
   :demand t
   :after treemacs
@@ -424,12 +427,18 @@
 	      :map lsp-mode-map
 	      ("C-c C-d" . lsp-describe-thing-at-point)))
 
+(use-package lsp-ui
+  :custom
+  ;; Prefer to call documentation explictly, either with mouse hover or through
+  ;; `lsp-describe-thing-at-point'.
+  (lsp-ui-doc-show-with-cursor nil))
+
 (use-package lsp-haskell)
 
-;; Use tree-sitter for syntax highlighting where the tree-sitter highlighting
-;; is better maintained/more robust than the major-mode font-locking.
-;; Expect this list to expand dramatically as tree-sitter development continues.
 (use-package tree-sitter
+  ;; Use tree-sitter for syntax highlighting where the tree-sitter highlighting
+  ;; is better maintained/more robust than the major-mode font-locking.
+  ;; Expect this list to expand dramatically as tree-sitter development continues.
   :hook ((js-mode . tree-sitter-hl-mode)
 	 (typescript-mode . tree-sitter-hl-mode)
 	 (c-mode-common . tree-sitter-hl-mode)
@@ -528,3 +537,5 @@
 	      ("M-." . nil)))
 
 (use-package haskell-mode)
+
+;;; init.el ends here 
