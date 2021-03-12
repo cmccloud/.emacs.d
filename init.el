@@ -312,6 +312,11 @@
 		    (buffer-name buffer)
 		    #'string-match-p))
   :config
+  (custom-set-variables
+   '(helm-boring-file-regexp-list
+     ;; Treat native-compiled files, and temporary files, as boring
+     (append helm-boring-file-regexp-list
+	     '("\\.eln$" "\\.tmp$"))))
   (helm-mode)
   (helm-adaptive-mode))
 
