@@ -347,14 +347,14 @@
   :bind (("C-x C-p" . helm-project)
 	 ("M-s p" . helm-project-grep-ag)
 	 ([remap project-find-regexp] . helm-project-grep-ag)
-	 ([remap project-switch-to-buffer] . helm-project-project-buffers)
-	 ([remap project-find-files] . helm-project-project-files)
+	 ([remap project-switch-to-buffer] . helm-project-buffers)
+	 ([remap project-find-files] . helm-project-files)
 	 ([remap project-switch-project] . helm-project-list-projects)
 	 :map mnemonic-map
 	 ("ps" . helm-project-grep-ag)
-	 ("pf" . helm-project-project-files)
+	 ("pf" . helm-project-files)
 	 ("pp" . helm-project-list-projects)
-	 ("pb" . helm-project-source-project-buffers)))
+	 ("pb" . helm-project-buffers)))
 
 (use-package treemacs
   :custom
