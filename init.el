@@ -410,6 +410,11 @@
     (lispy-define-key lispy-mode-map "g" #'helm-imenu)
     (lispy-define-key lispy-mode-map "G" #'helm-do-grep-ag)))
 
+(use-package ace-window
+  :bind (("C-c o" . ace-swap-window)
+	 :map mnemonic-map
+	 ("bs" . ace-swap-window)))
+
 (use-package lsp-mode
   :custom
   (lsp-eldoc-enable-hover nil)
