@@ -472,6 +472,8 @@
   :after magit)
 
 (use-package transient
+  :custom
+  (transient-display-buffer-action '(display-buffer-below-selected))
   :config
   (transient-bind-q-to-quit))
 
