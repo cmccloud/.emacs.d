@@ -411,9 +411,8 @@
     (lispy-define-key lispy-mode-map "G" #'helm-do-grep-ag)))
 
 (use-package ace-window
-  :bind (("C-c o" . ace-swap-window)
-	 :map mnemonic-map
-	 ("bs" . ace-swap-window)))
+  :bind (:map mnemonic-map
+	      ("wa" . ace-swap-window)))
 
 (use-package lsp-mode
   :custom
