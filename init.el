@@ -547,6 +547,8 @@
   :bind (:map js-mode-map
 	      ("M-." . nil)))
 
+(use-package clojure-mode)
+
 (use-package haskell-mode)
 
 ;;; init.el ends here 
