@@ -8,6 +8,15 @@
 ;;; Commentary:
 ;;;; Code:
 (require 'cl-seq)
+
+(defun m-extras-dedicate-window ()
+  "Weakly dedicates `selected-window' to `current-buffer'.
+Already dedicated windows are instead marked as non-dedicated."
+  (interactive)
+  (let ((state (if (window-dedicated-p) nil 'weak)))
+    (set-window-dedicated-p (selected-window) state)
+    (message "Window Dedicated State: %s" (if state "True" "False"))))
+
 ;; Desktop and one off instances of emacs
 (defun m-extras-desktop-not-loaded ()
   "Handles initial behavior of second+ emacs instance.

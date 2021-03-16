@@ -149,7 +149,8 @@
 
 (use-package m-extras
   :load-path "site-lisp"
-  :hook ((emacs-lisp-mode . m-extras-imenu-elisp-extras)))
+  :hook ((emacs-lisp-mode . m-extras-imenu-elisp-extras))
+  :bind (:map mnemonic-map ("wD" . m-extras-dedicate-window)))
 
 (use-package desktop
   :hook ((desktop-not-loaded . desktop-save-mode-off)))
