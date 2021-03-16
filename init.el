@@ -25,7 +25,6 @@
  ;; Files
  '(auto-save-default nil)
  '(create-lockfiles nil)
- '(make-backup-files nil)
  '(delete-by-moving-to-trash t)
  '(load-prefer-newer t)
  ;; Help
@@ -410,7 +409,7 @@
 
 (use-package ace-window
   :bind (:map mnemonic-map
-	      ("wa" . ace-swap-window)))
+	      ("wS" . ace-swap-window)))
 
 (use-package lsp-mode
   :custom
