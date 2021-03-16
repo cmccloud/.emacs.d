@@ -20,9 +20,6 @@
 
 ;; Configure built-in settings
 (custom-set-variables
- ;; Introductions
- '(user-full-name "Christopher McCloud")
- '(user-mail-address "mccloud.christopher@gmail.com")
  ;; Set, but don't load, custom file to keep our configuration clean
  '(custom-file (expand-file-name "custom.el" user-emacs-directory))
  ;; Files
