@@ -42,8 +42,9 @@
   "Support for treemacs based projects."
   :group 'project)
 
-(defcustom project-treemacs-ignores nil
-  "List of patterns to add to `project-ignores'."
+(defcustom project-treemacs-ignores '("^\\.#" "^flycheck_" "~$" "\\.git/")
+  "List of patterns to add to `project-ignores'.
+Default value emulates `treemacs--std-ignore-file-predicate'."
   :type '(repeat string)
   :safe #'listp)
 
@@ -71,6 +72,9 @@ Only used when `treemacs-filewatch-mode' is enabled.")
       (puthash dir (directory-files-recursively dir ".*" nil t nil)
 	       project-treemacs--files-cache)))
 
+(defun project-treemacs--ignore-file-p (project path)
+  (seq-contains-p (project-ignores project nil) path #'string-match-p))
+
 ;; Project.el API
 ;;;###autoload
 (defun project-treemacs-try (dir)
@@ -81,19 +85,17 @@ Only used when `treemacs-filewatch-mode' is enabled.")
 
 (cl-defmethod project-files ((project treemacs-project) &optional dirs)
   (seq-remove
-   (lambda (elt) (seq-contains-p (project-ignores project nil) elt #'string-match-p))
+   (lambda (path) (project-treemacs--ignore-file-p project path))
    (seq-mapcat #'project-treemacs--get-files-for-dir
 	       (append (list (project-root project)) dirs))))
 
 (cl-defmethod project-ignores ((project treemacs-project) dir)
-  (append project-treemacs-ignores
-	  (seq-map (lambda (d) (concat d "/")) grep-find-ignored-directories)))
+  project-treemacs-ignores)
 
 (cl-defmethod project-external-roots ((project treemacs-project))
   (remove (project-root project)
 	  (mapcar #'treemacs-project->path
-		  (treemacs-workspace->projects
-		   (treemacs-current-workspace)))))
+		  (treemacs-workspace->projects (treemacs-current-workspace)))))
 
 ;; Cache invalidation
 (define-advice treemacs--process-file-events
