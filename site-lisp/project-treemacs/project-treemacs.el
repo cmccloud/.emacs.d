@@ -55,13 +55,23 @@
   "Stores project-treemacs `project-files'.
 Only used when `treemacs-filewatch-mode' is enabled.")
 
+(defvar project-treemacs--idle-timer nil)
+
 (defun project-treemacs--clear-cache ()
-  (setq project-treemacs--files-cache (ht-create)))
+  "Clears `project-treemacs--files-cache' and updates when idle."
+  (let ((keys (ht-keys project-treemacs--files-cache)))
+    (setq project-treemacs--files-cache (ht-create))
+    (setq project-treemacs--idle-timer
+	  (run-with-idle-timer 1 nil #'project-treemacs--update-cache keys))))
+
+(defun project-treemacs--update-cache (directories)
+  (seq-mapcat (lambda (d) (project-treemacs--get-files-for-dir d)) directories)
+  (cancel-timer project-treemacs--idle-timer))
 
 (defun project-treemacs--get-files-for-dir (dir)
   (or (and treemacs-filewatch-mode (ht-get project-treemacs--files-cache dir))
       (progn (ht-set project-treemacs--files-cache dir
-		      (directory-files-recursively dir ".*" nil t nil))
+		     (directory-files-recursively dir ".*" nil t nil))
 	     (ht-get project-treemacs--files-cache dir))))
 
 (defun project-treemacs--files (project &optional dirs)
