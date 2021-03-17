@@ -98,6 +98,10 @@
   :demand t)
 
 (use-package doom-themes
+  :custom
+  (doom-one-brighter-comments t)
+  (doom-one-light-brighter-comments t)
+  (doom-zenburn-brighter-comments t)
   :init (load-theme 'doom-one 'no-confirm))
 
 (use-package bind-key
