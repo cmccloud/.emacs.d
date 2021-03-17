@@ -100,6 +100,7 @@
 (use-package doom-themes
   :custom
   (doom-one-brighter-comments t)
+  (doom-one-comment-bg nil)
   (doom-one-light-brighter-comments t)
   (doom-zenburn-brighter-comments t)
   :init (load-theme 'doom-one 'no-confirm))
@@ -373,8 +374,11 @@
   :demand t
   :after treemacs
   :load-path "site-lisp/project-treemacs"
-  :custom
-  (project-treemacs-ignores '("node_modules/")))
+  :config
+  (customize-set-variable
+   'project-treemacs-ignores
+   (append project-treemacs-ignores
+	   '("node_modules/" "\\.cache" "\\.elc" "\\.eln"))))
 
 (use-package treemacs-all-the-icons
   :demand t
