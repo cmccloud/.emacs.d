@@ -59,13 +59,17 @@ Only used when `treemacs-filewatch-mode' is enabled.")
   (when treemacs-filewatch-mode
     (let (keys)
       (maphash (lambda (k _v) (push k keys)) project-treemacs--files-cache)
-      (setq project-treemacs--files-cache (make-hash-table)
-	    project-treemacs--idle-timer
-	    (run-with-idle-timer 1 nil #'project-treemacs--update-cache keys)))))
+      (setq project-treemacs--files-cache (make-hash-table))
+      (unless project-treemacs--idle-timer
+	;; Check to verify that we don't already have an idle-timer
+	;; waiting up update the cache.
+	(setq project-treemacs--idle-timer
+	      (run-with-idle-timer 1 nil #'project-treemacs--update-cache keys))))))
 
 (defun project-treemacs--update-cache (directories)
   (seq-each (lambda (d) (project-treemacs--get-files-for-dir d)) directories)
-  (cancel-timer project-treemacs--idle-timer))
+  (cancel-timer project-treemacs--idle-timer)
+  (setq project-treemacs--idle-timer nil))
 
 (defun project-treemacs--get-files-for-dir (dir)
   (or (and treemacs-filewatch-mode (gethash dir project-treemacs--files-cache))
