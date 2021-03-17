@@ -32,15 +32,11 @@
 ;; `project-or-external-find-file', and `project-or-external-find-regexp'
 ;; operate on the current treemacs workspace.
 ;; 
-;; TODO: Add support for project.el based ignores
 
 ;;; Code:
 (require 'seq)
-(require 'ht)
 (require 'treemacs)
 (require 'project)
-
-;; TODO: Implement project-ignores
 
 (defgroup project-treemacs nil
   "Support for treemacs based projects."
@@ -51,7 +47,7 @@
   :type '(repeat string)
   :safe #'listp)
 
-(defvar project-treemacs--files-cache (ht-create)
+(defvar project-treemacs--files-cache (make-hash-table)
   "Stores project-treemacs `project-files'.
 Only used when `treemacs-filewatch-mode' is enabled.")
 
@@ -59,26 +55,24 @@ Only used when `treemacs-filewatch-mode' is enabled.")
 
 (defun project-treemacs--clear-cache ()
   "Clears `project-treemacs--files-cache' and updates when idle."
-  (let ((keys (ht-keys project-treemacs--files-cache)))
-    (setq project-treemacs--files-cache (ht-create))
-    (setq project-treemacs--idle-timer
-	  (run-with-idle-timer 1 nil #'project-treemacs--update-cache keys))))
+  (when treemacs-filewatch-mode
+    (let (keys)
+      (maphash (lambda (k _v) (push k keys)) project-treemacs--files-cache)
+      (setq project-treemacs--files-cache (make-hash-table)
+	    project-treemacs--idle-timer
+	    (run-with-idle-timer 1 nil #'project-treemacs--update-cache keys)))))
 
 (defun project-treemacs--update-cache (directories)
-  (seq-mapcat (lambda (d) (project-treemacs--get-files-for-dir d)) directories)
+  (seq-each (lambda (d) (project-treemacs--get-files-for-dir d)) directories)
   (cancel-timer project-treemacs--idle-timer))
 
 (defun project-treemacs--get-files-for-dir (dir)
-  (or (and treemacs-filewatch-mode (ht-get project-treemacs--files-cache dir))
-      (progn (ht-set project-treemacs--files-cache dir
-		     (directory-files-recursively dir ".*" nil t nil))
-	     (ht-get project-treemacs--files-cache dir))))
-
-(defun project-treemacs--files (project &optional dirs)
-  (seq-mapcat (lambda (d) (project-treemacs--get-files-for-dir d))
-	      (append (list (project-root project)) dirs)))
+  (or (and treemacs-filewatch-mode (gethash dir project-treemacs--files-cache))
+      (puthash dir (directory-files-recursively dir ".*" nil t nil)
+	       project-treemacs--files-cache)))
 
 ;; Project.el API
+;;;###autoload
 (defun project-treemacs-try (dir)
   (treemacs--find-project-for-path dir))
 
@@ -86,10 +80,14 @@ Only used when `treemacs-filewatch-mode' is enabled.")
   (treemacs-project->path project))
 
 (cl-defmethod project-files ((project treemacs-project) &optional dirs)
-  (benchmark-progn (project-treemacs--files project dirs)))
+  (seq-remove
+   (lambda (elt) (seq-contains-p (project-ignores project nil) elt #'string-match-p))
+   (seq-mapcat #'project-treemacs--get-files-for-dir
+	       (append (list (project-root project)) dirs))))
 
-(cl-defmethod project-ignores ((project treemacs-project))
-  project-treemacs-ignores)
+(cl-defmethod project-ignores ((project treemacs-project) dir)
+  (append project-treemacs-ignores
+	  (seq-map (lambda (d) (concat d "/")) grep-find-ignored-directories)))
 
 (cl-defmethod project-external-roots ((project treemacs-project))
   (remove (project-root project)

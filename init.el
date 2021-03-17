@@ -369,13 +369,12 @@
   :config
   (treemacs-fringe-indicator-mode))
 
-;; Since we're using project.el, let's treat a treemacs workspace as a project
-;; space. A treemacs project maps to a project.el project, while a treemacs
-;; workspace maps to project.el external project roots.
 (use-package project-treemacs
   :demand t
   :after treemacs
-  :load-path "site-lisp/project-treemacs")
+  :load-path "site-lisp/project-treemacs"
+  :custom
+  (project-treemacs-ignores '("node_modules/")))
 
 (use-package treemacs-all-the-icons
   :demand t
