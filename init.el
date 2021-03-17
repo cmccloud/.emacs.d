@@ -22,11 +22,15 @@
 (custom-set-variables
  ;; Set, but don't load, custom file to keep our configuration clean
  '(custom-file (expand-file-name "custom.el" user-emacs-directory))
- ;; Files
+ ;; File Preservation
  '(auto-save-default nil)
  '(create-lockfiles nil)
  '(delete-by-moving-to-trash t)
  '(load-prefer-newer t)
+ ;; Use undo-tree's defaults
+ '(undo-limit (* 80 1024 1024))
+ '(undo-strong-limit (* 120 1024 1024))
+ '(undo-outer-limit (* 360 1024 1024))
  ;; Help
  '(help-window-select t)
  ;; NS Settings
@@ -384,6 +388,12 @@
   :demand t
   :after treemacs
   :config (treemacs-load-theme 'all-the-icons))
+
+(use-package undo-tree
+  :bind (("M-u" . undo-tree-undo)
+	 ("M-U" . undo-tree-redo))
+  :init
+  (global-undo-tree-mode))
 
 (use-package visual-regexp
   :custom (vr/match-separator-use-custom-face t)
