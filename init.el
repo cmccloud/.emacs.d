@@ -163,6 +163,12 @@
 (use-package desktop
   :hook ((desktop-not-loaded . desktop-save-mode-off)))
 
+(use-package tab-bar
+  :custom
+  (tab-bar-show nil)
+  (tab-bar-close-button-show nil)
+  (tab-bar-new-button-show nil))
+
 (use-package spacemacs-common
   :custom
   (spacemacs-theme-underline-parens nil)
@@ -170,7 +176,13 @@
 
 (use-package doom-modeline
   :init
-  (doom-modeline-mode))
+  (doom-modeline-mode)
+  :config
+  ;; Always show workspace, even when tab-bar-mode is off
+  (define-advice doom-modeline-segment--workspace-name
+      (:around (oldfun &rest r) show-workspace)
+    (let ((tab-bar-mode t))
+      (apply oldfun r))))
 
 (use-package which-key
   :init (which-key-mode)
