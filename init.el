@@ -171,7 +171,9 @@
   :custom
   (tab-bar-show nil)
   (tab-bar-close-button-show nil)
-  (tab-bar-new-button-show nil))
+  (tab-bar-new-button-show nil)
+  :config
+  (tab-bar-mode))
 
 (use-package xref
   :custom
@@ -187,13 +189,7 @@
 
 (use-package doom-modeline
   :init
-  (doom-modeline-mode)
-  :config
-  ;; Always show workspace, even when tab-bar-mode is off
-  (define-advice doom-modeline-segment--workspace-name
-      (:around (oldfun &rest r) show-workspace)
-    (let ((tab-bar-mode t))
-      (apply oldfun r))))
+  (doom-modeline-mode))
 
 (use-package which-key
   :init (which-key-mode)
