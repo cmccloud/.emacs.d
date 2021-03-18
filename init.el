@@ -31,6 +31,8 @@
  '(undo-limit (* 80 1024 1024))
  '(undo-strong-limit (* 120 1024 1024))
  '(undo-outer-limit (* 360 1024 1024))
+ ;; Keep undo simple
+ '(undo-no-redo t)
  ;; Help
  '(help-window-select t)
  ;; NS Settings
@@ -54,6 +56,7 @@
  '(show-paren-delay 0)
  '(lazy-highlight-initial-delay 0)
  '(message-truncate-lines t)
+ '(warning-minimum-level :error)
  ;; Window
  '(window-combination-resize t)
  '(window-divider-default-bottom-width 2)
@@ -75,7 +78,9 @@
  ;; Session persistence
  '(desktop-load-locked-desktop nil)
  '(recentf-max-saved-items 1000)
- '(history-delete-duplicates t))
+ '(history-delete-duplicates t)
+ '(package-native-compile t)
+ '(use-short-answers t))
 
 ;; Default Modes - tool-bars, and menu-bars disabled in early-init as it avoids
 ;; frame flashing.
@@ -87,15 +92,15 @@
 (global-auto-revert-mode)
 (desktop-save-mode)
 (global-so-long-mode)
-
-(advice-add 'yes-or-no-p :override #'y-or-n-p)
+(repeat-mode)
 
 ;; Setup use-package
 (require 'use-package)
 (custom-set-variables
  '(use-package-always-defer t)
  '(use-package-minimum-reported-time 0.001)
- '(use-package-expand-minimally nil))
+ '(use-package-expand-minimally nil)
+ '(use-package-verbose nil))
 
 ;; Configure Packages
 (use-package no-littering
@@ -114,6 +119,7 @@
   :bind*
   (("M-m" . mnemonic-map)
    ("M-u" . undo)
+   ("M-U" . undo-redo)
    ("M-o" . other-window))
   :bind
   (("C-x C-c" . ignore)
@@ -168,6 +174,13 @@
   (tab-bar-show nil)
   (tab-bar-close-button-show nil)
   (tab-bar-new-button-show nil))
+
+(use-package xref
+  :custom
+  (xref-search-program 'ripgrep)
+  (xref-file-name-display 'project-relative)
+  (xref-show-definitions-function 'xref-show-definitions-completing-read)
+  (xref-show-xrefs-function 'xref-show-definitions-completing-read))
 
 (use-package spacemacs-common
   :custom
@@ -353,10 +366,16 @@
 (use-package helm-descbinds
   :bind (("C-h b" . helm-descbinds)))
 
-;; TODO: Possible deprication due to changes to xref-capf on master branch.
-(use-package helm-xref
+(use-package helm-lsp
   :demand t
-  :after helm)
+  :after lsp-mode
+  :bind
+  (:map lsp-mode-map
+	([remap xref-find-apropos] . helm-lsp-workspace-symbol)
+	:map mnemonic-map
+	("ls" . helm-lsp-workspace-symbol)
+	("lS" . helm-lsp-global-workspace-symbol)
+	("la" . helm-lsp-code-actions)))
 
 ;; project.el has matured enough that it's worth using to manage projects.
 ;; But bring the interface into helm.
@@ -400,12 +419,6 @@
   :demand t
   :after treemacs
   :config (treemacs-load-theme 'all-the-icons))
-
-(use-package undo-tree
-  :bind (("M-u" . undo-tree-undo)
-	 ("M-U" . undo-tree-redo))
-  :init
-  (global-undo-tree-mode))
 
 (use-package visual-regexp
   :custom (vr/match-separator-use-custom-face t)

@@ -47,13 +47,14 @@
 		     ;; Tree-Sitter
 		     ("ublt" . "https://elpa.ubolonton.org/packages/")
                      ("org" . "http://orgmode.org/elpa/")
-                     ("gnu" . "http://elpa.gnu.org/packages/")))
+                     ("gnu" . "http://elpa.gnu.org/packages/")
+		     ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 (customize-set-variable
  'package-archive-priorities '(("melpa" . 10)
-                               ("melpa-stable" . 5)
-			       ("ublt" . 10)
-                               ("gnu" . 0)
-                               ("marmalade" . -5)))
+                               ("ublt" . 10)
+			       ("nongnu" . 5)
+                               ("melpa-stable" . 0)
+                               ("gnu" . 0)))
 (customize-set-variable
  'package-user-dir (expand-file-name "elpa" user-emacs-directory))
 (customize-set-variable 'package-menu-hide-low-priority t)
