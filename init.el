@@ -31,8 +31,6 @@
  '(undo-limit (* 80 1024 1024))
  '(undo-strong-limit (* 120 1024 1024))
  '(undo-outer-limit (* 360 1024 1024))
- ;; Keep undo simple
- '(undo-no-redo t)
  ;; Help
  '(help-window-select t)
  ;; NS Settings
@@ -429,6 +427,13 @@
   :after visual-regexp
   :custom
   (vr/engine 'python))
+
+(use-package undo-tree
+  :custom
+  (undo-tree-visualizer-diff t)
+  :init (global-undo-tree-mode)
+  :bind (("M-u" . undo-tree-undo)
+	 ("M-U" . undo-tree-redo)))
 
 (use-package wgrep)
 
