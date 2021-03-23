@@ -182,6 +182,11 @@
   (xref-show-definitions-function 'xref-show-definitions-completing-read)
   (xref-show-xrefs-function 'xref-show-definitions-completing-read))
 
+(use-package ediff
+  :custom
+  (ediff-window-setup-function 'ediff-setup-windows-plain)
+  (ediff-split-window-function 'split-window-horizontally))
+
 (use-package spacemacs-common
   :custom
   (spacemacs-theme-underline-parens nil)
@@ -427,6 +432,7 @@
 (use-package undo-tree
   :custom
   (undo-tree-visualizer-diff t)
+  (undo-tree-auto-save-history t)
   :init (global-undo-tree-mode)
   :bind (("M-u" . undo-tree-undo)
 	 ("M-U" . undo-tree-redo)))

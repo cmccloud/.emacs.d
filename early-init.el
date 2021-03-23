@@ -36,7 +36,6 @@
 (custom-set-faces '(default ((t (:height 100 :family "Input")))))
 (setq ns-use-proxy-icon nil)
 
-
 ;;;; Package Settings
 (customize-set-variable
  'package-quickstart-file
