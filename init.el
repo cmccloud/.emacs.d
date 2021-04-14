@@ -273,6 +273,7 @@
   (company-require-match 'never)
   (company-tooltip-align-annotations t)
   (company-dabbrev-other-buffers t)
+  (company-format-margin-function 'company-vscode-dark-icons-margin)
   :hook ((prog-mode . company-mode))
   :bind
   (:map company-active-map
