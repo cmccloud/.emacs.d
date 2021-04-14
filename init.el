@@ -92,7 +92,16 @@
 (global-so-long-mode)
 (repeat-mode)
 
-;; Setup use-package
+;; Ensure use-package
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package)
+  ;; Assume that if we needed to install use-package, we will also need to
+  ;; ensure that our other packages are installed
+  (custom-set-variables
+   '(use-package-always-ensure t)))
+
+;; Configure use-package
 (require 'use-package)
 (custom-set-variables
  '(use-package-always-defer t)
