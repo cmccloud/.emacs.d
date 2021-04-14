@@ -519,6 +519,7 @@
   (magit-bury-buffer-function 'magit-mode-quit-window)
   :bind
   ("C-x C-v" . magit-status)
+  ("C-x g" . magit-status)
   :config
   (magit-wip-mode))
 
