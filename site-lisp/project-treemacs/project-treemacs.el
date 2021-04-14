@@ -39,7 +39,7 @@
 (require 'project)
 
 (defgroup project-treemacs nil
-  "Support for treemacs based projects."
+  "`treemacs' backend for `project' based projects."
   :group 'project)
 
 (defcustom project-treemacs-ignores '("^\\.#" "^flycheck_" "~$" "\\.git/")
@@ -59,7 +59,7 @@ Only used when `treemacs-filewatch-mode' is enabled.")
   (when treemacs-filewatch-mode
     (let (keys)
       (maphash (lambda (k _v) (push k keys)) project-treemacs--files-cache)
-      (setq project-treemacs--files-cache (make-hash-table))
+      (clrhash project-treemacs--files-cache)
       (unless project-treemacs--idle-timer
 	;; Check to verify that we don't already have an idle-timer
 	;; waiting up update the cache.
