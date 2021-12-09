@@ -202,6 +202,7 @@
   (spacemacs-theme-comment-bg t))
 
 (use-package doom-modeline
+  :load-path "site-lisp/doom-modeline"
   :init
   (doom-modeline-mode))
 
@@ -343,6 +344,25 @@
 	 (cl-pushnew (buffer-name (window-buffer x)) result))
        nil 'visible)
       result))
+  
+  ;; FIX: `helm-read-file-name-handler-1' forced display behavior.
+  (define-advice helm-read-file-name-handler-1
+      (:override (prompt dir default-filename
+                         mustmatch initial predicate
+                         name buffer)
+		 display-fixes)
+    (let ((init (or initial dir default-directory)))
+      (helm-read-file-name
+       prompt
+       :name name
+       :history helm-ff-history
+       :buffer buffer
+       :default default-filename
+       :initial-input (expand-file-name init dir)
+       :alistp nil
+       :must-match mustmatch
+       :test predicate)))
+  
   ;; As of 27.1, `switch-to-prev-buffer-skip' allows the built-in `next-buffer'
   ;; and `previous-buffer' to skip based on a user defined predicate. We
   ;; want to sync that behavior up with Helm's built in boring buffers.
@@ -553,22 +573,12 @@
   (vterm-buffer-name-string "vterm %s"))
 
 (use-package vterm-toggle
+  :custom
+  (vterm-toggle-hide-method 'bury-all-vterm-buffer)
+  (vterm-toggle-reset-window-configration-after-exit nil)
   :bind (:map mnemonic-map
 	      ("at" . vterm-toggle-cd))
   :config
-  ;; By default, on hiding vterm, vterm-toggle restores the window configuration
-  ;; to what it was when vterm was shown. Lets introduce some functionality to
-  ;; make that optional, and disable it by default.
-  (defcustom vterm-toggle-restore-windows nil
-    "Whether to reset window configuration after hiding vterm buffer.")
-
-  (define-advice vterm-toggle-hide
-      (:around (oldfun &rest r) preserve-windows)
-    (let ((vterm-toggle--window-configration
-	   (and vterm-toggle-restore-windows
-		vterm-toggle--window-configration)))
-      (apply oldfun r)))
-
   ;; Display vterm below window from which it is called. 
   (add-to-list 'display-buffer-alist
                '((lambda (bufname _)
