@@ -453,12 +453,6 @@
   :custom (vr/match-separator-use-custom-face t)
   :bind (([remap query-replace] . vr/query-replace)))
 
-(use-package visual-regexp-steroids
-  :demand t
-  :after visual-regexp
-  :custom
-  (vr/engine 'python))
-
 (use-package undo-tree
   :custom
   (undo-tree-visualizer-diff t)
@@ -559,6 +553,10 @@
   :hook ((prog-mode . diff-hl-mode)
 	 (magit-post-refresh . diff-hl-magit-post-refresh)
 	 (magit-pre-refresh . diff-hl-magit-pre-refresh)))
+
+(use-package zoom
+  :custom (zoom-size '(110 . 36))
+  :bind (:map mnemonic-map ("tz" . zoom-mode)))
 
 (use-package expand-region
   :bind*
