@@ -1,6 +1,6 @@
 ;;; early-init.el --- Personal Emacs Configuration. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2018 Christopher McCloud
+;; Copyright (C) 2018-2021 Christopher McCloud
 
 ;; Author: Christopher McCloud <mccloud.christopher@gmail.com>
 
@@ -33,7 +33,12 @@
 (setq-default frame-title-format "GNU Emacs")
 (customize-set-variable 'menu-bar-mode nil)
 (customize-set-variable 'tool-bar-mode nil)
-(custom-set-faces '(default ((t (:height 100 :family "Input")))))
+(customize-set-variable 'scroll-bar-mode nil)
+(custom-set-faces
+ (pcase (system-name)
+   ("M-laptop-w11" '(default ((t (:height 140 :family "Input")))))
+   ("M-laptop-arch" '(default ((t (:height 140 :family "Input")))))
+   (other-system '(default ((t (:height 120 :family "Input")))))))
 (setq ns-use-proxy-icon nil)
 
 ;;;; Package Settings
@@ -58,5 +63,8 @@
  'package-user-dir (expand-file-name "elpa" user-emacs-directory))
 (customize-set-variable 'package-menu-hide-low-priority t)
 (customize-set-variable 'package-quickstart t)
+
+;;;; Native Compilation Settings
+(customize-set-variable 'native-comp-async-report-warnings-errors 'silent)
 
 ;;; early-init.el ends here

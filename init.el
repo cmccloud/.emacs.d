@@ -1,6 +1,6 @@
 ;;; init.el --- Personal Emacs Configuration. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2016-2020 Christopher McCloud
+;; Copyright (C) 2016-2021 Christopher McCloud
 
 ;; Author: Christopher McCloud <mccloud.christopher@gmail.com>
 
@@ -25,7 +25,7 @@
  ;; File Preservation
  '(auto-save-default nil)
  '(create-lockfiles nil)
- '(delete-by-moving-to-trash t)
+ '(delete-by-moving-to-trash nil)
  '(load-prefer-newer t)
  ;; Use undo-tree's defaults
  '(undo-limit (* 80 1024 1024))
@@ -425,6 +425,7 @@
 (use-package treemacs
   :custom
   (treemacs-is-never-other-window t)
+  (treemacs-width 30)
   :bind (:map mnemonic-map
 	      ("tT" . treemacs)
 	      ("tt" . treemacs-select-window)
@@ -533,9 +534,7 @@
   (magit-bury-buffer-function 'magit-mode-quit-window)
   :bind
   ("C-x C-v" . magit-status)
-  ("C-x g" . magit-status)
-  :config
-  (magit-wip-mode))
+  ("C-x g" . magit-status))
 
 (use-package forge
   :demand t

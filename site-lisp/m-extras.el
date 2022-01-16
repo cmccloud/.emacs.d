@@ -34,6 +34,12 @@ Already dedicated windows are instead marked as non-dedicated."
     (set-window-dedicated-p (selected-window) state)
     (message "Window Dedicated State: %s" (if state "True" "False"))))
 
+(defun m-extras-set-font-size (size)
+  "Sets current font to size between 8 and 30."
+  (interactive "nEnter Font Size (8-30): ")
+  (set-face-attribute 'default nil :height
+		      (min (max 80 (* size 10)) 300)))
+
 ;; Desktop and one off instances of emacs
 (defun m-extras-desktop-not-loaded ()
   "Handles initial behavior of second+ emacs instance.
@@ -81,6 +87,25 @@ Added to `desktop-after-not-loaded-hook'."
   (add-to-list
    'imenu-generic-expression
    '("Package" "^\\s-*(\\(use-package\\)\\s-+\\(\\(\\sw\\|\\s_\\)+\\)" 2) t))
+
+(defun wsl-copy-region-to-clipboard (start end)
+  "Copy region to Windows clipboard."
+  (interactive "r")
+  (call-process-region start end "clip.exe" nil 0))
+
+(defun wsl-clipboard-to-string ()
+  "Return Windows clipboard as string."
+  (let ((coding-system-for-read 'dos))
+    (substring				; remove added trailing \n
+     (shell-command-to-string
+      "powershell.exe -Command Get-Clipboard") 0 -1)))
+
+(defun wsl-paste-from-clipboard (arg)
+  "Insert Windows clipboard at point. With prefix ARG, also add to kill-ring"
+  (interactive "P")
+  (let ((clip (wsl-clipboard-to-string)))
+    (insert clip)
+    (if arg (kill-new clip))))
 
 (provide 'm-extras.el)
 
