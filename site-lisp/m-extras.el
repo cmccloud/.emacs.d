@@ -88,6 +88,12 @@ Added to `desktop-after-not-loaded-hook'."
    'imenu-generic-expression
    '("Package" "^\\s-*(\\(use-package\\)\\s-+\\(\\(\\sw\\|\\s_\\)+\\)" 2) t))
 
+;; WSL Helpers
+
+(defun wsl-halfscreen ()
+  (interactive)
+  (set-frame-size nil 1268 1496 t))
+
 (defun wsl-copy-region-to-clipboard (start end)
   "Copy region to Windows clipboard."
   (interactive "r")
