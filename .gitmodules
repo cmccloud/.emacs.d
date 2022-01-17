@@ -19,3 +19,6 @@
 [submodule "site-lisp/dimmer"]
 	path = site-lisp/dimmer
 	url = https://github.com/cmccloud/dimmer.el.git
+[submodule "site-lisp/helm-project"]
+	path = site-lisp/helm-project
+	url = https://github.com/cmccloud/helm-project.git
