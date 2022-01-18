@@ -196,7 +196,7 @@
   (ediff-window-setup-function 'ediff-setup-windows-plain)
   (ediff-split-window-function 'split-window-horizontally))
 
-(use-package spacemacs-common
+(use-package spacemacs-theme
   :custom
   (spacemacs-theme-underline-parens nil)
   (spacemacs-theme-comment-bg t))
