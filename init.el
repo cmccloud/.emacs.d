@@ -287,6 +287,10 @@
         ("<tab>" . company-complete-selection)
         ("TAB" . company-complete-selection)))
 
+(use-package yassnippet
+  :config
+  (yas-global-mode))
+
 ;; Begin configuration of Helm base packages
 (use-package helm
   :custom
