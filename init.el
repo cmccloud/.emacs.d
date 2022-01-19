@@ -74,7 +74,7 @@
  ;; Remove partial completion to avoid performance hit.
  '(completion-styles '(basic emacs22))
  ;; Session persistence
- '(desktop-load-locked-desktop nil)
+ '(desktop-load-locked-desktop t)
  '(recentf-max-saved-items 1000)
  '(history-delete-duplicates t)
  '(package-native-compile t)
