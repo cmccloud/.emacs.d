@@ -185,9 +185,6 @@
   (tab-bar-mode))
 
 (use-package xref
-  :init
-  ;; Just until xref-go-back is defined
-  (defalias 'xref-go-back 'xref-pop-marker-stack)
   :custom
   (xref-search-program 'ripgrep)
   (xref-file-name-display 'project-relative)
