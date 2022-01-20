@@ -173,6 +173,12 @@
   :hook ((emacs-lisp-mode . m-extras-imenu-elisp-extras))
   :bind (:map mnemonic-map ("wD" . m-extras-dedicate-window)))
 
+(use-package auth-source
+  :custom
+  (auth-sources '("~/.authinfo.gpg"))
+  (auth-source-cache-expiry 86400)
+  (epg-pinentry-mode 'loopback))
+
 (use-package desktop
   :hook ((desktop-not-loaded . desktop-save-mode-off)))
 
