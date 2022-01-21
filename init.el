@@ -80,8 +80,8 @@
  '(package-native-compile t)
  '(use-short-answers t))
 
-;; Default Modes - tool-bars, and menu-bars disabled in early-init as it avoids
-;; frame flashing.
+;; Default Modes - tool-bars, scroll-bars, and menu-bars are disabled in
+;; early-init as it avoids frame flashing.
 (show-paren-mode)
 (global-visual-line-mode)
 (column-number-mode)
@@ -576,6 +576,7 @@
 ;; the homepage for instructions.
 (use-package vterm
   :custom
+  (vterm-shell "/bin/fish")
   (vterm-clear-scrollback-when-clearing t)
   (vterm-buffer-name-string "vterm %s"))
 
