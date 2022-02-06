@@ -587,11 +587,14 @@
   :bind (:map mnemonic-map
 	      ("at" . vterm-toggle-cd))
   :config
-  ;; Display vterm below window from which it is called. 
+  ;; Display vterm below window from which it is called.
   (add-to-list 'display-buffer-alist
                '((lambda (bufname _)
-		   (with-current-buffer bufname (equal major-mode 'vterm-mode)))
-		 (display-buffer-reuse-window display-buffer-in-direction)
+		   (with-current-buffer bufname
+		     (or (equal major-mode 'vterm-mode)
+			 (string-match-p (s-concat "\\^" vterm-buffer-name)
+					 (buffer-name)))))
+		 (display-buffer-in-direction)
 		 (direction . below)
 		 (dedicated . t)
 		 (reusable-frames . visible)
