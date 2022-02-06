@@ -82,7 +82,9 @@ Only used when `treemacs-filewatch-mode' is enabled.")
 ;; Project.el API
 ;;;###autoload
 (defun project-treemacs-try (dir)
-  (treemacs--find-project-for-path dir))
+  (when (and (fboundp 'treemacs-current-visibility)
+	     (eq (treemacs-current-visibility) 'visible))
+    (treemacs--find-project-for-path dir)))
 
 (cl-defmethod project-root ((project treemacs-project))
   (treemacs-project->path project))
