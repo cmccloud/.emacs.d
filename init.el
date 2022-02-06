@@ -531,6 +531,7 @@
   ;; is better maintained/more robust than the major-mode font-locking.
   ;; Expect this list to expand dramatically as tree-sitter development continues.
   :hook ((js-mode . tree-sitter-hl-mode)
+	 (js2-mode . tree-sitter-hl-mode)
 	 (typescript-mode . tree-sitter-hl-mode)
 	 (c-mode-common . tree-sitter-hl-mode)
 	 (python-mode . tree-sitter-hl-mode)))
@@ -624,6 +625,10 @@
   (js-indent-level 2)
   :bind (:map js-mode-map
 	      ("M-." . nil)))
+
+(use-package indium
+  :custom
+  (indium-chrome-executable "google-chrome-stable"))
 
 (use-package clojure-mode)
 
