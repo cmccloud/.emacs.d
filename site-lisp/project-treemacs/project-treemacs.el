@@ -39,7 +39,7 @@
 (require 'project)
 
 (defgroup project-treemacs nil
-  "`treemacs' backend for `project' based projects."
+  "Project implementation based on the Treemacs package."
   :group 'project)
 
 (defcustom project-treemacs-ignores '("^\\.#" "^flycheck_" "~$" "\\.git/")
