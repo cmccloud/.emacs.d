@@ -635,9 +635,22 @@
   :bind (:map js-mode-map
 	      ("M-." . nil)))
 
+(use-package js2-mode
+  :custom
+  (js2-missing-semi-one-line-override t)
+  (js2-mode-show-strict-warnings nil)
+  (js2-mode-show-parse-errors nil)
+  :hook ((js-mode . js2-minor-mode)))
+
 (use-package indium
   :custom
-  (indium-chrome-executable "google-chrome-stable"))
+  (indium-chrome-executable "google-chrome-stable")
+  :hook ((js-mode . indium-interaction-mode))
+  :bind (:map indium-interaction-mode-map
+	      ("M-m i i" . indium-launch)
+	      ("M-m i q" . indium-quit)
+	      ("M-m i b" . indium-eval-buffer)
+	      ("M-m i r" . indium-eval-region)))
 
 (use-package clojure-mode)
 
