@@ -464,6 +464,11 @@
   :custom (vr/match-separator-use-custom-face t)
   :bind (([remap query-replace] . vr/query-replace)))
 
+(use-package visual-regexp-steroids)
+
+(use-package pcre2el
+  :demand t)
+
 (use-package undo-tree
   :custom
   (undo-tree-visualizer-diff t)
