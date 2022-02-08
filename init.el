@@ -159,7 +159,7 @@
    ("sgg" . rgrep)
    ("ts" . scroll-bar-mode)
    ("tv" . visual-line-mode)
-   ("tf" . display-fill-column-indicator-mode)
+   ("tf" . flymake-mode)
    ("th" . hl-line-mode)
    ("tH" . global-hl-line-mode)
    ("tl" . display-line-numbers-mode)
@@ -605,6 +605,10 @@
   :hook ((typescript-mode . electric-pair-local-mode)
 	 (js-mode . electric-pair-local-mode)
 	 (web-mode . electric-pair-local-mode)))
+
+(use-package flymake-mode
+  :custom
+  (flymake-fringe-indicator-position nil))
 
 (use-package markdown
   :mode ("README\\.md" . gfm-mode))
