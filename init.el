@@ -48,7 +48,7 @@
  '(fill-column 80)
  '(visible-cursor nil)
  '(cursor-in-non-selected-windows nil)
- '(fringe-mode '(12 . 6))
+ '(fringe-mode '(20 . 8))
  '(initial-scratch-message nil)
  '(enable-recursive-minibuffers t)
  '(show-paren-delay 0)
