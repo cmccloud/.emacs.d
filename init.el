@@ -202,6 +202,10 @@
   (ediff-window-setup-function 'ediff-setup-windows-plain)
   (ediff-split-window-function 'split-window-horizontally))
 
+(use-package compile
+  :config
+  (add-hook 'compilation-finish-functions 'switch-to-buffer-other-window))
+
 (use-package spacemacs-theme
   :custom
   (spacemacs-theme-underline-parens nil)
@@ -301,6 +305,7 @@
 (use-package helm
   :custom
   (helm-candidate-number-limit 100)
+  (helm-help-full-frame nil)
   (helm-echo-input-in-header-line t)
   (helm-follow-mode-persistent t)
   (helm-split-window-inside-p t)
@@ -418,6 +423,11 @@
 
 ;; project.el has matured enough that it's worth using to manage projects.
 ;; But bring the interface into helm.
+(use-package project
+  :custom
+  (project-vc-ignores
+   '("\\.yarn/" "\\.log/" "node_modules/" "\\.cache" "\\.elc" "\\.eln")))
+
 (use-package helm-project
   :load-path "site-lisp/helm-project"
   :bind (("C-x C-p" . helm-project)
@@ -453,7 +463,8 @@
   (customize-set-variable
    'project-treemacs-ignores
    (append project-treemacs-ignores
-	   '("node_modules/" "\\.cache" "\\.elc" "\\.eln"))))
+	   '("\\.cache" "\\.elc" "\\.eln")
+	   '("\\.yarn/" "\\.log/" "node_modules/"))))
 
 (use-package treemacs-all-the-icons
   :demand t
@@ -598,7 +609,7 @@
                '((lambda (bufname _)
 		   (with-current-buffer bufname
 		     (or (equal major-mode 'vterm-mode)
-			 (string-match-p (s-concat "\\^" vterm-buffer-name)
+			 (string-match-p (s-concat "^" vterm-buffer-name)
 					 (buffer-name)))))
 		 (display-buffer-in-direction)
 		 (direction . below)
