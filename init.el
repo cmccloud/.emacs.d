@@ -48,13 +48,14 @@
  '(fill-column 80)
  '(visible-cursor nil)
  '(cursor-in-non-selected-windows nil)
- '(fringe-mode '(20 . 8))
+ '(fringe-mode '(16 . 8))
  '(initial-scratch-message nil)
  '(enable-recursive-minibuffers t)
  '(show-paren-delay 0)
  '(lazy-highlight-initial-delay 0)
  '(message-truncate-lines t)
  '(warning-minimum-level :error)
+ '(indent-tabs-mode nil)
  ;; Window
  '(window-combination-resize t)
  '(window-divider-default-bottom-width 2)
@@ -160,6 +161,7 @@
    ("ts" . scroll-bar-mode)
    ("tv" . visual-line-mode)
    ("tf" . flymake-mode)
+   ("tn" . normal-mode)
    ("th" . hl-line-mode)
    ("tH" . global-hl-line-mode)
    ("tl" . display-line-numbers-mode)
@@ -298,6 +300,7 @@
         ("TAB" . company-complete-selection)))
 
 (use-package yassnippet
+  :hook ((web-mode . yas-minor-mode))
   :config
   (yas-global-mode))
 
@@ -524,10 +527,11 @@
   ;; and want to avoid spinning up multiple servers on emacs initialization.
   :hook ((haskell-mode . lsp-deferred)
 	 (js-mode . lsp-deferred)
-	 (web-mode . lsp-deferred)
+         (js-jsx-mode . lsp-deferred)
+	 (typescript-mode . lsp-deferred)
+         (web-mode . lsp-deferred)
          (html-mode . lsp-deferred)
-         (css-mode . lsp-deferred)
-	 (typescript-mode . lsp-deferred))
+	 (css-mode . lsp-deferred))
   :bind (:map mnemonic-map
 	      ("ll" . lsp)
 	      :map lsp-mode-map
@@ -630,6 +634,9 @@
   :mode ("README\\.md" . gfm-mode))
 
 (use-package web-mode
+  :custom
+  (web-mode-enable-auto-expanding t)
+  (web-mode-markup-indent-offset 2)
   :mode ("\\.html\\'"
          "\\.phtml\\'"
          "\\.tpl\\.php\\'"
