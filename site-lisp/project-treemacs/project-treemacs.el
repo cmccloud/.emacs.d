@@ -1,6 +1,6 @@
 ;; project-treemacs.el --- project.el for treemacs -*- lexical-binding: t -*-
 
-;; Copyright (C) 2020-2021 Christopher McCloud
+;; Copyright (C) 2020-2022 Christopher McCloud
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -82,7 +82,7 @@ Only used when `treemacs-filewatch-mode' is enabled.")
   (setq project-treemacs--idle-timer nil))
 
 (defun project-treemacs--explore-dir-p (dir-name)
-  (not (seq-some (lambda (glob) (string-prefix-p glob dir-name))
+  (not (seq-some (lambda (glob) (string-match-p glob dir-name))
                  (project-ignores (project-current) ""))))
 
 (defun project-treemacs--ignore-file-p (project path)
