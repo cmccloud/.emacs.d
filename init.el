@@ -623,7 +623,7 @@
 ;; the homepage for instructions.
 (use-package vterm
   :custom
-  (vterm-shell "/bin/fish")
+  (vterm-shell "fish")
   (vterm-clear-scrollback-when-clearing t)
   (vterm-buffer-name-string "vterm %s"))
 
