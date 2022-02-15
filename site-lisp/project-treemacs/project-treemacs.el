@@ -48,6 +48,16 @@ Default value emulates `treemacs--std-ignore-file-predicate'."
   :type '(repeat string)
   :safe #'listp)
 
+(defcustom project-treemacs-always-in-project-when-visible nil
+  "Controls project treemacs fallback behavior.
+
+If set to `t', `project-treemacs-try' fallsback to returning the first
+treemacs project within the current workspace, anytime that the treemacs side
+window is visible. If set to `nil', `project-treemacs-try' falls back to the
+next handler in `project-find-functions'.
+
+Set to `nil' by default.")
+
 (defvar project-treemacs--files-cache (make-hash-table)
   "Stores project-treemacs `project-files'.
 Only used when `treemacs-filewatch-mode' is enabled.")
@@ -85,7 +95,8 @@ Only used when `treemacs-filewatch-mode' is enabled.")
   (when (and (fboundp 'treemacs-current-visibility)
 	     (eq (treemacs-current-visibility) 'visible))
     (or (treemacs--find-project-for-path dir)
-        (car (treemacs-workspace->projects (treemacs-current-workspace))))))
+        (when project-treemacs-always-in-project-when-visible
+          (car (treemacs-workspace->projects (treemacs-current-workspace)))))))
 
 (cl-defmethod project-root ((project treemacs-project))
   (treemacs-project->path project))
