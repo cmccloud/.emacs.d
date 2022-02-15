@@ -288,6 +288,7 @@
   (company-require-match 'never)
   (company-tooltip-align-annotations t)
   (company-dabbrev-other-buffers t)
+  (company-transformers '(company-sort-by-backend-importance))
   (company-format-margin-function 'company-vscode-dark-icons-margin)
   :hook ((prog-mode . company-mode))
   :bind
@@ -302,9 +303,13 @@
         ("TAB" . company-complete-selection)))
 
 (use-package yassnippet
-  :hook ((web-mode . yas-minor-mode))
+  :hook ((prog-mode . yas-minor-mode))
   :config
-  (yas-global-mode))
+  (yas-global-mode)
+  (with-eval-after-load 'company
+    (push '(company-yasnippet :with company-capf) company-backends)))
+
+(use-package yassnippet-snippets)
 
 ;; Begin configuration of Helm base packages
 (use-package helm
