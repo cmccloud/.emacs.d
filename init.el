@@ -323,7 +323,6 @@
   (helm-locate-project-list '("~/Documents/Repos" "~/.emacs.d"))
   (helm-display-header-line nil)
   (helm-buffer-max-length nil)
-  (helm-ff-skip-boring-files t)
   (helm-grep-file-path-style 'relative)
   (helm-boring-buffer-regexp-list
    '("\\*helm"
