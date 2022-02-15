@@ -68,3 +68,6 @@
 (customize-set-variable 'native-comp-async-report-warnings-errors 'silent)
 
 ;;; early-init.el ends here
+;; Local Variables:
+;; no-native-compile: t
+;; End:

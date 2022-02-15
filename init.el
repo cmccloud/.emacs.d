@@ -702,3 +702,6 @@
 (use-package haskell-mode)
 
 ;;; init.el ends here 
+;; Local Variables:
+;; no-native-compile: t
+;; End:
