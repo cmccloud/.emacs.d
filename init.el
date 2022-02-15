@@ -463,7 +463,10 @@
 	      ("S" . helm-do-grep-ag)
 	      ("/" . helm-find))
   :config
-  (treemacs-fringe-indicator-mode))
+  (treemacs-fringe-indicator-mode)
+  ;; Just until changes are merged
+  (load-file "~/Documents/Repos/treemacs/src/extra/treemacs-tab-bar.el")
+  (treemacs-set-scope-type 'Tabs))
 
 (use-package project-treemacs
   :demand t
