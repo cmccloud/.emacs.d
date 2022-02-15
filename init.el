@@ -436,7 +436,7 @@
 (use-package project
   :custom
   (project-vc-ignores
-   '(".yarn/" ".log/" "node_modules/" "*.cache" "*.elc" "*.eln" "*.tmp")))
+   '(".yarn/" "*.log" "node_modules/" "*.cache" "*.elc" "*.eln" "*.tmp")))
 
 (use-package helm-project
   :load-path "site-lisp/helm-project"
@@ -473,8 +473,8 @@
   (customize-set-variable
    'project-treemacs-ignores
    (append project-treemacs-ignores
-	   '("*.cache" "*.elc" "*.eln")
-	   '("*.yarn/" "*.log/" "node_modules/"))))
+	   '(".cache" ".elc" ".eln" ".log")
+	   '(".yarn/" ".log/" "node_modules/"))))
 
 (use-package treemacs-all-the-icons
   :demand t
