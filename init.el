@@ -405,6 +405,21 @@
   (helm-mode)
   (helm-adaptive-mode))
 
+(use-package helm-grep
+  :bind (:map helm-grep-map
+              ("C-c a" . helm-grep-toggle-file-path-style))
+  :config
+  (defun helm-grep-toggle-file-path-style ()
+    "Within helm-grep-mode buffer, toggles between `helm-grep-file-path-style'."
+    (interactive)
+    (with-helm-alive-p
+      (setq helm-grep-file-path-style
+            (pcase helm-grep-file-path-style
+              ('basename 'absolute)
+              ('absolute 'relative)
+              ('relative 'basename)))
+      (helm-force-update))))
+
 ;; Extend helm-imenu to recognize package types, e.g. `use-package'.
 (use-package helm-imenu
   :config
