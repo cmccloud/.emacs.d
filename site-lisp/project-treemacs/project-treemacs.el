@@ -95,6 +95,14 @@ Only used when `treemacs-filewatch-mode' is enabled.")
    (seq-mapcat #'project-treemacs--get-files-for-dir
 	       (append (list (project-root project)) dirs))))
 
+;; TODO: COMPLETE
+(cl-defmethod project-buffers ((project treemacs-project))
+  (let ((root (expand-file-name (file-name-as-directory (project-root project)))))
+    (seq-filter
+     (lambda (buf)
+       (string-prefix-p root (buffer-local-value 'default-directory buf)))
+     (buffer-list))))
+
 (cl-defmethod project-ignores ((project treemacs-project) dir)
   project-treemacs-ignores)
 
