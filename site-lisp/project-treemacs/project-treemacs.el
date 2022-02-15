@@ -81,9 +81,13 @@ Only used when `treemacs-filewatch-mode' is enabled.")
   (cancel-timer project-treemacs--idle-timer)
   (setq project-treemacs--idle-timer nil))
 
+(defun project-treemacs--explore-dir-p (dir-name)
+  (not (seq-some (lambda (glob) (string-match-p glob dir-name))
+                 (project-ignores (project-current) ""))))
+
 (defun project-treemacs--get-files-for-dir (dir)
   (or (and treemacs-filewatch-mode (gethash dir project-treemacs--files-cache))
-      (puthash dir (directory-files-recursively dir ".*" nil t nil)
+      (puthash dir (directory-files-recursively dir ".*" nil #'project-treemacs--explore-dir-p nil)
 	       project-treemacs--files-cache)))
 
 (defun project-treemacs--ignore-file-p (project path)
@@ -102,10 +106,8 @@ Only used when `treemacs-filewatch-mode' is enabled.")
   (treemacs-project->path project))
 
 (cl-defmethod project-files ((project treemacs-project) &optional dirs)
-  (seq-remove
-   (lambda (path) (project-treemacs--ignore-file-p project path))
-   (seq-mapcat #'project-treemacs--get-files-for-dir
-	       (append (list (project-root project)) dirs))))
+  (seq-mapcat #'project-treemacs--get-files-for-dir
+	      (append (list (project-root project)) dirs)))
 
 (cl-defmethod project-buffers ((project treemacs-project))
   (let ((root (expand-file-name (file-name-as-directory (project-root project)))))

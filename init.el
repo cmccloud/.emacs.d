@@ -492,8 +492,8 @@
   (customize-set-variable
    'project-treemacs-ignores
    (append project-treemacs-ignores
-	   '(".cache" ".elc" ".eln" ".log")
-	   '(".yarn/" ".log/" "node_modules/"))))
+	   '("\\.cache$" "\\.elc$" "\\.eln$" "\\.log$")
+	   '("\\.yarn/" "\\.log/" "node_modules/"))))
 
 (use-package treemacs-all-the-icons
   :demand t
