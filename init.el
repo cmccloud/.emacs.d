@@ -406,7 +406,7 @@
 
 (use-package helm-grep
   :bind (:map helm-grep-map
-              ("C-c a" . helm-grep-toggle-file-path-style))
+              ("C-]" . helm-grep-toggle-file-path-style))
   :config
   (defun helm-grep-toggle-file-path-style ()
     "Within helm-grep-mode buffer, toggles between `helm-grep-file-path-style'."
