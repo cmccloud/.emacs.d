@@ -88,6 +88,7 @@ Added to `desktop-after-not-loaded-hook'."
    'imenu-generic-expression
    '("Package" "^\\s-*(\\(use-package\\)\\s-+\\(\\(\\sw\\|\\s_\\)+\\)" 2) t))
 
+;; WSL Compatibility Hacks
 (defun wsl-copy-region-to-clipboard (start end)
   "Copy region to Windows clipboard."
   (interactive "r")
@@ -106,6 +107,19 @@ Added to `desktop-after-not-loaded-hook'."
   (let ((clip (wsl-clipboard-to-string)))
     (insert clip)
     (if arg (kill-new clip))))
+
+;; Better beginning of line functions
+(define-advice beginning-of-visual-line
+    (:around (f &rest r) move-to-indent)
+  (if (bolp)
+      (back-to-indentation)
+    (apply f r)))
+
+(define-advice move-beginning-of-line
+    (:around (f &rest r) move-to-indent)
+  (if (bolp)
+      (back-to-indentation)
+    (apply f r)))
 
 (provide 'm-extras.el)
 
