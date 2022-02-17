@@ -302,14 +302,15 @@
         ("<tab>" . company-complete-selection)
         ("TAB" . company-complete-selection)))
 
-(use-package yassnippet
+(use-package yasnippet
   :hook ((prog-mode . yas-minor-mode))
-  :config
+  :init
   (yas-global-mode)
+  :config
   (with-eval-after-load 'company
     (push '(company-yasnippet :with company-capf) company-backends)))
 
-(use-package yassnippet-snippets)
+(use-package yasnippet-snippets)
 
 ;; Begin configuration of Helm base packages
 (use-package helm
