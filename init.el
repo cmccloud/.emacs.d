@@ -471,8 +471,7 @@
   (treemacs-is-never-other-window t)
   (treemacs-width 30)
   :bind (:map mnemonic-map
-	      ("tT" . treemacs)
-	      ("tt" . treemacs-select-window)
+	      ("tt" . treemacs)
 	      :map treemacs-mode-map
 	      ("S" . helm-do-grep-ag)
 	      ("/" . helm-find))
