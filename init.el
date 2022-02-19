@@ -588,6 +588,9 @@
 (use-package magit
   :custom
   (magit-bury-buffer-function 'magit-mode-quit-window)
+  (magit-repository-directories '(("~/Documents/Repos/" . 3)
+                                  ("~/.emacs.d/" . 0)
+                                  ("~/.emacs.d/site-lisp/" . 3)))
   :bind
   ("C-x C-v" . magit-status)
   ("C-x g" . magit-status))
