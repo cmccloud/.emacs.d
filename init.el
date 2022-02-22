@@ -556,7 +556,8 @@
 	 (typescript-mode . lsp-deferred)
          (web-mode . lsp-deferred)
          (html-mode . lsp-deferred)
-	 (css-mode . lsp-deferred))
+	 (css-mode . lsp-deferred)
+         (sh-mode . lsp-deferred))
   :bind (:map mnemonic-map
 	      ("ll" . lsp)
 	      :map lsp-mode-map
@@ -579,7 +580,8 @@
 	 (js2-mode . tree-sitter-hl-mode)
 	 (typescript-mode . tree-sitter-hl-mode)
 	 (c-mode-common . tree-sitter-hl-mode)
-	 (python-mode . tree-sitter-hl-mode)))
+	 (python-mode . tree-sitter-hl-mode)
+         (sh-mode . tree-sitter-hl-mode)))
 
 (use-package tree-sitter-langs
   :demand t
