@@ -51,7 +51,8 @@ Default value emulates `treemacs--std-ignore-file-predicate'."
 (defcustom project-treemacs-always-in-project-when-visible nil
   "Controls project treemacs fallback behavior.
 
-If set to `t', `project-treemacs-try' falls back to returning the first
+If set to `t', in the event that `project-current' is called while outside of a 
+valid treemacs project, `project-treemacs-try' falls back to returning the first
 treemacs project within the current workspace, anytime that the treemacs side
 window is visible. If set to `nil', `project-treemacs-try' falls back to the
 next handler in `project-find-functions'.
