@@ -121,6 +121,6 @@ Added to `desktop-after-not-loaded-hook'."
       (back-to-indentation)
     (apply f r)))
 
-(provide 'm-extras.el)
+(provide 'm-extras)
 
 ;;; m-extras.el ends here. 
