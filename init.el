@@ -174,6 +174,7 @@
 
 (use-package m-extras
   :load-path "site-lisp"
+  :demand t
   :hook ((emacs-lisp-mode . m-extras-imenu-elisp-extras))
   :bind (:map mnemonic-map ("wD" . m-extras-dedicate-window)))
 
