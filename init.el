@@ -702,6 +702,11 @@
 	      ("M-m i b" . indium-eval-buffer)
 	      ("M-m i r" . indium-eval-region)))
 
+(use-package impatient-mode
+  :hook ((web-mode . impatient-mode)
+         (html-mode . impatient-mode)
+         (css-mode . impatient-mode)))
+
 (use-package clojure-mode)
 
 (use-package haskell-mode)
