@@ -301,15 +301,15 @@
         ("RET" . nil)
         ("<return>" . nil)
         ("<tab>" . company-complete-selection)
-        ("TAB" . company-complete-selection)))
+        ("TAB" . company-complete-selection))
+  :config
+  (with-eval-after-load 'yasnippet
+    (push '(company-yasnippet :with company-capf) company-backends)))
 
 (use-package yasnippet
   :hook ((prog-mode . yas-minor-mode))
   :init
-  (yas-global-mode)
-  :config
-  (with-eval-after-load 'company
-    (push '(company-yasnippet :with company-capf) company-backends)))
+  (yas-global-mode))
 
 (use-package yasnippet-snippets)
 
