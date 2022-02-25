@@ -656,7 +656,8 @@
   :hook ((typescript-mode . electric-pair-local-mode)
 	 (js-mode . electric-pair-local-mode)
 	 (web-mode . electric-pair-local-mode)
-         (css-mode . electric-pair-local-mode)))
+         (css-mode . electric-pair-local-mode)
+         (html-mode . electric-pair-local-mode)))
 
 (use-package flymake-mode
   :custom
