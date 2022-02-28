@@ -478,9 +478,12 @@
 	      ("S" . helm-do-grep-ag)
 	      ("/" . helm-find))
   :config
-  (treemacs-fringe-indicator-mode)
-  ;; Just until changes are merged see: https://github.com/melpa/melpa/pull/7913
-  (load-file "~/Documents/Repos/treemacs/src/extra/treemacs-tab-bar.el")
+  (treemacs-fringe-indicator-mode))
+
+(use-package treemacs-tab-bar
+  :demand t
+  :after treemacs
+  :config
   (treemacs-set-scope-type 'Tabs))
 
 (use-package project-treemacs
