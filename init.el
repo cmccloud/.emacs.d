@@ -68,7 +68,6 @@
  '(fit-frame-to-buffer-margins '(100 100 100 100))
  ;; Isearch
  '(isearch-allow-scroll 'unlimited)
- '(isearch-wrap-pause 'no)
  '(isearch-lazy-count t)
  ;; Adds more flexible matching to isearch
  '(search-whitespace-regexp ".*")
