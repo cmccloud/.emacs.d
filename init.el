@@ -560,7 +560,8 @@
          (web-mode . lsp-deferred)
          (html-mode . lsp-deferred)
 	 (css-mode . lsp-deferred)
-         (sh-mode . lsp-deferred))
+         (sh-mode . lsp-deferred)
+         (go-mode . lsp-deferred))
   :bind (:map mnemonic-map
 	      ("ll" . lsp)
 	      :map lsp-mode-map
@@ -584,7 +585,8 @@
 	 (typescript-mode . tree-sitter-hl-mode)
 	 (c-mode-common . tree-sitter-hl-mode)
 	 (python-mode . tree-sitter-hl-mode)
-         (sh-mode . tree-sitter-hl-mode)))
+         (sh-mode . tree-sitter-hl-mode)
+         (go-mode . tree-sitter-hl-mode)))
 
 (use-package tree-sitter-langs
   :demand t
@@ -713,6 +715,8 @@
 (use-package clojure-mode)
 
 (use-package haskell-mode)
+
+(use-package go-mode)
 
 ;;; init.el ends here 
 ;; Local Variables:
