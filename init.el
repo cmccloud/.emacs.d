@@ -489,7 +489,6 @@
   :demand t
   :after treemacs
   :load-path "site-lisp/project-treemacs"
-  :custom (project-treemacs-always-in-project-when-visible t)
   :config
   (customize-set-variable
    'project-treemacs-ignores
