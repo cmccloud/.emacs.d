@@ -575,6 +575,10 @@
 
 (use-package lsp-haskell)
 
+(use-package lsp-go
+  :custom
+  (lsp-go-gopls-server-path "/home/cmccloud/go/bin/gopls"))
+
 (use-package tree-sitter
   ;; Use tree-sitter for syntax highlighting where the tree-sitter highlighting
   ;; is better maintained/more robust than the major-mode font-locking.
