@@ -37,7 +37,7 @@
 (custom-set-faces
  (pcase (system-name)
    ("M-laptop-w11" '(default ((t (:height 140 :family "Input")))))
-   ("M-laptop-arch" '(default ((t (:height 140 :family "Input")))))
+   ("M-laptop-arch" '(default ((t (:height 140 :weight medium :family "Input Mono Condensed")))))
    (other-system '(default ((t (:height 120 :family "Input")))))))
 (setq ns-use-proxy-icon nil)
 
@@ -68,3 +68,6 @@
 (customize-set-variable 'native-comp-async-report-warnings-errors 'silent)
 
 ;;; early-init.el ends here
+;; Local Variables:
+;; no-native-compile: t
+;; End:

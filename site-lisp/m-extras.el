@@ -113,6 +113,19 @@ Added to `desktop-after-not-loaded-hook'."
     (insert clip)
     (if arg (kill-new clip))))
 
-(provide 'm-extras.el)
+;; Better beginning of line functions
+(define-advice beginning-of-visual-line
+    (:around (f &rest r) move-to-indent)
+  (if (bolp)
+      (back-to-indentation)
+    (apply f r)))
+
+(define-advice move-beginning-of-line
+    (:around (f &rest r) move-to-indent)
+  (if (bolp)
+      (back-to-indentation)
+    (apply f r)))
+
+(provide 'm-extras)
 
 ;;; m-extras.el ends here. 

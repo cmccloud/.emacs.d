@@ -1,0 +1,6 @@
+/eln-cache
+/transient
+*.sqlite
+*.elc
+/.cache
+

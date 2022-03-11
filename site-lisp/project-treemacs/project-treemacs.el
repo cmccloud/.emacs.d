@@ -1,6 +1,6 @@
 ;; project-treemacs.el --- project.el for treemacs -*- lexical-binding: t -*-
 
-;; Copyright (C) 2020-2021 Christopher McCloud
+;; Copyright (C) 2020-2022 Christopher McCloud
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -39,7 +39,7 @@
 (require 'project)
 
 (defgroup project-treemacs nil
-  "`treemacs' backend for `project' based projects."
+  "Project implementation based on the Treemacs package."
   :group 'project)
 
 (defcustom project-treemacs-ignores '("^\\.#" "^flycheck_" "~$" "\\.git/")
@@ -47,6 +47,17 @@
 Default value emulates `treemacs--std-ignore-file-predicate'."
   :type '(repeat string)
   :safe #'listp)
+
+(defcustom project-treemacs-always-in-project-when-visible nil
+  "Controls project treemacs fallback behavior.
+
+If set to `t', in the event that `project-current' is called while outside of a 
+valid treemacs project, `project-treemacs-try' falls back to returning the first
+treemacs project within the current workspace, anytime that the treemacs side
+window is visible. If set to `nil', `project-treemacs-try' falls back to the
+next handler in `project-find-functions'.
+
+Set to `nil' by default.")
 
 (defvar project-treemacs--files-cache (make-hash-table)
   "Stores project-treemacs `project-files'.
@@ -71,27 +82,41 @@ Only used when `treemacs-filewatch-mode' is enabled.")
   (cancel-timer project-treemacs--idle-timer)
   (setq project-treemacs--idle-timer nil))
 
-(defun project-treemacs--get-files-for-dir (dir)
-  (or (and treemacs-filewatch-mode (gethash dir project-treemacs--files-cache))
-      (puthash dir (directory-files-recursively dir ".*" nil t nil)
-	       project-treemacs--files-cache)))
+(defun project-treemacs--explore-dir-p (dir-name)
+  (not (seq-some (lambda (glob) (string-match-p glob dir-name))
+                 (project-ignores (project-current) ""))))
 
 (defun project-treemacs--ignore-file-p (project path)
   (seq-contains-p (project-ignores project nil) path #'string-match-p))
 
+(defun project-treemacs--get-files-for-dir (dir)
+  (or (and treemacs-filewatch-mode (gethash dir project-treemacs--files-cache))
+      (puthash dir (directory-files-recursively dir ".*" nil #'project-treemacs--explore-dir-p nil)
+	       project-treemacs--files-cache)))
+
 ;; Project.el API
 ;;;###autoload
 (defun project-treemacs-try (dir)
-  (treemacs--find-project-for-path dir))
+  (when (and (fboundp 'treemacs-current-visibility)
+	     (eq (treemacs-current-visibility) 'visible))
+    (or (treemacs--find-project-for-path dir)
+        (when project-treemacs-always-in-project-when-visible
+          (car (treemacs-workspace->projects (treemacs-current-workspace)))))))
 
 (cl-defmethod project-root ((project treemacs-project))
   (treemacs-project->path project))
 
 (cl-defmethod project-files ((project treemacs-project) &optional dirs)
-  (seq-remove
-   (lambda (path) (project-treemacs--ignore-file-p project path))
-   (seq-mapcat #'project-treemacs--get-files-for-dir
-	       (append (list (project-root project)) dirs))))
+  (seq-remove (lambda (p) (project-treemacs--ignore-file-p project p))
+              (seq-mapcat #'project-treemacs--get-files-for-dir
+	                  (append (list (project-root project)) dirs))))
+
+(cl-defmethod project-buffers ((project treemacs-project))
+  (let ((root (expand-file-name (file-name-as-directory (project-root project)))))
+    (seq-filter
+     (lambda (buf)
+       (string-prefix-p root (buffer-local-value 'default-directory buf)))
+     (buffer-list))))
 
 (cl-defmethod project-ignores ((project treemacs-project) dir)
   project-treemacs-ignores)

@@ -1,6 +1,6 @@
 ;;; init.el --- Personal Emacs Configuration. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2016-2021 Christopher McCloud
+;; Copyright (C) 2016-2022 Christopher McCloud
 
 ;; Author: Christopher McCloud <mccloud.christopher@gmail.com>
 
@@ -48,13 +48,14 @@
  '(fill-column 80)
  '(visible-cursor nil)
  '(cursor-in-non-selected-windows nil)
- '(fringe-mode 6)
+ '(fringe-mode '(16 . 8))
  '(initial-scratch-message nil)
  '(enable-recursive-minibuffers t)
  '(show-paren-delay 0)
  '(lazy-highlight-initial-delay 0)
  '(message-truncate-lines t)
  '(warning-minimum-level :error)
+ '(indent-tabs-mode nil)
  ;; Window
  '(window-combination-resize t)
  '(window-divider-default-bottom-width 2)
@@ -67,6 +68,7 @@
  '(fit-frame-to-buffer-margins '(100 100 100 100))
  ;; Isearch
  '(isearch-allow-scroll 'unlimited)
+ '(isearch-lazy-count t)
  ;; Adds more flexible matching to isearch
  '(search-whitespace-regexp ".*")
  ;; Apropos
@@ -74,14 +76,14 @@
  ;; Remove partial completion to avoid performance hit.
  '(completion-styles '(basic emacs22))
  ;; Session persistence
- '(desktop-load-locked-desktop nil)
+ '(desktop-load-locked-desktop t)
  '(recentf-max-saved-items 1000)
  '(history-delete-duplicates t)
  '(package-native-compile t)
  '(use-short-answers t))
 
-;; Default Modes - tool-bars, and menu-bars disabled in early-init as it avoids
-;; frame flashing.
+;; Default Modes - tool-bars, scroll-bars, and menu-bars are disabled in
+;; early-init as it avoids frame flashing.
 (show-paren-mode)
 (global-visual-line-mode)
 (column-number-mode)
@@ -159,7 +161,8 @@
    ("sgg" . rgrep)
    ("ts" . scroll-bar-mode)
    ("tv" . visual-line-mode)
-   ("tf" . display-fill-column-indicator-mode)
+   ("tf" . flymake-mode)
+   ("tn" . normal-mode)
    ("th" . hl-line-mode)
    ("tH" . global-hl-line-mode)
    ("tl" . display-line-numbers-mode)
@@ -170,8 +173,15 @@
 
 (use-package m-extras
   :load-path "site-lisp"
+  :demand t
   :hook ((emacs-lisp-mode . m-extras-imenu-elisp-extras))
   :bind (:map mnemonic-map ("wD" . m-extras-dedicate-window)))
+
+(use-package auth-source
+  :custom
+  (auth-sources '("~/.authinfo.gpg"))
+  (auth-source-cache-expiry 86400)
+  (epg-pinentry-mode 'loopback))
 
 (use-package desktop
   :hook ((desktop-not-loaded . desktop-save-mode-off)))
@@ -196,7 +206,11 @@
   (ediff-window-setup-function 'ediff-setup-windows-plain)
   (ediff-split-window-function 'split-window-horizontally))
 
-(use-package spacemacs-common
+(use-package compile
+  :config
+  (add-hook 'compilation-finish-functions 'switch-to-buffer-other-window))
+
+(use-package spacemacs-theme
   :custom
   (spacemacs-theme-underline-parens nil)
   (spacemacs-theme-comment-bg t))
@@ -274,6 +288,7 @@
   (company-require-match 'never)
   (company-tooltip-align-annotations t)
   (company-dabbrev-other-buffers t)
+  (company-transformers '(company-sort-by-backend-importance))
   (company-format-margin-function 'company-vscode-dark-icons-margin)
   :hook ((prog-mode . company-mode))
   :bind
@@ -285,12 +300,23 @@
         ("RET" . nil)
         ("<return>" . nil)
         ("<tab>" . company-complete-selection)
-        ("TAB" . company-complete-selection)))
+        ("TAB" . company-complete-selection))
+  :config
+  (with-eval-after-load 'yasnippet
+    (push '(company-yasnippet :with company-capf) company-backends)))
+
+(use-package yasnippet
+  :hook ((prog-mode . yas-minor-mode))
+  :init
+  (yas-global-mode))
+
+(use-package yasnippet-snippets)
 
 ;; Begin configuration of Helm base packages
 (use-package helm
   :custom
   (helm-candidate-number-limit 100)
+  (helm-help-full-frame nil)
   (helm-echo-input-in-header-line t)
   (helm-follow-mode-persistent t)
   (helm-split-window-inside-p t)
@@ -298,7 +324,6 @@
   (helm-locate-project-list '("~/Documents/Repos" "~/.emacs.d"))
   (helm-display-header-line nil)
   (helm-buffer-max-length nil)
-  (helm-ff-skip-boring-files t)
   (helm-grep-file-path-style 'relative)
   (helm-boring-buffer-regexp-list
    '("\\*helm"
@@ -380,6 +405,21 @@
   (helm-mode)
   (helm-adaptive-mode))
 
+(use-package helm-grep
+  :bind (:map helm-grep-map
+              ("C-]" . helm-grep-toggle-file-path-style))
+  :config
+  (defun helm-grep-toggle-file-path-style ()
+    "Within helm-grep-mode buffer, toggles between `helm-grep-file-path-style'."
+    (interactive)
+    (with-helm-alive-p
+      (setq helm-grep-file-path-style
+            (pcase helm-grep-file-path-style
+              ('basename 'absolute)
+              ('absolute 'relative)
+              ('relative 'basename)))
+      (helm-force-update))))
+
 ;; Extend helm-imenu to recognize package types, e.g. `use-package'.
 (use-package helm-imenu
   :config
@@ -408,6 +448,11 @@
 
 ;; project.el has matured enough that it's worth using to manage projects.
 ;; But bring the interface into helm.
+(use-package project
+  :custom
+  (project-vc-ignores
+   '(".yarn/" "*.log" "node_modules/" "*.cache" "*.elc" "*.eln" "*.tmp")))
+
 (use-package helm-project
   :load-path "site-lisp/helm-project"
   :bind (("C-x C-p" . helm-project)
@@ -427,13 +472,18 @@
   (treemacs-is-never-other-window t)
   (treemacs-width 30)
   :bind (:map mnemonic-map
-	      ("tT" . treemacs)
-	      ("tt" . treemacs-select-window)
+	      ("tt" . treemacs)
 	      :map treemacs-mode-map
 	      ("S" . helm-do-grep-ag)
 	      ("/" . helm-find))
   :config
   (treemacs-fringe-indicator-mode))
+
+(use-package treemacs-tab-bar
+  :demand t
+  :after treemacs
+  :config
+  (treemacs-set-scope-type 'Tabs))
 
 (use-package project-treemacs
   :demand t
@@ -443,7 +493,8 @@
   (customize-set-variable
    'project-treemacs-ignores
    (append project-treemacs-ignores
-	   '("node_modules/" "\\.cache" "\\.elc" "\\.eln"))))
+	   '("\\.cache$" "\\.elc$" "\\.eln$" "\\.log$")
+	   '("\\.yarn/" "\\.log/" "node_modules/" "eln-cache/" "\\.git/"))))
 
 (use-package treemacs-all-the-icons
   :demand t
@@ -453,6 +504,11 @@
 (use-package visual-regexp
   :custom (vr/match-separator-use-custom-face t)
   :bind (([remap query-replace] . vr/query-replace)))
+
+(use-package visual-regexp-steroids)
+
+(use-package pcre2el
+  :demand t)
 
 (use-package undo-tree
   :custom
@@ -498,10 +554,13 @@
   ;; and want to avoid spinning up multiple servers on emacs initialization.
   :hook ((haskell-mode . lsp-deferred)
 	 (js-mode . lsp-deferred)
-	 (web-mode . lsp-deferred)
+         (js-jsx-mode . lsp-deferred)
+	 (typescript-mode . lsp-deferred)
+         (web-mode . lsp-deferred)
          (html-mode . lsp-deferred)
-         (css-mode . lsp-deferred)
-	 (typescript-mode . lsp-deferred))
+	 (css-mode . lsp-deferred)
+         (sh-mode . lsp-deferred)
+         (go-mode . lsp-deferred))
   :bind (:map mnemonic-map
 	      ("ll" . lsp)
 	      :map lsp-mode-map
@@ -516,14 +575,21 @@
 
 (use-package lsp-haskell)
 
+(use-package lsp-go
+  :custom
+  (lsp-go-gopls-server-path "/home/cmccloud/go/bin/gopls"))
+
 (use-package tree-sitter
   ;; Use tree-sitter for syntax highlighting where the tree-sitter highlighting
   ;; is better maintained/more robust than the major-mode font-locking.
   ;; Expect this list to expand dramatically as tree-sitter development continues.
   :hook ((js-mode . tree-sitter-hl-mode)
+	 (js2-mode . tree-sitter-hl-mode)
 	 (typescript-mode . tree-sitter-hl-mode)
 	 (c-mode-common . tree-sitter-hl-mode)
-	 (python-mode . tree-sitter-hl-mode)))
+	 (python-mode . tree-sitter-hl-mode)
+         (sh-mode . tree-sitter-hl-mode)
+         (go-mode . tree-sitter-hl-mode)))
 
 (use-package tree-sitter-langs
   :demand t
@@ -532,6 +598,9 @@
 (use-package magit
   :custom
   (magit-bury-buffer-function 'magit-mode-quit-window)
+  (magit-repository-directories '(("~/Documents/Repos/" . 3)
+                                  ("~/.emacs.d/" . 0)
+                                  ("~/.emacs.d/site-lisp/" . 3)))
   :bind
   ("C-x C-v" . magit-status)
   ("C-x g" . magit-status))
@@ -566,6 +635,7 @@
 ;; the homepage for instructions.
 (use-package vterm
   :custom
+  (vterm-shell "fish")
   (vterm-clear-scrollback-when-clearing t)
   (vterm-buffer-name-string "vterm %s"))
 
@@ -576,11 +646,14 @@
   :bind (:map mnemonic-map
 	      ("at" . vterm-toggle-cd))
   :config
-  ;; Display vterm below window from which it is called. 
+  ;; Display vterm below window from which it is called.
   (add-to-list 'display-buffer-alist
                '((lambda (bufname _)
-		   (with-current-buffer bufname (equal major-mode 'vterm-mode)))
-		 (display-buffer-reuse-window display-buffer-in-direction)
+		   (with-current-buffer bufname
+		     (or (equal major-mode 'vterm-mode)
+			 (string-match-p (s-concat "^" vterm-buffer-name)
+					 (buffer-name)))))
+		 (display-buffer-in-direction)
 		 (direction . below)
 		 (dedicated . t)
 		 (reusable-frames . visible)
@@ -589,12 +662,21 @@
 (use-package elec-pair
   :hook ((typescript-mode . electric-pair-local-mode)
 	 (js-mode . electric-pair-local-mode)
-	 (web-mode . electric-pair-local-mode)))
+	 (web-mode . electric-pair-local-mode)
+         (css-mode . electric-pair-local-mode)
+         (html-mode . electric-pair-local-mode)))
+
+(use-package flymake-mode
+  :custom
+  (flymake-fringe-indicator-position nil))
 
 (use-package markdown
   :mode ("README\\.md" . gfm-mode))
 
 (use-package web-mode
+  :custom
+  (web-mode-enable-auto-expanding t)
+  (web-mode-markup-indent-offset 2)
   :mode ("\\.html\\'"
          "\\.phtml\\'"
          "\\.tpl\\.php\\'"
@@ -611,8 +693,35 @@
   :bind (:map js-mode-map
 	      ("M-." . nil)))
 
+(use-package js2-mode
+  :custom
+  (js2-missing-semi-one-line-override t)
+  (js2-mode-show-strict-warnings nil)
+  (js2-mode-show-parse-errors nil)
+  :hook ((js-mode . js2-minor-mode)))
+
+(use-package indium
+  :custom
+  (indium-chrome-executable "google-chrome-stable")
+  :hook ((js-mode . indium-interaction-mode))
+  :bind (:map indium-interaction-mode-map
+	      ("M-m i i" . indium-launch)
+	      ("M-m i q" . indium-quit)
+	      ("M-m i b" . indium-eval-buffer)
+	      ("M-m i r" . indium-eval-region)))
+
+(use-package impatient-mode
+  :hook ((web-mode . impatient-mode)
+         (html-mode . impatient-mode)
+         (css-mode . impatient-mode)))
+
 (use-package clojure-mode)
 
 (use-package haskell-mode)
 
+(use-package go-mode)
+
 ;;; init.el ends here 
+;; Local Variables:
+;; no-native-compile: t
+;; End:
