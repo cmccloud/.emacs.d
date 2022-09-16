@@ -216,7 +216,6 @@
   (spacemacs-theme-comment-bg t))
 
 (use-package doom-modeline
-  :load-path "site-lisp/doom-modeline"
   :init
   (doom-modeline-mode))
 
@@ -690,6 +689,7 @@
   :custom
   (js-chain-indent t)
   (js-indent-level 2)
+  :hook ((js-mode . subword-mode))
   :bind (:map js-mode-map
 	      ("M-." . nil)))
 
