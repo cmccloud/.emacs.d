@@ -289,6 +289,11 @@
   (company-dabbrev-other-buffers t)
   (company-transformers '(company-sort-by-backend-importance))
   (company-format-margin-function 'company-vscode-dark-icons-margin)
+  (company-backends
+   '(company-bbdb company-semantic company-cmake company-clang company-files
+                  (company-yasnippet :with company-capf)
+                  (company-dabbrev-code company-gtags company-etags company-keywords)
+                  company-oddmuse company-dabbrev))
   :hook ((prog-mode . company-mode))
   :bind
   (:map company-active-map
@@ -299,10 +304,7 @@
         ("RET" . nil)
         ("<return>" . nil)
         ("<tab>" . company-complete-selection)
-        ("TAB" . company-complete-selection))
-  :config
-  (with-eval-after-load 'yasnippet
-    (push '(company-yasnippet :with company-capf) company-backends)))
+        ("TAB" . company-complete-selection)))
 
 (use-package yasnippet
   :hook ((prog-mode . yas-minor-mode))
