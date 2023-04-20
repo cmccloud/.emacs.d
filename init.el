@@ -684,6 +684,8 @@
 (use-package markdown
   :mode ("README\\.md" . gfm-mode))
 
+(use-package gh-md)
+
 (use-package web-mode
   :custom
   (web-mode-enable-auto-expanding t)
