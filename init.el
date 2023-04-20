@@ -671,6 +671,11 @@
   :custom
   (flymake-fringe-indicator-position nil))
 
+(use-package gif-screencast
+  :disabled t
+  :load-path "~/Documents/Repos/emacs-gif-screencast"
+  :bind (("<f9>" . gif-screencast-start-or-stop)))
+
 (use-package markdown
   :mode ("README\\.md" . gfm-mode))
 
