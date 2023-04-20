@@ -186,6 +186,11 @@
 (use-package desktop
   :hook ((desktop-not-loaded . desktop-save-mode-off)))
 
+(use-package display-time-mode
+  :custom (display-time-default-load-average nil)
+  :init
+  (display-time-mode))
+
 (use-package tab-bar
   :custom
   (tab-bar-show nil)
