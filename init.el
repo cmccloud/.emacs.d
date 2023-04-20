@@ -172,7 +172,7 @@
     (define-prefix-command 'mnemonic-map)))
 
 (use-package m-extras
-  :load-path "site-lisp"
+  :load-path "./site-lisp"
   :demand t
   :hook ((emacs-lisp-mode . m-extras-imenu-elisp-extras))
   :bind (:map mnemonic-map ("wD" . m-extras-dedicate-window)))
@@ -453,7 +453,7 @@
    '(".yarn/" "*.log" "node_modules/" "*.cache" "*.elc" "*.eln" "*.tmp")))
 
 (use-package helm-project
-  :load-path "site-lisp/helm-project"
+  :load-path "./site-lisp/helm-project"
   :bind (("C-x C-p" . helm-project)
 	 ("M-s p" . helm-project-grep-ag)
 	 ([remap project-find-regexp] . helm-project-grep-ag)
@@ -487,7 +487,7 @@
 (use-package project-treemacs
   :demand t
   :after treemacs
-  :load-path "site-lisp/project-treemacs"
+  :load-path "./site-lisp/project-treemacs"
   :config
   (customize-set-variable
    'project-treemacs-ignores
