@@ -465,7 +465,7 @@
 	 ("M-s p" . helm-project-grep-ag)
 	 ([remap project-find-regexp] . helm-project-grep-ag)
 	 ([remap project-switch-to-buffer] . helm-project-buffers)
-	 ([remap project-find-files] . helm-project-files)
+	 ([remap project-find-file] . helm-project-files)
 	 ([remap project-switch-project] . helm-project-list-projects)
 	 :map mnemonic-map
 	 ("ps" . helm-project-grep-ag)
@@ -677,7 +677,6 @@
   (flymake-fringe-indicator-position nil))
 
 (use-package gif-screencast
-  :disabled t
   :load-path "~/Documents/Repos/emacs-gif-screencast"
   :bind (("<f9>" . gif-screencast-start-or-stop)))
 
