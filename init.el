@@ -73,8 +73,6 @@
  '(search-whitespace-regexp ".*")
  ;; Apropos
  '(apropos-do-all t)
- ;; Remove partial completion to avoid performance hit.
- '(completion-styles '(basic emacs22))
  ;; Session persistence
  '(desktop-load-locked-desktop t)
  '(recentf-max-saved-items 1000)
