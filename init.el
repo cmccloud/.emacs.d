@@ -424,6 +424,11 @@
               ('relative 'basename)))
       (helm-force-update))))
 
+(use-package helm-fd
+  :custom
+  (helm-fd-switches
+   '("--type" "f" "--type" "d" "--color" "always")))
+
 ;; Extend helm-imenu to recognize package types, e.g. `use-package'.
 (use-package helm-imenu
   :config
@@ -525,6 +530,12 @@
 (use-package wgrep)
 
 (use-package wgrep-helm)
+
+(use-package avy
+  :custom
+  (avy-all-windows nil)
+  :bind* (("C-c j" . avy-goto-char-timer)
+          ("C-j" . avy-goto-char-timer)))
 
 (use-package lispy
   :hook ((lisp-mode . lispy-mode)
