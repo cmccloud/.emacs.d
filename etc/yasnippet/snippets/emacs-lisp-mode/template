@@ -1,0 +1,110 @@
+# -*- mode: snippet -*-
+# contributor: alphapapa (modified by cmccloud)
+# name: new-package
+# key: new-package
+# --
+;;; ${1:package-name}.el --- ${2:Package description (don't include the word "Emacs")}  -*- lexical-binding: t; -*-
+
+;; Copyright (C) ${3:2023} Christopher McCloud
+
+;; Author: Christopher McCloud
+;; URL: https://github.com/cmccloud/${4:package-path}
+;; Version: 0.1
+;; Package-Requires:
+;; Keywords:
+
+;; This file is not part of GNU Emacs.
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;; This package allows flanges to be easily frobnicated.
+
+;;;; Installation
+
+;;;;; MELPA
+
+;; If you installed from MELPA, you're done.
+
+;;;;; Manual
+
+;; Install these required packages:
+
+;; + foo
+;; + bar
+
+;; Then put this file in your load-path, and put this in your init
+;; file:
+
+;; (require 'package-name)
+
+;;;; Usage
+
+;; Run one of these commands:
+
+;; `package-name-command': Frobnicate the flange.
+
+;;;; Tips
+
+;; + You can customize settings in the `package-name' group.
+
+;;;; Credits
+
+;; This package would not have been possible without the following
+;; packages: foo[1], which showed me how to bifurcate, and bar[2],
+;; which takes care of flanges.
+;;
+;;  [1] https://example.com/foo.el
+;;  [2] https://example.com/bar.el
+
+;;; Code:
+
+;;;; Requirements
+
+
+;;;; Customization
+
+;;;; Variables
+
+;;;;; Keymaps
+
+;;;; Commands
+
+;;;###autoload
+(defun package-name-command (args)
+  "Frobnicate the flange."
+  (interactive)
+  (package-name-foo
+   (package-name--bar args)))
+
+;;;; Functions
+
+;;;;; Public
+
+(defun package-name-foo (args)
+  "Return foo for ARGS."
+  (foo args))
+
+;;;;; Private
+
+(defun package-name--bar (args)
+  "Return bar for ARGS."
+  (bar args))
+
+;;;; Footer
+
+(provide 'package-name)
+
+;;; package-name.el ends here
