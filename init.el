@@ -329,14 +329,6 @@
   (helm-display-header-line nil)
   (helm-buffer-max-length nil)
   (helm-grep-file-path-style 'relative)
-  (helm-boring-buffer-regexp-list
-   '("\\*helm"
-     "\\*Echo Area"
-     "\\*Minibuf"
-     "eldoc for.*"
-     "^\\ .*"
-     "^magit.*:"
-     "\\*.*-ls.*\\*"))
   (switch-to-prev-buffer-skip 'helm-boring-buffer-p)
   :bind
   (("M-x" . helm-M-x)
@@ -405,7 +397,15 @@
    '(helm-boring-file-regexp-list
      ;; Treat native-compiled files, and temporary files, as boring
      (append helm-boring-file-regexp-list
-	     '("\\.eln$" "\\.tmp$"))))
+	     '("\\.eln$" "\\.tmp$")))
+   '(helm-boring-buffer-regexp-list
+    '("\\*helm"
+      "\\*Echo Area"
+      "\\*Minibuf"
+      "eldoc for.*"
+      "^\\ .*"
+      "^magit.*:"
+      "\\*.*-ls.*\\*")))
   (helm-mode)
   (helm-adaptive-mode))
 
