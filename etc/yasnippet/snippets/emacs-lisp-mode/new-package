@@ -10,7 +10,7 @@
 ;; Author: Christopher McCloud
 ;; URL: https://github.com/cmccloud/${4:package-path}
 ;; Version: 0.1
-;; Package-Requires:
+;; Package-Requires: ((emacs "25.2"))
 ;; Keywords:
 
 ;; This file is not part of GNU Emacs.
@@ -48,17 +48,17 @@
 ;; Then put this file in your load-path, and put this in your init
 ;; file:
 
-;; (require 'package-name)
+;; (require '$1)
 
 ;;;; Usage
 
 ;; Run one of these commands:
 
-;; `package-name-command': Frobnicate the flange.
+;; $1-command: Frobnicate the flange.
 
 ;;;; Tips
 
-;; + You can customize settings in the `package-name' group.
+;; + You can customize settings in the `$1' group.
 
 ;;;; Credits
 
@@ -73,38 +73,69 @@
 
 ;;;; Requirements
 
+(require 'foo)
+(require 'bar)
 
 ;;;; Customization
 
+(defgroup $1 nil
+  "Settings for `$1'."
+  :link '(url-link "https://example.com/$1.el"))
+
+(defcustom $1-something nil
+  "This setting does something."
+  :type 'something)
+
 ;;;; Variables
 
+(defvar $1-var nil
+  "A variable.")
+
 ;;;;; Keymaps
+
+;; This technique makes it easier and less verbose to define keymaps
+;; that have many bindings.
+
+(defvar $1-map
+  ;; This makes it easy and much less verbose to define keys
+  (let ((map (make-sparse-keymap "$1 map"))
+        (maps (list
+               ;; Mappings go here, e.g.:
+               "RET" #'$1-RET-command
+               [remap search-forward] #'$1-search-forward
+               )))
+    (cl-loop for (key fn) on maps by #'cddr
+             do (progn
+                  (when (stringp key)
+                    (setq key (kbd key)))
+                  (define-key map key fn)))
+    map))
 
 ;;;; Commands
 
 ;;;###autoload
-(defun package-name-command (args)
+(defun $1-command (args)
   "Frobnicate the flange."
   (interactive)
-  (package-name-foo
-   (package-name--bar args)))
+  ($1-foo
+   ($1--bar args)))
 
 ;;;; Functions
 
 ;;;;; Public
 
-(defun package-name-foo (args)
+(defun $1-foo (args)
   "Return foo for ARGS."
   (foo args))
 
 ;;;;; Private
 
-(defun package-name--bar (args)
+(defun $1--bar (args)
   "Return bar for ARGS."
   (bar args))
 
 ;;;; Footer
 
-(provide 'package-name)
+(provide '$1)
 
-;;; package-name.el ends here
+;;; $1.el ends here
