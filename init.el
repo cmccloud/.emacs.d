@@ -314,7 +314,9 @@
   :init
   (yas-global-mode))
 
-(use-package yasnippet-snippets)
+(use-package yasnippet-snippets
+  :after yasnippet
+  :demand t)
 
 ;; Begin configuration of Helm base packages
 (use-package helm
