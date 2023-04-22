@@ -517,7 +517,7 @@
 (use-package undo-tree
   :custom
   (undo-tree-visualizer-diff t)
-  (undo-tree-auto-save-history t)
+  (undo-tree-auto-save-history nil)
   :init (global-undo-tree-mode)
   :bind (("M-u" . undo-tree-undo)
 	 ("M-U" . undo-tree-redo)))
