@@ -505,7 +505,8 @@
    'project-treemacs-ignores
    (append project-treemacs-ignores
 	   '("\\.cache$" "\\.elc$" "\\.eln$" "\\.log$")
-	   '("\\.yarn/" "\\.log/" "node_modules/" "eln-cache/" "\\.git/"))))
+	   '("\\.yarn/" "\\.log/" "node_modules/" "eln-cache/" "\\.git/")))
+  (project-treemacs-mode))
 
 (use-package treemacs-all-the-icons
   :demand t
