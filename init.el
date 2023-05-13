@@ -309,6 +309,9 @@
         ("<tab>" . company-complete-selection)
         ("TAB" . company-complete-selection)))
 
+(use-package company-box
+  :hook (company-mode . company-box-mode))
+
 (use-package yasnippet
   :hook ((prog-mode . yas-minor-mode))
   :init
@@ -428,6 +431,7 @@
 
 (use-package helm-fd
   :custom
+  (helm-fd-executable "fdfind")
   (helm-fd-switches
    '("--type" "f" "--type" "d" "--color" "always")))
 
