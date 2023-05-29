@@ -589,15 +589,21 @@
 	      ("C-c C-d" . lsp-describe-thing-at-point)))
 
 (use-package lsp-ui
+  :after lsp-mode
+  :demand t
   :custom
   ;; Prefer to call documentation explictly, either with mouse hover or through
   ;; `lsp-describe-thing-at-point'.
   (lsp-ui-doc-show-with-cursor nil)
   (lsp-ui-sideline-enable nil))
 
-(use-package lsp-haskell)
+(use-package lsp-haskell
+  :after lsp-mode
+  :demand t)
 
 (use-package lsp-go
+  :after lsp-mode
+  :demand t
   :custom
   (lsp-go-gopls-server-path "/home/cmccloud/go/bin/gopls"))
 
