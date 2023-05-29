@@ -504,7 +504,6 @@
 (use-package project-treemacs
   :demand t
   :after treemacs
-  :load-path "./site-lisp/project-treemacs"
   :config
   (customize-set-variable
    'project-treemacs-ignores
