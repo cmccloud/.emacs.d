@@ -466,6 +466,7 @@
 ;; But bring the interface into helm.
 (use-package project
   :custom
+  (project-vc-merge-submodules nil)
   (project-vc-ignores
    '(".yarn/" "*.log" "node_modules/" "*.cache" "*.elc" "*.eln" "*.tmp")))
 
