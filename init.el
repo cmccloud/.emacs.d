@@ -219,7 +219,6 @@
   (spacemacs-theme-comment-bg t))
 
 (use-package doom-modeline
-  :load-path "~/Documents/Repos/doom-modeline"
   :init
   (doom-modeline-mode))
 
