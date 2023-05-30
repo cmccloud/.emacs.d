@@ -496,10 +496,11 @@
   (treemacs-fringe-indicator-mode))
 
 (use-package treemacs-tab-bar
+  :disabled t
   :demand t
   :after treemacs
   :config
-  (treemacs-set-scope-type 'Tabs))
+  (treemacs-set-scope-type 'Frames))
 
 (use-package project-treemacs
   :demand t
