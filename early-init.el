@@ -52,7 +52,6 @@
 		     ("ublt" . "https://elpa.ubolonton.org/packages/")
                      ("org" . "http://orgmode.org/elpa/")
                      ("gnu" . "http://elpa.gnu.org/packages/")
-                     ("gnu-devel" . "http://elpa.gnu.org/devel/")
 		     ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 (customize-set-variable
  'package-archive-priorities '(("melpa" . 10)
