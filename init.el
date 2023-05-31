@@ -310,6 +310,8 @@
         ("TAB" . company-complete-selection)))
 
 (use-package company-box
+  :custom
+  (company-box-backends-colors nil)
   :hook (company-mode . company-box-mode))
 
 (use-package yasnippet
