@@ -472,7 +472,6 @@
    '(".yarn/" "*.log" "node_modules/" "*.cache" "*.elc" "*.eln" "*.tmp")))
 
 (use-package helm-project
-  :load-path "./site-lisp/helm-project"
   :bind (("C-x C-p" . helm-project)
 	 ("M-s p" . helm-project-grep-ag)
 	 ([remap project-find-regexp] . helm-project-grep-ag)
