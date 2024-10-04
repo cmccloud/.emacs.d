@@ -150,7 +150,7 @@
    ("wu" . winner-undo)
    ("wr" . winner-redo)
    ("tF" . toggle-frame-fullscreen)
-   ("bd" . kill-this-buffer)
+   ("bd" . kill-current-buffer)
    ("br" . rename-buffer)
    ("bq" . kill-buffer-and-window)
    ("qq" . save-buffers-kill-emacs)
