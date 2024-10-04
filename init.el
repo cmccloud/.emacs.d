@@ -330,6 +330,7 @@
   (helm-help-full-frame nil)
   (helm-echo-input-in-header-line t)
   (helm-follow-mode-persistent t)
+  (helm-move-to-line-cycle-in-source nil)
   (helm-split-window-inside-p t)
   (helm-display-buffer-default-height 20)
   (helm-locate-project-list '("~/Documents/Repos" "~/.emacs.d"))
