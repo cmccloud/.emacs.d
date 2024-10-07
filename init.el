@@ -574,28 +574,33 @@
   (lsp-signature-render-documentation nil)
   (lsp-keep-workspace-alive nil)
   (lsp-keymap-prefix "M-m l")
+  (lsp-use-plists t)
   ;; lsp-deferred waits until the buffer is visible before starting up an lsp
   ;; process, which is a better fit since we use desktop to persist sessions,
   ;; and want to avoid spinning up multiple servers on emacs initialization.
   :hook ((haskell-mode . lsp-deferred)
-	 (js-mode . lsp-deferred)
+         (js-mode . lsp-deferred)
          (js-ts-mode . lsp-deferred)
          (js-jsx-mode . lsp-deferred)
          (tsx-ts-mode . lsp-deferred)
          (json-ts-mode . lsp-deferred)
-	 (typescript-mode . lsp-deferred)
+         (typescript-mode . lsp-deferred)
          (typescript-ts-mode . lsp-deferred)
          (web-mode . lsp-deferred)
          (html-mode . lsp-deferred)
          (html-ts-mode . lsp-deferred)
-	 (css-mode . lsp-deferred)
+         (css-mode . lsp-deferred)
          (css-ts-mode . lsp-deferred)
          (sh-mode . lsp-deferred)
          (go-mode . lsp-deferred))
   :bind (:map mnemonic-map
-	      ("ll" . lsp)
-	      :map lsp-mode-map
-	      ("C-c C-d" . lsp-describe-thing-at-point)))
+              ("ll" . lsp)
+              :map lsp-mode-map
+              ("C-c C-d" . lsp-describe-thing-at-point))
+  :init
+  ;; Check for emacs-lsp-booster
+  (unless (executable-find "emacs-lsp-booster")
+    (message "https://github.com/blahgeek/emacs-lsp-booster not found!")))
 
 (use-package lsp-ui
   :after lsp-mode

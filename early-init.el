@@ -29,6 +29,9 @@
 
 ;;; Code:
 
+;;;; Environment Variables
+(setenv "LSP_USE_PLISTS" "true")
+
 ;;;; Graphical Elements Settings
 (setq-default frame-title-format "GNU Emacs")
 (customize-set-variable 'menu-bar-mode nil)
