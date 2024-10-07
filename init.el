@@ -1,6 +1,6 @@
 ;;; init.el --- Personal Emacs Configuration. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2016-2022 Christopher McCloud
+;; Copyright (C) 2016-2024 Christopher McCloud
 
 ;; Author: Christopher McCloud <mccloud.christopher@gmail.com>
 
@@ -579,11 +579,17 @@
   ;; and want to avoid spinning up multiple servers on emacs initialization.
   :hook ((haskell-mode . lsp-deferred)
 	 (js-mode . lsp-deferred)
+         (js-ts-mode . lsp-deferred)
          (js-jsx-mode . lsp-deferred)
+         (tsx-ts-mode . lsp-deferred)
+         (json-ts-mode . lsp-deferred)
 	 (typescript-mode . lsp-deferred)
+         (typescript-ts-mode . lsp-deferred)
          (web-mode . lsp-deferred)
          (html-mode . lsp-deferred)
+         (html-ts-mode . lsp-deferred)
 	 (css-mode . lsp-deferred)
+         (css-ts-mode . lsp-deferred)
          (sh-mode . lsp-deferred)
          (go-mode . lsp-deferred))
   :bind (:map mnemonic-map
@@ -610,21 +616,18 @@
   :custom
   (lsp-go-gopls-server-path "/home/cmccloud/go/bin/gopls"))
 
-(use-package tree-sitter
-  ;; Use tree-sitter for syntax highlighting where the tree-sitter highlighting
-  ;; is better maintained/more robust than the major-mode font-locking.
-  ;; Expect this list to expand dramatically as tree-sitter development continues.
-  :hook ((js-mode . tree-sitter-hl-mode)
-	 (js2-mode . tree-sitter-hl-mode)
-	 (typescript-mode . tree-sitter-hl-mode)
-	 (c-mode-common . tree-sitter-hl-mode)
-	 (python-mode . tree-sitter-hl-mode)
-         (sh-mode . tree-sitter-hl-mode)
-         (go-mode . tree-sitter-hl-mode)))
-
-(use-package tree-sitter-langs
+(use-package treesit
   :demand t
-  :after tree-sitter)
+  :custom
+  (treesit-font-lock-level 4))
+
+(use-package treesit-auto
+  :demand t
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
 
 (use-package magit
   :custom
