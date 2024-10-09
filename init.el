@@ -731,6 +731,9 @@
          "\\.mustache\\'"
          "\\.djthml\\'"))
 
+(use-package pdf-tools
+  :mode ("\\.pdf\\'"))
+
 (use-package js
   :custom
   (js-chain-indent t)
