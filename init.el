@@ -64,7 +64,7 @@
  ;; Disallow vertical window splits except when called explicitly or through
  ;; specialized entries in `display-buffer-alist'.
  '(split-height-threshold nil)
- ;; Leave some space for the desktop on automatic frame resizing. 
+ ;; Leave some space for the desktop on automatic frame resizing.
  '(fit-frame-to-buffer-margins '(100 100 100 100))
  ;; Isearch
  '(isearch-allow-scroll 'unlimited)
@@ -119,7 +119,7 @@
   (doom-one-comment-bg nil)
   (doom-one-light-brighter-comments t)
   (doom-zenburn-brighter-comments t)
-  :init (load-theme 'doom-one 'no-confirm))
+  :init (load-theme 'doom-zenburn 'no-confirm))
 
 (use-package bind-key
   :demand t
@@ -600,7 +600,11 @@
   :init
   ;; Check for emacs-lsp-booster
   (unless (executable-find "emacs-lsp-booster")
-    (message "https://github.com/blahgeek/emacs-lsp-booster not found!")))
+    (message "https://github.com/blahgeek/emacs-lsp-booster not found!"))
+  :config
+  (add-to-list 'lsp-language-id-configuration
+               ;; Associate templating languages with html lsp server
+               '("\\.ejs" . "html")))
 
 (use-package lsp-ui
   :after lsp-mode
@@ -755,7 +759,8 @@
          "\\.as[cp]x\\'"
          "\\.ert\\'"
          "\\.mustache\\'"
-         "\\.djthml\\'"))
+         "\\.djthml\\'"
+         "\\.ejs\\'"))
 
 (use-package pdf-tools
   :mode ("\\.pdf\\'"))
