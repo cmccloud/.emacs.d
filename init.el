@@ -45,7 +45,7 @@
  '(ffap-machine-p-unknown 'reject)
  '(save-interprogram-paste-before-kill t)
  ;; User Interface
- '(fill-column 80)
+ '(fill-column 100)
  '(visible-cursor nil)
  '(cursor-in-non-selected-windows nil)
  '(fringe-mode '(16 . 8))
@@ -698,20 +698,46 @@
 		 (reusable-frames . visible)
 		 (window-height . 0.25))))
 
-(use-package elec-pair
-  :hook ((typescript-mode . electric-pair-local-mode)
-	 (js-mode . electric-pair-local-mode)
-	 (web-mode . electric-pair-local-mode)
-         (css-mode . electric-pair-local-mode)
-         (html-mode . electric-pair-local-mode)))
-
-(use-package flymake-mode
+(use-package aidermacs
+  :load-path "~/Documents/Repos/aidermacs"
   :custom
-  (flymake-fringe-indicator-position nil))
+  (aidermacs-backend 'vterm)
+  (aidermacs-program "/home/cmccloud/.local/bin/aider")
+  (aidermacs-default-model "openrouter/deepseek/deepseek-chat")
+  :bind ("C-c a" . aidermacs-transient-menu))
+
+(use-package elec-pair
+  ;; Prefer to use on a mode by mode basis
+  :hook ((typescript-mode . electric-pair-local-mode)
+         (js-mode . electric-pair-local-mode)
+         (js-json-mode . electric-pair-local-mode)
+         (web-mode . electric-pair-local-mode)
+         (css-mode . electric-pair-local-mode)
+         (html-mode . electric-pair-local-mode)
+         (python-mode . electric-pair-local-mode)
+         (js-ts-mode . electric-pair-local-mode)
+         (html-ts-mode . electric-pair-local-mode)
+         (css-ts-mode . electric-pair-local-mode)
+         (tsx-ts-mode . electric-pair-local-mode)
+         (json-ts-mode . electric-pair-local-mode)
+         (lua-ts-mode . electric-pair-local-mode)
+         (python-ts-mode . electric-pair-local-mode)
+         (typescript-ts-mode . electric-pair-local-mode)
+         (markdown-mode . electric-pair-local-mode)))
 
 (use-package gif-screencast
   :load-path "~/Documents/Repos/emacs-gif-screencast"
   :bind (("<f9>" . gif-screencast-start-or-stop)))
+
+(use-package prog-mode
+  :hook ((prog-mode . m-prog-mode-defaults))
+  :init
+  (defun m-prog-mode-defaults ()
+    (setq fill-column 80)))
+
+(use-package flymake-mode
+  :custom
+  (flymake-fringe-indicator-position nil))
 
 (use-package markdown
   :mode ("README\\.md" . gfm-mode))
