@@ -362,6 +362,7 @@
    ("TAB" . helm-execute-persistent-action)
    ("C-M-n" . helm-scroll-other-window)
    ("C-M-p" . helm-scroll-other-window-down))
+  :defines helm-boring-buffer-regexp-list
   :init
   ;; Helm Buffer List allows for duplicate entries, if the same buffer is
   ;; present on multiple visible windows. Fix that.
@@ -407,13 +408,13 @@
      (append helm-boring-file-regexp-list
 	     '("\\.eln$" "\\.tmp$")))
    '(helm-boring-buffer-regexp-list
-    '("\\*helm"
-      "\\*Echo Area"
-      "\\*Minibuf"
-      "eldoc for.*"
-      "^\\ .*"
-      "^magit.*:"
-      "\\*.*-ls.*\\*")))
+     '("\\*helm"
+       "\\*Echo Area"
+       "\\*Minibuf"
+       "eldoc for.*"
+       "^\\ .*"
+       "^magit.*:"
+       "\\*.*-ls.*\\*")))
   (helm-mode)
   (helm-adaptive-mode))
 
